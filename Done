@@ -1,0 +1,139 @@
+ Kategorien: 
+ * Gelesen
+ * Getestet (Ausprobiert)
+ * Programmiert
+ * Geschrieben
+ * Offen/Fragen
+ * Sonstiges
+ 
+ 
+seit 30.April 2014
+
+* Gelesen: PG-Bericht quergelesen, ebenso PAA-Teil in der Diss von Tobias
+* Gelesen: PAAs; Idee dazu: Zwei Zustände (weiter & hängen bzw stationär&mobil); Emission ?; Wert: zurückgelegte Strecke (wird nur in weiter erhöht) -> Verteilung berechnen, wann die Strecke zurückgelegt wurde (Waiting time for a value)
+* Gelesen: Chromatographie, die Phasen dabei -> W'keiten zu wechseln sind jeweils recht hoch (?!) (-> Verlängert die Simulationszeit :( )
+* Gelesen: Sorbtion: Wenn schon viele Teilchen haften, sind alle Plätze besetzt. -> Vielleicht eher nach Zeitschritten sim. und zählen, wie viele schon haften. Bzw. 
+* Gelesen: qq-Plots: Zwei Verteilungen/Verteilung+Messwerte/zwei Messewerte gegeneinander plotten (Quantile davon); Ergibt sich eine Gerade, liegt die gleiche Verteilung zu Grunde. ist invariant gegen scal/loc, aber nicht für alle param. 
+* Gefunden: HPLC-Simulator/retentionprediction: http://retentionprediction.org/hplc/howitworks.php; scheint eine statistische Vorhersage zu sein, keine Simulation. Darin: Einfach nur die Steps berechnen reicht nicht, man braucht noch eine Ausgleichskurve, die aus Testdaten gewonnen wurde
+* Sonstiges: Zeitplan aufgestellt/Motivation
+* Getestet: Einfacher qq-Plot. 
+* Getestet: qq-Plot von der einfachen Simulation gegen inv. Gauß, aber das passt wohl nicht. Normalvert scheint aber super zu passen
+* Einfluss haben: Adsorption, Verteilung, Ionenaustausch, Ausschluss(?), Affinität, Temperatur, Druck, Länge, Polarität, Geschwindigkeit, Teilchengröße, Porösität (?), Diffusionskoeffizient d. stat. Phase, 
+
+Seit 20. Mai 2014
+* 1-Parameter-Modell 1a und 1b getestet: 
+ ** 1a) Es kommen annähernd Gaußkurven raus, mit Mittelwert um die doppelte Länge. Parameter beeinflusst da nur die Varianz (Parameter klein, Vari groß) -> Stimmt nicht, hohe WKeiten! s.u.
+ ** 1b) Es kommen annähernd Gaußkurven raus. Je größer der Parameter desto schmaler und früher die Kurve
+ ** Startzeiteinfluss: Keine Gaußkurven mehr, aber auch keine Invgauß.
+ 
+ Seit 4. Juni 2014
+ * Zum Generieren der ZZV: Habe das Gefühl, eher das Zugreifen dauert lange, nicht das Generieren, zumal die np-Variante nicht schneller ist (im Generieren schon, Zugriff nicht). Durchlaufe ich meine Zufalls-array (statt jeweils aufzurufen) wird es schneller, dann müsste ich aber mit breaks arbeiten...? -> Jeweils direkt generieren scheint immer noch schneller
+ * Bei Länge 10000 und p=0.999 gibt es eine schöne Kurve. Kann die aber leider kaum verschieben, da bei kleinerem p wieder eher normalverteilung, bei größerem reicht die Strecke nicht, da gibt es zu viele die komplett durch kommen ohne hängen bleiben (im hist: erst ein großes bin, dann viele kleine; qq passt aber irgendwie?)
+ 
+ 
+ Seit 11. Juni 2014
+ * Erzeuge nun np-array mit ZZ (so viele wie Teilchen). Daraus zwei arrays für je einen parameter (ps, pm) und dann mit binären Ops neues zustandsarray (true -> mobil, false -> stationär). Das ganze auf den die Orte draufaddieren (wenn mobil, dann ein platz weiter vorne). 
+ * Abbruchbedingung jetzt auch ohne Schleifen
+ * Plotkram: Erzeuge jetzt je Sim ein Fenster mit separatem Histogramm, und beiden qq-Plots. Zusätzlich möglich ein gesamtspektrum
+ 
+ 
+ Seit 18. Juni 2014
+ * Sinnvolle Werte für Modell 1a liegen bei Länge 100000 und 1000 (10000) Teilchen zwischen 0.99978 und 0.99995 Zeit dafür: Je 6-7s (30-40s) (plus Statistiken erstellen, das dauert deutlich länger je mehr Teilchen) Allerdings alle Peaks mit ähnlichem Mittelwert (ca 200000)
+ * Variiere Abstand zw ps und pm um Peaks zu verschieben: 
+  ** ps < pm: Irgendwie nicht hübsch :(
+  ** ps > pm: Irgendwie noch weniger hübsch :((
+  ** Bezog sich beides auf jeweils gleiche Abstände -> Unterschiedliche Abstände plus ps<>pm
+ * Teste versch. Abstände durch (Varianzveränderung?):
+  ** Bei konst ps und größerem pm: Je größer der Abstand, desto kleiner Varianz und desto weiter vorne der Peak
+  ** Bei konst ps und kleinerem pm: Je größer der Abstand, desto größer Varianz und desto weiter hinten der Peak
+  ** Reicht aber nicht aus, um Peaks zu trennen
+  ** Mobil kleiner als stationär: Peaks werden breiter
+  ** Diff größer, aber Wert kleiner (der beiden Params) -> Peak nach hinten; Diff 0 und Wert klein auch, dann aber fast gaußkurve!
+ * Legende für die Spektren
+ * Statisik-Variablen werden direkt ein mal berechnet (mu, mean etc) und mit in der Sim gespeichert
+ * Direkter Plot-Aufruf ohne speichern der Daten möglich
+ 
+ Seit 02.07.2014
+ * Sim läuft jetzt an der Uni ACHTUNG: Die .p-Dateien speichern leider immer alle bisherigen Sims (das Array) ab, nicht nur je eine Sim -> nur die gesamtdingens nutzen -> Korrigiert
+ 
+ Seit dem 31.07.2014
+ * Simulation während der Ferien liefert seltsame (identische) Ergebnisse bzgl skew/kurt. Keine Ahnung warum
+ * Liegt wohl an der Scipy-Version, an der Uni ist eine alte, da passt das stats fit invgauss nicht
+ * Momente werden jetzt direkt berechnet, ohne Invgaußparameter (sind ja hier ein Umweg)
+ 
+ Seit dem 05.08.2014
+ * Plot mit 4 Heats klappt wahrscheinlich, wenn keine Lücken (Sortierung haut das noch durcheinander) Es müssen quadratisch viele Sim vorliegen. 
+ * Update: Ja, es klappt
+ * Akuteller Status:
+  ** Sim laufen
+  ** 4 einzelne Heatmaps für jeweils die Ecken gehen, 
+  ** Für die 10 000 er Variante gibt es einen Plot und für die 100 000 er auch, aber leider noch mit falschen Parametern (nicht nah genug in den Ecken, trotzdem sieht man schon was)
+  ** Interessant ist vor allem die Ecke, wo beide Params groß sind, die laaangen Sims können dafür weggelassen werden, pm groß und ps klein auch noch schief
+  
+  
+Seit dem 14.08.2014
+* Sim laufen. Erkenntnis: Je höher pm, desto schiefer. Leider erst später dran gedacht: Das sind dann keine schönen Kurven mehr, sondern die vorne abgeschnittenen (Wo auch der qq-Plot Mitst ist). Die daraus mit scipy.stats.fit berechneten Parameter ergeben aber wieder hübsche Kurven, die zumindest derjenigen ähnlich sieht, die ich bekomme, wenn ich Dommis Beispielkurve plotte und dabei nur etwas den Offset verändere (2ter param bei scipy). Vom Gefühl her entspricht das aber nicht der Kurve in der Heatmap von Dommi. Die sieht irgendwie symmetrischer aus. 
+* Außerdem getestet: Über den gesamten Parameterraum Sim laufen lassen. Gibt auf den ersten Blick keine weiteren interessanten Stellen
+* Weiteres Problem: Die Kurven landen alle mehr oder weniger an der gleichen Stelle. Also kaum möglich, ein "Spektrum" mit mehreren Peaks zu bekommen. Es scheint, dass daher die zwei Parameter nicht ausreichen und das Modell erweitert werden muss.
+ ** Ideen dazu: 
+ ** Geschwindigkeit einführen, vel könnte von vorneherein unterschiedlich sein (Begründung? Größe der Teilchen, damit würde sich das Problem sicher lösen lassen, sit nur die Frage der Sinnhaftigkeit)
+ ** Geschwindigkeitsveränderung nach Phasenwechsel/Wahrscheinlichkeitsveränderung je nach Geschwindigkeit. Hintergrund: In der Mitte der Säule kaum Kontakt mit sP, gutes Durchströmen möglich. Am Rand öfter WW, geringere Geschwindigkeit, da auch Richtung eher mal kreuz und quer. Also nach Hängenbleiben ist die vel geringer und dadurch auch die Wkeit höher, wieder hängen zu bleiben. Befürchtung: Dadurch wird das Tailing noch länger, aber die Anzahl der Teilchen, die ohne ww durchkommen noch höher. Bräuchte also Möglichkeit, dafür zu sorgen, dass viele wenigstens ein mal hängen bleiben
+ ** Adsorptionseffekte? Keine Ahnung, wie das zu realisieren wäre, zumal ich auch die Simulationsgeschwindigkeit im Auge behalten muss
+ 
+* Ergebnisse Profiling
+ ** Vor allem bei kurzen Säulenlängen braucht das fit verhältnismäßig viel Zeit, die anderen berechnungen gehen sogar
+ ** Am meisten Zeit frisst random
+ ** Auch beim Profiling der neuen wpw-Sim nix, was mir hift
+ 
+* Einfach nur Geschw verändern bringts nicht. Bei 10facher vel ist auch der "peak" 10-mal so lang/breit. Ich muss also per Parameter bei höherer vel die peaks schmaler machen, damit das klappt. Leider sind die echt schön schmalen Peaks nicht mehr invgaussig sondern normalverteilt.
+* Habe Test mit variabler pm/ps: Damit gehen die Wkeiten noch näher an eins, bleiben aber schief, bzw. sind vorne nicht so abgeschnitten, da Wkeiten mind. ein mal hängen zu bleiben, stark erhöht.
+ 
+* Auswertung des Files von Dommi:
+ ** So ganz glücklich bin ich nicht damit, es sieht erst mal kaum schief aus. (Siehe snapshot 28 TODO im visualize ordner). Evtl muss ich noch mal mit den berechneten Intensitäten was testen und nicht nur mit den Integerwerten aus der Messung. 
+ ** "Leider" sieht der qq-Plot ganz gut aus, aber da geht der hintere Teil sogar eher hoch, als runter, so wie bei mir immer. Das kann aber auch allgemein am Rauschen liegen ?!
+ ** Die von Dommi angegebenen Parameter sehen aber ganz anders aus ... *ratlos* Vielleicht auch hier noch mal mit den Intensitäten was anfangen?
+ ** Die Signalwerte sind ganz komisch. Alle etwa 0 und sowohl drunter und drüber. Der Rip ist am nächsten bei 0 (klar bei 1/zahl)... Tja, oder mit invertieren ist VZ-Wechsel gemeint. Dann kommt ne ganz hübsche Kurve raus... Aber auch die sieht nicht so ganz invgaussig aus.
+ ** Insgesamt: Keine Ahnung, wie es hier weiter geht. Irgendwie hab ich das Gefühl, irgendwo einen doofen Fehler gemacht zu haben, den ich aber nicht finde.
+ 
+* Die Auswürfeln-wann-wieder-was-passiert-Sim ist begonnen. Es läuft erst mal in einer Grundversion, wo noch die Parameter eingebaut werden müssen, noch nicht auf Geschwindigkeit geachtet wurde. Erinnert mich irgendwie an die phys. Sim von damals, da haben sich auch die Teilchen selbst aus den Listen gelöscht etc. 
+* Parameter sind drin. Das auswürfeln entspricht einer geom. Verteilung (Anzahl Versuche, bis Bernoulli-Experiment klappt, Bernoulli, weil ich ja genau zwei mögliche Ausgänge habe und die jeweils unabhängig sind) Ich hoffe, das ist richtig so. Zeitlich ist das ein Unterschied zur bisherigen Sim, je nach Anzahl, Länge und Parameterwahl bin ich schneller oder langsamer. Ergebnisse sehen gleich aus (zum glück)
+
+* Expose ist mittlerweile 1.5 Seiten lang. Naja...
+
+15.09.2014
+* Versuche, den neuen Ansatz zu verwirklichen. Params jetzt als vel und gamma bezeichnet
+* Neue Ordnerstruktur, nach den beiden Ansätzen sortiert, dazu einige Kommentare geschrieben
+* Da das wpw-vel-gamma irgendwie seltsam war noch mal mit der ersten simulationsart probiert. irgendwie schießt grad der pvektor/pneu quer...
+* Sieht jetzt besser aus. 
+ ** Speichere wieder die Sim ab, damit es schneller geht
+ ** Versuche jetzt mit den aktuell vier(!) Params zu spielen und rauszufinden, was davon interessant ist
+* Verdammter MIST!!!!!!! Jetzt ist irgendwas passiert und die Sim werden anders als vorher... Dabei kann ich mich gar nicht erinnern, da was in der simulate() geändert zu haben :(
+
+29.9.2014
+* Off-Topic: Statt der prints gibt es jetzt an einigen Stellen logging-Infos. Ist praktischer
+* Immerhin, mit der v002 bekomme ich jetzt die Kurven aus der 1a)-sim wieder hin. Jetzt kann ich a) durch den zweiten Param die Form wieder ändern (später, bzw. tue ich das nicht indirekt auch durch b siehe-> ??) und b) durch die Geschwindigkeitsveränderung die Kurven verschieben (jetzt...!)
+* Zeiteinsparung durch Teil2 in der Simulationschleife, ich teste jetzt erst mal nur, ob was durch ist und wenn die ersten da sind, geht es in Teil3, wo dann regelmäßig getestet und verkürzt wird. Haha, weitere Einsparung: Es wird jetzt immer auf das any getestet und nur wenn was zu tun ist, verkürzt. Dadurch entsteht dann auch kein dadurch verursachter Pömpel mehr vorne.
+* Habe Rauschen hinzugefügt, einfach um zu gucken, wie das wirkt. 
+* Lasse jetzt viele Sim mit verschiedenen variablen und festen Params laufen, um zu gucken, welche festen Params sinnvoll sind.
+* Einflüsse verschiedener Parameter:
+ ** Bei hoher W'keit wieder zu lösen (0.1 statt 0.001) entsteht starkes Fronting bei kleinen gamma-Werten (bleibt zu klären, warum?) 
+ ** hohes ps (0.1): 
+  *** insgesamt kürzere Zeiten
+  *** ps beeinfluss relativen Abstand der Peaks, allerdings nicht gleichmäßig, die vorne rutschen zusammen, die hinten nähern sich an
+  *** Fronting zu beobachten bei kleinem gamma (0.001), sonst nicht (mit bloßem Auge)
+  *** Peaks hinten bleiben in der Höhe (relativ zueinander) stabil, vorne werden sie bei hohem ps flacher
+  *** Ähnlich für die Breite, jedoch nimmt bei kleinem gamma auch die Varianz stärker zu (mit dem Fronting)
+  
+ ** Unter Bilder, figure1* findet sich das, was ich zu einem interessanten Phänomen bzgl der Geschwindigkeit gefunden habe
+* Die Wahl der festen Parameter hat entscheidenden Einfluss darauf, welche variablen Parameter sinnvolle Dinge ergeben. -> Todo 
+ 
+ 
+10.10.2014
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

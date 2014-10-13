@@ -1,0 +1,182 @@
+ 
+5.5.
+
+Lesen: PAAs, qqPlots ok
+
+Angucken: Heatmaps bzw Kurven
+
+Offen:  T = T1+...+TN mit N zufällig?, was war damit genau gemeint? -> N zufällig anhand der beiden (1, 2, 3 je nachdem) Parameter bestimmen?
+
+Testen: qqPlots ok, jetzt: Ergebnisse des Testprogrammierens gegen InvGauß qqplotten
+
+Brauche: Kurven zum Vergleichen
+
+
+14.5.
+* Physikalische Größen recherchieren (Länge/Durchmesser der MCC, Teilchengröße, Geschwindigkeit, Wechsel zwischen Phasen, Sorption (Kurve?), wie viele Teilchen nebeneinander)
+* Gesamtziel: Modelle entwickeln. Verschiedene Möglichkeiten: Ganz einfach mit nur 1 Parameter u 1 Teilchen gleichzeitig, oder zwei Param. 2/3Phasen? Mehrere Teilchen gleichzeitig (wegen Sorption und alle Plätze voll, also Teilchen abhängig voneinander) Wartezeit zu Beginn (->Phys? Wie viele Teilchen/% auf einmal). Konst. Geschwindigkeit (amortisiert sich das nicht über die Länge der MCC?)
+* Bis nächste Woche: Modelle sortieren/überlegen, welche es gibt, phys größen
+
+* Formalkram: Expose: Zur Anmeldung nötig, zwei Seiten
+* Formalkram: Einführungsvortrag ca 1 Monat nach Anmeldung (Termin rechtzeitig wegen 2. Prüfer)
+
+* Was ergibt sich bei nicht gleichverteilten Zufallszahlen (fürs Hängenbleiben/Lösen) sondern nach anderer Verteilung, macht das Sinn? Oder kann man den Effekt auch erzielen, wenn man eher an den Nachkommastellen von p spielt?
+
+
+27.5.
+* Möglichkeit, die Sim (Counter) zu speichern, um nachträglich noch mehrere Vergleiche anstellen zu können, dabei verwendete Parameter etc. mitspeichern (ok) -> fromfile, tofile, dazu header, wo anzahl etc drin sind
+
+
+05.06.
+* 10000 zz auf ein mal ziehen -> beschleunigen ?!? ok
+* kann man bei der hängenbleib-entscheidung was beschleunigen? ok
+* Ausgabe der fit-Parameter ok
+
+11.06. 
+* Expose anfangen!
+* GUI?
+* IDE??
+* Ausgabe der Stat: Beliebig viele Sim *ok*, bzw. anhand von header-config auswählen hä?
+* Gedanken zu meinen files: csv kann man zwar schön lesen, braucht man aber eig. nicht. 
+  Vorschlag: Erstelle class wo die Parameter und Zeiten drin sind, das kann ich dann picklen, plotkram kann das dann auch einlesen ok
+  Muss noch ein Paket für die Sim erstellen ok
+* argparse
+* InvGauß: Gucken, was genau mu, loc, scale an den kurven verändern. evtl viele Plot zum vergleich (ok)
+* Viele ps/pm Kombis ausprobieren und testen, was da sinnvoll ist. Ausgabe??? 
+* Erstelle Liste für WKeiten und ziehe vier paare zufällig, gucken, was das so rauskommt ok 
+
+
+01.07.2014
+* Expose! Evtl mal Felix/Nina fragen ok
+* Nach echten Messungen fragen, angucken -> Dommi
+* Option für nur plot (-> argparse)
+* Sicherung! (git etc)
+* Startparameter für fit-Funktion? nö
+* GUI: verschoben
+ ** Parameter einstellen (Slider)
+ ** Speicheroption
+ ** Zoom/Achsenbeschriftung für Spektren
+
+ * Schiefe angucken
+ -> Heatmaps für Erwartungswerte, Varianzen, Schiefen der Simulationen (für interessante Werte; Ecken, 100 Punkte an je beiden Enden)
+ * Erstelle erst Matrix für die Momente, mit leeren Einträgen an den nicht interessanten Stellen. Muss die dann über die params an den geeigneten Stellen wieder füllen. 
+
+*** WICHTIG ***
+ Beim Starten größerer Durchgänge unbedingt aktuelles Progamm sichern, sonst nix mehr nachvollziehbar!!!
+ Abhängigkeiten sind nicht gut (statsmodels) da es auch auf den Uni-rechnern laufen muss
+ 
+* Wie kann man mehrere eigene Pakete mit Abhängigkeiten "installieren" 
+* argparse, damit man den Plotkram auch mit alten Dateien starten kann (teilweise ok)
+
+* Erstelle für die Heatmaps vier subplots für die Ecken, da sonst Werte zu unterschiedlich für schöne plots, plus gemeinsamen Plot ok
+* Reihenfolge der pms, pss sollte doch gleich sein, sonst blick ich nicht mehr durch -> egal, wird jetzt sortiert
+
+31.7.
+* skewness und kurtosis neu berechnen?!  An der Uni das recalc testen!! Kann ja wohl nicht sein, dass das so unterschiedlich ist. Liegt auf jeden Fall am fit. An der Uni scipy 0.9.0, am Laptop 0.13.3
+* Mail wegen batchsystem ok
+* Nach Params sortieren und dann plotten, (ok)
+* plotkram (4heats) mit kleinerer anzahl sims testen, damit man auch sieht, ob es läuft ok
+* Beim Testen, ob Sim schon vorhanden, diese auch in Liste packen, damit am Ende was vollständiges abgespeichert wird! ok
+* Wo müssen bei methoden von klassen die selfs dazu?
+* Statt erst die Params für die InvGauß direkt die Momente berechnen!! (-> Wie geht das? Scipy kann das!) ok
+
+05.08.2014
+* Momente direkt berechnen (ok)
+* sim auf snail laufen lassen!! (läuft) Dabei Test, ob Ergebnisse schon vorliegen auf length und count erweitern, Sims davon in Liste (ok)
+* Expose
+* 4heats hübsch machen joa
+* 4 heats mit ein heat kombi ok
+* Kommentieren!!!
+* Aus großer Menge *.p passende Sims raussuchen und plotten (Param-liste mit kombi von zahl und länge, ähnlich wie bei sim)
+* Simulationsklasse vernünftig in plotkram einbinden
+* Warum zur Hölle sind plötzlich die Plots nicht mehr richtig sortiert??? (Liegt an der anderen Sortierung der .pickle's als der .p's. Achsenbeschriftung ist auch irreführend) ok
+* Vorbereitung auf Treffen: Einzelne Plots angucken ok
+* Option für recalc, irgendwie das recalc auch abspeichern (ok -> in plotkram, die Option rc)
+* Für Fakesims mean/variance nicht = 0 damit das mit dem log-Plotten klappt
+
+nächstes Treffen 4.9. 16 Uhr
+
+-m cProfile  -o sim.prof  sim.py ->  gucken, wo ich die meiste Zeit brauche
+
+Aufschreiben: 2 Params scheinen nicht zu reichen -> Done
+Geschwindigkeitsparameter.
+Wie oft bleiben die teile hängen. sim: auswürfeln, wann wieder was passiert, statt jeden zeitpunkt zu betrachten ? (Lohnt das? -> cProfile)
+Dommi nach Daten fragen (spektrum mit guten params und wenigen Peaks) ok
+Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
+
+14.08.2014
+* Dommis File angucken, antworten (ok), vor allem noch mal ne einzelne Zeitspalte angucken, evtl. schauen, was scipys fit damit macht, qq-Plot (ok, aber hier bin ich noch nicht fertig)
+* Testen besser machen (zu viele unübersichtliche ifs ob schon vorhanden) ok?
+* Aufräumen: Universionen mit dem hier synchronisieren. Unterordner für Länge und Anzahl, .pickles nach parameterbereichen benennen ok
+* Expose (bin dran...)
+* Einzelne Sims samt Histogram, fit-Plot und qq abspeichern und gut kommentieren
+
+* testen: pm>ps sollte für schmalere peaks sorgen, daher das mit langsamerer vel kombinieren
+
+* Was passiert wann - Simulation: Auswürfeln, wann wieder was passiert, statt jeden Zeitpunkt: 
+ ** Wie bestimme ich den nächsten Zeitpunkt? Erst mal gleichverteilt, um zu gucken, ob das überhaupt sinn ergibt s.u.
+ ** Wo speichere ich den ganzen Kram ab? Kann ich dafür auch np-arrays nutzen oder muss ich das einzeln machen?
+ ** Mache Liste für jeden Zeitpunkt, wo alle relevanten Teilchen drin sind.
+ ** Pro Teilchen speichere Ort und Zustand (Geschw... etc)
+ ** Teste auf fertig? -> bei jeweils jedem Schritt 
+ ** Wie würfele ich den nächsten Zeitpunkt richtig aus? (Also Params einbauen!) ok
+ ** Ergebnisse plotten
+ ** Verteilung für nächsten Zeitpunkt? -> Geometrisch (bestätigt)
+ ** KOMMENTIEREN ok
+ ** Profiling davon
+ 
+04.09.2014
+ * Dommis File: Plotten ohne Histogramm, sondern Punkte verbinden
+ * p = 1/v * gamma; pm=ps? Damit es nicht noch mehr Params werden -> Ausprobieren
+ * Dummerweise hab ich nicht mehr so ganz in Erinnerung, was genau beim 4.9. gesagt wurde :( Ich sollte nur das mit den Geschwindigkeiten weiter ausprobieren und rausfinden, ob das ein guter Ansatz ist.
+ * Finde sinnvolle Werte für v und gamma, sodass p immer noch nahe 1 ist
+ * Außerdem soll v sich ändern können, insbes. nach Wechselwirkung
+ * Evtl in die wpw einbaubar: in der sim brauche ich nur einen param, anhand dessen bestimmt wird, wann wieder was passiert und halt die vel, die mir sagt, wie weit ich gehe. Das evtl. neu-setzen des params dann in extra methode? Nee, hier nicht einbaubar, da Geschwindigkeitsänderungen... Oder doch, wenn man einfach die Durchschnittgeschwindigkeit über den Zeitraum annimmt?
+ * Interessant wären durschnittswerter für vel und p 
+ * Zusammenhänge zwischen den Params herausfinden, welche Kombis sind sinnvoll? Effekte der einzelnen auf die Sim?
+ 
+ 29.09.2014
+ * Sim002 mit Wechselw'keit anfangen
+ * Gedankenspiel... Gehe noch mal zurück zu den Modellen 1a/b: In b ist p die W'keit im nächsten Schritt mobil zu sein. Also immer gleich, unabhängig vom aktuellen Zustand. Dadurch gibt es aber schon im Ansatz den gewünschten Effekt: Je größer p, desto weiter vorne und schmaler ist der Peak.(Allerdings kein verstärktes Tailing bei den hinteren Peaks, nur insgesamt flacher)
+ Außerdem widerspricht das der aktuellen Überlegung, dass die W'keit geschwindigkeitsabhängig ist. Neuer Gedankengang... 
+ Die W'keit mobil zu sein, hängt nur von der aktuellen Geschwindigkeit ab (mit irgendeinem Faktor). Bin ich normal-schnell gibt es halt eine gewisse Wkeit hängen zu bleiben. Bin ich schneller, ist diese geringer. Wenn ich schon hänge, ist sie sehr groß (weiter hängen bleiben realistisch)
+ 
+ * Achtung: Länge der Säule anpassen an Geschwindigkeit, sonst bekomme ich wieder den führungspeak. Außerdem sinnvolle Werte für den veldivisor mit einbeziehen, da das die maximal (tatsächlich) erreichte vel doch sehr verändert
+ * Vom Gefühl her ist es besser, ps weiter als (festen) Parameter zu haben.
+ * Berechnung der neuen Geschwindigkeit muss evtl noch angepasst werden. Keine Ahnung, was da realistisch ist. Bisher wird einfach der veldivisorste Teil der Differenz zwischen aktueller und maximaler Geschwindigkeit genommen. Dadurch werden langsame Teilchen mehr beschleunigt, als schnelle. Vielleicht ergibt aber auch was anderes mehr Sinn.
+ * Es gibt grad so viel auszuprobieren... Das ist auch gut, aber bitte dokumentieren. Oder wenigstens die Bilder abspeichern... (ok)
+ * Gleiches für die älteren Versionen, dann hab ich schon mal was fürs zusammenschreiben
+ * Versuche Wissen von Figure1 zu nutzen...
+ * Warum habe ich die Idee, ps auch von gamma abhängig zu machen verworfen? Da vielleicht noch mal Gedanken zu machen
+ * Es sollte geklärt werden, was an festen Parametern sinnvoll ist. Also velmin/max und evtl. ps. Das scheint im Moment recht willkürlich zu sein.
+ * Es wäre hübsch, wenn die Geschwindigkeit zb Normalverteilt wäre (also Kurve mit Maximum) und nicht hauptsächlich an den Rändern. Dann könnte man durch geschickte Parameterwahl dieses Maximum hin und her schieben. -> Noch mal bei Figure1 gucken, da war die zweite Kurve ja im Ansatz so, vielleicht bekommt man das mit nem anderen maximalwert ja hin? So spontan eher nicht. 
+ Sollte das nicht gerade durch das ganze Hängen-bleiben erreicht werden? Tut es ja auch, aber leider wird die Varianz dabei zu groß
+ * Fronting bei Figure1 zu klären? Gab es das da? Ist ja auch ein Effekt von hohem ps
+ 
+ * EXPOSE: Hätte gerne irgendwelche Bilder, an denen man das mit dem Tailing und der Varianz gut sehen kann
+ * EXPOSE: Noch mal Literatur raussuchen, evtl querlesen. V.a. was zur MCC/ GC
+ 
+ * Kann man die Geschwindigkeit einfach weglassen und nur mit variablen Wahrscheinlichkeiten arbeiten? Müsste im Endeffekt auf's gleiche rauskommen, aber man könnte zwei Parameter weglassen) Das könnte vor allem bei der wpw-Sim einbaubar sein
+ 
+10.10.2014
+* Echte Daten raussuchen, Einheiten festlegen: Zeitschritt = 1/1000s (oder später 1/10000) Messung nur alle 1/10s (real). Geschwindigkeit raussuchen
+ (40cm/s bei 30-60s pro Messung und 4-25cm Länge) In der Besprechung war von ca 10min pro Messung die Rede, wie passt das denn nu?
+* Mit dem 2-Param-Modell noch mal einige Param-Kombis testen und gucken, wie man die Peaks so schmal bekommt
+* Breite des Peaks bei halbem Maximalwert; Gucken, wie das mit steigender Zeit ist. (Verhältnis Peakmax zu 1/2Peakmax) Dazu:Dommi anschreiben ok
+* Dann gucken, bei welchen p/q (pm/ps)-Kombis das hinkommt (plotten), evtl könnte man da eine Funktion für finden
+* PAA-Ansatz, die Formel angucken und gucken, wie sich das berechnen lässt. Eigentlich ja "nur" ne einfache Rekursion, muss nur sehr auf den Speicher achten
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

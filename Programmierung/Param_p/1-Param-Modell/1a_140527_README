@@ -1,0 +1,7 @@
+Zu sehen:
+* Wesentlicher Teil des Sim-Codes; der j+=1 ist verrutscht, ändert aber nix am Ergebnis
+* Gemeinsames Histogramm: Maximum der Kurven um die doppelte Länge. Parameter beeinflusst da nur die Varianz (Parameter klein -> Var groß)
+* Vier Einzelhistogramme
+* qq-Plots gegen inverse Gaußkurve mit automatischem Fit. (idR etwas schlechter als gut gewähltes mu, aber deutlich, dass es nicht passt)
+
+Insgesamt: Man sieht, dass die Kurven nicht zu den echten Peaks passen
