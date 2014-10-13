@@ -1,0 +1,11 @@
+Man sieht in l100k_n1m.png beispielhaft das Ergebnis einer Sim mit 
+* Länge = 100 000
+* Anzahl = 1 000 000
+* Params: ps = 0.999898 pm = 0.999978
+
+Erklärung:
+* Blau das Histogramm der Sim
+* Grün die InvGauß Kurve der Params, die scipy dafür geschätzt hat
+* qq-Plot; offensichtlich passen die Daten nicht zur InvGauß. 
+
+Aber: invgauss.png zeigt, dass die Kurve, die aus den geschätzten Params entsteht, ganz gut ist. Weißt also das gleiche starke Tailing auf.

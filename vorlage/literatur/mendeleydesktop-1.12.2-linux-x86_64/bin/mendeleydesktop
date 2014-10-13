@@ -1,0 +1,265 @@
+#!/usr/bin/python
+
+import os
+import subprocess
+import sys
+import platform
+
+# Check if this is a 'generic Linux' build (which could be installed anywhere)
+# or an Ubuntu/Debian build (installed to /usr/bin/mendeleydesktop
+# with other files in /opt/mendeleydesktop)
+SCRIPT_PATH = os.path.realpath(__file__)
+IS_LINUX_DISTRO_BUILD = not os.path.exists(os.path.dirname(SCRIPT_PATH) + "/../lib/mendeleydesktop/")
+USE_DEBUGGER = sys.argv.count("--debug") > 0
+
+def library_paths():
+
+	paths = []
+
+	# Check paths listed in LD_LIBRARY_PATH environment variable
+	# (starting with the first path)
+	try:
+		ld_library_paths = os.environ["LD_LIBRARY_PATH"].split(":")
+		for path in ld_library_paths:
+			if (len(path) > 0):
+				paths.append(path)
+	except KeyError:
+		pass
+
+	# Check default system library paths
+	paths.append("/lib64")
+	paths.append("/lib")
+	paths.append("/usr/lib64")
+	paths.append("/usr/lib")
+	paths.append("/usr/lib/x86_64-linux-gnu")
+	paths.append("/usr/lib/i386-linux-gnu")
+
+	return paths
+
+def find_library(lib_name):
+
+	lib_path = None
+
+	for path in library_paths():
+		candidate_lib_path = path + '/' + lib_name
+
+		if (os.path.exists(candidate_lib_path)):
+			lib_path = os.path.realpath(candidate_lib_path)
+			break
+
+	return lib_path
+
+def library_version_from_path(lib_path):
+		
+	if lib_path:
+		suffix = ".so."
+		suffix_pos = lib_path.find(suffix)
+		version_string = lib_path[suffix_pos + len(suffix):]
+
+		return version_string
+	else:
+		return None
+
+def version_less_than(version_a,version_b):
+
+	if (not version_a):
+		version_a = ""
+	if (not version_b):
+		version_b = ""
+
+	period_a = version_a.find(".")
+	period_b = version_b.find(".")
+
+	if (period_a < 0):
+		period_a = len(version_a)
+	if (period_b < 0):
+		period_b = len(version_b)
+
+	mid_version_a = version_a[0:period_a]
+	mid_version_b = version_b[0:period_b]
+
+	version_part_a = None
+	version_part_b = None
+
+	try:
+		version_part_a = int(mid_version_a)
+	except ValueError:
+		pass
+
+	try:
+		version_part_b = int(mid_version_b)
+	except ValueError:
+		pass
+
+	if (not version_part_a and not version_part_b):
+		# Both version components are non-numeric, treat
+		# them as equal
+		return False
+	elif (version_part_a and not version_part_b):
+		# Left version component is numeric, right component is not.
+		# Treat the numeric part as greater
+		return False
+	elif (version_part_b and not version_part_a):
+		# Right version component is numeric, left component is not.
+		# Treat the numeric part as greater
+		return True
+	elif (version_part_a < version_part_b):
+		return True
+	else:
+	 	# Version components at current left are equal, compare
+	 	# remaining parts
+		return version_less_than(version_a[period_a+1:],version_b[period_b+1:])
+
+def find_libraries_in_path(path,library_filenames,version):
+
+	missing_libs = []
+	for filename in library_filenames:
+		lib_filename = "lib" + filename + ".so." + version
+		library_path = path + '/' + lib_filename
+		if (os.path.exists(library_path) == False):
+			missing_libs += [library_path]
+	return missing_libs
+	
+# Verify that the Qt installation in 'path' with 'version' contains all the
+# required libraries needed to run Mendeley Desktop.
+#
+# This does not check whether all required plugins are installed.
+# 
+def check_qt_install(path,version):
+
+	required_libs = ["QtCore","QtGui","QtNetwork","QtSvg","QtXmlPatterns"]
+	missing_libs = find_libraries_in_path(path,required_libs,version)
+
+	# QtWebKit is now released separately from the rest of Qt
+	# and may have different minor/patch versions
+	missing_libs += find_libraries_in_path(path,["QtWebKit"],"4")
+
+	if (len(missing_libs) != 0):
+		print("Unable to use Qt libraries in " + path + ". Some components are missing:\n\t" + "\n\t".join(missing_libs))
+		return False
+	else:
+		return True
+
+MINIMUM_QT_VERSION = "4.8"
+BUNDLED_QT_VERSION = "4.8"
+
+# Base path of actual Mendeley Desktop binary and
+# bundled libraries relative to this script
+if (IS_LINUX_DISTRO_BUILD):
+	MENDELEY_BASE_PATH = sys.path[0] + "/../../opt/mendeleydesktop"
+else:
+	MENDELEY_BASE_PATH = sys.path[0] + "/../"
+
+# Path to Mendeley Desktop and PDFNet libraries
+MENDELEY_LIB_PATH = MENDELEY_BASE_PATH + "/lib/"
+
+# Path to bundled Qt libraries
+MENDELEY_BUNDLED_QT_LIBRARY_PATH = MENDELEY_BASE_PATH + "/lib/qt/"
+MENDELEY_BUNDLED_SSL_LIBRARY_PATH = MENDELEY_BASE_PATH + "/lib/ssl/"
+
+# Path to the actual Mendeley Desktop executable
+if (IS_LINUX_DISTRO_BUILD):
+	MENDELEY_BIN_PATH = MENDELEY_BASE_PATH + "/bin/mendeleydesktop"
+else:
+	if platform.architecture()[0] == "64bit":
+		MENDELEY_BIN_PATH = MENDELEY_BASE_PATH + "/lib/mendeleydesktop/libexec/mendeleydesktop.x86_64"
+	else:
+		MENDELEY_BIN_PATH = MENDELEY_BASE_PATH + "/lib/mendeleydesktop/libexec/mendeleydesktop.i486"
+
+	if (not os.path.exists(MENDELEY_BIN_PATH)):
+		print("Unable to start Mendeley Desktop, the software may not be installed correctly.")
+		print("Please check that you are using the correct version of Mendeley (32 or 64bit) for your system.")
+		exit(1)
+
+# Save the original library path so that Mendeley can launch
+# external applications without them inheriting the library path changes
+# made by this script
+try:
+	os.environ["LD_LIBRARY_PATH_ORIGINAL"] = os.environ["LD_LIBRARY_PATH"]
+except KeyError:
+	pass
+
+# Save the path to the script which started Mendeley, used to restart
+# Mendeley after an auto-update
+os.environ["MENDELEY_GENERIC"] = SCRIPT_PATH
+
+# Check for forced usage of system or bundled Qt
+# (optparse and getopt are not used here because we need to ignore arguments
+#  intended for the main application)
+use_system_qt = None
+if (sys.argv.count("--force-system-qt") > 0):
+    print("Forcing system Qt")
+    use_system_qt = True
+elif (sys.argv.count("--force-bundled-qt") > 0):
+    print("Forcing bundled Qt")
+    use_system_qt = False
+
+# Find system Qt library
+system_qt_library = find_library("libQtCore.so.4")
+system_qt_version = None
+if (system_qt_library):
+	# Verify that all required Qt modules are available
+	candidate_version = library_version_from_path(system_qt_library)
+	if (check_qt_install(os.path.dirname(system_qt_library),candidate_version)):
+		system_qt_version = candidate_version
+
+if (use_system_qt == None):
+	use_system_qt = not version_less_than(system_qt_version,MINIMUM_QT_VERSION)
+
+	if (use_system_qt):
+		print("Using system Qt version " + system_qt_version + " in " + os.path.dirname(system_qt_library))
+	elif (system_qt_version):
+		print("Using bundled Qt version " + BUNDLED_QT_VERSION + " because system version (" + system_qt_version + ") is too old")
+	else:
+		print("To run Mendeley Desktop you may need to install the QtWebKit and QtSvg " +
+                      "packages provided by your Linux distribution.")
+
+# Update library paths
+new_lib_paths = None
+try:
+	new_lib_paths = os.environ["LD_LIBRARY_PATH"].split(":")
+except KeyError:
+	new_lib_paths = []
+new_lib_paths = [MENDELEY_LIB_PATH] + new_lib_paths
+if (not use_system_qt):
+	new_lib_paths = [MENDELEY_BUNDLED_QT_LIBRARY_PATH, MENDELEY_BUNDLED_SSL_LIBRARY_PATH] + new_lib_paths
+
+os.environ["LD_LIBRARY_PATH"] = ":".join(new_lib_paths)
+
+# Update Qt plugin paths
+new_qt_plugin_paths = None
+if (not use_system_qt):
+	# Path to bundled Qt plugins
+	if (IS_LINUX_DISTRO_BUILD):
+		MENDELEY_BUNDLED_QT_PLUGIN_PATH = MENDELEY_BASE_PATH + "/plugins/qt/plugins/"
+	else:
+		MENDELEY_BUNDLED_QT_PLUGIN_PATH = MENDELEY_BASE_PATH + "/lib/mendeleydesktop/plugins/"
+
+	os.environ["MENDELEY_BUNDLED_QT_PLUGIN_PATH"] = MENDELEY_BUNDLED_QT_PLUGIN_PATH
+
+# Run Mendeley Desktop
+try:
+	# change the mendeley:// link handler to use the current Mendeley Desktop binary
+	subprocess.Popen([MENDELEY_BASE_PATH+"/bin/install-mendeley-link-handler.sh",SCRIPT_PATH])
+
+	if (IS_LINUX_DISTRO_BUILD):
+		# Enable Linux distro specific changes (eg. in auto-update
+		# handling)
+		extra_args = ["--unix-distro-build"]
+	else:
+		extra_args = []
+
+	args = [MENDELEY_BIN_PATH]
+	if (USE_DEBUGGER):
+		args = ["gdb","--args"] + args
+
+	result = subprocess.call(args + sys.argv[1:] + extra_args)
+
+except OSError:
+	# use exc_info() to get the exception object for compatibility with
+	# Python 2.5 and 3.x
+	error = sys.exc_info()[1]
+
+	print("\nUnable to start Mendeley Desktop: " + str(error))
+	print("For further help, please visit http://support.mendeley.com")
+

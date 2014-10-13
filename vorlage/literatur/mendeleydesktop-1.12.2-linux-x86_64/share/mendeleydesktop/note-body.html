@@ -1,0 +1,125 @@
+<html>
+<head>
+	<style type="text/css">
+		$shared_style
+		$platform_style	
+	</style>
+	<script type="text/javascript">
+		function drawRoundRect(context,sx,sy,ex,ey,r)
+		{
+			// note: quadraticCurveTo() is used here instead of arc() because arc()
+			// closes the current subpath and starts a new one in Qt 4.6
+			// (this is fixed in Qt 4.7)
+
+			context.beginPath();
+
+			// top edge
+			context.lineTo(ex-r,sy);
+
+			// top-right corner
+			context.quadraticCurveTo(ex,sy,ex,sy+r);
+
+			// right edge
+			context.lineTo(ex,ey-r);
+
+			// bottom-right corner
+			context.quadraticCurveTo(ex,ey,ex-r,ey);
+
+			// bottom edge
+			context.lineTo(sx+r,ey);
+
+			// bottom-left corner
+			context.quadraticCurveTo(sx,ey,sx,ey-r);
+
+			// left edge
+			context.lineTo(sx,sy+r);
+
+			// top-left corner
+			context.quadraticCurveTo(sx,sy,sx+r,sy);
+
+			context.closePath();
+		}
+
+		// the Canvas API has built-in facilities for drawing shadows but
+		// QtWebKit does not support the shadow blur property, so we use
+		// a cheap manual method for drawing shadows
+
+		function shadowIteration(context,left,top,right,bottom,xo,yo)
+		{
+			drawRoundRect(context,left+xo,top+yo,right+xo,bottom+yo,5);
+			context.strokeStyle = "rgba(100,100,100,0.1)";
+			context.stroke();
+		}
+
+		function drawBoxShadow(context,left,top,right,bottom,xo,yo)
+		{
+			var shadowIter = function (xo,yo) {
+				shadowIteration(context,left,top,right,bottom,xo,yo);
+			}
+
+			shadowIter(-1,-1);
+			shadowIter(0,-1);
+			shadowIter(1,-1);
+			
+			shadowIter(-1,0);
+			shadowIter(1,0);
+
+			shadowIter(-1,1);
+			shadowIter(0,1);
+			shadowIter(1,1);
+		}
+
+		function drawNoteBubble(context,x,y,width,height,radius,fillColor)
+		{
+			drawBoxShadow(context,x+1,y+1,x + width + 1,y + height + 1,radius);
+			drawRoundRect(context,x,y,x+width,y+height,radius);
+			context.strokeStyle = "#999";
+			context.stroke();
+			context.fillStyle = fillColor;
+			context.fill();
+		}
+
+		function drawNoteBubbleInElement(canvas,fillColor)
+		{
+			var context = canvas.getContext("2d");
+			drawNoteBubble(context,2,2,canvas.width-4,canvas.height-4,2,fillColor);
+		}
+
+		function redrawBubbles()
+		{
+			var note_id = 1;
+			while (true)
+			{
+				note_bubble = document.getElementById("note_bubble_" + note_id);
+				if (note_bubble == null)
+				{
+					break;
+				}
+				note_color = note_bubble.getAttribute("data-color");
+				drawNoteBubbleInElement(note_bubble,note_color);
+				++note_id;
+			}
+		}
+
+		function editNoteIfContentClicked(e,note_number,note_content_element)
+		{
+			// unless the user clicked a link, start editing the note
+			if (e.target.tagName != "A")
+			{
+				MendeleyDesktop.editNote(note_number,note_content_element);
+			}
+		}
+	</script>
+</head>
+<body class="hide_scroll">
+	<div id="note_list_view">
+		<div id="note_list"></div>
+		<div id="hidden_count_outer" class="valign_outer" style="display:none">
+			<div id="hidden_count" class="valign_middle hidden_count"></div>
+		</div>
+		<div id="empty_list" class="valign_outer" style="height:200px; display:none">
+					<div class="empty_list valign_middle">This paper has no annotations yet.<br/><br/>You can add notes and highlights in the PDF viewer.</div>
+		</div>
+	</div>
+</body>
+</html>

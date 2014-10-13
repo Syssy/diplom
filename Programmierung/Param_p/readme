@@ -1,0 +1,7 @@
+ 
+Hier sind die Simulationen, die mit den ein oder zwei Parametern ps und pm arbeiten (1 Parameter p für ps = pm)
+Dabei ist ps die WKeit stationär zu bleiben, wenn das Teilchen schon stationär ist und pm  die Wkeit mobil zu bleiben, wenn es schon mobil ist. p dann einfach die WKeit im aktuellen Zustand zu bleiben.
+Bei der Wann-passiert-wieder-was Simulation kommen die gleichen Sachen raus, nur der Weg ist anders: Es wird ausgewürfelt, wann wieder etwas passiert. Hoffnung auf bessere Laufzeit
+Bei 2Param_Vel kommt noch eine Geschwindigkeitskomponente dazu, bei 2Param_Var sind die Parameter nicht fest, sondern können sich im Laufe der Sim ändern.
+
+Da dies nicht auszureichen scheint (bzw als Fortsetzung von Vel und Var) gibt es die velgamma-Simulationen (siehe dort)

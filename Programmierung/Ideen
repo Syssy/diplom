@@ -1,0 +1,24 @@
+Ideen zur Geschwindigkeit:
+
+* Startgeschwindigkeit für alle gleich
+* Mininmalgeschwindigkeit: 1 für in Bewegung, 0 heißt hängen bleiben
+* Maximalgeschwindigkeit: z.B. 100 prinzipiell nicht fest, soll vel des Trägergases sein
+
+* Mobilvektor verwenden? 
+ ** Also statt (0,1) jetzt (0,100). Dann wäre das addieren für den neuen Ort fast unverändert.
+ ** In jedem Schritt findet unabhängig vom Hängenbleiben eine leichte Veränderung statt: Schnelle Teilchen werden auch mal langsamer, mal noch schneller
+ ** Die Änderung der vel pro Schritt ist neuer Parameter pv
+ ** Hängen bleiben setzt die vel auf 0
+ ** Wahrscheinlichkeit hängen zu bleiben ist abhängig von vel: 
+  *** Sehr schnell Teilchen befinden sich der Annahme nach in der Mitte der Säule, also wenig Möglichkeit, in Kontakt mit der sP zu kommen
+  *** Sehr langsame Teilchen sind oft eher am Rand und bleiben noch häufiger hängen
+  *** Zum Ende hin sind insgesamt weniger Teilchen drin, evtl. verändert das noch mal die WKeiten
+
+* Versuche erst mal ähnliche Peaks auf unterschiedlichen Abschnitten zu erzeugen. Dazu: Bei größerer Vel auch höhere pm-ps
+
+
+
+Ideen zu den pmps:
+
+* pm in den ersten Durchläufen erst mal geringer, dann jedoch ansteigend bis auf pm. (Am Anfang ist viel Platz in der Röhre) ps dabei konstant bzw. am Ende (Nach Teil 1 oder neu definiert in Teil 3) geringer
+

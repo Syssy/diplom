@@ -1,0 +1,9 @@
+length of column endl
+number of particles endl
+number of parameters endl
+
+number of simulations endl
+
+per simulation:
+    p1    p2    ...  endl
+    times as csv    endl

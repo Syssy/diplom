@@ -1,0 +1,504 @@
+[
+ {
+  "bubbles" : [
+   {
+    "actions" : [
+     {
+      "name" : "SelectFilter",
+      "parameters" :       {
+       "name" : "All Documents"
+      }
+     },
+     {
+      "name" : "ShowDocumentView",
+      "parameters" :       {
+       
+      }
+     },
+     {
+      "name" : "SelectFirstDocument",
+      "parameters" :       {
+       
+      }
+     },
+     {
+      "name" : "ShowHideRightPane",
+      "parameters" :       {
+       "value" : true
+      }
+     }
+    ],
+    "arrow" : "BottomArrow",
+    "arrowOffset" : 10,
+    "conditions" : [
+     {
+      "name" : "Platform",
+      "parameters" :       {
+       "include" : "Linux,Windows"
+      }
+     },
+     {
+      "name" : "DocumentsCount",
+      "parameters" :       {
+       
+      }
+     },
+     {
+      "name" : "IsFirstRun",
+      "parameters" :       {
+       "value" : true
+      }
+     },
+     {
+      "name" : "IsWidgetVisible",
+       "parameters" : {
+        "name" : "documentsView",
+	"visible" : true
+       }
+      }
+    ],
+    "content" : "Would you like a short tour of the interface to get you up and running quickly?",
+    "dynamicOffset" :     {
+     "x" : 0,
+     "y" : 0
+    },
+    "id" : "introBubble",
+    "leftButtonText" : "Start the tutorial",
+    "rightButtonText" : "No thanks",
+    "size" :     {
+     "height" : 94,
+     "width" : 295
+    },
+    "staticOffset" :     {
+     "x" : 40,
+     "y" : 0
+    },
+    "targetSignal" : "",
+    "targetWidget" : "statusBar",
+    "title" : "Getting started"
+   },
+   {
+    "actions" : [
+     {
+      "name" : "SelectFilter",
+      "parameters" :       {
+       "name" : "All Documents"
+      }
+     },
+     {
+      "name" : "ShowDocumentView",
+      "parameters" :       {
+       
+      }
+     },
+     {
+      "name" : "SelectFirstDocument",
+      "parameters" :       {
+       
+      }
+     },
+     {
+      "name" : "ShowHideRightPane",
+      "parameters" :       {
+       "value" : true
+      }
+     },
+     {
+      "name" : "SelectTab",
+      "parameters" :       {
+       "name" : "metadata",
+       "type" : "right"
+      }
+     }
+    ],
+    "arrow" : "RightArrow",
+    "arrowOffset" : 15,
+    "content" : "Mendeley extracts the title, authors, year and other details, to help you organize and cite your research more efficiently.",
+    "dynamicOffset" :     {
+     "x" : 0,
+     "y" : 0
+    },
+    "id" : "metadataBubble",
+    "leftButtonText" : "Next",
+    "rightButtonText" : "Close",
+    "size" :     {
+     "height" : 107,
+     "width" : 288
+    },
+    "staticOffset" :     {
+     "x" : -13,
+     "y" : 0
+    },
+    "targetSignal" : "",
+    "targetWidget" : "documentEditorTitleEdit",
+    "title" : "Document details"
+   },
+   {
+    "actions" : [
+     {
+      "name" : "ShowDocumentView",
+      "parameters" :       {
+       
+      }
+     }
+    ],
+    "arrow" : "TopArrow",
+    "arrowOffset" : 10,
+    "content" : "Click this button to add more documents to your library or simply drag and drop files into Mendeley.",
+    "dynamicOffset" :     {
+     "x" : 50,
+     "y" : 100
+    },
+    "id" : "addBubble",
+    "leftButtonText" : "Next",
+    "rightButtonText" : "Close",
+    "size" :     {
+     "height" : 107,
+     "width" : 264
+    },
+    "staticOffset" :     {
+     "x" : 0,
+     "y" : 0
+    },
+    "targetSignal" : "",
+    "targetWidget" : "action:newDocumentAction",
+    "title" : "Add more documents"
+   },
+   {
+    "arrow" : "TopArrow",
+    "arrowOffset" : 10,
+    "content" : "Synchronize your library to access your documents and read your PDFs from any computer.",
+    "dynamicOffset" :     {
+     "x" : 50,
+     "y" : 100
+    },
+    "id" : "syncBubble",
+    "leftButtonText" : "Finish tutorial",
+    "rightButtonText" : "Close",
+    "size" :     {
+     "height" : 108,
+     "width" : 241
+    },
+    "staticOffset" :     {
+     "x" : 0,
+     "y" : 0
+    },
+    "targetSignal" : "clicked()",
+    "targetWidget" : "action:synchronizeAction",
+    "title" : "Sync your library"
+   }
+  ],
+  "description" : "First steps in using Mendeley Desktop",
+  "id" : "firstRun",
+  "title" : "Getting started"
+ },
+ {
+  "bubbles" : [
+   {
+    "actions" : [
+     {
+      "name" : "SelectFilter",
+      "parameters" :       {
+       "name" : "All Documents"
+      }
+     },
+     {
+      "name" : "ShowDocumentView",
+      "parameters" :       {
+       
+      }
+     },
+     {
+      "name" : "SelectFirstDocument",
+      "parameters" :       {
+       
+      }
+     }
+    ],
+    "arrow" : "BottomArrow",
+    "arrowOffset" : 10,
+    "conditions" : [
+     {
+      "name" : "Platform",
+      "parameters" :       {
+       "include" : "Mac"
+      }
+     },
+     {
+      "name" : "DocumentsCount",
+      "parameters" :       {
+       
+      }
+     },
+     {
+      "name" : "IsFirstRun",
+      "parameters" :       {
+       "value" : true
+      }
+     },
+     {
+      "name" : "IsWidgetVisible",
+       "parameters" : {
+        "name" : "documentsView",
+	"visible" : true
+       }
+      }
+    ],
+    "content" : "Would you like a short tour of the interface to get you up and running quickly?",
+    "dynamicOffset" :     {
+     "x" : 0,
+     "y" : 0
+    },
+    "id" : "introBubble",
+    "leftButtonText" : "Start the tutorial",
+    "rightButtonText" : "No thanks",
+    "size" :     {
+     "height" : 102,
+     "width" : 295
+    },
+    "staticOffset" :     {
+     "x" : 40,
+     "y" : 0
+    },
+    "targetSignal" : "",
+    "targetWidget" : "statusBar",
+    "title" : "Getting started"
+   },
+   {
+    "actions" : [
+     {
+      "name" : "SelectFilter",
+      "parameters" :       {
+       "name" : "All Documents"
+      }
+     },
+     {
+      "name" : "ShowDocumentView",
+      "parameters" :       {
+       
+      }
+     },
+     {
+      "name" : "SelectFirstDocument",
+      "parameters" :       {
+       
+      }
+     },
+     {
+      "name" : "ShowHideRightPane",
+      "parameters" :       {
+       "value" : true
+      }
+     },
+     {
+      "name" : "SelectTab",
+      "parameters" :       {
+       "name" : "metadata",
+       "type" : "right"
+      }
+     }
+    ],
+    "arrow" : "RightArrow",
+    "arrowOffset" : 15,
+    "content" : "Mendeley extracts the title, authors, year and other details, to help you organize and cite your research more efficiently.",
+    "dynamicOffset" :     {
+     "x" : 0,
+     "y" : 0
+    },
+    "id" : "metadataBubble",
+    "leftButtonText" : "Next",
+    "rightButtonText" : "Close",
+    "size" :     {
+     "height" : 107,
+     "width" : 288
+    },
+    "staticOffset" :     {
+     "x" : -13,
+     "y" : 0
+    },
+    "targetSignal" : "",
+    "targetWidget" : "documentEditorTitleEdit",
+    "title" : "Document details"
+   },
+   {
+    "actions" : [
+     {
+      "name" : "ShowDocumentView",
+      "parameters" :       {
+       
+      }
+     }
+    ],
+    "arrow" : "TopArrow",
+    "arrowOffset" : 10,
+    "content" : "Click this button to add more documents to your library or simply drag and drop files into Mendeley.",
+    "dynamicOffset" :     {
+     "x" : 50,
+     "y" : 100
+    },
+    "id" : "addBubble",
+    "leftButtonText" : "Next",
+    "rightButtonText" : "Close",
+    "size" :     {
+     "height" : 107,
+     "width" : 264
+    },
+    "staticOffset" :     {
+     "x" : 0,
+     "y" : 0
+    },
+    "targetSignal" : "",
+    "targetWidget" : "macAction:libraryDocumentsActionWidget:newDocumentAction",
+    "title" : "Add more documents"
+   },
+   {
+    "arrow" : "TopArrow",
+    "arrowOffset" : 10,
+    "content" : "Synchronize your library to access your documents and read your PDFs from any computer.",
+    "dynamicOffset" :     {
+     "x" : 50,
+     "y" : 0
+    },
+    "id" : "syncBubble",
+    "leftButtonText" : "Finish tutorial",
+    "rightButtonText" : "Close",
+    "size" :     {
+     "height" : 112,
+     "width" : 232
+    },
+    "staticOffset" :     {
+     "x" : 0,
+     "y" : 0
+    },
+    "targetSignal" : "",
+    "targetWidget" : "macAction:synchronizeActionWidget:synchronizeAction",
+    "title" : "Sync your library"
+   }
+  ],
+  "description" : "First steps in using Mendeley Desktop",
+  "id" : "firstRunMac",
+  "title" : "Getting started"
+ },
+ {
+  "bubbles" : [
+   {
+    "arrow" : "LeftArrow",
+    "arrowOffset" : 22,
+    "conditions" : [
+     {
+      "name" : "DocumentsCount",
+      "parameters" :       {
+       
+      }
+     },
+     {
+      "name" : "IsFirstRun",
+      "parameters" :       {
+       "value" : false
+      }
+     },
+     {
+      "name" : "IsWidgetVisible",
+       "parameters" : {
+	  "name" : "webViewContacts",
+	  "visible" : true
+      }
+     },
+     {
+	     "name":"Scenarios",
+	     "parameters" : {
+		     "notCompleted" : "SendDocuments2"
+		}
+     },
+     {
+      "name" : "ContactsCount",
+      "parameters" :       {
+       
+      }
+     }
+    ],
+    "content" : "Drag and drop any document from your library onto a contact to send via e-mail.",
+    "dynamicOffset" :     {
+     "x" : 100,
+     "y" : 50
+    },
+    "id" : "contacts",
+    "leftButtonText" : "Done",
+    "size" :     {
+     "height" : 100,
+     "width" : 320 
+    },
+    "staticOffset" :     {
+     "x" : 0,
+     "y" : 12
+    },
+    "targetSignal" : "",
+    "targetWidget" : "webViewContacts",
+    "title" : "Quickly send documents"
+   }
+  ],
+  "description" : "Introduction to sending documents",
+  "id" : "SendDocuments",
+  "title" : "How to do the drag and drop to the quickshare"
+ },
+ {
+  "bubbles" : [
+   {
+    "arrow" : "BottomArrow",
+    "arrowOffset" : 9,
+    "conditions" : [
+     {
+	"name" : "DocumentsCount",
+	"parameters" : {
+	}
+     },
+     {
+      "name" : "IsFirstRun",
+      "parameters" : {
+       "value" : false
+     }
+    },
+    {
+     "name" : "IsWidgetVisible",
+     "parameters" : {
+	     "name" : "webViewContacts",
+	     "visible" : false
+	}
+    },
+    {
+     "name" : "Scenarios",
+     "parameters" : {
+	     "notCompleted" : "SendDocuments"
+     }
+    },
+      {
+	"name" : "ContactsCount",
+	"parameters" :       {
+      }
+     }
+    ],
+    "content" : "Open the contacts panel to e-mail any document from your library via drag and drop.",
+    "dynamicOffset" :     {
+     "x" : 0,
+     "y" : 100
+    },
+    "id" : "bubble0",
+    "leftButtonText" : "Done",
+    "size" :     {
+     "height" : 100,
+     "width" : 310 
+    },
+    "staticOffset" :     {
+     "x" : 17,
+     "y" : -23
+    },
+    "targetSignal" : "",
+    "targetWidget" : "statusBarQuickshareButton",
+    "title" : "Send documents to your contacts"
+   }
+  ],
+  "description" : "Introduction to sending documents",
+  "id" : "SendDocuments2",
+  "title" : "How to change to the quickshare button"
+ }
+]

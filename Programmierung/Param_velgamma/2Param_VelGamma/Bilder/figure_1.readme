@@ -1,0 +1,27 @@
+Figure_1:
+
+* In allen drei Varianten sieht man eine Sim mit den Params velmin = 1, velmax = 5 und veldivisor je 100, 1000, 5000, 10000, 50000
+* l=50000, n=20000
+* velgamma_002.py
+* In Bild 1 ist ps recht groß (0.1) und im Vergleich dazu in Bild 2 kleiner (0.001) die gammawerte bleiben dabei fest.
+* In Bild 3 wurde gamma noch etwas verändert, der Effekt (s.u.) ist hier dann leichter ausgeprägt
+
+* Faszinierend hierbei ist (und besonders gut in Bild 1 zu sehen):
+ ** Die Durchschnittsgeschwindigkeit der Teilchen nimmt für die Peaks von links nach rechts ab. Alle anderen Params bleiben fest. Der erste Peak befindet sich, ganz links und ist schmal, erwartungsgemäß ist der zweite Peak rechts davon niedriger und breiter. (Erwartung, da die Teilchen langsamer werden, öfter hängen bleiben und sich mehr über die Zeit verteilen)
+ ** Allerdings: Die nächsten Peaks, mit noch langsameren Teilchen sind wieder höher und schmaler
+ ** Erklärung?
+* In Bild 3 ist der Effekt auch zu sehen, allerdings werden die Peaks hinten nicht mehr so krass schmal und hoch
+ 
+ ** Idee: Da die Teilchen relativ zu ihrer Geschwindigkeit sehr oft hängen bleiben, aber dank hohem ps (lösen sich schnell wieder), mittelt sich das wieder und die Varianz ist geringer. Bei dem breiten Peak gibt es halt einige Teilchen, die oft hängen bleiben und einige, die selten hängen bleiben. Evtl. ist für diese die Geschwindigkeit auch schon so hoch, dass die W'keit hängen zu bleiben, genau in diesem Bereich gering ist. Bei noch langsamerer Geschwindigkeit verweilen die Teilchen einfach so lange, dass sie alle mal hängen bleiben und es sich dadurch, wie eben vermutet, mittelt.
+ -> Noch mal auf die Geschwindigkeitsverteilung gucken (siehe Graphiken)
+    ** veldivisor 100: Die meisten Teilchen sind auf maxvel, darunter einigermaßen gleichmäßig verteilt; 
+                       Die resultierende p ist bei 0.002, dann stark abfallend, kleiner End-peak bei 0.01
+    ** veldivisor 1000: Die meisten Teilchen sind auf minvel, danach abfallende Kurve, vereinzelte schaffen es bis maxvel oder kurz davor
+			p beginnt bei 0.002, dann sanft steigend, sehr viele bei 0.01
+    ** veldivisor 5000 (und größer): Die meisten Teilchen sind auf minvel, dann stark abfallende Kurve, maximal wird 1.7 (1.3/1.07) erreicht
+			p beginnt bei 0.07 (0.08/0.09) und steigt dann stark an bis 0.01
+  Das scheint zu bestätigen, dass es beim flachen Ausschlag einfach viele gibt, die anfangs erst mal nicht hängen bleiben und dann die vel so stark steigern können, dass sie gut durch kommen. Da es aber viele gibt, die doch hängen bleiben und deren vel dann nicht so steigt, bleiben diese in Folge noch öfter hängen und der Peak wird so breit.
+  
+  Wenn es jetzt möglich wäre, durch die Params oder eine andere, sinnvolle, Neuberechnung der Geschwindigkeit/Wahrscheinlichkeit ebendiese auf mehr als nur minimum oder maximum zu konzentrieren, wäre das super. (Also so, dass die Durchschnittsgeschwindigkeit auch die Geschwindigkeit der meisten Teilchen ist)
+    
+    

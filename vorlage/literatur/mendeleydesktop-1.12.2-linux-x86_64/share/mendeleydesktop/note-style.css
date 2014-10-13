@@ -1,0 +1,118 @@
+body
+{
+	background-color:white;
+}
+.hide_scroll
+{
+	overflow-y:hidden;
+}
+.note
+{
+	display:block;
+	margin-bottom:20px;
+	position:relative;
+	min-width:200px;
+}
+.note_number
+{
+	font-weight:bold;
+	font-size:8pt;
+	position:absolute;
+	left:7px;
+}
+.author
+{
+	font-weight:bold;
+	text-align:right;
+	position:relative;
+	left:5px;
+	top:-5px;
+}
+.page
+{
+	position:absolute;
+	right:0px;
+}
+.date
+{
+	color:#999999;
+	margin-left:35px;
+	font-size:9pt;
+}
+.content
+{
+	margin-top:10px;
+	margin-left:35px;
+	word-wrap:break-word;
+}
+.content:hover
+{
+	background-color:#FFFFCC;
+	border-style: 5px solid #FFFF66;
+	cursor:text;
+}
+.container
+{
+	width:300px;
+}
+.header
+{
+	border-bottom:1px solid #999999;
+	margin-bottom:5px;
+	font-size:10pt;
+	font-family:"arial";
+}
+.header:hover
+{
+	background-color:#FFFF99;
+	cursor:pointer;
+}
+.content_edit
+{
+	border:0px;
+}
+.grey_text
+{
+	color:#AAAAAA;
+}
+.empty_list
+{
+	color:#AAAAAA;
+	font-size:11pt;
+	text-align:center;
+	padding-left:20px;
+	padding-right:20px;
+}
+.hidden_count
+{
+	color:#AAAAAA;
+	text-align:center;
+	font-size:11pt;
+	padding-left:20px;
+	padding-right:20px;
+	padding-bottom:10px;
+}
+
+/* Vertical alignment aids.
+   Adapted from http://www.jakpsatweb.cz/css/css-vertical-center-solution.html
+
+   The valign_outer element must be given a height */
+
+.valign_outer 
+{ 
+	overflow:hidden; 
+	display:table; 
+	position:static 
+}
+
+.valign_middle 
+{
+	display:table-cell;
+	vertical-align:middle;
+	width: 100%; 
+}
+ul
+{
+	margin:3;
+	padding-left:2em;
+}
