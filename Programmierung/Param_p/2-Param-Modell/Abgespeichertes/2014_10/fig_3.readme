@@ -1,0 +1,7 @@
+Im großen Bild eine zufällige Auswahl von Parametern (ps, pm) und die daraus resultierenden Peaks (v004)
+Was ich bis dahin nicht dachte, es geht, dass auch Peaks irgendwo zwischendrin erzeugt werden. Die Frage ist nur, ob die Parameter sinnvoll sind. Ein Tailing lässt sich so nicht erzeugen, bzw nur ganz am Anfang oder bei extrem flachen Hügeln. 
+Tendenziell werden die Peaks aber mit zunehmender Zeit auch flacher.
+
+Das sieht man am kleinen Bild: Die Breite auf halber Peakhöhe gegen die Zeit aufgetragen (links) und die Schiefe gegen Zeit (rechts)
+Tatsächlich scheint es je nach Zeit eine minimale Breite zu geben (was ja auch zu erwarten war)
+Außerdem sind die schieferen (= IG-förmigen) eher bei kleinen Zeiten zu finden
