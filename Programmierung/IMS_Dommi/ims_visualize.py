@@ -20,7 +20,6 @@ def to_float(value):
     val |= (value & 1023) << 13;
     s = pack('>I', val)
     return unpack('>f', s)[0]
-
             
 class imsFile:
     def __init__(self, filename):
@@ -198,14 +197,14 @@ if __name__ == "__main__":
     #print (np.shape(newl))
     #print (sig(newl[245][1476]),sig(newl[250][801]),sig(newl[240][1476]), sig(newl[235][14]))
    # print (a.points[250])
-    chrom = list()
+  #  chrom = list()
     # betrachte ein einzelnes Chromatogram/Spektrum
-    for i in range(len(newl)):
-        wert = newl[i][1476]
+   # for i in range(len(newl)):
+    #    wert = newl[i][1476]
         #print (wert, end=",")
-        chrom.append(wert)
+     #   chrom.append(wert)
     
-    plt.plot(chrom)
+   # plt.plot(chrom)
     #print (newl[1500])
     aspec = newl[244]#[1455:1540]
     aspeclist = list()
@@ -218,33 +217,33 @@ if __name__ == "__main__":
   #  plt.plot(aspec)
     #sm.qqplot(aspeclist, scipy.stats.invgauss, fit = True , line = 'r')
     #print (aspeclist)
-    plt.show()       
+   # plt.show()       
     
     maxi = 0
     lala = []
-    for i in range(244,245):
-        for j in range(2399):
-            maxi = max(maxi, sig(newl[i][j]))
-            lala.append(sig(newl[i][j]))
+   # for i in range(244,245):
+    #    for j in range(2399):
+     #       maxi = max(maxi, sig(newl[i][j]))
+      #      lala.append(sig(newl[i][j]))
       #      print (newl[i][j], end=' ')
      #   print ('\n')
     #print(maxi)
    # print ("lala,", lala)
     
-    plt.plot(np.linspace(0,100, len(lala)), lala)
+   # plt.plot(np.linspace(0,100, len(lala)), lala)
    # plt.plot(lala, color = "r")
     #points = [[sig(x) for x in y] for y in a.points]
     #print (points, 'points')
     
-    fig, ax = plt.subplots() 
-    print (a.points, a.extent)
-    cax = ax.imshow(a.points, interpolation="nearest", origin="lower",vmin=0, vmax=100, cmap=cmap, extent = a.extent, aspect="auto") 
-    cbar = fig.colorbar(cax)
+    #fig, ax = plt.subplots() 
+    #print (a.points, a.extent)
+    #cax = ax.imshow(a.points, interpolation="nearest", origin="lower",vmin=0, vmax=100, cmap=cmap, extent = a.extent, aspect="auto") 
+    #cbar = fig.colorbar(cax)
     #plt.subplots_adjust(left=0.02, bottom=0.02, right=1, top=1, wspace=None, hspace=None)
     #plt.legend()
      
     # Matrix in RxT
-    #plt.imshow(a.points, interpolation="nearest", origin="lower",vmin=0, vmax=100, cmap=cmap, extent = a.extent, aspect="auto")      
+    plt.imshow(a.points, interpolation="nearest", origin="lower",vmin=0, vmax=100, cmap=cmap, extent = a.extent, aspect="auto")      
     #plt.subplots_adjust(left=0.02, bottom=0.02, right=1, top=1, wspace=None, hspace=None)
     plt.legend()
     #fig.set_title("hall")
