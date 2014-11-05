@@ -166,6 +166,34 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
 * Dann gucken, bei welchen p/q (pm/ps)-Kombis das hinkommt (plotten), evtl könnte man da eine Funktion für finden
 * PAA-Ansatz, die Formel angucken und gucken, wie sich das berechnen lässt. Eigentlich ja "nur" ne einfache Rekursion, muss nur sehr auf den Speicher achten
 
+* Den Berechnungsansatz kommentieren!!
+
+* Aus dem Gespräch mit Dommi:
+ ** Die Breite bei halbem Maxwert hat er nur für IMS-Messungen, da gibt es ne Berechnung, die Faktoren der IMS wie Gitteröffnungzeit mit einbezieht, das kann man nicht einfach so auf die MCC übertragen. Da scheint die Breite unabhängig zb von der Injektionszeit zu sein
+ ** Um die Peaks der MCC zu bekommen, müsste ich von den Spektren den RIP rausrechnen, da der ja nicht durch die MCC läuft und zusätzlich die Gerätefunktion rausrechnen, da die auch erst durch die IMS reinkommt. Alternativ: Gibt es reine MCC-Daten?
+ ** Messungen unter home/ims gut sind die 6er/7er gemische, KK-Daten. Bei den Pseudos sieht man gut die Gerätefunktion
+ ** Er hat mir zwei Paper-links geschickt und was zum Einlesen der Daten. Ein Programm, um die Gerätefunktion zu berechnen gibt es auch
+ ** Jetzt erst mal rausfinden, was ich wirklich davon tun soll.
+ 
+16.10.2014
+ * Echte Daten: In den vorhandenen IMS-Messungen gucken. Nur wo bitte soll das drin stehen?
+ * Für die halbe-peak-breiten-berechnung einfach eine spalte der Messung nehmen, was Dommi sagte, ist nicht so wichtig, da ich ja auch nur einen Peak sehen will und nicht das ganze Chromatogramm
+ * fsolve macht nicht so ganz das, was ich gerne will, manchmal wird nur ein Schnittpunkt gefunden oder auch einer, der nicht da ist. Muss wohl an den start estimates liegen
+ * Sollte jetzt die siebener-Gemische angucken und die Werte ermitteln
+ * Größeres Projekt könnte sein, die Zusammenhänge zwischen Parametern und den Breiten zu ermitteln. Mir fehlen leider immer noch die echten Werte
+ * Zeitskala sollte bis 600 gehen; vor 50s ist schlecht was zu erkennen; Peaks mit wenig Tailing sollten dabei 25-30s breit sein, krasses Tailing geht dabei schon mal übers halbe Bild
+ 
+ 
+ 30.10. 2014
+ * Fragen: Wo krieg ich nun die echten Daten her? Ist das Peakbreiten-Plotting so ok?
+ * Im Breitenplot: Parameter so raussuchen, dass eine gerade entsteht, hoffentlich passiert das mit einem bestimmten zusammenhang zwischen den dafür nötigen params. Dann im skew-plot gucken, ob da auch ein zusammenhang existiert
+ * Was tue ich, wenn ich jetzt so eine gerade gefunden habe?
+ * Gerade auch bei festen ps und variablem pm?
+ * Spektrum plotten für "viele"
+ 
+ 
+ 
+ 
  
  
  

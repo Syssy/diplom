@@ -129,7 +129,22 @@ Seit dem 14.08.2014
  
  
 10.10.2014
+* Off-Topic: git repo auf github angelegt und befüllt. Alles Alte ge-targz-et. Wurde aber auch Zeit
+* In der alten 2-Param-Basis-Version gibt es ja noch gar nicht das Testen auf vorhandene Sims etc... Na klasse
+* Versuche, Zeitskala anzupassen, mit der tollen Erkenntnis, dass meine "peaks" viel, viel, viel zu breit sind... 
  
+* halfwidth-Berechnung ist völliger Bullshit, habe da jetzt einen ganzen Morgen rumprobiert und noch nix geschafft. Ich bin da grad zu blöde zu
+* Sieht jetzt besser aus. (siehe peak_width.py)
+* Die start-estimates hab ich jetzt mal auf loc+-scale festgelegt, das sollte zumindest für normalverteilungen einigermaßen passen
+
+* Daten: To realize an effective pre-separation of the rather complex mixtures occurring in exhaled air, a 17 cm long weak polar multi-capillary column (MCC, Sibertech, LTD, Novosibirsk, Russia) made by combining approximately 1000 capillaries (see figure 2) with an inner diameter of 40 μm and a film thickness of 0.2 μm was coupled to the 63 Ni-IMS. The total column diameter of 3 mm allows operation with a carrier gas flow up to 150 mL min−1, which is the optimum flow rate for IMS. (JIB2009)
+
+* in der halfwidth gibt es jetzt plot_relations. Damit werden die zuvor im fpwahph berechneten breiten gegen die loc-parameter der geschätzten Gauß-verteilung geplottet. Zusätzlich plotte ich die Skewness
+ 
+ 
+02.11.2014
+* Versuche jetzt, abhängige Params zu verwenden. Damit bekomme ich auch tatsächlich manchmal geraden im breitenplot, aber nicht immer. Leider auch nicht in den Parameterbereichen, die ich gerne hätte (damit Schiefe entsteht)
+* Geraden entstehen auch bei festen pm und variablem ps (umgekehrt?) 
  
  
  
