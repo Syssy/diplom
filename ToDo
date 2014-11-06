@@ -189,8 +189,23 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * Im Breitenplot: Parameter so raussuchen, dass eine gerade entsteht, hoffentlich passiert das mit einem bestimmten zusammenhang zwischen den dafür nötigen params. Dann im skew-plot gucken, ob da auch ein zusammenhang existiert
  * Was tue ich, wenn ich jetzt so eine gerade gefunden habe?
  * Gerade auch bei festen ps und variablem pm?
- * Spektrum plotten für "viele"
+ * Spektrum plotten für "viele" ok
+ * Jetzt endlich aus den echten Daten die Breitenverhältnisse raussuchen (dafür brauch ich aber schon nen ganzen morgen... mindestens...)
+  ** Ideen dazu: 
+  ** Im Wesentlichen eine Messungsklasse, die genau das hat, wie meine Sim
+  ** Dazu: Einlesen einer einzelnen Messung. Hier stehe ich wieder mit nem Brett vor dem Kopf da: Muss ich das jetzt für nen ganzen Peak (sprich muss ich da mehrere Spalten aufaddieren) oder reicht tatsächlich eine Spalte? EIGENTLICH (denke ich zumindest) müsste ich das alles aufaddieren und den Kram, den Dommi erwähnt hat, rausrechnen. Dann kann man meinetwegen immer noch einen einzelnen Peak raussuchen und den alleine betrachten. Sollte ein Analyt nämlich in der IMS-Dimension sehr breit werden, sehe ich im MCC-Spektrum möglicherweise nicht, WIE hoch er wirklich war. Zumindest sollte ich das bei der Auswertung berücksichtigen, dass IMS-breite Peaks evtl nen viel höheren Wert haben, als ich sehe.
+  ** Weiteres Problem: Reicht da die Annäherung als Gauss? Dazu: Plots angucken!
+  ** Aus den Zeiten ebenfalls die plots erstellen bzw die breite berechnen
+  ** Zum Vergleich: Tabelle anlegen und gucken, welche Params von mir da hin passen (bisher gehe ich ja eher den umgekehrten Weg, nur meine Sachen anzugucken)
+ * Problem: Die ersten Peaks fangen erst bei 100 an. In echt geht das aber schon viel früher (da ist quasi sofort was da). Dafür müsste ich meine Skalen aber anpassen, zb um Faktor 10. Aber dann hab ich auch keine Peaks mehr bei > 60... Also mal wieder das bekannte Problem, dass ich die Dinger nicht genug getrennt krieg. Alternativ müsste ich krasse Params wählen (ps=0.1 und pm = 0.9, dadurch wären die aber keine Peaks mehr mit Breite, sondern alle quasi gleichzeitig da)
+ * Bei d3: Bei einem plus, bei einem minus?
  
+ 06.11.2014
+ * Noch mal nachrechnen, ob das mit den 2km/s so stimmt
+ * Gucken, wann die ersten brauchbaren Peaks in den Spektren erscheinen
+ * Zeiteinheiten festlegen
+ * Simulation mit pm = 1 machen, sodass irgendwas zwischen 10⁻⁴ und 2s raus kommt (ersteres müsste für die 2km/s sein, letzteres sind die ersten halbwegs brauchbaren Peaks)
+ * Simulationen dann erst mal (mit den gewählten Einheiten) für zwei Minuten (statt bisher 10, also 120s) laufen lassen und gucken, ob man da brauchbare Params findet
  
  
  

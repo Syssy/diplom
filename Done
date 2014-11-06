@@ -144,8 +144,12 @@ Seit dem 14.08.2014
  
 02.11.2014
 * Versuche jetzt, abhängige Params zu verwenden. Damit bekomme ich auch tatsächlich manchmal geraden im breitenplot, aber nicht immer. Leider auch nicht in den Parameterbereichen, die ich gerne hätte (damit Schiefe entsteht)
-* Geraden entstehen auch bei festen pm und variablem ps (umgekehrt?) 
+* Geraden entstehen auch bei festen pm und variablem ps (umgekehrt?) Aber nur in bestimmten Bereichen. Woanders zwar auch, aber zum einen nicht so schön (und hauptsächlich, wenn einer der beiden Params fast gleich bleibt) und sie werden deutlich steiler. Den Zusammenhang, um eine fast gerade hinzubekommen, habe ich noch nicht :(
+* Carrier gas flow: 150 ml/min, wahrscheinlich auch mit 17 cm. Das aber noch /1000 wegen 1000 capillaries? und auf die 40μm inner diameter umrechnen. dann hätte man evtl die Geschwindigkeit der teilchen
+* Code mal wieder umstrukturiert, argparse zur auswahl der pkombis eingebaut
+
  
+
  
  
  

@@ -93,12 +93,13 @@ def plotte(liste):
         #willkürlich gewählt: loc <> xy, scale < z breite < v...
         if ls[0] < 650 and ls[1] < 60 and breite < 160 and ls[0] > 50:
             peakdaten.append(pd)
-            print ("pd", pd)
+            #print ("pd", pd)
             with open(filename, "r+") as datei:
                 x = datei.read()
                # print (datei, x)
                 datei.write(str(pd) + '\n')         
-    plt.show()
+    if len(peakdaten) > 0:
+        plt.show()
     logging.log(25, "plotte Groessenverhaeltnisse")
     #print ("pd", peakdaten)
     filename += ".p"
@@ -163,7 +164,7 @@ def kombiniere(args, kwargs = 5):
         args = "choice"
     print ("args", args)
     if args == "choice":                    
-        schrittweite = 0.0001
+        schrittweite = 0.0002
         pss = np.arange(0.989, 0.991, schrittweite)
         pms = np.arange(0.990, 0.999, schrittweite*10)
         
@@ -172,10 +173,11 @@ def kombiniere(args, kwargs = 5):
                 ps = random.choice(pms) 
                 pkombis.append((ps, pm))
         logging.log(25, pkombis)        
-            
+  
+    # unglaublich viele ;)        
     if args == "viele":
-        schrittweite = 0.001
-        px = np.arange(0.97, 0.999, schrittweite)
+        schrittweite = 0.0004
+        px = np.arange(0.993, 0.997, schrittweite)
         for ps in px:
             for pm in px:
                 pkombis.append((ps, pm))
@@ -201,10 +203,11 @@ def kombiniere(args, kwargs = 5):
         for ps in px:
             for pm in px:
                 pkombis.append((ps, pm))'''
-
+        pkombis.reverse()
         print (len(pkombis))
-
-    if args == "auswahl1":
+   
+    #festgelegte auswahl
+    if args == "auswahl":
         pkombis = [(0.99999, 0.99995),(0.995, 0.99),(0.9995, 0.999),(0.999, 0.995)]
         # pkombis = [(0.995, 0.995),(0.9997, 0.9995),(0.9995, 0.9999),(0.9999, 0.9995)]
         # pkombis = [(0.995, 0.999),(0.999, 0.9995),(0.995, 0.995),(0.9999, 0.9995)]
@@ -213,6 +216,7 @@ def kombiniere(args, kwargs = 5):
         # pkombis = [(0.999991, 0.99999),(0.99996, 0.99991),(0.99998, 0.99998),(0.99998, 0.99999),(0.99997, 0.99999)]#,(0.99999, 0.99998),(0.999991, 0.99999),(0.99999, 0.99999),(0.99995, 0.99991),(0.99994, 0.99991),(0.999991, 0.99998),(0.999992, 0.99999)]
         #pkombis = [(0.0001, 0.0001), (0.00001, 0.00001), (0.0002, 0.0001), (0.0001, 0.0002) ]
     
+    # groessere auswahl
     if args == "einige": 
         ps1=[0.99, 0.992, 0.994, 0.996, 0.998, 0.999, 0.9992, 0.9994, 0.9996, 0.9998, 0.9999, 0.99992, 0.99994, 0.99996, 0.99998, 0.99999, 0.999992]
         ps2 = [0.991, 0.993, 0.995, 0.997, 0.9991, 0.9993, 0.9995, 0.9997, 0.99991, 0.99993, 0.99995, 0.99997, 0.999991, 0.999993]
@@ -227,16 +231,18 @@ def kombiniere(args, kwargs = 5):
             for pm in ps1:
                 pk = (ps, pm)
                 pkombis.append(pk)
-                
+    
+    #ps oder pm fest, das andere variabel
     if args == "d1":
-        pss = [0.99, 0.992, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.999, 0.9992, 0.9993, 0.9994,0.9995, 0.9996]#,0.9997, 0.9998, 0.9999,0.99991, 0.99992, 0.99993, 0.99994]
+        pss = [0.99, 0.991, 0.992, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.999]# 0.9992, 0.9993, 0.9994,0.9995, 0.9996]#,0.9997, 0.9998, 0.9999,0.99991, 0.99992, 0.99993, 0.99994]
         #pss = [0.1*ps + 0.9 for ps in pms]
         #pss = np.array(pss)*0.1
         #pss += 0.9
-        pm = 0.99
+        pm = 0.993
         for i in range(len(pss)):
-           pkombis.append((pss[i], pm))
-        
+           pkombis.append((pss[i],pm))
+      
+    # ps und pm abhängig  
     if args == "d2":
         pss = [ 0.991, 0.993, 0.995, 0.997, 0.999, 0.9992, 0.9994, 0.9996]#,0.9997, 0.9998, 0.9999]
         pms = [ 0.1*((1/ps)-1) + ps for ps in pss]
@@ -247,16 +253,17 @@ def kombiniere(args, kwargs = 5):
             print (pss[i]-pms[i], 1/pss[i])
             pkombis.append((pss[i], pms[i]))
         logging.log(25, pkombis)     
-        
+    
+    # auf festes ps und pm wird was drauf addiert
     if args == "d3":
-        sdditor = np.array([0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09])*0.005
-        mdittor = np.array([0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09])*0.0001
-        ps = 0.999
-        pm = 0.9999
+        sdditor = np.array([0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09])*0.001
+        mdittor = np.array([0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09])*0.001
+        ps = 0.99
+        pm = 0.993
         for s, m in zip(sdditor, mdittor):
             pkombis.append((ps+s, pm+m))
-        logging.log(25, pkombis)    
-                
+       
+    #  fuenf irgendwie zufaellige  ps und pm > 0.99
     if args == "5random":
         while len(pkombis) < 5:
             ps = np.random.random()
@@ -264,7 +271,9 @@ def kombiniere(args, kwargs = 5):
             if ps > 0.99 and pm > 0.99:
                 pkombis.append((round(ps, 5), round(pm, 5)))
         
-    logging.log(25, "pkombis, %s", pkombis)
+    if args == "wdh":
+        pkombis = [(0.995, 0.991)]
+    logging.log(25, "pkombis, %s, anzahl, %s", pkombis, len(pkombis))
     return (sorted(list(set(pkombis))))
 
     # Updatet von alter Version
@@ -318,6 +327,7 @@ def main():
     
     #liste aller zu simulierenden kombis erstellen
     pkombis = kombiniere(args.pkombioption, args.number)
+    #pkombis.reverse()
     
     # todo: wie viele noch nicht bearbeitet, ready: wie viele schon fertig
     todo, ready = len(pkombis), 0
@@ -387,7 +397,6 @@ def main():
     # Ende :)
     print ("Zeit "+str(time.clock()- startzeit))
     
-
 if __name__ == "__main__":
     logging.basicConfig(level=25)
     main() 
