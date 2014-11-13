@@ -1,0 +1,7 @@
+ 
+Fig 7 zeigt eine Reihe von Simulationen mit ps_catalogue = [0.992, 0.9992, 0.99992, 0.99997] und pm_catalogue = [0.99, 0.9, 0.7, 0.5, 0.1, 0.01, 0.001]
+von der akutellen Simulation v005
+
+In 7a) sieht man den Breitenplot; bei konstantem ps und kleiner werdendem pm bilden die Breiten der Peaks eine Kurve. Links zu sehen für ps=0.99992 und rechts reingezoomt für ps=0.9992
+In 7b) Dann die entsprechenden Peaks und 
+in 7c) eine Heatmap der Breiten (hierbei ist zu beachten, dass die blauen Felder links oben für 0.99997 nicht relevant sind, die Sim hat hier die 4-Minuten-Marke überschritten und wurde abgebrochen
