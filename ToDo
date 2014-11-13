@@ -201,16 +201,23 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * Bei d3: Bei einem plus, bei einem minus?
  
  06.11.2014
- * Noch mal nachrechnen, ob das mit den 2km/s so stimmt
- * Gucken, wann die ersten brauchbaren Peaks in den Spektren erscheinen
+ * Noch mal nachrechnen, ob das mit den 2km/s so stimmt ok... stimmt nicht
+ * Gucken, wann die ersten brauchbaren Peaks in den Spektren erscheinen... Wird da echt nur zwei Mal pro Sekunde gemessen?
  * Zeiteinheiten festlegen
- * Simulation mit pm = 1 machen, sodass irgendwas zwischen 10⁻⁴ und 2s raus kommt (ersteres müsste für die 2km/s sein, letzteres sind die ersten halbwegs brauchbaren Peaks)
- * Simulationen dann erst mal (mit den gewählten Einheiten) für zwei Minuten (statt bisher 10, also 120s) laufen lassen und gucken, ob man da brauchbare Params findet
+ * Simulation mit pm = 1 machen, sodass irgendwas zwischen 10⁻⁴ und 2s raus kommt (ersteres müsste für die 2km/s sein, letzteres sind die ersten halbwegs brauchbaren Peaks) -> Korrektur auf irgendwas zwischen 0.1s und 2s
+ * Simulationen dann erst mal (mit den gewählten Einheiten) für zwei Minuten (statt bisher 10, also 120s) laufen lassen und gucken, ob man da brauchbare Params findet; korrektur auf vier Minuten
+ *"irgendwas" gab es, dass ich im Endbericht nachlesen könnte, weiß aber nicht mehr, was das war :( Vielleicht sollte ich den einfach abends noch mal durchgucken
+ * Beim Spektrum plotten irgendwie einen Farbverlauf einfügen, damit man nachvollziehen kann, welche Farbe welcher Plot ist (joa)
+ * Beim Spektrum die gesamtskala auf 0..240 festlegen. ok, zusätzlich die höhe auf 0..1 festgelegt, das muss aber evtl noch geändert werden 
+ * Bekommt man vorne auch breitere Peaks hin?
+ * Heatmap für die Breiten erstellen. ok, jetzt nur noch sinnvolle pkombis für die plots auswählen
  
- 
- 
- 
- 
+13.11.2014
+ * Expose fertig machen
+ * Aus den 6er/7er Gemischen die Breiten bei halber Höhe heraus finden
+ ** Dazu: Mit Visual Now anzeigen lassen (brauche den Plot rechts, Bildschirm drehen ;))
+ ** Muss nicht 100%ig genau sein
+ * Diese Peaks simulieren (also passende Params finden) Versuche also, Kombinationen zu finden, die bestimmte Breite an bestimmter Zeit erzeugen
  
  
  

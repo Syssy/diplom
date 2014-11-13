@@ -108,12 +108,12 @@ def fpwahph(times, laenge, show, params = None):
     
 # Verhältnisse von Ort (median) des Peaks und Breite berechnen    
 def plot_relation(filename):
-    points = []
     fig2 = plt.figure()
     ax3 = fig2.add_subplot(1,2,1)
     ax3.set_title("Breite")
     ax4 = fig2.add_subplot(1,2,2)
     ax4.set_title("Skew")
+    points = []
     with open(filename, "rb") as datei:
         #print ("plot", filename)
         peakdaten = pickle.load(datei)
@@ -128,7 +128,7 @@ def plot_relation(filename):
             t = ax3.text(loc, breite, str(params[0])+'\n'+str(params[1]), size= "xx-small")
             anotherpoint = ax4.plot([loc], [skew], "bx")
            # print("Params:", params, ":", point[0].get_xydata(), "Scale:", scale, "hoehe", hoehe)
-            points.extend(point)
+           # points.extend(point)
     #print (points)        
     plt.show()
         

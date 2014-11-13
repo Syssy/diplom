@@ -149,9 +149,12 @@ Seit dem 14.08.2014
 * Code mal wieder umstrukturiert, argparse zur auswahl der pkombis eingebaut
 
  
-
- 
- 
+07.11.2014
+ * Geschwindigkeit ist bei ca 2m/s (in der Besprechung haben wir das gesamte Volumen nur durch eine Röhre statt 1000 geschickt) 
+ * "Nebenbei" während die Sim liefen, code like a pythonist und pep style guide gelesen und Code etwas angepasst
+ * Die Ergebnisse sehen naja aus. Zwar bekomme ich über die ganze Zeitskala Peaks, jedoch erscheinen mir diese zu breit und flach. Vielleicht täuscht das aber auch, weil die ersten extremst schmal und hoch sind
+ * Habe einen recht schönen, nicht-linearen Zusammenhang gefunden (konst ps bei steigendem pm gibt schöne Kurve), und das halt für viele ps übereinander (bildchen+beschreibung)
+ * Interessant dabei ist, dass für manche ps die Kurve oben einen Knick zu haben scheint. Scheint aber nur so, das verschwindet bei einer Sim mit 1000 Teilchen
  
  
  

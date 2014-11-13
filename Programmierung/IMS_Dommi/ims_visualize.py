@@ -157,7 +157,7 @@ if __name__ == "__main__":
         exit()
     filename = sys.argv[1]
     a = imsFile(filename)
-    print (a.points)
+    #print (a.points)
     
     
     
