@@ -213,12 +213,20 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * Heatmap für die Breiten erstellen. ok, jetzt nur noch sinnvolle pkombis für die plots auswählen
  
 13.11.2014
- * Expose fertig machen
+ * Expose fertig machen!!!
  * Aus den 6er/7er Gemischen die Breiten bei halber Höhe heraus finden
  ** Dazu: Mit Visual Now anzeigen lassen (brauche den Plot rechts, Bildschirm drehen ;))
  ** Muss nicht 100%ig genau sein
  * Diese Peaks simulieren (also passende Params finden) Versuche also, Kombinationen zu finden, die bestimmte Breite an bestimmter Zeit erzeugen
- 
+
+ * Peakfinder: 
+  ** Starte mit beliebiger Param-Kombi bzw suche in den bisherigen Sims nach guten Annäherungen
+  ** evtl. davon eine auswählen, mit der weiter gesucht wird -> User Input nötig
+  ** Je nach Lage und Breite Params verändern
+  ** Brauche dafür genauere Infos, wie die ps und pm die Shapes beeinflussen (Aufschreiben, wo genau ist der Zusammenhang)
+  ** Alternativ: Wenn nah dran, einfach viel in der Umgebung suchen
+  
+ * Das alles löst nicht das Problem mit dem Tailing
  
  
  

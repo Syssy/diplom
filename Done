@@ -156,6 +156,12 @@ Seit dem 14.08.2014
  * Habe einen recht schönen, nicht-linearen Zusammenhang gefunden (konst ps bei steigendem pm gibt schöne Kurve), und das halt für viele ps übereinander (bildchen+beschreibung)
  * Interessant dabei ist, dass für manche ps die Kurve oben einen Knick zu haben scheint. Scheint aber nur so, das verschwindet bei einer Sim mit 1000 Teilchen
  
+13.11.2014
+* Erkenntnis: Höhere Peaks weiter hinten können tatsächlich von größerer Anzahl Teilchen kommen. Relevant ist daher die Breite auf halber Höhe, das ist davon (fast) nicht beeinflusst
+* Habe zwei 7er-Gemische und zwei 6er angeguckt und jeweils die Retentionszeit beim Maximum, das Maximum sowie die linke und rechte Breite auf halber Maximalhöhe (also den Abstand zum Maximum) rausgeschrieben.
+* Die Gesamtbreiten variieren zwischen drei bis 20+
+* Dabei festgestellt, dass doch oft Tailing auftritt 
+ 
  
  
  

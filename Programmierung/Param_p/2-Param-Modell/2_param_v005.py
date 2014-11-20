@@ -10,6 +10,7 @@ import pickle
 import time
 import logging
 import argparse
+import os
 
 import numpy as np
 import scipy.stats as stats
@@ -226,11 +227,11 @@ def zyklus(zahl=6):
         ausgabe -= uebergangssummand
         yield ausgabe
     
-
     # erstelle liste mit peakdaten zur gegebenen simulationsliste und plotte für diese das zeit/breiten- bzw zwei/skew-verhältnis
 def plot_simulations(sim_list):
     """Erstelle diverse Plots"""
-    plotkram.plot_widthmap(sim_list)
+    #plotkram.plot_widthmap(sim_list)
+    logging.log(25, "starte plotting")
     peak_data = []
     sims = []
     filename = "l" + str(length) + "n" + str(number) + "_peakdaten"
@@ -268,6 +269,7 @@ def plot_simulations(sim_list):
         plt.xlim((0, 250))
         for i, si in enumerate(sims):
             logging.log(24, "simparams: %s, peakdaten %s, max %f", si, pd, max(si.times))
+            # teste hier auf bestimmte eigenschaften
             if (si.pd[0][0]<240 and si.pd[0][0]>0.01):
                 time_max = max(time_max, max(si.times))
                 n, bins, patches = plt.hist(si.times, 50, normed=1, color = next(colors), alpha=0.5)
@@ -340,11 +342,11 @@ def combine_params(args, kwargs = 5):
         print (len(pkombis))
     
     if args == "viele005":
-        schrittweite = 0.0001
-        ps_catalogue = np.arange(0.999, 0.99999, schrittweite)
+        schrittweite = 0.00001
+        ps_catalogue = np.arange(0.9997, 0.9999, schrittweite)
         
         schrittweite = 0.01
-        pm_catalogue = np.arange(0.01, 0.15, schrittweite)
+        pm_catalogue = np.arange(0.01, 0.4, schrittweite)
         
         pkombis = []
         for ps in ps_catalogue:
@@ -361,14 +363,14 @@ def combine_params(args, kwargs = 5):
         pkombis = [(0.9996, 0.99992),  (0.998, 0.992),(0.997, 0.99),(0.996, 0.99),  (0.998, 0.991)]
         
         pkombis = [(0.99999, 0.99999), (0.999999999, 0.999999999), (0.99999999, 0.999999), (0.99999999, 0.9999999)]
-        pkombis = [(0.99992, 0.3),(0.99992, 0.2), (0.99992, 0.1),(0.99992, 0.05)]
+        pkombis = [(0.99993, 0.6),(0.999945, 0.01), (0.9998, 0.4),(0.999825, 0.001), (0.99992, 0.9)]
      #   pkombis = [(0.999, 0.5), (0.999, 0.1), (0.999, 0.01), (0.999, 0.001), (0.999, 0.0001), (0.999, 0.00001), (0.999, 0.000001), (0.9999, 0.5), (0.9999, 0.1), (0.9999, 0.01), (0.9999, 0.001), (0.9999, 0.0001), (0.9999, 0.00001), (0.9999, 0.000001), (0.99992, 0.5), (0.99992, 0.1), (0.99992, 0.01), (0.99992, 0.001), (0.99992, 0.0001), (0.99992, 0.00001), (0.99992, 0.000001), (0.99994, 0.1), (0.99994, 0.01), (0.99994, 0.001), (0.99994, 0.0001), (0.99994, 0.00001), (0.99994, 0.000001), (0.99996, 0.1), (0.99996, 0.01), (0.99996, 0.001), (0.99996, 0.0001), (0.99996, 0.00001), (0.99996, 0.000001), (0.999, 0.999), (0.001, 0.001), (0.5, 0.5), (1, 1)]
 
     
     # groessere auswahl
     if args == "einige": 
-        ps_catalogue = [0.992, 0.9992, 0.99992]
-        pm_catalogue = [0.99, 0.9, 0.7, 0.5, 0.1, 0.01, 0.001]
+        ps_catalogue = [0.999, 0.9995, 0.9999, 0.99991, 0.99992, 0.99993, 0.99994, 0.99995]
+        pm_catalogue = [0.99, 0.9, 0.7, 0.5, 0.4, 0.3, 0.2, 0.1, 0.01, 0.001, 0.0001]
         
        # pkombis.append((1, 1))
         for ps in ps_catalogue:
@@ -417,7 +419,8 @@ def combine_params(args, kwargs = 5):
         
     if args == "wdh":#???
         pkombis = [(0.995, 0.991)]
-    logging.log(25, "pkombis %s, anzahl: %s", pkombis, len(pkombis))
+    
+    logging.log(20, "pkombis %s, anzahl: %s", pkombis, len(pkombis))    
     return (sorted(list(set(pkombis))))
 
     # Updatet von alter Version
@@ -448,6 +451,8 @@ def get_argument_parser():
                    help = "how many choices to create")
     p.add_argument("--pkombioption", "-p",  
                    help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden")
+    p.add_argument("--reverse", "-r", action = "store_true",
+                   help = "pkombis von hinten durchtesten")
     
     p.add_argument("--test", "-atgfjzfjzf", action = "store_true", help = "plot a heatmap from single file with multiple simulations")
     return p
@@ -471,7 +476,8 @@ def main():
     
     #liste aller zu simulierenden kombis erstellen
     pkombis = combine_params(args.pkombioption, args.number)
-    #pkombis.reverse()
+    if args.reverse:
+        pkombis.reverse()
     
     # nr_todo: wie viele noch nicht bearbeitet, nr_ready: wie viele schon fertig
     nr_todo, nr_ready = len(pkombis), 0
