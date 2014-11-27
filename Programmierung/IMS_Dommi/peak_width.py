@@ -53,6 +53,7 @@ def find_intersection(fun1,fun2,x0):
     # Eingabe times ist eine Zeitenliste, wie sie Ergebnis meiner Sims sein könnte
     # laenge ist die Anzahl der Zeiteinheiten, über die das geht, wird gebraucht, damit der Plot gut aussieht
 def fpwahph(times, laenge, show, params = None):
+    """"""
    # laenge = len(set(times))*2 # nicht sicher, wie das bei Löchern später funktioniert...
    
     # Passende Parameter berechnen, damit ich eine Kurve zum scheiden habe
@@ -107,26 +108,32 @@ def fpwahph(times, laenge, show, params = None):
     return abs(max(intersections) - min(intersections)), halfmax, (loc_n, scale_n)
     
 # Verhältnisse von Ort (median) des Peaks und Breite berechnen    
-def plot_relation(filename):
+def plot_relation(filename, plotwidth = True, plotskew = False):
     fig2 = plt.figure()
-    ax3 = fig2.add_subplot(1,2,1)
-    ax3.set_title("Breite")
-    ax4 = fig2.add_subplot(1,2,2)
-    ax4.set_title("Skew")
+    if plotwidth:
+        ax3 = fig2.add_subplot(1,2,1)
+        ax3.set_title("Breite")
+    if plotskew:
+        ax4 = fig2.add_subplot(1,2,2)
+        ax4.set_title("Skew")
     points = []
+    print (filename)
     with open(filename, "rb") as datei:
-        #print ("plot", filename)
+        print ("plot", filename)
         peakdaten = pickle.load(datei)
-       # print (peakdaten)
+        print (peakdaten)
         for pd in peakdaten:
-           # print (pd)
+            print (pd)
             (params, (loc, scale), breite, hoehe, skew) = pd
-            #print (loc, breite)
-            point = ax3.plot([loc], [breite], "ro")
-            #text = plt.text(s=params, x= loc,y= breite, fontsize = "xx-small")
-            #ax3.annotate(params, (loc, breite))
-            t = ax3.text(loc, breite, str(params[0])+'\n'+str(params[1]), size= "xx-small")
-            anotherpoint = ax4.plot([loc], [skew], "bx")
+            print (loc, breite, plotwidth, plotskew)
+            if plotwidth:
+                point = ax3.plot([loc], [breite], "ro")
+                print (breite, loc)
+                #text = plt.text(s=params, x= loc,y= breite, fontsize = "xx-small")
+                #ax3.annotate(params, (loc, breite))
+                t = ax3.text(loc, breite, str(params[0])+'\n'+str(params[1]), size= "xx-small")
+            if plotskew:
+                anotherpoint = ax4.plot([loc], [skew], "bx")
            # print("Params:", params, ":", point[0].get_xydata(), "Scale:", scale, "hoehe", hoehe)
            # points.extend(point)
     #print (points)        

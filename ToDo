@@ -228,6 +228,24 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
   
  * Das alles löst nicht das Problem mit dem Tailing
  
+20.11.2014
+ * map, imap, processing angucken, evtl ist das sinnvoll für mich; joa
+ * Habe das Gefühl, wenn ich manuell vier mal was starte, dass das wesentlich langsamer ist, als wenn ich nur drei laufen lasse. Das sollte ich evtl testen (gucke nach gesamt/einzelzeit für 3*4 oder 4*3 Simulationen). Dann würde sich das multiprocessing evtl auch anbieten, s. Done
+ * Evtl lohnt es sich, noch mal die wpw-Sim auszupacken, die war (wenn ich es richtig in Erinnerung habe) viel schneller, wenn nur selten was passiert. Zumindest für Sims mit mehr Teilchen, damit ich ne schöne Ausgabe habe, die ich später verwenden kann, würde sich das evtl lohnen;
+ * Auch interessant wären so Dinge wie: Ist es schneller, wenn die simulationsmethoden direkt im Programm stehen oder über die Simulationsklasse aufgerufen werden??
+ * erstelle Plots, auf denen für bestimmten Zeitpunkt zu sehen ist, welche Params einen solchen Peaks erzeugen und welche jeweilige Breite damit erreicht wird (siehe Zettel)
+ * Für diesen neuen Plot:
+  ** Ausgehend von mehreren Kombinationen in der Nähe alles weiter eingrenzen (joa, ist momentan manuell machbar)
+  ** Möchte ausdrücklich mehrere Kombinationen haben, daher evtl aus der anderen Richtung kommen und für feste ps oder pm (was ist sinnvoller) den jeweils anderen Parameter annhähern, bis ich gut genug die Zeit treffe
+  ** Wie genau muss das eine Retentionszeit treffen? -> Ergebnisse, man erkennt ganz gut eine Gerade bei epsilon = 0.1
+  ** Peakfinder automatisch annhähern lassen! hmm...
+  ** Starte mit mehreren verschiedenen ps, für die passende pm gesucht werden. Es reicht ja, jeweils den ein klein wenig anzupassen und zu gucken, ob der Peak in die richtige Richtung wandert. Da die Breite ja egal ist, kann einfach der zweite Parameter optimiert werden, wenn entweder die Zeit erreicht ist, oder die Änderung zu gering -> Abbruch
+  ** Es wäre doch sinnvoll, beide Params zu verändern (möglicherweise aber auch nicht gleichzeitig) da sonst mehrere mit gleichem ps (pm) und verschiedenem pm (ps) die Zeit beschreiben.
+  ** Brauche, damit es präzise wird, Sims mit 10000 Teilchen. Dafür noch mal die wpw auspacken, da manchmal schneller
+ * Aufschreiben, was bisher erreicht wurde, wo die Grenzen sind, was nicht geht etc. 
+ * Es wäre schade, wenn das das einzige Ergebnis bliebe... (Aber das heißt, dass es immerhin schon ein Ergebnis ist)
+ * Vorher erst mal Expose fertig machen, jetzt aber wirklich; Ich bin ja dran...
+ * Code aufräumen, ordentlich dokumentieren und ne "finale" Version der 2-Param-Sim erstellen
  
  
  
@@ -237,4 +255,13 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  
  
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ geditsublime
  

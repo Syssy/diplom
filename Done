@@ -157,11 +157,15 @@ Seit dem 14.08.2014
  * Interessant dabei ist, dass für manche ps die Kurve oben einen Knick zu haben scheint. Scheint aber nur so, das verschwindet bei einer Sim mit 1000 Teilchen
  
 13.11.2014
-* Erkenntnis: Höhere Peaks weiter hinten können tatsächlich von größerer Anzahl Teilchen kommen. Relevant ist daher die Breite auf halber Höhe, das ist davon (fast) nicht beeinflusst
-* Habe zwei 7er-Gemische und zwei 6er angeguckt und jeweils die Retentionszeit beim Maximum, das Maximum sowie die linke und rechte Breite auf halber Maximalhöhe (also den Abstand zum Maximum) rausgeschrieben.
-* Die Gesamtbreiten variieren zwischen drei bis 20+
-* Dabei festgestellt, dass doch oft Tailing auftritt 
+ * Erkenntnis: Höhere Peaks weiter hinten können tatsächlich von größerer Anzahl Teilchen kommen. Relevant ist daher die Breite auf halber Höhe, das ist davon (fast) nicht beeinflusst
+ * Habe zwei 7er-Gemische und zwei 6er angeguckt und jeweils die Retentionszeit beim Maximum, das Maximum sowie die linke und rechte Breite auf halber Maximalhöhe (also den Abstand zum Maximum) rausgeschrieben.
+ * Die Gesamtbreiten variieren zwischen drei bis 20+
+ * Dabei festgestellt, dass doch oft Tailing auftritt 
+ * Ansatz für Peakfinder, momentan werden aus allen vorhandenen Sims diejenigen rausgesucht, die (user-spezifizierte) bestimmte Bedingungen erfüllen. Davon darf man sich dann einen aussuchen und angeben, wie dessen Parameter verändert werden sollen
  
- 
+20.11.2014
+ * Zeitmessungen: Es ist wesentlich schneller, nur drei pythons zu starten!
+ * Habe (auf kleinen Zettelchen) für bestimmte Zeiten mögliche Paramkombis aufgeschrieben. Die Plots dazu sehen schon ganz gut aus (eine Gerade, so wie erwartet), es klappt auch, die Breite als Punktgröße zu nehmen. 
+ * Um besser als 0.1 dran zu kommen, brauche ich die Sim mit 10000 Teilchen
  
  
