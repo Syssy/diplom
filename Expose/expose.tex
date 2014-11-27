@@ -1,7 +1,7 @@
 \documentclass[a4paper,11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman]{babel}
-\usepackage{todonotes}
+\usepackage[disable]{todonotes}
 
 %opening
 \title{Simulation einer Multikapillarsäule bei der Ionen-Mobilitäts-Spektrometrie TODO}
@@ -13,32 +13,34 @@
 
 \section{Hintergrund}
 Die Ionen-Mobilitäts-Spektrometrie (IMS) ist eine Methode zur Analyse von gasförmig vorliegenden Stoffgemischen. 
-Das zu analysierende Gasgemisch wird ionisiert und dann durch ein elektrisches Feld gezogen. Durch ein entgegenströmendes Driftgas werden die Ionen unterschiedlich stark abgebremst und dadurch aufgeteilt. Die unterschiedlichen Analyten erreichen auf diese Weise ihre jeweiligen Driftgeschwindigkeiten. 
-Allerdings kann so oft keine vollständige Auftrennung der Analyten erfolgen, sodass eine chromatographische Methode wie Gaschromatographie (GC) in einer Multikapillarsäule (MCC, engl. Multi Capillary Column) zum Einsatz kommt, um den Eintritt in das IMS-Gerät zu staffeln.
+Dabei wird das zu analysierende Gasgemisch ionisiert und anschließend durch eine Driftröhre gezogen. Dort werden die Ionen durch ein elektrisches Feld beschleunigt. Gleichzeitig werden sie durch ein entgegenströmendes Driftgas unterschiedlich stark abgebremst. Die verschiedenen Analyten erreichen auf diese Weise ihre jeweiligen Driftgeschwindigkeiten und werden dadurch aufgeteilt.
+Allerdings kann dadurch oft keine vollständige Auftrennung der Analyten erfolgen, sodass eine chromatographische Methode wie Gaschromatographie (GC) in einer Multikapillarsäule (MCC, engl. Multi Capillary Column) zum Einsatz kommt, um den Eintritt in das IMS-Gerät zu staffeln.
 
-Bei der GC wird das Substanzgemisch durch eine Säule geleitet, welche innen mit der sogenannten stationären Phase beschichtet ist. Außerdem kommt ein Trägergas, die sog. mobile Phase, zum Einsatz, welches die Analyten durch die Säule transportiert. Die Substanzen unterscheiden sich vor allem durch ihre Wechselwirkungen mit der stationären Phase. Finden wenig Wechselwirkungen statt, passieren die Teilchen die Säule schneller, als wenn viele Wechselwirkungen statt finden. Dies beeinflusst die Retentionszeit, also die Zeit, die zum Durchlaufen der Säule gebraucht wird. 
+Bei der GC wird das Substanzgemisch durch eine Säule geleitet, welche innen mit der sogenannten stationären Phase beschichtet ist. Außerdem kommt ein Trägergas, die sog. mobile Phase, zum Einsatz, welches die Analyten durch die Säule transportiert. Die Substanzen unterscheiden sich vor allem durch ihre Wechselwirkungen mit der stationären Phase. Während dieser Wechselwirkungen haften die Teilchen an der stationären Phase, bewegen sich also nicht fort. Finden daher wenig Wechselwirkungen statt, passieren die Teilchen die Säule schneller, als wenn viele Wechselwirkungen statt finden. Dies beeinflusst die Retentionszeit, also die Zeit, die zum Durchlaufen der Säule gebraucht wird. 
 
-Dadurch entsteht ein 3-dimensionales Spektrum als Ergebnis der MCC-IMS. \todo{Bild?}
+Durch die Kombination der MCC mit dem IMS-Gerät entsteht ein 3-dimensionales Spektrum, welches für jede Retentions- und Driftzeit die gemessene Intensität zeigt.\todo{Bild?}
 
-Zu beobachten ist, dass Peaks mit einer geringen Retentionszeit eine relativ geringe Varianz aufweisen, hingegen spätere Peaks breiter werden und ein Tailing haben. \todo[color=green]{Literatur}
+Im Folgenden soll es jedoch nur noch um die Retentionszeit gehen.
+Zu beobachten ist, schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks breiter werden und ein Tailing haben, also rechtsschief sind. %\todo[color=green]{Literatur}
 
-Die so im Spektrum entstehenden Peaks können auf Grund ihrer Form als inverse Gaußverteilungen aufgefasst und modelliert werden. (Verweis Dommi)\todo{soll das rein? Wenn ja: Erklärung}
+%Die so im Spektrum entstehenden Peaks können auf Grund ihrer Form als inverse Gaußverteilungen aufgefasst und modelliert werden. (Verweis Dommi)\todo{soll das rein? Wenn ja: Erklärung}
 
 \section{Aufgabenstellung}
-Im Rahmen der Diplomarbeit soll eine Multikapillarsäule simuliert werden. Dabei soll als Ergebnis der Simulation ein Spektrum entstehen, welches dem einer echten MCC ähnelt. 
+Im Rahmen der Diplomarbeit soll eine Multikapillarsäule simuliert werden. Dabei soll als Ergebnis der Simulation ein Spektrum entstehen, welches dem einer echten MCC ähnelt.
 
 Es geht dabei nicht um eine physikalische Simulation auf molekularer Ebene, sondern um die Entwicklung eines abstrakten Modells, welches mit möglichst wenig Parametern auskommt. Als Ansatz dient der oben beschriebene Wechsel der Teilchen zwischen der mobilen und stationären Phase. In einem ersten Modell sei also $p$ die Wahrscheinlichkeit, dass ein Teilchen seine Phase wechselt und $1-p$ die Wahrscheinlichkeit, dass es in seiner Phase bleibt. 
 
-Da die auf diese Weise erzeugten Peaks noch nicht ausreichend sind, wird in einem zweiten Modell angenommen, dass sich die Wahrscheinlichkeit für einen Wechsel je nach Richtung unterscheiden kann. Daher gibt es zwei Parameter, $p_s$ und $p_m$. $p_s$ sei die Wahrscheinlichkeit, dass ein Teilchen, welches sich bereits in der stationären Phase befindet, auch stationär bleibt und $p_m$ die Wahrscheinlichkeit, dass ein Teilchen in der mobilen Phase bleibt. $1-p_s$ und $1-p_m$ sind dann die entsprechenden Wechselwahrscheinlichkeiten. 
+Da die auf diese Weise erzeugten Peaks noch nicht ausreichend sind, wird in einem zweiten Modell angenommen, dass sich die Wahrscheinlichkeit für einen Wechsel zwischen den Phasen je nach Richtung unterscheiden kann. Daher gibt es zwei Parameter, $p_s$ und $p_m$. $p_s$ sei die Wahrscheinlichkeit, dass ein Teilchen, welches sich bereits in der stationären Phase befindet, auch stationär bleibt und $p_m$ die Wahrscheinlichkeit, dass ein mobiles Teilchen in der mobilen Phase bleibt. $1-p_s$ und $1-p_m$ sind dann die entsprechenden Wechselwahrscheinlichkeiten. 
 
 Wenn auch damit die Peaks nicht ausreichend angenähert werden können, muss das Modell eventuell weiter verfeinert und weitere Begebenheiten der Chromatographie berücksichtigt werden. Denkbar ist beispielsweise ein Einfluss der Teilchengeschwindigkeit bzw. eine Veränderung der Geschwindigkeit nach einem Phasenwechsel, sowie ein Zusammenhang zwischen der Geschwindigkeit eines einzelnen Teilchens und seiner aktuellen Wahrscheinlichkeit, in die stationäre Phase überzugehen. 
 
-Um als Ergebnis der Simulation ein Spektrum zu erhalten, welches einer echten Messung ähnelt, sollen mehrere Gruppen von Teilchen mit ihren jeweiligen Parametern eine gewisse Strecke durchlaufen. Dieses Spektrum soll Eigenschaften wie mit zunehmender Retentionszeit steigende Varianz und Tailing aufweisen. 
-Möglicherweise können die dafür verwendeten Parameter sogar im Zusammenhang mit den resultierenden Kurven stehen, zum Beispiel als Maximum und Varianz eines Peaks, Parameter einer Verteilung, welche die Kurve annähert. %\todo{Nehm ich jetzt die inv-gauß rein?}
+Möglicherweise ist es aber auch nötig, weitere Zustände einzuführen. Zum Beispiel in Form eines Zwischenzustandes, aus dem sich ein Teilchen wieder leichter aus der stationären Phase lösen kann. Alternativ könnte man verschiedene Zustände für die stationäre Phase einführen. Für diese gelten unterschiedliche Übergangswahrscheinlichkeiten gelten. Der Hintergrund für diese Überlegung ist, dass die Moleküle, je nachdem, mit welcher Seite sie die stationäre Phase berühren, unterschiedlich stark gehalten werden.
 
+Um als Ergebnis der Simulation ein Spektrum zu erhalten, welches einer echten Messung ähnelt, sollen mehrere Gruppen von Teilchen mit ihren jeweiligen Parametern eine gewisse Strecke durchlaufen. Dieses Spektrum soll oben genannte Eigenschaften wie mit zunehmender Retentionszeit steigende Varianz und positive Schiefe aufweisen. 
+Möglicherweise stellt man fest, dass die verwendeten Parameter sogar im Zusammenhang mit den resultierenden Kurven stehen, zum Beispiel als Maximum und Varianz eines Peaks oder Parameter einer Verteilung, welche die Kurve annähert. 
 
 \todo{gehört das hier rein?}
-Neben diesen physikalisch-chemischen Überlegungen bestehen mehrere mögliche Arten der Simulation. Es kann entweder jeder Zeitschritt der Chromatographie simuliert und dabei entschieden werden, ob sich ein Teilchen bewegt. Zunächst wird dabei angenommen, dass die Wahrscheinlichkeit der Wechselwirkung unabhängig vom aktuellen Ort oder dem Zeitpunkt des letzten Phasenwechsels ist. Es wird für jedes Teilchen festgehalten, wo es sich befindet und ähnlich wie bei der echten Chromatographie beobachtet, wann wie viele Teilchen fertig sind. Alternativ kann auch für jedes Teilchen entschieden werden, wann es sich wieder bewegt und so die Zeit zum Durchlaufen berechnet werden. Die zweite Variante kann möglicherweise viel Simulationszeit einsparen, wenn nur selten Wechselwirkungen statt finden.
+Neben diesen Modellannahmen bestehen mehrere mögliche Arten der Simulation. Es kann entweder jeder Zeitschritt der Chromatographie simuliert und dabei entschieden werden, ob sich ein Teilchen bewegt. Zunächst wird dabei angenommen, dass die Wahrscheinlichkeit der Wechselwirkung unabhängig vom aktuellen Ort oder dem Zeitpunkt des letzten Phasenwechsels ist. Es wird für jedes Teilchen festgehalten, wo es sich befindet und ähnlich wie bei der echten Chromatographie beobachtet, wann wie viele Teilchen fertig sind. Alternativ kann auch für jedes Teilchen entschieden werden, wann es den Zustand wechselt und, falls es mobil ist, wie weit es bis dahin weiter wandert. Die zweite Variante kann möglicherweise viel Simulationszeit einsparen, wenn nur selten Wechsel zwischen den Phasen statt finden, da nur für die tatsächlich nötigen Ereignisse ein Simulationsschritt erfolgen muss.
 
 
 % \todo[color=blue]{nächster abschnitt nur zur Übersicht}
@@ -47,10 +49,8 @@ Neben diesen physikalisch-chemischen Überlegungen bestehen mehrere mögliche Ar
 % Wenn das gelingt, echte Daten angucken und gucken, ob das passt, ``richtige'' Größen einführen. (Also vernünftige Zeitskala, relativ zur Intensität) 
 % Anschließend versuchen, die echten Daten versuchen, zu simulieren.
 % Schön wäre, Parameter entspricht zb Maximum der jeweiligen Kurve, evtl. zweiter Parameter der Varianz oä oder sogar den Invgauß-Params
-% Brauche ich nen faktischen Hintergrund für die Geschwindigkeitsveränderungsgeschichte?
 
 \nocite{Baumbach2009}
-%\section{Literatur}
 \bibliographystyle{gerplain}
 \bibliography{My Collection}
 \addcontentsline{toc}{section}{Literatur}
