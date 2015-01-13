@@ -1,3 +1,22 @@
-\begin{thebibliography}{}
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{BSC{\etalchar{+}}13}
+
+\bibitem[BSC{\etalchar{+}}13]{hplcsim}
+{\sc Boswell, Paul~G.}, {\sc Dwight~R. Stoll}, {\sc Peter~W. Carr}, {\sc
+  Megan~L. Nagel}, {\sc Mark~F. Vitha} \btxandlong{}\ {\sc Gary~A. Mabbott}:
+  {\em An Advanced, Interactive, High-Performance Liquid Chromatography
+  Simulator and Instructor Resources}.
+\newblock Journal of Chemical Education, 90(2):198--202, 2013.
+
+\bibitem[GMA88]{spreadsheet}
+{\sc Ghosh, Amit}, {\sc David~S. Morison} \btxandlong{}\ {\sc Robert~J.
+  Anderegg}: {\em Simulation of a gas chromatography-mass spectrometry
+  experiment with a commercial spreadsheet program}.
+\newblock Journal of Chemical Education, 65(6):A154, 1988.
+
+\bibitem[Kol03]{kolb2003}
+{\sc Kolb, Bruno}: {\em Gaschromatographie in Bildern [eine Einführung]}.
+\newblock Wiley-VCH, Weinheim, 2., überarbeitete und erweiterte
+  \btxeditionlong{}, 2003.
 
 \end{thebibliography}
