@@ -167,5 +167,13 @@ Seit dem 14.08.2014
  * Zeitmessungen: Es ist wesentlich schneller, nur drei pythons zu starten!
  * Habe (auf kleinen Zettelchen) für bestimmte Zeiten mögliche Paramkombis aufgeschrieben. Die Plots dazu sehen schon ganz gut aus (eine Gerade, so wie erwartet), es klappt auch, die Breite als Punktgröße zu nehmen. 
  * Um besser als 0.1 dran zu kommen, brauche ich die Sim mit 10000 Teilchen
+ * Die Simulationsklasse hat jetzt beide Simulationsarten drin, die by_event (vormals wpw) ist in den aktuell genutzen Fällen deutlich schneller
  
- 
+06.01.2015
+ * Habe letztes Jahr erste Version des Expose abgegeben und kann jetzt überarbeiten
+ * Spreadsheet-Geschichte: Die haben als Eingabe diverse (Gauß-)Kurven und simulieren damit, indem sie diese übereinander legen. Zusätzlich kommt das glaub ich noch was mit Massenspektrometrie rein, da die Einzelmassen der Komponenten betrachten. Also nix für uns
+ * GC-Simulator: 
+  **Code nicht gefunden
+  ** versuche mich, durch den (vom gleichen Menschen gemachten) HPLC-Sim zu arbeiten. Da kommt als dRetentionTime ein double raus, ich denke, daraus berechnen die dann die passende Kurve. Und wenn man sich im isocratic (also nicht gradient) mode befindet, ist die Berechnung auch extrem kurz. Glaube nicht, dass das nutzbar ist. 
+  ** ebenfalls von der Arbeitsgruppe: retentionprediction, aber dafür braucht man eigene Daten zum Vergleich (wird wohl ausgehend von bekannten Werten und Messungen vorhergesagt, wie's am eigenen Gerät aussehen sollte)
+ * Nächstes Treffen: Mittwoch, 10 Uhr Gruppe, ab 11 Expose, dann Donnerstag wie üblich
