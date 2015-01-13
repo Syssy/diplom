@@ -4,14 +4,17 @@ The top-level auxiliary file: main.aux
 A level-1 auxiliary file: kapitel/titelseite.aux
 A level-1 auxiliary file: kapitel/test.aux
 A level-1 auxiliary file: kapitel/einleitung.aux
-A level-1 auxiliary file: kapitel/kapitel2.aux
+A level-1 auxiliary file: kapitel/Grundlagen/grundlagen.aux
+A level-1 auxiliary file: kapitel/Implementierung/implementierung.aux
+A level-1 auxiliary file: kapitel/Evaluation/evaluation.aux
+A level-1 auxiliary file: kapitel/Diskussion/diskussion.aux
 A level-1 auxiliary file: kapitel/anhang.aux
 The style file: gerplain.bst
 A level-1 auxiliary file: kapitel/erklaerung.aux
 Database file #1: literatur/diplom.bib
 You've used 1 entry,
             2343 wiz_defined-function locations,
-            556 strings with 5045 characters,
+            559 strings with 5167 characters,
 and the built_in function-call counts, 320 in all, are:
 = -- 31
 > -- 7
