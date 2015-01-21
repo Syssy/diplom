@@ -23,7 +23,7 @@ Die Gaschromatographie (GC) ist ein Verfahren, mit dem gasförmig vorliegende St
 Beispielsweise kann die GC in einer Multikapillarsäule (MCC, engl. Multi Capillary Colum) stattfinden. Sie besteht aus ca. 1000 %\todo{Quelle}
 einzelnen Kapillaren. Jede davon ist innen mit der sog. stationären Phase beschichtet. Außerdem kommt ein Trägergas, die sog. mobile Phase, zum Einsatz, welches die Analyte durch die Säule transportiert. Die Substanzen unterscheiden sich vor allem durch ihre Wechselwirkungen mit der stationären Phase. Während dieser Wechselwirkungen haften die Teilchen an der stationären Phase, bewegen sich also nicht fort. Finden daher wenig Wechselwirkungen statt, passieren die Teilchen die Säule schneller, als wenn viele Wechselwirkungen stattfinden. Dies beeinflusst die Retentionszeit, also die Zeit, die zum Durchlaufen der Säule gebraucht wird.
 
-\todo{Wegen Datensätzen muss das doch rein}
+%\todo{Wegen Datensätzen muss das doch rein}
 Nach Durchlaufen der Säule können die Substanzen mit anderen Verfahren wie Massenspektrometrie (MS) oder Ionen-Mobilitäts-Spektrometrie (IMS) weiter analysiert werden.
 %Der gaschromatographische Prozess ist dadurch gekennzeichnet, dass die Analyten von der sogenannten mobilen Phase durch eine Säule transportiert werden und dabei immer wieder in Wechselwirkung mit einer stationären Phase treten. Unterschiedliche Eigenschaften der Analyten bewirken, dass diese Wechselwirkungen länger oder kürzer sind und sich dadurch die Zeit zum Durchlaufen der Säule, Retentionszeit genannt, verändert.
 %Ein Beispiel für eine solche Säule ist eine Multikapillarsäule (MCC, engl. Multi Capillary Colum). Sie besteht aus ca. 1000 \todo{Quelle} einzelner Kapillaren.
@@ -36,9 +36,10 @@ Nach Durchlaufen der Säule können die Substanzen mit anderen Verfahren wie Mas
 %Durch die Kombination der MCC mit dem IMS-Gerät entsteht ein Intensitätsspektrum über die Retentions- und Driftzeit.
 
 %Im Folgenden soll es jedoch nur noch um die Retentionszeit gehen.
-Zu beobachten ist, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden. Ideale Peaks haben die Form einer Gaußkurve, jedoch oft ein Tailing auf. Dieses wird unter anderem verursacht durch Adsorptionseffekte, die beim Altern einer Säule auftreten \cite{kolb2003}. Auch technische Ursachen für das Tailing existieren, wie  
+Zu beobachten ist, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden. Ideale Peaks haben die Form einer Gaußkurve, jedoch oft ein Tailing auf. Dieses wird unter anderem verursacht durch Adsorptionseffekte, die beim Altern einer Säule auftreten \cite{kolb2003}. Tailing kann auch durch technisch bedingte Totvolumina verursacht sein außerdem existieren Stoffe, die generell tailen 
 
-\todo{todo} und oft ein Tailing haben, also rechtsschief sind, bzw Totvolumen cite?;
+\todo{Ursachen Tailing, Cite} 
+%und oft ein Tailing haben, also rechtsschief sind, bzw Totvolumen cite?;
 %Die so im Spektrum entstehenden Peaks können auf Grund ihrer Form als inverse Gaußverteilungen aufgefasst und modelliert werden. (Verweis Dommi)\todo{soll das rein? Wenn ja: Erklärung}
 
 Es existieren bereits Simulatoren für die Chromatographie, welche jedoch Daten auf eine andere Art erzeugen. Bei \cite{spreadsheet} werden Peaks beispielsweise als Funktion eingegeben und diese dann zu einem Gesamtspektrum kombiniert. \cite{hplcsim} dagegen verwenden experimentelle Daten, aus denen Chromatogramme für verschiedene Messbedingungen abgeleitet werden. In beiden Fällen findet keine Simulation des chromatographischen Prozesses statt.
@@ -88,7 +89,7 @@ Neben diesen Modellannahmen bestehen mehrere mögliche Arten der Simulation. Es 
 Bei Übergangswahrscheinlichkeiten, die sehr groß oder klein sind, kommt es selten zu Zustandsänderungen, sodass es effizienter sein könnte, eine Wartezeitmethode zu nutzen: Es wird für jedes Teilchen entschieden, wann es den Zustand wechselt und, falls es mobil ist, wie weit es bis dahin weiter wandert. Es werden also nur die tatsächlichen Ereignisse simuliert, Schritte für Zeitpunkte, zu denen nichts passiert, entfallen.
 %Diese Wartezeit-Methode kann möglicherweise viel Simulationszeit einsparen, wenn nur selten Wechsel zwischen den Phasen statt finden, da nur für die tatsächlich nötigen Ereignisse ein Simulationsschritt erfolgen muss.
 
-
+Zusätzlich zur Simulation können die mit dem Modell zu erwartenden Peaks mit Hilfe eines Probabilistischen Arithmetischen Automaten (PAA) \todo{cite} berechnet werden.
 \todo[inline]{PAA}
 
 
