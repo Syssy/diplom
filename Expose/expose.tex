@@ -36,8 +36,7 @@ Nach Durchlaufen der Säule können die Substanzen mit anderen Verfahren wie Mas
 %Durch die Kombination der MCC mit dem IMS-Gerät entsteht ein Intensitätsspektrum über die Retentions- und Driftzeit.
 
 %Im Folgenden soll es jedoch nur noch um die Retentionszeit gehen.
-Zu beobachten ist, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden. Ideale Peaks haben die Form einer Gaußkurve, jedoch oft ein Tailing auf. Dieses wird unter anderem verursacht durch Adsorptionseffekte, die beim Altern einer Säule auftreten \cite{kolb2003}. Tailing kann auch durch technisch bedingte Totvolumina verursacht sein außerdem existieren Stoffe, die generell tailen 
-
+Zu beobachten ist, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden. Ideale Peaks haben die Form einer Gaußkurve, jedoch oft ein Tailing auf. Dieses wird unter anderem verursacht durch Adsorptionseffekte, die beim Altern einer Säule auftreten \cite{kolb2003}. Tailing kann auch durch technisch bedingte Totvolumina oder Überladung der stationären Phase verursacht sein, außerdem existieren Stoffe, die generell tailen.
 \todo{Ursachen Tailing, Cite} 
 %und oft ein Tailing haben, also rechtsschief sind, bzw Totvolumen cite?;
 %Die so im Spektrum entstehenden Peaks können auf Grund ihrer Form als inverse Gaußverteilungen aufgefasst und modelliert werden. (Verweis Dommi)\todo{soll das rein? Wenn ja: Erklärung}
@@ -58,8 +57,7 @@ Umgekehrt soll es möglich sein, für eine gegebene Peaklage und Peakform die n�
 %Gegeben sind einige Datensätze von MCC-IMS-Messungen...
 %Mindestens für die darin zu findenden Peaks sollen Parameter für die Simulation ermittelt und anschließend simuliert werden.
 Zum Vergleich liegen %Zum Vergleich der simulierten Daten liegen 
-einige MCC-IMS-Messungen von Mischungen sieben bekannter Stoffe vor. Zur Verfügung gestellt wurden die Datensätze von der Firma B \& S Analytik \footnote{\url{http://www.bs-analytik.de/}}. \todo[inline]{Zitieren/Fußnote?} 
-%\todo[inline]{Daten, Datensätze} 
+einige MCC-IMS-Messungen von Mischungen sieben bekannter Stoffe vor. Zur Verfügung gestellt wurden die Datensätze von der Firma B \& S Analytik \footnote{\url{http://www.bs-analytik.de/}}. %\todo[inline]{Zitieren/Fußnote?} 
 Zu den dadurch gegebenen Peaks sollen Parameter für die Simulation ermittelt und diese Peaks simuliert werden.
 %Auf diese Weise sollen mindestens für die Peaks der Vergleichsdatensätze Parameter ermittelt werden, mit denen sie simuliert werden können.
 %Später sollen diese zu einem Spektrum kombiniert werden, welches oben genannte Eigenschaften wie mit zunehmender Retentionszeit steigende Varianz und positive Schiefe aufweist. 
@@ -77,10 +75,10 @@ Als Ansatz für mögliche Modelle dient der oben beschriebene Wechsel der Teilch
 Es sei also $p_s$ die Wahrscheinlichkeit, dass ein Teilchen, welches sich bereits in der stationären Phase befindet, auch stationär bleibt und $1-p_s$ die Wahrscheinlichkeit, dass es in die mobile Phase übergeht. Analog seien $p_m$ und $1-p_m$ die Wahrscheinlichkeiten, dass ein mobiles Teilchen in der mobilen Phase bleibt bzw. zur stationären Phase wechselt. 
 
 Dieses Modell kann um weitere Begebenheiten der Chromatographie erweitert werden.
-Ein Beispiel wäre die Erweiterung um einen Zwischenzustand, aus dem sich ein Teilchen schneller wieder in die mobile Phase begeben kann \todo{da war war mit nicht ganz in den Film eindringen}, direkt nachdem es in Wechselwirkung mit der stationären Phase getreten ist.
+Ein Beispiel wäre die Erweiterung um einen Zwischenzustand, aus dem sich ein Teilchen schneller wieder in die mobile Phase begeben kann \todo{Quelle zwischenzustand (eintauchen in die Phase)}, direkt nachdem es in Wechselwirkung mit der stationären Phase getreten ist.
 %Wenn sich bei diesem Abgleich der Daten ergibt, dass die Peaks der Datensätze nicht ausreichend angenähert werden können, muss das Modell weiter verfeinert werden. 
 %Dabei können weitere Begebenheiten der Chromatographie berücksichtigt werden. Möglicherweise ist es dazu nötig, weitere Zustände einzuführen, zum Beispiel in Form eines Zwischenzustandes. Aus diesem kann sich ein Teilchen wieder leichter aus der stationären Phase lösen. 
-Alternativ könnte man verschiedene Zustände für die stationäre Phase einführen, für die unterschiedliche Übergangswahrscheinlichkeiten gelten. Der Hintergrund für diese Überlegung ist, dass die Moleküle, je nachdem, mit welcher Seite sie die stationäre Phase berühren, unterschiedlich stark gehalten werden. \todo{zitat?}
+Alternativ könnte man verschiedene Zustände für die stationäre Phase einführen, für die unterschiedliche Übergangswahrscheinlichkeiten gelten. Der Hintergrund für diese Überlegung ist, dass die Moleküle, je nachdem, mit welcher Seite sie die stationäre Phase berühren, unterschiedlich stark gehalten werden. \todo{Hintergrund für 3-Param-Modell, Quelle}
 
 
 \section{Methodik}
@@ -107,7 +105,7 @@ Zusätzlich zur Simulation können die mit dem Modell zu erwartenden Peaks mit H
 \bibliography{MyCollection}
 \addcontentsline{toc}{section}{Literatur}
 
-\todo{TODO}
+\todo{weitere Literatur}
 $->$ Spektrum mit Tailing (falls das rein kommt)
 
 
