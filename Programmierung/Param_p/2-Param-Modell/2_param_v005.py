@@ -21,82 +21,6 @@ import plotkram
 import simulation
 import peak_width
 
-#
-def simulate_step(ps, pm, location, mobile_state, number):
-    """Simuliere einen Schritt für alle Teilchen.
-    
-    ps, pm -- Wahrscheinlichkeit stationaer/mobil zu bleiben
-    (new_)location -- np-array aller Orte vor bzw. nach diesem Aufruf
-    (new_)mobile_state -- np-array aller Teilchenzustaende vor bzw. nach diesem Aufruf
-    number -- Anzahl der zu simulierenden Teilchen
-    """
-    zzv = np.random.random(number)
-    zzv2 = zzv < ps
-    zzv3 = zzv < pm
-    logging.log(10, zzv[0:10])
-    logging.log(10, zzv2[0:10])
-    logging.log(10, zzv3[0:10])
-    #berechne neuen Zustand für die Teilchen    
-    # entweder: vorher mobil und bleibe es (zzv3, pm)
-    # oder: war nicht mobil und bleibe nicht (invertiert zu oder)
-    new_mobile_state =  np.bitwise_or(np.bitwise_and(mobile_state, zzv3), (np.invert(np.bitwise_or(mobile_state, zzv2))))
-    # wenn mobil, addiere 200 zum Ort; Festlegung auf 0.2mm mitte November 2014
-    new_location = location + (200 * new_mobile_state)
-    logging.log(10, location[0:10])
-    logging.log(10, new_location[0:10])
-    logging.log(10, mobile_state[0:10])
-    logging.log(10, new_mobile_state[0:10])
-    return new_location, new_mobile_state
-
-    # simuliert für ps und pm alle teilchen
-def simulate(ps, pm, length, location, mobile_state):
-    """Hauptschleife, Simuliere und teste, ob fertig."""
-    startzeit = time.clock()
-    arrival_counter = []
-    time_needed = 0
-    number = len(location)
- 
-    #Teil 1: Sim bis Länge, hier muss noch keine Abbruchbed. getestet werden
-    while time_needed < length/20000000:
-        location, mobile_state = simulate_step(ps, pm, location, mobile_state, number)
-        time_needed += 0.00001
-        logging.log(10, time_needed)
-    #time.sleep(2)
-    # Zeit soll hier 1/10s sein
-    logging.log(24, "Teil1 vorbei, zeit:%s, simdauer:%s", time_needed, time.clock()-startzeit)
-    logging.log(23, location[0:10])
-    #Teil 2: Ab jetzt können Teilchen fertig sein, teste erst, dann x neue Runden
-    while True:
-        # d ist bitmaske aller aktuell angekommenen Teilchen
-        d = location < length
-        logging.log(10, location)
-        logging.log(15, d[0])
-        logging.log(15, "in der trueschleife, zeit: %s", time_needed)
-        # die beiden aktualisieren (rauswerfen aller fertigen teilchen)
-        location = location[d]
-        mobile_state = mobile_state[d]   
-        #zähle (suminvert...) wie viele schon durch, hänge deren zeitenen an
-        for j in range(np.sum(np.invert(d))):
-            arrival_counter.append(time_needed)
-
-        # alle teilchen angekommen :) oder Simulation dauert schon zu lange :(
-        number = len(location)
-        if number < 1:
-            logging.log(25, "fertig, %s, %s", time_needed, (time.clock()-startzeit))
-            break
-        if time_needed > 240:
-            logging.log(25, "dat bringt nix, %s", (time.clock()-startzeit))
-            for j in range(len(location)):
-                arrival_counter.append(time_needed+100)
-            break    
-        
-        # Damit es schneller geht, nach je x schritten nur testen
-        for x in range (1000):
-            location, mobile_state = simulate_step(ps, pm, location, mobile_state, number)
-            time_needed+=0.00001
-       
-    #print time.clock()-startzeit
-    return arrival_counter
 
 def my_magic_color_generator(num_colors = 11): # leider doch nicht so magic  #print (num_colors)
     b = num_colors > 6
@@ -232,31 +156,42 @@ def plot_simulations(sim_list):
     """Erstelle diverse Plots"""
     #plotkram.plot_widthmap(sim_list)
     logging.log(25, "starte plotting")
-    peak_data = []
-    sims = []
-    filename = "l" + str(length) + "n" + str(number) + "_peakdaten"
-    for sim in sim_list:
-        width, heigth, ls = peak_width.fpwahph(sim.times, 50, False, sim.params)
-        skew = scipy.stats.skew(sim.times)
-        pd = (sim.params, sim.pd[0], sim.pd[1], sim.pd[2], skew)
-        #willkürlich gewählt: loc <> xy, scale < z width < v...
-        if ls[0] < 240 and ls[1] < 60 and width < 50 and ls[0] > 0:
-            peak_data.append(pd)
-            sims.append(sim)
-            #print ("pd", pd)
-            #with open(filename, "r+") as data:
-             #   x = data.read()
-               # print (data, x)
-                #data.write(str(pd) + '\n')         
-    if len(peak_data) > 0:
-        plt.show()
-    logging.log(25, "plotte Groessenverhaeltnisse")
-    #print ("pd", peak_data)
-    filename += ".p"
-    with open(filename, "wb") as data:
-        pickle.dump(peak_data, data)
-    peak_width.plot_relation(filename)
-    logging.log (15, "plot1 fertig")
+    sims = plotkram.plot_widthandskew(sim_list)
+    #peak_data = []
+    #sims = []
+    #for sim in sim_list:
+        #try:
+            #pd = (sim.params, sim.pd[0], sim.pd[1], sim.pd[2], sim.skewness)
+            ##willkürlich gewählt: loc <> xy, scale < z width < v...
+            #if sim.pd[0][0] < 240 and sim.pd[0][1] < 60 and sim.pd[1] < 50 and sim.pd[0][0] > 0:
+                #peak_data.append(pd)
+                #sims.append(sim)
+                ##print ("pd", pd)
+                ##with open(filename, "r+") as data:
+                ##   x = data.read()
+                  ## print (data, x)
+                    ##data.write(str(pd) + '\n')    
+        #except AttributeError as err:
+            #print (sim.params, err)
+            #sim.recalculate_moments()
+            #with open('v005/l' + str(length) + "/n" + str(number) + '/Sim_' + str(round(sim.params[0], 10)) + 
+                      #'_' + str(round(sim.params[1], 10)) + ".p", "wb") as datei:
+                #pickle.dump(sim, datei)
+            #pd = (sim.params, sim.pd[0], sim.pd[1], sim.pd[2], sim.skewness)
+            ##willkürlich gewählt: loc <> xy, scale < z width < v...
+            #if sim.pd[0][0] < 240 and sim.pd[0][1] < 60 and sim.pd[1] < 50 and sim.pd[0][0] > 0:
+                #peak_data.append(pd)
+                #sims.append(sim)
+                
+    #if len(peak_data) > 0:
+        #plt.show()
+    #logging.log(25, "plotte Groessenverhaeltnisse")
+    ##print ("pd", peak_data)
+    #filename = "l" + str(length) + "n" + str(number) + "_peakdaten.p"
+    #with open(filename, "wb") as data:
+        #pickle.dump(peak_data, data)
+    #peak_width.plot_relation(filename)
+    #logging.log (15, "plot1 fertig")
         
     # und jetzt noch ein Spektrum mit max 48 Chroms
     if len(sims) < 29:
@@ -329,7 +264,7 @@ def combine_params(args, kwargs = 5):
                 pkombis.append((ps, pm))'''
         
         schrittweite = 0.00001
-        px = np.arange(0.9999, 0.99993, schrittweite)   
+        px = np.arange(0.9999, 0.99992, schrittweite)   
         for ps in px:
             for pm in px:
                 pkombis.append((ps, pm))
@@ -343,10 +278,10 @@ def combine_params(args, kwargs = 5):
     
     if args == "viele005":
         schrittweite = 0.00001
-        ps_catalogue = np.arange(0.9997, 0.9999, schrittweite)
+        ps_catalogue = np.arange(0.99992, 0.99999, schrittweite)
         
-        schrittweite = 0.01
-        pm_catalogue = np.arange(0.01, 0.4, schrittweite)
+        schrittweite = 0.05
+        pm_catalogue = np.arange(0.5, 0.99, schrittweite)
         
         pkombis = []
         for ps in ps_catalogue:
@@ -362,12 +297,65 @@ def combine_params(args, kwargs = 5):
             
         pkombis = [(0.9996, 0.99992),  (0.998, 0.992),(0.997, 0.99),(0.996, 0.99),  (0.998, 0.991)]
         
-        pkombis = [(0.99999, 0.99999), (0.999999999, 0.999999999), (0.99999999, 0.999999), (0.99999999, 0.9999999)]
-        pkombis = [(0.99993, 0.6),(0.999945, 0.01), (0.9998, 0.4),(0.999825, 0.001), (0.99992, 0.9)]
-     #   pkombis = [(0.999, 0.5), (0.999, 0.1), (0.999, 0.01), (0.999, 0.001), (0.999, 0.0001), (0.999, 0.00001), (0.999, 0.000001), (0.9999, 0.5), (0.9999, 0.1), (0.9999, 0.01), (0.9999, 0.001), (0.9999, 0.0001), (0.9999, 0.00001), (0.9999, 0.000001), (0.99992, 0.5), (0.99992, 0.1), (0.99992, 0.01), (0.99992, 0.001), (0.99992, 0.0001), (0.99992, 0.00001), (0.99992, 0.000001), (0.99994, 0.1), (0.99994, 0.01), (0.99994, 0.001), (0.99994, 0.0001), (0.99994, 0.00001), (0.99994, 0.000001), (0.99996, 0.1), (0.99996, 0.01), (0.99996, 0.001), (0.99996, 0.0001), (0.99996, 0.00001), (0.99996, 0.000001), (0.999, 0.999), (0.001, 0.001), (0.5, 0.5), (1, 1)]
+        pkombis = [(0.99985, 0.62),(0.99985, 0.63), (0.99985, 0.64), (0.99985, 0.65)]
+        pkombis = [(0.9998, 0.5)]
+        #pkombis = [(0.99994, 0.85), (0.9999, 0.75),(0.999945, 0.01), (0.9998, 0.4),(0.999825, 0.001), (0.99992, 0.9)]
+        #pkombis = [(0.99991, 0.75),(0.99991, 0.76),(0.99991, 0.77),(0.99991, 0.78),(0.99991, 0.79)]
 
+    if args == "auswahl25":  
+        pkombis = [(0.99996, 0.9), (0.99996, 0.905),
+                   (0.99995, 0.875),(0.99995, 0.876),
+                   (0.99994, 0.85), (0.99994, 0.855),
+                   (0.99993, 0.825),(0.99993, 0.826),
+                   (0.99992, 0.8), (0.99992, 0.802),
+                   (0.99991, 0.774), (0.99991, 0.775), (0.99991, 0.776),
+                   (0.9999, 0.75),
+                   (0.99985, 0.625), (0.99985, 0.626), (0.99985, 0.627), 
+                   (0.9998, 0.5), 
+                   (0.99975, 0.372), (0.99975, 0.373), (0.99975, 0.374), 
+                   (0.9997, 0.25),(0.9997, 0.251),(0.9997, 0.252),
+                   (0.9996, 0.001)]
+    if args == "auswahl50":
+        pkombis = [(0.99998, 0.9), (0.99998, 0.899),
+                   (0.999975, 0.86),(0.999975, 0.87),(0.999975, 0.88),(0.999975, 0.89),
+                   (0.99997, 0.85), (0.99997, 0.847),(0.99997, 0.848),(0.99997, 0.849),
+                   (0.99996, 0.8), (0.99996, 0.85),
+                   (0.99995, 0.72),(0.99995, 0.74),(0.99995, 0.76),(0.99995, 0.78),
+                   (0.99994, 0.7), (0.99994, 0.71),
+                   (0.99993, 0.642), (0.99993, 0.644), (0.99994, 0.646), (0.99994,0.648),
+                   (0.99992, 0.6), (0.99992, 0.63),
+                   (0.99991, 0.54),(0.99991, 0.55),(0.99991, 0.56),
+                   (0.9999, 0.5), (0.9999, 0.51),
+                   (0.99989, 0.45),
+                   (0.99985, 0.23),(0.99985, 0.24),(0.99985, 0.25)
+            ]
+    if args == "auswahl75":
+        pkombis = [(0.99997, 0.72),(0.99997, 0.74),(0.99997, 0.76),(0.99997, 0.78),
+                   (0.99996, 0.7),
+                   (0.99995, 0.61),(0.99995, 0.62),(0.99995, 0.63),(0.99995, 0.64),
+                   (0.99994, 0.54),(0.99994, 0.55),(0.99994, 0.56),
+                   (0.99993, 0.41),(0.99993, 0.42),(0.99993, 0.43),(0.99993, 0.44),
+            ]
+    if args == "auswahl100":
+        pkombis = [(0.99998, 0.8), (0.99998, 0.801),
+                   (0.99997, 0.7), (0.99997, 0.705),
+                   (0.99996, 0.6), (0.99996, 0.603),
+                   (0.99995, 0.5), (0.99995, 0.501),
+                   (0.99994, 0.395), (0.99994, 0.4),
+                   (0.99993, 0.295), (0.99993, 0.3),
+                   (0.99991, 0.1), (0.99991, 0.105)                   
+            ]
+        
+    if args == "auswahl125":
+        pkombis = [(0.99997, 0.626), (0.99997, 0.628), (0.99997, 0.630), (0.99997, 0.632),(0.99997, 0.634),
+                   (0.99996, 0.5),
+                   (0.99995, 0.353), (0.99995, 0.354), (0.99995, 0.355), (0.99995, 0.356), (0.99995, 0.357), (0.99995, 0.358), 
+                   (0.99994, 0.25), (0.99994, 0.2501),
+                   (0.99993, 0.12), (0.99993, 0.13), (0.99993, 0.14), 
+                   (0.99992, 0.001)
+            ]
     
-    # groessere auswahl
+    # groessere  
     if args == "einige": 
         ps_catalogue = [0.999, 0.9995, 0.9999, 0.99991, 0.99992, 0.99993, 0.99994, 0.99995]
         pm_catalogue = [0.99, 0.9, 0.7, 0.5, 0.4, 0.3, 0.2, 0.1, 0.01, 0.001, 0.0001]
@@ -376,8 +364,7 @@ def combine_params(args, kwargs = 5):
         for ps in ps_catalogue:
             for pm in pm_catalogue:
                 pkombis.append((ps, pm))
-        #pkombis = sorted(pkombis)
-    
+        #pkombis = sorted(pkombis)    
     #ps oder pm fest, das andere variabel
     if args == "d1":
         ps_catalogue = [0.99, 0.991, 0.992, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.999]# 0.9992, 0.9993, 0.9994,0.9995, 0.9996]#,0.9997, 0.9998, 0.9999,0.99991, 0.99992, 0.99993, 0.99994]
@@ -469,7 +456,7 @@ def main():
     global length, number
     length = 200000
     # Anzahl der zu simulierenden Teilchen
-    number = 1000
+    number = 5000
     
     # Die Simulationen werden hier zwischengespeichert
     ergebnisse = []
@@ -502,9 +489,12 @@ def main():
                         store = True
                         # neue Sim nötig
                         logging.log(39, "neue Sim")
-                        mySim = simulation.Simulation(round(ps, 10), round(pm,10), length, number, 
-                                                      simulate(round(ps, 10), round(pm, 10), length, np.zeros(number), np.array([True]*number))) 
-            
+                        mySim = simulation.Simulation(round(ps, 10), round(pm,10), length, number, "E")
+                        mySim.simulate_by_event()
+                        width, heigth, ls = peak_width.fpwahph(mySim.times, 50, False, mySim.params)
+                        pd = (ls, width, heigth)
+                        mySim.set_pd(pd)
+                        
             # alte Version, daher aktualisieren
             except AttributeError as err:
                 store = True
@@ -515,11 +505,15 @@ def main():
             except IOError:
                 store =  True
                 logging.log(25,"%s, %s, simuliere, da nicht vorhanden, todo %s, ready %s", round(ps, 10), round(pm,10), nr_todo, nr_ready)
-                mySim = simulation.Simulation(round(ps, 10), round(pm,10), length, number, 
-                                              simulate(round(ps,10), round(pm, 10), length, np.zeros(number), np.array([True]*number)))
+                
+                mySim = simulation.Simulation(round(ps, 10), round(pm,10), length, number, "E")
+                mySim.simulate_by_event()
                 width, heigth, ls = peak_width.fpwahph(mySim.times, 50, False, mySim.params)
                 pd = (ls, width, heigth)
                 mySim.set_pd(pd)
+                mySim.recalculate_moments()
+               # mySim = simulation.Simulation(round(ps, 10), round(pm,10), length, number, 
+                #                              simulate(round(ps,10), round(pm, 10), length, np.zeros(number), np.array([True]*number)))
             
             # komischer Fehler, im Zweifel wohl auch neu simulieren ? TODO
             except (EOFError, UnicodeDecodeError, TypeError)  as err:
@@ -528,6 +522,7 @@ def main():
                 
             nr_todo -= 1
             nr_ready += 1 
+            
             ergebnisse.append(mySim)
             logging.log(20, "peakdaten: ls, b, h: %s", mySim.pd)
             if store:
@@ -546,6 +541,10 @@ def main():
     #Die Zeit- Hoehen/skew- Plots und Spektrum erstellen:
     ergebnisse = plot_simulations(ergebnisse)  
  
+    
+    #n, bins, patches = plt.hist(ergebnisse[0].times, 50, normed=1, alpha=0.5 )
+    plt.show()
+    
     # Ende :)
     print ("Zeit " + str(time.clock()-startzeit))
     

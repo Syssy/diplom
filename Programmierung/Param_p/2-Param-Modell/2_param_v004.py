@@ -47,7 +47,7 @@ def simulate(ps, pm, length, teilchenort, teilchenmobil):
         teilchenort, teilchenmobil = simulatestep(ps, pm, teilchenort, teilchenmobil, number)
         zeit += 0.0001
 
-    logging.log(20, "Teil1 vorbei")
+    logging.log(25, "Teil1 vorbei, zeit:%s", zeit)
     #Teil 2: Ab jetzt können Teilchen fertig sein
     while True:
     # Damit es schneller geht, nach je x schritten nur testen
@@ -71,9 +71,9 @@ def simulate(ps, pm, length, teilchenort, teilchenmobil):
         number = len(teilchenort)
  
         if number < 1:
-            logging.log(25, "fertig, %s", (time.clock()-startzeit))
+            logging.log(25, "fertig, %s, %s", zeit, (time.clock()-startzeit))
             break
-        if zeit > 650:
+        if zeit > 150:
             logging.log(25, "dat bringt nix, %s", (time.clock()-startzeit))
             for j in range(len(teilchenort)):
                 hilfscounter.append(zeit+100)
@@ -213,6 +213,9 @@ def kombiniere(args, kwargs = 5):
         # pkombis = [(0.995, 0.999),(0.999, 0.9995),(0.995, 0.995),(0.9999, 0.9995)]
             
         pkombis = [(0.9996, 0.99992),  (0.998, 0.992),(0.997, 0.99),(0.996, 0.99),  (0.998, 0.991)]
+        
+        pkombis = [(0.99999, 0.999999999), (0.1, 0.999999999)]
+        
         # pkombis = [(0.999991, 0.99999),(0.99996, 0.99991),(0.99998, 0.99998),(0.99998, 0.99999),(0.99997, 0.99999)]#,(0.99999, 0.99998),(0.999991, 0.99999),(0.99999, 0.99999),(0.99995, 0.99991),(0.99994, 0.99991),(0.999991, 0.99998),(0.999992, 0.99999)]
         #pkombis = [(0.0001, 0.0001), (0.00001, 0.00001), (0.0002, 0.0001), (0.0001, 0.0002) ]
     
@@ -273,7 +276,7 @@ def kombiniere(args, kwargs = 5):
         
     if args == "wdh":
         pkombis = [(0.995, 0.991)]
-    logging.log(25, "pkombis, %s, anzahl, %s", pkombis, len(pkombis))
+    logging.log(25, "pkombis %s, anzahl: %s", pkombis, len(pkombis))
     return (sorted(list(set(pkombis))))
 
     # Updatet von alter Version
