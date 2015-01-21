@@ -267,12 +267,17 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  
  * Zitieren: Wie krieg ich beim Buch das "Auflage" weg
  
- 
- 
- 
- 
- 
- 
+
+15.01.2015
+ * Numba
+ * Expose überarbeiten
+ * Prüfungsamt
+ * Evtl schon mal Folien anfangen, Dinge aufschreiben
+ * In der Bib: (Säulenbluten) Adsorptionseffekte verursachen Tailing
+ * Stoffe wie amines, alcoholes, carboxyl etc prone to tailing wegen hydrogen bonding (Genauere Ursachen?)
+ * Um Tailing festzustellen: Peakbreiten in 10% der Höhe messen. 
+ * Für Halbwertsbreite evtl noch Basislinienhöhe abziehen? Damit müssten die gemessenen Breiten größer werden, da die Höhe abnimmt und Peaks auf der Hälfte breiter werden
+ * Noch mal an Dommis Rechner
  
  
  

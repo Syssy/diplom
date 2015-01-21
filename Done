@@ -176,4 +176,9 @@ Seit dem 14.08.2014
   **Code nicht gefunden
   ** versuche mich, durch den (vom gleichen Menschen gemachten) HPLC-Sim zu arbeiten. Da kommt als dRetentionTime ein double raus, ich denke, daraus berechnen die dann die passende Kurve. Und wenn man sich im isocratic (also nicht gradient) mode befindet, ist die Berechnung auch extrem kurz. Glaube nicht, dass das nutzbar ist. 
   ** ebenfalls von der Arbeitsgruppe: retentionprediction, aber dafür braucht man eigene Daten zum Vergleich (wird wohl ausgehend von bekannten Werten und Messungen vorhergesagt, wie's am eigenen Gerät aussehen sollte)
- * Nächstes Treffen: Mittwoch, 10 Uhr Gruppe, ab 11 Expose, dann Donnerstag wie üblich
+ * Nächstes Treffen: Mittwnoch, 10 Uhr Gruppe, ab 11 Expose, dann Donnerstag wie üblich
+ 
+15.01.2015
+ * Mittwoch nicht vergessen
+ * Recherche zu Tailing: Ursachen sind Adsorptionseffekte & technische Dinge wie totvolumen, sowie einige Stoffe die halt einfach tailen 
+ * Formulierung als PAA angefangen. Dazu Paper gelesen (zum x-ten Mal)
