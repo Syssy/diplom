@@ -182,3 +182,18 @@ Seit dem 14.08.2014
  * Mittwoch nicht vergessen
  * Recherche zu Tailing: Ursachen sind Adsorptionseffekte & technische Dinge wie totvolumen, sowie einige Stoffe die halt einfach tailen 
  * Formulierung als PAA angefangen. Dazu Paper gelesen (zum x-ten Mal)
+ 
+ 
+22.01.2015 
+  ** Das mit den W'-Keiten = 1 macht dabei keinen Sinn. Es geht ja grad darum, jeweils mit der gewissen Wkeit in jedem Zustand zu sein. Bin nur grad unsicher, wie ich neben dem Zustand, der ja eig. egal ist, auch den Ort rauskriege. Ist der aufh mit Wkeit?
+  ** Evtl Modellierung der Ortsschritte. Dann wäre die Emission die Zeit, die ich für einen Ortschritt brauche. Ich könnte dann die Verteilung der Zeit nach x Ortsschritten berechnen. Klingt erst mal sinnvoller. Benötigt aber zig Zustände.
+  ** Nein, nur zwei Zustände. trotzdem ist emission die Zeit für den nächsten Ortsschritt. Gesucht ist dann Verteilung der Zeit nach x Ortsschritten.
+  ** Und noch ne Idee: Nur ein Zustand. Jede Transition ist ja ein Schritt, da hätte ich ja sowohl beim wechsel von m->s als auch s->m einen Schritt zurück gelegt, was ich ja nicht will. Daher gibt es eine Selbsttransition mit pm und Emission von 1 für einen Orts- und Zeitschritt. Und eine mit 1-pm. Das ist ein Wechsel ins stationäre und zurück mit nur einem Ortsschritt. Emission berechnet sich dabei wie gehabt aus ps. Das wäre irgendwie eine Kombination der beiden bisherigen Simulationsarten.
+  ** Um das erweiterbar zu machen, könnte man auch mit halben Schritten arbeiten. 
+  ** Verdammt. Emissionen sind zustandsgebunden. Müsste man also doch mal mit halben Schritten probieren...
+  ** Ein einfaches Modell wäre nutzbar, wenn das mit den Waiting times für die PAAs so wäre, wie ich das gedacht hatte. Aber da muss man wohl für jede mögliche Waiting-Time was berechnen, um die Verteilung zu erhalten. Also doch eher das Ortsschritte-Modell nehmen und da direkt die Verteilung nach x OSchritten nehmen.
+* Literatursuche: Gar nicht so einfach, das mit dem Tailing. Habe jetzt was von 1955, wo es um ein stochastisches Modell für die chroma geht. Wäre vielleicht mal interessant. Darüber bin ich auf ein ganz neues Paper gestoßen. In dem geht es auch um theoretische Ursachen für's Tailing: kinetische Effekte und Sorption. Sollte ich zitieren und fertig...  
+  
+  
+  
+  
