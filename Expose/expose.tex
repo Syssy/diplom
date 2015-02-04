@@ -58,7 +58,8 @@ Umgekehrt soll es möglich sein, für eine gegebene Peaklage und Peakform die n�
 %Gegeben sind einige Datensätze von MCC-IMS-Messungen...
 %Mindestens für die darin zu findenden Peaks sollen Parameter für die Simulation ermittelt und anschließend simuliert werden.
 Zum Vergleich liegen %Zum Vergleich der simulierten Daten liegen 
-einige MCC-IMS-Messungen von Mischungen sieben bekannter Stoffe vor. Zur Verfügung gestellt wurden die Datensätze von der Firma B \& S Analytik \footnote{\url{http://www.bs-analytik.de/}}. %\todo[inline]{Zitieren/Fußnote?} 
+einige MCC-IMS-Messungen von Mischungen sieben bekannter Stoffe vor. Zur Verfügung gestellt wurden die Datensätze von der Firma B \& S Analytik  \cite{BSAnalytik}
+%\footnote{\url{http://www.bs-analytik.de/}}. %\todo[inline]{Zitieren/Fußnote?} 
 Zu den dadurch gegebenen Peaks sollen Parameter für die Simulation ermittelt und diese Peaks simuliert werden.
 %Auf diese Weise sollen mindestens für die Peaks der Vergleichsdatensätze Parameter ermittelt werden, mit denen sie simuliert werden können.
 %Später sollen diese zu einem Spektrum kombiniert werden, welches oben genannte Eigenschaften wie mit zunehmender Retentionszeit steigende Varianz und positive Schiefe aufweist. 
@@ -84,7 +85,10 @@ Ein Beispiel wäre die Erweiterung um einen Zwischenzustand, aus dem sich ein Te
 Alternativ könnte man verschiedene Zustände für die stationäre Phase einführen, für die unterschiedliche Übergangswahrscheinlichkeiten gelten. Der Hintergrund für diese Überlegung ist, dass die Moleküle, je nachdem, mit welcher Seite sie die stationäre Phase berühren, unterschiedlich stark gehalten werden. \todo{Hintergrund für 3-Param-Modell, Quelle}
 
 
-Zusätzlich zur Simulation können die mit dem Modell zu erwartenden Peaks berechnet werden. Dazu werden die genannten Annahmen als Probabilistischer Arithmetischer Automat (PAA) \cite{MHKR} modelliert. %Für diesen existiern Algorithmen, die eine Zustand-Werte-Verteilung nach einer gegebenen Anzahl von Schritten berechnen. In der dafür nötigen Modellierung entspricht ein Schritt dabei einem ortsschritt und die Werte den benötigten Zeitschritten. %todo{Ausformulieren PAA-Modellierung}
+Zusätzlich zur Simulation können die mit diesen Annahmen zu erwartenden Peaks mit Hilfe eines Probabilistischen Arithmetischen Automaten (PAA) \cite{MHKR} berechnet werden. Ein PAA ist ein Modell, mit dem eine Folge zufälliger Operationen beschrieben werden kann. Für PAA existieren Algorithmen, welche die Verteilung der Wartezeit für einen Wert berechnen. In diesem Fall ist die Länge der Säule der Wert, auf den gewartet wird und man ist interessiert in der Verteilung der Anzahl der Zeitschritte, die benötigt werden, um die Länge zu erreichen. 
+  
+
+%Zusätzlich zur Simulation können die mit dem Modell zu erwartenden Peaks berechnet werden. Dazu werden die genannten Annahmen als Probabilistischer Arithmetischer Automat (PAA) \cite{MHKR} modelliert. Für diesen existieren Algorithmen, welche die Verteilung der Wartezeit für einen Wert berechnen.  todo{Ausformulieren PAA-Modellierung}
 
 %\todo{cite PAA} berechnet werden.
 %\todo[inline]{PAA, cite}

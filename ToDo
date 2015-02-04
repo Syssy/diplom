@@ -277,12 +277,19 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * Stoffe wie amines, alcoholes, carboxyl etc prone to tailing wegen hydrogen bonding (Genauere Ursachen?)
  * Um Tailing festzustellen: Peakbreiten in 10% der Höhe messen. 
  * Für Halbwertsbreite evtl noch Basislinienhöhe abziehen? Damit müssten die gemessenen Breiten größer werden, da die Höhe abnimmt und Peaks auf der Hälfte breiter werden
- * Noch mal an Dommis Rechner
+ * Noch mal an Dommis Rechner -> hatte ich für die Höhen die Basislinie abgezogen? 
  * Was soll zum PAA ins expose? 
  
- 
- 
 
+29.01.2015
+ * Doch noch nen Satz mehr ins Expose zum PAA. Kurz erklären, was er tut und Entsprechungen für Zustände, Werte und Emissionen
+ * Mosdi angucken, PAA damit basteln.
+ * Da das Berechnen mittels PAA doch recht lange dauert, vielleicht wäre es sinnvoll, das Ganze in Teilprobleme zu zerlegen...?
+ * Dazu müsste man in der stateValueStartDistribution was anderes angeben. Spontaner Gedanke dazu wäre es, dazu vorher x Iterationen zu machen, möglicherweise mit der doubling technik, bis zu in etwa der zeit, wo es interessant wird (oder x=länge) und dann noch mal als neue max-zeit die erwartete Breite des peaks anzugeben. Dann muss man zwar das ganze zum vergleichbaren plotten noch verschieben, aber das sollte hinkriegbar sein. Den Gedanken sollte ich in Ruhe und auf Papier noch mal überdenken, dazu am Besten noch mal mit 10 Iterationen oder so in der Sim angucken und vor allem überdenken, ob das mit der stateValueStartDistribution so passt.
+ 
+ 
+ 
+ 
  
  
  

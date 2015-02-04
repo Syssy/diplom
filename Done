@@ -195,5 +195,6 @@ Seit dem 14.08.2014
 * Literatursuche: Gar nicht so einfach, das mit dem Tailing. Habe jetzt was von 1955, wo es um ein stochastisches Modell für die chroma geht. Wäre vielleicht mal interessant. Darüber bin ich auf ein ganz neues Paper gestoßen. In dem geht es auch um theoretische Ursachen für's Tailing: kinetische Effekte und Sorption. Sollte ich zitieren und fertig...  
   
   
-  
-  
+28.01.2015
+ * Der PAA klappt doch mit der ursprünglichen Modellierung, weil die Waiting-Time sowieso schrittweise für alle Zeiten bis n berechnet würde. Muss dann nur gucken, dass ich bei der Mosdi-implementierung eine sinnvolle maxzeit angebe.
+ * PAA-Berechnungen laufen, brauchen aber lange. 
