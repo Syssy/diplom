@@ -198,3 +198,23 @@ Seit dem 14.08.2014
 28.01.2015
  * Der PAA klappt doch mit der ursprünglichen Modellierung, weil die Waiting-Time sowieso schrittweise für alle Zeiten bis n berechnet würde. Muss dann nur gucken, dass ich bei der Mosdi-implementierung eine sinnvolle maxzeit angebe.
  * PAA-Berechnungen laufen, brauchen aber lange. 
+ * Die Doubling-Technique ist wahrscheinlich für mich nicht sinnvoll einsetzbar. Ist nämlich kubisch in der Größe des value-sets und damit wahrscheinlich langsamer, als die normale step-by-step geschichte. 
+
+->boehmer@citrin:~/workspace$ javac -classpath /home/boehmer/workspace/mosdi-1.3/mosdi-1.3.jar  /home/boehmer/workspace/PAA/src/myPAA.java
+compiliert!
+
+boehmer@citrin:~/workspace/PAA/src$ javac -classpath /home/boehmer/workspace/mosdi-1.3/mosdi-1.3.jar myPAA.java 
+boehmer@citrin:~/workspace/PAA/src$ java -classpath .:/home/boehmer/workspace/mosdi-1.3/mosdi-1.3.jar myPAA 
+läuft
+
+
+
+
+
+
+
+
+
+
+
+
