@@ -288,11 +288,16 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * Dazu müsste man in der stateValueStartDistribution was anderes angeben. Spontaner Gedanke dazu wäre es, dazu vorher x Iterationen zu machen, möglicherweise mit der doubling technik, bis zu in etwa der zeit, wo es interessant wird (oder x=länge) und dann noch mal als neue max-zeit die erwartete Breite des peaks anzugeben. Dann muss man zwar das ganze zum vergleichbaren plotten noch verschieben, aber das sollte hinkriegbar sein. Den Gedanken sollte ich in Ruhe und auf Papier noch mal überdenken, dazu am Besten noch mal mit 10 Iterationen oder so in der Sim angucken und vor allem überdenken, ob das mit der stateValueStartDistribution so passt.
  * Gibt es ne sinnvolle möglichkeit das zu zerlegen? die doubling-technik nützt mir wohl nix. Ob das Zerlegen was bringt, glaube ich nicht mehr, da es linear in den Schritten und values ist (ohne die doubling). Könnte aber doch was bringen, falls sonst die Arrays zu groß werden
  * gnuplot angucken und versuchen, da was aus java reinzupipen
+
+ 
+ 05.02.2014
+ * Expose: Ausdrücklich schreiben, dass zwischen Modellparametern und Peaks (mit Lage, Breite, Schiefe) hin und her gerechnet werden soll
+ * PAA: Gucken, ob ich das (mit Julia) nachprogrammieren könnte und dann nicht mehr auf 2D double-arrays gearbeitet wird, sondern irgendein Interface möglich ist, was zwar mit 2Dd-a implementiert werden kann, aber nicht muss, um die nicht verwendeten Teile rauszuschmeißen. Ein Großteil ist ja noch nicht erreicht und daher null oder schon bis auf minimale Restw'keiten geleert.
+ * Anfangen zu schreiben/Vortrag
+ * Brauche Möglichkeit, die vom PAA berechneten Wartezeiten zu berechnen. Da hier ja auch nie mehrere Durchläufe nötig sind (kommt bei gleicher Eingabe immer das gleiche raus) lohnt sich das. Sinnvoll wäre wahrscheinlich eine csv
+ * paa-klasse anpassen, dass die parameter einstellbar und die größen anpassbar sind
  
  
  
  
- 
- 
- geditsublime
  

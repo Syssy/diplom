@@ -1,9 +1,11 @@
+
 \documentclass[a4paper,10pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman]{babel}
 \usepackage[disable]{todonotes}
 \usepackage{bibgerm}
 \usepackage{url}
+\usepackage[left = 3cm, right = 3cm, top = 2.5cm, bottom = 2.5cm]{geometry}
 
 %opening
 \title{Simulation einer Multikapillarsäule}% bei der Ionen-Mobilitäts-Spektrometrie}
@@ -51,9 +53,9 @@ Im Rahmen der Diplomarbeit soll eine Multikapillarsäule simuliert werden.
 
 Es geht dabei nicht um eine physikalische Simulation auf molekularer Ebene, sondern um die Entwicklung eines abstrakten, probabilistischen Modells, welches mit möglichst wenig Parametern auskommt. %Als Ansatz dient der oben beschriebene Wechsel der Teilchen zwischen der mobilen und stationären Phase. 
 %\todo{habe parameter, die Stoff entsprechen daraus ergibt sich ein peak mit lage und merkmalen wie breite (varianz/halbwertsbreite) und schiefe umgekehrt aus lage und form parameter bestimmen mindestens die peaks aus den Vergleichsdaten sollen simuliert werden}
-In der Simulation soll jeweils nur ein Stoff, charakterisiert durch diese Parameter, simuliert werden. Das Resultat einer Simulation ist jeweils ein einzelner Peak, welcher durch seine Lage und Form beschrieben werden kann. Die Lage entspricht dabei der Retentionszeit. Die Form ist durch seine Halbwertsbreite sowie Schiefe gekennzeichnet.
+In der Simulation soll jeweils nur ein Stoff, charakterisiert durch diese Parameter, simuliert werden. Das Resultat einer Simulation ist jeweils ein einzelner Peak, welcher durch seine Lage und Form beschrieben werden kann. Die Lage entspricht dabei der Retentionszeit am Maximum des Peaks. Die Form ist durch seine Breite an einer bestimmten Höhe (zum Beispiel Halbwertsbreite) sowie Schiefe gekennzeichnet.
 
-Umgekehrt soll es möglich sein, für eine gegebene Peaklage und Peakform die nötigen Stoffparameter zu ermitteln, mit denen ein solcher Peak simuliert werden kann.
+Umgekehrt soll es möglich sein, für eine gegebene Peaklage und Peakform die nötigen Simulationsparameter zu ermitteln, mit denen ein solcher Peak simuliert werden kann.
 
 %Gegeben sind einige Datensätze von MCC-IMS-Messungen...
 %Mindestens für die darin zu findenden Peaks sollen Parameter für die Simulation ermittelt und anschließend simuliert werden.
@@ -72,6 +74,7 @@ Zu den dadurch gegebenen Peaks sollen Parameter für die Simulation ermittelt un
 %Möglicherweise stellt man fest, dass die verwendeten Parameter sogar im Zusammenhang mit den resultierenden Kurven stehen, zum Beispiel als Maximum und Varianz eines Peaks oder Parameter einer Verteilung, welche die Kurve annähert. 
 
 
+Gesucht ist letztendlich eine allgemeine Entsprechung der Simulationsparameter zu den Parametern mit denen ein Peak beschrieben werden kann, falls diese existiert. Eine Berechnung des Peaks nur durch die Simulationsparameter und umgekehrt eine Vorhersage der Simulationsparameter zu bekannten Peakdaten soll damit realisiert werden.
 
 \section{Modellannahmen}
 %In einem ersten Modell sei also $p$ die Wahrscheinlichkeit, dass ein Teilchen seine Phase wechselt und $1-p$ die Wahrscheinlichkeit, dass es in seiner Phase bleibt. 

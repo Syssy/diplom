@@ -203,12 +203,14 @@ Seit dem 14.08.2014
 ->boehmer@citrin:~/workspace$ javac -classpath /home/boehmer/workspace/mosdi-1.3/mosdi-1.3.jar  /home/boehmer/workspace/PAA/src/myPAA.java
 compiliert!
 
+
+04.02.2015
 boehmer@citrin:~/workspace/PAA/src$ javac -classpath /home/boehmer/workspace/mosdi-1.3/mosdi-1.3.jar myPAA.java 
 boehmer@citrin:~/workspace/PAA/src$ java -classpath .:/home/boehmer/workspace/mosdi-1.3/mosdi-1.3.jar myPAA 
 läuft
-
-
-
+ * Der PAA läuft. 
+ * Graphische Ausgabe mit Java läuft jetzt auch irgendwie. Habe die Javaplot-Library doch verworfen, da ich das nicht so ganz hingekriegt habe. Könnte aber auch daran liegen, dass die Ausgabe des PAA (also die Wartezeiten) nicht direkt als Histogramm anzeigbar sind. 
+ * Rahmen für den Vortrag angefangen
 
 
 
