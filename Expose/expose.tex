@@ -23,7 +23,7 @@
 
 Die Gaschromatographie (GC) ist ein Verfahren, mit dem gasförmig vorliegende Stoffgemische aufgetrennt oder analysiert werden können. 
 Beispielsweise kann die GC in einer Multikapillarsäule (MCC, engl. Multi Capillary Colum) stattfinden. Sie besteht aus ca. 1000 %\todo{Quelle}
-einzelnen Kapillaren. Jede davon ist innen mit der sog. stationären Phase beschichtet. Außerdem kommt ein Trägergas, die sog. mobile Phase, zum Einsatz, welches die Analyte durch die Säule transportiert. Die Substanzen unterscheiden sich vor allem durch ihre Wechselwirkungen mit der stationären Phase. Während dieser Wechselwirkungen haften die Teilchen an der stationären Phase, bewegen sich also nicht fort. Finden daher wenig Wechselwirkungen statt, passieren die Teilchen die Säule schneller, als wenn viele Wechselwirkungen stattfinden. Dies beeinflusst die Retentionszeit, also die Zeit, die zum Durchlaufen der Säule gebraucht wird.
+einzelnen Kapillaren. Jede davon ist innen mit der sog. stationären Phase beschichtet. Außerdem kommt ein Trägergas, die sog. mobile Phase, zum Einsatz, welches die Analyte durch die Säule transportiert. Die Substanzen unterscheiden sich vor allem durch ihre Wechselwirkungen mit der stationären Phase. Während dieser Wechselwirkungen haften die Teilchen an der stationären Phase, bewegen sich also nicht fort. Finden wenig Wechselwirkungen statt, passieren die Teilchen die Säule schneller, als wenn viele Wechselwirkungen stattfinden. Dies beeinflusst die Retentionszeit, also die Zeit, die zum Durchlaufen der Säule gebraucht wird.
 
 %\todo{Wegen Datensätzen muss das doch rein}
 Nach Durchlaufen der Säule können die Substanzen mit anderen Verfahren wie Massenspektrometrie (MS) oder Ionen-Mobilitäts-Spektrometrie (IMS) weiter analysiert werden.
@@ -38,7 +38,7 @@ Nach Durchlaufen der Säule können die Substanzen mit anderen Verfahren wie Mas
 %Durch die Kombination der MCC mit dem IMS-Gerät entsteht ein Intensitätsspektrum über die Retentions- und Driftzeit.
 
 %Im Folgenden soll es jedoch nur noch um die Retentionszeit gehen.
-Zu beobachten ist, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden. Ideale Peaks haben die Form einer Gaußkurve, jedoch oft ein Tailing auf. Dieses wird unter anderem verursacht durch Adsorptionseffekte, die beim Altern einer Säule auftreten \cite{kolb2003}.% Tailing kann auch durch technisch bedingte Totvolumina oder Überladung der stationären Phase verursacht sein.
+Zu beobachten ist, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden. Ideale Peaks haben die Form einer Gaußkurve, jedoch tritt oft ein Tailing auf. Dieses wird unter anderem verursacht durch Adsorptionseffekte, die beim Altern einer Säule auftreten \cite{kolb2003}.% Tailing kann auch durch technisch bedingte Totvolumina oder Überladung der stationären Phase verursacht sein.
 %, außerdem existieren Stoffe, die generell tailen.
 %\todo{Ursachen Tailing, Cite} 
 %und oft ein Tailing haben, also rechtsschief sind, bzw Totvolumen cite?;
@@ -60,7 +60,7 @@ Umgekehrt soll es möglich sein, für eine gegebene Peaklage und Peakform die n�
 %Gegeben sind einige Datensätze von MCC-IMS-Messungen...
 %Mindestens für die darin zu findenden Peaks sollen Parameter für die Simulation ermittelt und anschließend simuliert werden.
 Zum Vergleich liegen %Zum Vergleich der simulierten Daten liegen 
-einige MCC-IMS-Messungen von Mischungen sieben bekannter Stoffe vor. Zur Verfügung gestellt wurden die Datensätze von der Firma B \& S Analytik  \cite{BSAnalytik}
+einige MCC-IMS-Messungen von Mischungen sieben bekannter Stoffe vor. Diese Datensätze wurden von der Firma B \& S Analytik  (\mbox{\url{http://www.bs-analytik.de/}}) zur Verfügung gestellt.
 %\footnote{\url{http://www.bs-analytik.de/}}. %\todo[inline]{Zitieren/Fußnote?} 
 Zu den dadurch gegebenen Peaks sollen Parameter für die Simulation ermittelt und diese Peaks simuliert werden.
 %Auf diese Weise sollen mindestens für die Peaks der Vergleichsdatensätze Parameter ermittelt werden, mit denen sie simuliert werden können.
@@ -86,9 +86,6 @@ Ein Beispiel wäre die Erweiterung um einen Zwischenzustand, aus dem sich ein Te
 %Wenn sich bei diesem Abgleich der Daten ergibt, dass die Peaks der Datensätze nicht ausreichend angenähert werden können, muss das Modell weiter verfeinert werden. 
 %Dabei können weitere Begebenheiten der Chromatographie berücksichtigt werden. Möglicherweise ist es dazu nötig, weitere Zustände einzuführen, zum Beispiel in Form eines Zwischenzustandes. Aus diesem kann sich ein Teilchen wieder leichter aus der stationären Phase lösen. 
 Alternativ könnte man verschiedene Zustände für die stationäre Phase einführen, für die unterschiedliche Übergangswahrscheinlichkeiten gelten. Der Hintergrund für diese Überlegung ist, dass die Moleküle, je nachdem, mit welcher Seite sie die stationäre Phase berühren, unterschiedlich stark gehalten werden. \todo{Hintergrund für 3-Param-Modell, Quelle}
-
-
-Zusätzlich zur Simulation können die mit diesen Annahmen zu erwartenden Peaks mit Hilfe eines Probabilistischen Arithmetischen Automaten (PAA) \cite{MHKR} berechnet werden. Ein PAA ist ein Modell, mit dem eine Folge zufälliger Operationen beschrieben werden kann. Für PAA existieren Algorithmen, welche die Verteilung der Wartezeit für einen Wert berechnen. In diesem Fall ist die Länge der Säule der Wert, auf den gewartet wird und man ist interessiert in der Verteilung der Anzahl der Zeitschritte, die benötigt werden, um die Länge zu erreichen. 
   
 
 %Zusätzlich zur Simulation können die mit dem Modell zu erwartenden Peaks berechnet werden. Dazu werden die genannten Annahmen als Probabilistischer Arithmetischer Automat (PAA) \cite{MHKR} modelliert. Für diesen existieren Algorithmen, welche die Verteilung der Wartezeit für einen Wert berechnen.  todo{Ausformulieren PAA-Modellierung}
@@ -98,7 +95,7 @@ Zusätzlich zur Simulation können die mit diesen Annahmen zu erwartenden Peaks 
 
 
 \section{Methodik}
-Neben diesen Modellannahmen bestehen mehrere mögliche Arten der Simulation. Es kann entweder jeder Zeitschritt der Chromatographie simuliert und dabei für jedes Teilchen entschieden werden, ob es sich bewegt. Dabei angenommen, dass die Wahrscheinlichkeit der Wechselwirkung unabhängig vom aktuellen Ort oder dem Zeitpunkt des letzten Phasenwechsels ist. Es wird für jedes Teilchen festgehalten, wo es sich befindet und ähnlich wie bei der echten Chromatographie beobachtet, wann wie viele Teilchen fertig sind. 
+Neben diesen Modellannahmen bestehen mehrere mögliche Arten der Simulation. Es kann entweder jeder Zeitschritt der Chromatographie simuliert und dabei für jedes Teilchen entschieden werden, ob es sich bewegt. Dabei angenommen, dass die Wahrscheinlichkeit der Wechselwirkung unabhängig vom aktuellen Ort oder dem Zeitpunkt des letzten Phasenwechsels ist. Es wird für jedes Teilchen festgehalten, wo es sich befindet und ähnlich wie bei der echten Chromatographie beobachtet, wann wie viele Teilchen die Säule durchquert haben. 
 
 Bei Übergangswahrscheinlichkeiten, die sehr groß oder klein sind, kommt es selten zu Zustandsänderungen, sodass es in diesem Fall effizienter ist, eine Wartezeitmethode zu nutzen: Es wird für jedes Teilchen entschieden, wann es den Zustand wechselt und, falls es mobil ist, wie weit es bis dahin weiter wandert. Es werden also nur die tatsächlichen Ereignisse simuliert, Schritte für Zeitpunkte, zu denen nichts passiert, entfallen.
 %Diese Wartezeit-Methode kann möglicherweise viel Simulationszeit einsparen, wenn nur selten Wechsel zwischen den Phasen statt finden, da nur für die tatsächlich nötigen Ereignisse ein Simulationsschritt erfolgen muss.
@@ -107,6 +104,8 @@ Bei Übergangswahrscheinlichkeiten, die sehr groß oder klein sind, kommt es sel
 % Wenn das gelingt, echte Daten angucken und gucken, ob das passt, ``richtige'' Größen einführen. (Also vernünftige Zeitskala, relativ zur Intensität) 
 % Anschließend versuchen, die echten Daten versuchen, zu simulieren.
 % Schön wäre, Parameter entspricht zb Maximum der jeweiligen Kurve, evtl. zweiter Parameter der Varianz oä oder sogar den Invgauß-Params
+
+Zusätzlich zur Simulation können die mit diesen Annahmen zu erwartenden Peaks mit Hilfe eines Probabilistischen Arithmetischen Automaten (PAA) \cite{MHKR} berechnet werden. Ein PAA ist ein Modell, mit dem eine Folge zufälliger Operationen beschrieben werden kann. Für PAA existieren Algorithmen, welche die Verteilung der Wartezeit für einen Wert berechnen. In diesem Fall ist die Länge der Säule der Wert, auf den gewartet wird und man ist interessiert in der Verteilung der Anzahl der Zeitschritte, die benötigt werden, um die Länge zu erreichen. 
 
 %\nocite{Baumbach1997}
 %\nocite{Baumbach2009}
