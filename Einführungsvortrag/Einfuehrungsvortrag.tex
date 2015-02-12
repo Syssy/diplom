@@ -29,6 +29,13 @@
 \tikzstyle{knoten}=[draw,-,thick,fill=none,inner sep=0pt, minimum width=15pt, circle]
 \tikzstyle{kante}=[draw,-,thick,black]
 \usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,petri}
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{%
+	calc,%
+	decorations.pathmorphing,%
+	fadings,%
+	shadings}
 
 \definecolor{tugreen}{cmyk}{0.57,0,1,0}
 
@@ -44,7 +51,7 @@
 	\titlepage
 }
 
-
+% Für Overlays: 
 %\uncover<4->{
 %[<+->]
 
@@ -69,6 +76,33 @@
 
 \begin{frame}
 \frametitle {Titel}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm, thick,
+  state node/.style={circle,fill=white,draw,font=\sffamily\bfseries, minimum height=30pt},
+  operation node/.style= {regular polygon, regular polygon sides=3,  fill = white, draw, inner sep=  0pt},
+  emission node/.style={rectangle, fill = lightgray!50, draw}]
+
+  \fill[color=lightgray!40] (8,2.7) -- (7, 4.8) -- (9,4.8) -- cycle ;    
+  \fill[color=lightgray!40] (2,2.7) -- (1, 4.8) -- (3,4.8) -- cycle ;    
+
+  \node[state node, text width = 1.5cm, align = center] (s) at (2, 1)  {stationär};
+  \node[state node, text width = 1.5cm, align = center] (m) [right = of s] {mobil};
+  \node[operation node, align = center] (os)  at (0.5,0) {$+$};
+  \node[operation node, align = center] (om)  at (9.5,0) {$+$};
+  \node[emission node, align = center] (em) [above of = m] {$e(0) = 0$\\$e(1)=1$};
+  \node[emission node, align = center] (es) [above of = s] {$e(0) = 1$\\$e(1)=0$};
+
+  \path[every node/.style={font=\sffamily\large}]
+
+    (s)   edge [bend right] node [below] {$1-p_s$} (m)
+            edge [loop left] node {$p_s$} (s)
+        
+    (m)  edge [bend right] node[above]{$1-p_m$} (s)
+             edge [loop right] node {$p_m$} (m)
+        ;
+\end{tikzpicture}
+
+
 \end {frame}
 
 \section{Gaschromatographie}

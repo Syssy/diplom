@@ -1,0 +1,23 @@
+
+\usetikzlibrary{arrows,%
+                topaths}%
+\tikzstyle{knoten}=[draw,-,thick,fill=none,inner sep=0pt, minimum width=25pt, circle]
+\tikzstyle{kante}=[draw,-,thick,black]
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries}]
+
+  \node[main node] (s)  {stat};
+  \node[main node] (m) [right of=s] {mob};
+
+  \path[every node/.style={font=\sffamily\small}]
+
+    (s)   edge [bend right] node [below] {$1-p_s$} (m)
+            edge [loop left] node {$p_s$} (s)
+        
+    (m)  edge [bend right] node[above]{$1-p_m$} (s)
+             edge [loop right] node {$p_m$} (m)
+        ;
+\end{tikzpicture}
+

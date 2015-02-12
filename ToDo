@@ -290,14 +290,27 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * gnuplot angucken und versuchen, da was aus java reinzupipen
 
  
- 05.02.2014
+05.02.2014
  * Expose: Ausdrücklich schreiben, dass zwischen Modellparametern und Peaks (mit Lage, Breite, Schiefe) hin und her gerechnet werden soll
  * PAA: Gucken, ob ich das (mit Julia) nachprogrammieren könnte und dann nicht mehr auf 2D double-arrays gearbeitet wird, sondern irgendein Interface möglich ist, was zwar mit 2Dd-a implementiert werden kann, aber nicht muss, um die nicht verwendeten Teile rauszuschmeißen. Ein Großteil ist ja noch nicht erreicht und daher null oder schon bis auf minimale Restw'keiten geleert.
  * Anfangen zu schreiben/Vortrag
- * Brauche Möglichkeit, die vom PAA berechneten Wartezeiten zu berechnen. Da hier ja auch nie mehrere Durchläufe nötig sind (kommt bei gleicher Eingabe immer das gleiche raus) lohnt sich das. Sinnvoll wäre wahrscheinlich eine csv
+ * Brauche Möglichkeit, die vom PAA berechneten Wartezeiten zu speichern. Da hier ja auch nie mehrere Durchläufe nötig sind (kommt bei gleicher Eingabe immer das gleiche raus) lohnt sich das. Sinnvoll wäre wahrscheinlich eine csv
  * paa-klasse anpassen, dass die parameter einstellbar und die größen anpassbar sind
  
  
- 
+11.02.2015
+ * Vom PAA berechnete Daten exportieren; auf die Werte normalisieren (Einheiten)
+ * Langfristig: PAA-Daten und Simulationen vergleichen / Unterschiede berechnen / Ab wie vielen Teilchen hinreichend genau? Existieren Differenzen?
+ * Zu diesem Zweck wäre es evtl. günstig, die bisherigen Histogramme auch in Wahrscheinlichkeiten umzurechnen, die dann als einfacher Plot darstellbar sind. Oder anders herum, irgendwie die Wartezeitverteilung zu konkreten Daten umzuformen (was aber weniger Sinn machen würde, da dort Rundungfehler beim Umrechnen auf ganze Zahlen auftreten würden?)
+  -> In Python: Bei plt.hist (bzw dahinter np.histogram) über normed/density wird das auf 1 normalisiert, sodass sich W'keiten ergeben
+    >>> a -> array([2, 3, 3, 4, 4, 4, 5, 5, 6, 7]) # Minidatensatz
+    >>> hist, bin_edges = np.histogram(a, bins = 6, density = True) # a: Daten; hist, bin_edges entspr. n, bins (patches) bei plt
+    >>> hist -> array([ 0.12,  0.24,  0.36,  0.24,  0.12,  0.12])
+    >>> bin_edges -> array([ 2., 2.83333333, 3.66666667, 4.5, 5.33333333, 6.16666667, 7.])
+    >>> b = hist * np.diff(bin_edges) # Berechne Wkeitsvert
+    >>> b -> array([ 0.1,  0.2,  0.3,  0.2,  0.1,  0.1])
+    >>> plt.plot(b)
+    >>> plt.show()
+
  
  

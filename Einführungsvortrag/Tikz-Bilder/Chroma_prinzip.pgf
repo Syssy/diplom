@@ -1,0 +1,37 @@
+
+\usetikzlibrary{arrows,%
+                topaths}%
+\tikzstyle{knoten}=[draw,-,thick,fill=none,inner sep=0pt, minimum width=45pt, circle]
+\tikzstyle{kante}=[draw,-,thick,black]
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{%
+	calc,%
+	decorations.pathmorphing,%
+	fadings,%
+	shadings%
+}
+
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=1cm, thick,
+  molecule/.style={circle,fill=white,draw,font=\sffamily\bfseries, minimum height=10pt},
+  stationary/.style={rectangle, fill = lightgray!50, draw}]
+
+%  \fill[color=lightgray!40] (6.9,1.5) -- (6, 3.5) -- (7.8,3.5) -- cycle ;    
+ % \fill[color=lightgray!40] (2,1.5) -- (1.1, 3.5) -- (2.9,3.5) -- cycle ;    
+
+  \node[stationary, text width = 5 cm, align = center] (stat) at (1, 1) {stationÃ¤re Phase};
+  \node[molecule, align = center, fill = black] (s) [above of = stat] {};
+  \node[molecule] (m) [right = of s] {};
+
+  %\path[every node/.style={font=\sffamily\large}]
+
+%    (s)   edge [bend right] node [below] {$1-p_s$} (m)
+   %         edge [loop left] node {$p_s$} (s)
+        
+ %   (m)  edge [bend right] node[above]{$1-p_m$} (s)
+    %         edge [loop right] node {$p_m$} (m)
+      %  ;
+
+\end{tikzpicture}
+
