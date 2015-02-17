@@ -14,12 +14,12 @@ public class myPAA extends PAA implements DeterministicEmitter{
 		
 		//Teste, was für mich schneller ist, wegen der doublingtechnique
 		Date startdate1 = new Date();
-		double[][] ausgabe = aPAA.computeStateValueDistribution(50000);
+		double[][] ausgabe = aPAA.computeStateValueDistribution(100000);
 		Date enddate1 = new Date();
 		System.out.println(startdate1 + " "+ enddate1);
 
 		Date startdate2 = new Date();
-		aPAA.waitingTimeForValue(50000, 10000);
+		aPAA.waitingTimeForValue(500000, 100000);
 		Date enddate2 = new Date();
 		System.out.println(startdate2 + " "+ enddate2);
 		
@@ -74,7 +74,7 @@ public class myPAA extends PAA implements DeterministicEmitter{
 	@Override
 	public int getValueCount() {
 		// TODO Auto-generated method stub
-		return 50000;
+		return 100002;
 	}
 
 	@Override
