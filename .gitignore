@@ -1,1 +1,10 @@
 *.tdo 
+*.bbl
+*.blg
+*.backup
+*.aux
+*.nav
+*.log
+*.out
+*.snm
+*.toc
