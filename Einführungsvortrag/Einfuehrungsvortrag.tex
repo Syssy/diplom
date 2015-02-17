@@ -1,13 +1,18 @@
 \documentclass{beamer}
 
+\hypersetup{
+  pdfstartpage=1,
+  pdfpagelayout=SinglePage,
+  pdfview = fit,
+  pdfstartview = Fit
+}
+
 \usepackage[latin1]{inputenc}
 \usepackage[ngerman]{babel}
-%\usepackage{amsmath,amssymb,amsthm}
-%\usepackage{wasysym}
+\usepackage{amsmath,amssymb,amsthm,latexsym}
+\usepackage{wasysym}
 
-%\usepackage{ae}
 \usepackage[T1]{fontenc}
-%\usepackage{german}
 
 \usetheme{Singapore}
 \useinnertheme{circles}
@@ -16,27 +21,30 @@
 \usefonttheme{professionalfonts}
 \setbeamertemplate{frametitle}[default][left]
 \setbeamertemplate{footline}[frame number]
+\setbeamertemplate{itemize item}[ball]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[square]
 
-\usepackage{dsfont}
+%für overfull boxes:
+%\usepackage{showframe}
+
+%\usepackage{dsfont}
 \usepackage{multicol}
 
 \renewcommand{\Tiny}{\fontsize{5pt}{6pt}}
 
 \usepackage{tikz}
-\usetikzlibrary{arrows,%
-                petri,%
-                topaths}%
 \tikzstyle{knoten}=[draw,-,thick,fill=none,inner sep=0pt, minimum width=15pt, circle]
 \tikzstyle{kante}=[draw,-,thick,black]
 \usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,petri}
-\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit}
 \usetikzlibrary{shapes.geometric}
 \usetikzlibrary{%
 	calc,%
 	decorations.pathmorphing,%
 	fadings,%
 	shadings}
-
+	
+	
 \definecolor{tugreen}{cmyk}{0.57,0,1,0}
 
 \title{Simulation einer Multikapillarsäule}
@@ -44,6 +52,8 @@
 \author[E.Böhmer]{Elisabeth Böhmer}
 \date{\today}
 \institute [TuDO] {Technische Universität Dortmund}
+
+
 
 \begin{document}
 
@@ -75,22 +85,19 @@
 %\end {frame}
 
 \begin{frame}
-\frametitle {Titel}
+\frametitle {PAA für das 2-Parameter Modell}
 
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm, thick,
-  state node/.style={circle,fill=white,draw,font=\sffamily\bfseries, minimum height=30pt},
+  state node/.style={circle,fill=white,draw,font=\sffamily\bfseries, minimum height=30pt, text width = 1.6cm, align = center},
   operation node/.style= {regular polygon, regular polygon sides=3,  fill = white, draw, inner sep=  0pt},
-  emission node/.style={rectangle, fill = lightgray!50, draw}]
+  emission node/.style={rectangle, fill = lightgray!50, draw, text width = 1.5cm}]
 
-  \fill[color=lightgray!40] (8,2.7) -- (7, 4.8) -- (9,4.8) -- cycle ;    
-  \fill[color=lightgray!40] (2,2.7) -- (1, 4.8) -- (3,4.8) -- cycle ;    
-
-  \node[state node, text width = 1.5cm, align = center] (s) at (2, 1)  {stationär};
-  \node[state node, text width = 1.5cm, align = center] (m) [right = of s] {mobil};
-  \node[operation node, align = center] (os)  at (0.5,0) {$+$};
-  \node[operation node, align = center] (om)  at (9.5,0) {$+$};
-  \node[emission node, align = center] (em) [above of = m] {$e(0) = 0$\\$e(1)=1$};
-  \node[emission node, align = center] (es) [above of = s] {$e(0) = 1$\\$e(1)=0$};
+       % \draw[fill=green] (current page.north west) rectangle (current page.south east);
+%  
+  \node[state node] (s) at (2, 1)  {stationär};
+  \node[state node] (m) [right = of s] {mobil};
+  \node[operation node, align = center] (os)  at (1.5,0.2) {$+$};
+  \node[operation node, align = center] (om)  at (7.5,0.2) {$+$};
 
   \path[every node/.style={font=\sffamily\large}]
 
@@ -100,6 +107,13 @@
     (m)  edge [bend right] node[above]{$1-p_m$} (s)
              edge [loop right] node {$p_m$} (m)
         ;
+
+  \fill[color=lightgray!40] (1.1, 3.5) --(2,1.5) -- (2.9,3.5) -- cycle ;
+  \fill[color=lightgray!40] (6.05, 3.5) -- (6.95,1.5) -- (7.85,3.5) -- cycle ;
+
+  \node[emission node, align = center] (em) [above of = m] {$e(0) = 0$\\$e(1)=1$};
+  \node[emission node, align = center] (es) [above of = s] {$e(0) = 1$\\$e(1)=0$};
+  
 \end{tikzpicture}
 
 
@@ -109,7 +123,94 @@
 
 
 \begin{frame}
-\frametitle {noch ein titel}
+\frametitle{Prinzip der Gaschromatographie} 
+
+\begin{itemize}
+ \item Verfahren zur Auftrennung von Stoffgemischen
+ \item Verteilung der Analyten zwischen mobiler und stationärer Phase
+ \item Varianten:
+  \begin{itemize}
+   \item Flüssigchromatographie
+   \item Gaschromatographie
+    \begin{itemize}
+     \item Gepackte Säulen
+     \item Kapillarsäulen
+    \end{itemize}
+
+  \end{itemize}
+
+\end{itemize}
+
+ 
+\end{frame}
+
+
+\begin{frame}
+\frametitle {Prinzip der Gaschromatographie}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto, thick,
+  point/.style={circle},
+  analyte/.style={circle,fill=black,draw,minimum height=10pt},
+  mobile/.style={circle,fill=white,draw,minimum height=10pt },
+  stationary/.style={rectangle,fill = lightgray!50,minimum height=1.8cm}]
+
+  %Stationäre Phase
+   \fill[color = lightgray!50] (-0.5,-1.5) -- (8,-1.5) -- (8,0.5) -- (-0.5,0.5) -- cycle;
+   \node[stationary, text width = 15em,text centered] (stat) at (4, -0.5) {stationäre Phase};
+   \node[mobile](a0) at (0, 3){};
+   \node[text width =5cm] at (2.8, 3) {mobile Phase};
+   \node[analyte] at (3, 3){};
+   \node[text width =5cm] at (5.8, 3) {Analyt};
+   
+\onslide<1>{
+  % Start beider Teilchen
+   \node[analyte](a1) at (-1, 1){};
+   \draw[->](a1)--(0,1);
+   \node[mobile](m1) at (-1, 1.5){};
+   \draw[->](m1)--(0, 1.5);
+}\onslide<2>{
+   \node[analyte](a2a) at (0, 1){};
+   \draw[->](a2a)--(1, 1);
+   \node[mobile](m2a) at (0, 1.5){};
+   \draw[->](m2a)--(1, 1.5) ;
+}\onslide<3>{
+   %Analyt bleibt hängen (Lösung)
+   \node[analyte](a2) at (0.5, 0.5){};
+   \draw[->](a2)--(0.5, 0) ;
+   \node[mobile](m2) at (1, 1.5){};
+   \draw[->](m2)--(2, 1.5) ;
+}\onslide<4>{
+   %Lösung, Teil2
+   \node[analyte](a3) at (0.5, 0){};
+   \node[mobile](m3) at (2, 1.5){};  
+   \draw[->](m3)--(3, 1.5);
+   \node[text width = 2cm] at (1, -2) {Lösung}; 
+}\onslide<5>{
+   % Weiter
+   \node[analyte](a4) at (1.5, 1){};
+   \draw[->](a4)--(2.5,1);
+   \node[mobile](m4) at (3, 1.5){};
+   \draw[->](m4)--(4, 1.5); 
+}\onslide<6>{   
+% Weiter
+   \node[analyte](a4) at (2.5, 1){};
+   \draw[->](a4)--(3.5,1);
+   \node[mobile](m4) at (4, 1.5){};
+   \draw[->](m4)--(5, 1.5);
+}\onslide<7>{
+   % Analyt bleibt hängen (Adsorption)
+   \node[analyte](a4) at (3, 0.5){};
+   \node[mobile](m4) at (5, 1.5){};
+   \draw[->](m4)--(6, 1.5);
+   \node[text width = 2cm] at (3, -2) {Adsorption}; 
+}\onslide<8>{
+   % Weiter
+   \node[analyte](a4) at (4, 1){};
+   \draw[->](a4)--(5,1);
+   \node[mobile](m4) at (6, 1.5){};
+   \draw[->](m4)--(7, 1.5);
+}
+\end{tikzpicture}
 
 \end {frame}
 
