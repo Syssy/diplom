@@ -212,8 +212,10 @@ läuft
  * Graphische Ausgabe mit Java läuft jetzt auch irgendwie. Habe die Javaplot-Library doch verworfen, da ich das nicht so ganz hingekriegt habe. Könnte aber auch daran liegen, dass die Ausgabe des PAA (also die Wartezeiten) nicht direkt als Histogramm anzeigbar sind. 
  * Rahmen für den Vortrag angefangen
 
-
-
+11.02.2015
+ * Mir ist so ein bisschen das "Große Ganze" klar geworden. Es geht im Endeffekt um die Vorhersage von Peaks anhand von Stoffparametern. Im Informatik-Teil geht es darum, einen Zusammenhang zwischen den Simulationsparametern und den Peakparametern zu finden. Im zweiten Schritt können sich dann irgendwelche Chemiker oder Biologen Gedanken machen, ob diese Simulationsparameter sich aus Stoffeigenschaften ableiten lassen. Naja, ob das einfacher ist, als direkt aus den Peaks, wage ich noch anzuzweifeln, zumal der Zusammenhang relativ direkt erscheint (also was ps und pm mit den peaks tun) Aber vielleicht kann man das ja irgendwann weiter denken. 
+ Hmm, so viel schlauer bin ich doch nicht.
+ * Folien angefangen, v.a. Tikz-Bilder 
 
 
 

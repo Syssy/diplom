@@ -311,6 +311,8 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
     >>> b -> array([ 0.1,  0.2,  0.3,  0.2,  0.1,  0.1])
     >>> plt.plot(b)
     >>> plt.show()
-
+ * Dringt der Analyt in die stat ein oder bleibt er dran kleben? (-> Vortragsgraphik)
+  ** Adsorptions -> Ablagerung an der Oberfläche durch van-der-waals-kräfte oder Wasserstoffbrückenbildung (stärker)
+  ** Verteilungs -> Lösung in den Phasen
  
  
