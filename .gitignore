@@ -8,3 +8,6 @@
 *.out
 *.snm
 *.toc
+*.dvi
+*.lof
+*.thm
