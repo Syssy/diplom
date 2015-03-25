@@ -314,5 +314,33 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * Dringt der Analyt in die stat ein oder bleibt er dran kleben? (-> Vortragsgraphik)
   ** Adsorptions -> Ablagerung an der Oberfläche durch van-der-waals-kräfte oder Wasserstoffbrückenbildung (stärker)
   ** Verteilungs -> Lösung in den Phasen
+  
+  
+19.02.2015  
+ * Mail an Rahnenführer (Termin Vortrag ab 02.04.)
+ * Schreiben: Modell -> Wie beschreibe ich mein Modell formal. Am Besten erst mal auf Papier...
  
  
+16.03.2015 
+ * Mein Plan für die nächsten Wochen:
+  ** PAA in Julia implementieren
+  ** Aufschreiben:
+   *** Grundlagen
+   *** Modell
+   *** Implementierung
+   *** Stichpunkte zu Evaluation/Diskussion
+  ** Implementierungen angucken und eine "Final"-Version erstellen, die gut kommentiert ist
+  ** Drei-Parameter-Modell erstellen, implementieren (erst nach dem review der alten versionen)
+ * Review:
+  ** Nötige Dateien:
+   *** IMS_Dommi/peak_width.py abh: ims_core.py
+   *** Param_p/2-Param-Modell/peakfinder.py /2_param_v005.py (evtl. parallelv005?)
+   *** Param_p/Wannpassiertwas/ ? (->simulation)
+   *** Pythonkram/Plotkram/plotkram.py 
+   *** Pythonkram/Simulationsklasse_2Param/simulation.py
+  ** Aufruf von 2_param_v005 startet Simulationen, über Kommandozeilenparameter bestimmt, welche
+  ** Zusätzlich neues Script, welches Plots ausgibt (Plottings?) und eines, das Berechnungen anstellt und diese dann ausgibt.
+  ** Peakfinder kann 2_param_v005 aufrufen, mit pcombis
+  ** Überlegung für die ganzen Plotsachen: Aufruf geschieht ja entweder from_file oder mit Daten. Problem: Dateien manchmal unsortiert, was für das Plotten doof ist. Erstelle also jeweils alles mit funcxy_from_file zusätzlich, welches die Daten extrahiert und funcxy aufruft
+  ** peak_width fliegt raus; effektiv nur calculate_width (ehemals fpwahph) genutzt, das zieht um in die sim-Klasse. Plot-Dinge sollten entsprechend ins my_plottings umziehen  
+  

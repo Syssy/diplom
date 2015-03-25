@@ -1,11 +1,5 @@
-\documentclass[a4paper,11pt,twoside,ngerman,color]{book}
-\usepackage[utf8]{inputenc}
-\usepackage[ngerman]{babel}
-%\usepackage[disable]{todonotes}
-\usepackage{bibgerm}
-
+\documentclass[a4paper,11pt,twoside,ngerman]{book}
 \include{header}
-
 \begin{document}
 % Titelseite
 \include{kapitel/titelseite}
@@ -15,11 +9,11 @@
 
 \pagenumbering{roman}
 \tableofcontents
+\todototoc
+\listoftodos
 \cleardoublepage
 \pagenumbering{arabic}
-
 % Kapitel
-\include{kapitel/test}
 \include{kapitel/einleitung}
 \include{kapitel/Grundlagen/grundlagen}
 \include{kapitel/Modell/modell}
@@ -47,11 +41,11 @@
 \addcontentsline{toc}{chapter}{\bibname}
 
 % Erklaerung
-\thispagestyle{myheadings}
-\markboth{}{ERKLÄRUNG}
-\addcontentsline{toc}{chapter}{Erklärung}
-\include{kapitel/erklaerung}
-\cleardoublepage
+%\thispagestyle{myheadings}
+%\markboth{}{ERKLÄRUNG}
+%\addcontentsline{toc}{chapter}{Erklärung}
+%\include{kapitel/erklaerung}
+%\cleardoublepage
 
 \end{document}
 % EOF

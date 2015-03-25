@@ -2,3 +2,58 @@
 
 \chapter{Grundlagen}
 \label{chapter:gru}
+
+\section{Chromatographie}
+
+Die Gaschromatographie (GC) ist ein Verfahren, mit dem gasförmig vorliegende Stoffgemische aufgetrennt oder analysiert werden können. 
+Die Auftrennung erfolgt dabei zwischen zwei sogenannten Phasen, der stationären und der mobilen Phase, welche sich in unterschiedlichen Aggregatzuständen befinden und untereinander nicht mischen. 
+
+
+% Allgeinprinzip: Phasen, Phasenwechsel
+% Arten der Chroma -> Interessant GC mit Kapillartechnik
+% Detektion / Weiterverarbeitung
+% Probleme: Peakshapes (Tailing), Ursache
+% Verwandte Arbeiten?
+% Wo kommt das mit den Referenzdatensätzen rein?
+
+Beispielsweise kann die GC in einer Multikapillarsäule (MCC, engl. Multi Capillary Colum) stattfinden. Sie besteht aus ca. 1000 \todo{Quelle Anzahl Kapillaren einer MCC}
+einzelnen Kapillaren. Jede davon ist innen mit der sog. stationären Phase beschichtet. Außerdem kommt ein Trägergas, die sog. mobile Phase, zum Einsatz, welches die Analyte durch die Säule transportiert. Die Substanzen unterscheiden sich vor allem durch ihre Wechselwirkungen mit der stationären Phase. Während dieser Wechselwirkungen haften die Teilchen an der stationären Phase, bewegen sich also nicht fort. Finden wenig Wechselwirkungen statt, passieren die Teilchen die Säule schneller, als wenn viele Wechselwirkungen stattfinden. Dies beeinflusst die Retentionszeit, also die Zeit, die zum Durchlaufen der Säule gebraucht wird.
+
+%\todo{Wegen Datensätzen muss das doch rein}
+Nach Durchlaufen der Säule können die Substanzen mit anderen Verfahren wie Massenspektrometrie (MS) oder Ionen-Mobilitäts-Spektrometrie (IMS) weiter analysiert werden.
+%
+
+Zu beobachten ist, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden. Ideale Peaks haben die Form einer Gaußkurve, jedoch tritt oft ein Tailing auf. Dieses wird unter anderem verursacht durch Adsorptionseffekte, die beim Altern einer Säule auftreten \cite{kolb2003}.
+
+\section{Probabilistische Arithmetische Automaten}
+Ein Probabilistischer Arithmetischer Automat (PAA) nach \cite{MHKR} ist ein Modell, mit dem eine Folge zufälliger Operationen beschrieben werden kann. 
+Für PAA existieren Algorithmen, welche eine gemeinsame Verteilung von Zuständen und Werten oder auch die Verteilung der Wartezeit für einen Wert berechnen. Wie in Kapitel \ref{chapter:mod} beschrieben wird, kann das Modell zur Simulation einer Multikapillarsäule auch als PAA formuliert werden. Mit dieser Formulierung ist die Zeit, die zum Durchlaufen einer Säule gebraucht wird, dann die Wartezeit für den Wert, welcher der Länge der Säule entspricht. Deshalb kann ein PAA nützlich sein, um neben der eigentlichen Simulation auch noch eine erwartete Verteilung der Ankunftszeiten der Teilchen zu berechnen. 
+
+Zunächst sei hier eine Definition für den PAA gegeben, anschließend wird der Algorithmus zur Berechnung der Wartezeit beschrieben.
+%In diesem Fall ist die Länge der Säule der Wert, auf den gewartet wird und man ist interessiert in der Verteilung der Anzahl der Zeitschritte, die benötigt werden, um die Länge zu erreichen. 
+
+%TODO: Wo soll das rein? Sinnvoll, wenn das zu Beginn erklärt
+% Was tut ein PAA
+
+\subsection{Definition eines PAA}
+% Formale Definition
+
+\begin{definition}[PAA]
+ Ein Probabilistischer Arithmetischer Automat (PAA) ist ein Tupel
+ $ \mathcal{P} = (\mathcal{Q}, q_0, T, \mathcal{V}, v_0, \mathcal{E}, (e_q)_{q\in\mathcal{Q}}, (\theta_q)_{q\in\mathcal{Q}})$, dabei ist:
+ \begin{itemize}
+  \item $\mathcal{Q}$ eine endliche Menge von Zuständen
+  \item $q_0 \in \mathcal{Q}$ der Startzustand
+  \item $T: \mathcal{Q} \times \mathcal{Q} \rightarrow [0,1]$ eine Übergangsfunktion mit $\sum_{q' \in \mathcal{Q}} T(q, q') = 1 $ das heißt $(T(q,q'))_{q,q' \in \mathcal{Q}}$ ist eine stochastische Matrix
+  \item $\mathcal{V}$ eine Menge von Werten
+  \item $v_0$ der Startwert
+  \item $\mathcal{E}$ eine endliche Menge von Emissionen
+  \item $e_q: \mathcal{E} \rightarrow [0,1]$ eine Wahrscheinlichkeitsverteilung der Emissionen für jeden Zustand
+  \item $\theta_q: \mathcal{V} \times \mathcal{E} \rightarrow \mathcal{V}$ eine Operation für jeden Zustand
+ \end{itemize}
+\end{definition}
+Dabei entspricht $ \mathcal{P} = (\mathcal{Q}, q_0, T)$ einer Markovkette und $ \mathcal{P} = (\mathcal{Q}, q_0, T, \mathcal{E}, (e_q)_{q\in\mathcal{Q}})$ einem Hidden Markov Model. \todo{Muss ich dann die beiden erklären?}
+
+\subsection{Algorithmus zur Berechnung der Wartezeit}
+
+% Algos für die Verteilung und Wartezeit-Berechnung

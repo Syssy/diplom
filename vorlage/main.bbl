@@ -1,3 +1,15 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{kolb2003}
+{\sc Kolb, Bruno}: {\em Gaschromatographie in Bildern [eine Einführung]}.
+\newblock Wiley-VCH, Weinheim, 2., überarbeitete und erweiterte
+  \btxeditionlong{}, 2003.
+
+\bibitem{MHKR}
+{\sc Marschall, Tobias}, {\sc Inke Herms}, {\sc Hans-Michael Kaltenbach}
+  \btxandlong{}\ {\sc Sven Rahmann}: {\em Probabilistic Arithmetic Automata and
+  Their Applications}.
+\newblock IEEE/ACM Trans. Comput. Biol. Bioinformatics, 9(6):1737--1750,
+  \btxmonnovlong{} 2012.
 
 \end{thebibliography}

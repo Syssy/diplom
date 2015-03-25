@@ -215,9 +215,16 @@ läuft
 11.02.2015
  * Mir ist so ein bisschen das "Große Ganze" klar geworden. Es geht im Endeffekt um die Vorhersage von Peaks anhand von Stoffparametern. Im Informatik-Teil geht es darum, einen Zusammenhang zwischen den Simulationsparametern und den Peakparametern zu finden. Im zweiten Schritt können sich dann irgendwelche Chemiker oder Biologen Gedanken machen, ob diese Simulationsparameter sich aus Stoffeigenschaften ableiten lassen. Naja, ob das einfacher ist, als direkt aus den Peaks, wage ich noch anzuzweifeln, zumal der Zusammenhang relativ direkt erscheint (also was ps und pm mit den peaks tun) Aber vielleicht kann man das ja irgendwann weiter denken. 
  Hmm, so viel schlauer bin ich doch nicht.
- * Folien angefangen, v.a. Tikz-Bilder 
+ * Folien angefangen, v.a. Tikz-Bilder
+ 
+ 
+19.02.2015 
+ * Terminklärung für Einführungsvortrag läuft.
+ * Ein bisschen Julia angeguckt
 
-
+ 
+16.03.2015
+ * Vortrag am 23.4.
 
 
 

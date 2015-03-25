@@ -2,3 +2,22 @@
 
 \chapter{Implementierung}
 \label{chapter:imp}
+\todo{Kapitel Implementierung schreiben}
+
+\section{Simulation}
+
+\subsection{Step-by-step}
+Es kann entweder jeder Zeitschritt der Chromatographie simuliert und dabei für jedes Teilchen entschieden werden, ob es sich bewegt. Dabei angenommen, dass die Wahrscheinlichkeit der Wechselwirkung unabhängig vom aktuellen Ort oder dem Zeitpunkt des letzten Phasenwechsels ist. Es wird für jedes Teilchen festgehalten, wo es sich befindet und ähnlich wie bei der echten Chromatographie beobachtet, wann wie viele Teilchen die Säule durchquert haben. 
+\todo{Stey by step-Simulation beschreiben}
+
+\subsection{By-Event}
+Bei Übergangswahrscheinlichkeiten, die sehr groß oder klein sind, kommt es selten zu Zustandsänderungen, sodass es in diesem Fall effizienter ist, eine Wartezeitmethode zu nutzen: Es wird für jedes Teilchen entschieden, wann es den Zustand wechselt und, falls es mobil ist, wie weit es bis dahin weiter wandert. Es werden also nur die tatsächlichen Ereignisse simuliert, Schritte für Zeitpunkte, zu denen nichts passiert, entfallen.
+\todo{by event-simulation beschreibe,}
+
+% Generelles: Welche Sprachen, warum (?)
+% Die Simulation in Python, beide Varianten (Also by-event und step-by-step) 
+% -> Algorithmen?
+
+\section{PAA}
+Die Berechnung des PAA in Java, dabei Referenz auf mosdi (Zitiere Paper, in dem das vorgestellt wird und sage, dass ich das verwende)
+\todo{Implementierung des PAA beschreiben; erst wenn evtl nachprogrammierung fertig}
