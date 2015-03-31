@@ -343,4 +343,4 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
   ** Peakfinder kann 2_param_v005 aufrufen, mit pcombis
   ** Überlegung für die ganzen Plotsachen: Aufruf geschieht ja entweder from_file oder mit Daten. Problem: Dateien manchmal unsortiert, was für das Plotten doof ist. Erstelle also jeweils alles mit funcxy_from_file zusätzlich, welches die Daten extrahiert und funcxy aufruft
   ** peak_width fliegt raus; effektiv nur calculate_width (ehemals fpwahph) genutzt, das zieht um in die sim-Klasse. Plot-Dinge sollten entsprechend ins my_plottings umziehen  
-  
+ * Mal von nem anderen Rechner testen, was bisher so da ist  
