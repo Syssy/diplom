@@ -18,22 +18,8 @@ from matplotlib import colors, cm
 
 import simulation_2p as simulation
 
-
-# Eine einzelne Heatmap aus einer .pickleDatei machen
-def plot_heatmap_from_file(datei, squareroot_num_sim, moment, recalc = False):
-    startzeit = time.clock()
-    print ("plot heatmap " + datei)
-    with open(datei, 'rb') as daten:
-        sim_array = pickle.load(daten)  
-        squareroot_num_sim = sim_array.shape[0]
-        sim_array = np.reshape(sim_array, squareroot_num_sim*squareroot_num_sim)
-        if recalc:
-            for sim in sim_array:
-                sim.recalculate()
-        mySortedSims = sorted(sim_array, key= Simulation.get_pm)
-        #print mySortedSims1, '\n\n'
-        sim_array = sorted(mySortedSims, key = Simulation.get_ps)
-        plot_heatmap(sim_array, squareroot_num_sim, moment)
+def plot_single_peak(data, from_file = False, qq = scipy.stats.norm):
+    return None
 
 def plot_widthmap(sim_array, nr_ps=10, nr_pm=10):
     print ("plot heatmap of width")
@@ -58,7 +44,6 @@ def plot_widthmap(sim_array, nr_ps=10, nr_pm=10):
     
     cbar = fig.colorbar(cax)#, ticks=[np.amin(to_plot), 0, np.amax(to_plot)])*
             
-   #
 def plot_widthandskew(sim_list, plotwidth = True, plotskew = False):
     peak_data = []
     sims = []
@@ -126,6 +111,22 @@ def plot_params_at_time(sim_list, t, epsilon = 0.1):
         logging.log(21, sim.pd[1])
     plt.suptitle("Parameter für Zeit "+ str(t))
     plt.show()    
+
+# Eine einzelne Heatmap aus einer .pickleDatei machen
+def plot_heatmap_from_file(datei, squareroot_num_sim, moment, recalc = False):
+    startzeit = time.clock()
+    print ("plot heatmap " + datei)
+    with open(datei, 'rb') as daten:
+        sim_array = pickle.load(daten)  
+        squareroot_num_sim = sim_array.shape[0]
+        sim_array = np.reshape(sim_array, squareroot_num_sim*squareroot_num_sim)
+        if recalc:
+            for sim in sim_array:
+                sim.recalculate()
+        mySortedSims = sorted(sim_array, key= Simulation.get_pm)
+        #print mySortedSims1, '\n\n'
+        sim_array = sorted(mySortedSims, key = Simulation.get_ps)
+        plot_heatmap(sim_array, squareroot_num_sim, moment)
         
 # Eine einzelne Heatmap aus einem array plotten, (Aufruf von der Simulation)      
 def plot_heatmap(sim_array, squareroot_num_sim, moment):
@@ -509,7 +510,9 @@ def get_argument_parser():
 def main():
     p = get_argument_parser()
     args = p.parse_args()
-
+    
+    plot_single_histqq_ff(args.inputfile)
+    
     if args.recalculate:
         filename = args.inputfile
         sims = None

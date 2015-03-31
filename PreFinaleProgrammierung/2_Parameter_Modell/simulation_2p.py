@@ -336,7 +336,7 @@ def main():
     print ("n", number, "l", length, time.strftime("%d%b%Y_%H:%M:%S"))
     p = get_argument_parser()
     args = p.parse_args()
-    neueSim = Simulation(0.99991, 0.775, length, number, "T", [])
+    neueSim = Simulation(0.9991, 0.775, length, number, "T", [])
     loc_n, scale_n, halfmax  = 5, 2, 4
     norm = lambda x: np.exp(-(x-loc_n)**2 / (2*scale_n**2)) / math.sqrt(2*math.pi * scale_n**2)
     linie = lambda x: halfmax + 0*x
