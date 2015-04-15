@@ -14,16 +14,14 @@ public class myPAA extends PAA implements DeterministicEmitter{
 		
 		//Teste, was für mich schneller ist, wegen der doublingtechnique
 		Date startdate1 = new Date();
-		double[][] ausgabe = aPAA.computeStateValueDistribution(100000);
+		//double[][] ausgabe = aPAA.computeStateValueDistribution(100000);
 		Date enddate1 = new Date();
 		System.out.println(startdate1 + " "+ enddate1);
 
 		Date startdate2 = new Date();
-		aPAA.waitingTimeForValue(500000, 100000);
+		aPAA.waitingTimeForValue(250000, 50000);
 		Date enddate2 = new Date();
 		System.out.println(startdate2 + " "+ enddate2);
-		
-		// TODO Auto-generated method stub
 
 	}
 
@@ -88,8 +86,8 @@ public class myPAA extends PAA implements DeterministicEmitter{
 
 	@Override
 	public double transitionProbability(int state, int targetState) {
-		double ps = 0.99;
-		double pm = 0.99;
+		double ps = 0.9992;
+		double pm = 0.7;
 		double p;
 		switch (state){
 		case 0: p = ps; break;
