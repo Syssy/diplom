@@ -344,3 +344,18 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
   ** Überlegung für die ganzen Plotsachen: Aufruf geschieht ja entweder from_file oder mit Daten. Problem: Dateien manchmal unsortiert, was für das Plotten doof ist. Erstelle also jeweils alles mit funcxy_from_file zusätzlich, welches die Daten extrahiert und funcxy aufruft
   ** peak_width fliegt raus; effektiv nur calculate_width (ehemals fpwahph) genutzt, das zieht um in die sim-Klasse. Plot-Dinge sollten entsprechend ins my_plottings umziehen  
  * Mal von nem anderen Rechner testen, was bisher so da ist  
+ 
+
+26.03.2015
+ * ist es besser array leer anzulegen und zu pushen oder vorher länge festzulegen und über indexzugriff zu setzen?
+ * Alternatividee zu den sparse matrices: Einfach Liste speichern, da die Werte ja in einem zusammen hängenden Bereich sind. Jeweils den ersten Wert testen, ob er noch über einem Grenzwert ist, falls drunter, eine Index-Variable erhöhen und die erste Stelle löschen
+ * Klären, ob allgemeiner PAA gewünscht ist, oder die spezifische Variante reicht
+ * WaitingTimeForValue
+ * Zeitanalyse: Am meisten Zeit scheinen push! und unshift! zu benötigen, keine Ahnung, wie ich das umgehen kann. Alternativ könnte ich doch mal eher den PAA aus mosdi nachprogrammieren, glaube aber kaum, dass das was bringt
+
+09.04.2015
+ * Bei den Peaks noch mal die Breiten überprüfen, dabei Basisrauschen beachten (dadurch werden die vielleicht schmaler, wenn Rauschen abgezogen werden muss) 
+ * Screenshot / jpg-Export von den Visual Now - Ansichten
+ * Welche Ergebnisse sollen in den Vortrag?
+ * Noch mal einen Plot wie in 7a erstellen, aber mit je 10000 Teilchen.
+ * In der simulation noch mal nachrechnen, welche Einheiten nun korrekt sind

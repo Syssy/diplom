@@ -228,5 +228,9 @@ läuft
 
 26.03.2015
  * Angefangen PAA in Julia zu implementieren
-
-
+ * Läuft auch und kommen Gaußkurven raus. Allerdings nur eine sehr spezifische Variante für genau diesen PAA. Bisher existiert auch nur die "computeStateValueDistribution", eine "WaitingTimeForValue" fehlt noch. Jetzt nicht mehr
+ * Es lohnt sich Float32 zu verwenden (ist schneller als Float64)
+ 
+09.04.2015 
+ * simulation_2p.py in der PreFinalenProgrammierung ist bis auf zwei Todos fertig
+ * Die Vortragsfolien entwickeln sich weiter
