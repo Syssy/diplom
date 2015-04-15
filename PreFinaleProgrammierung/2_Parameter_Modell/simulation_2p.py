@@ -2,6 +2,7 @@
 # -*- coding: latin-1 -*- 
 # Hoffentlich finale Version für die 2-Param Simulation
 
+from __future__ import division
 import pickle
 import logging
 import argparse
@@ -92,20 +93,21 @@ class Simulation():
         # akutelle Zustaende der Teilchen 
         mobile_states = np.array([True]*number)
     
-        #Teil 1: Sim bis frueheste Teilchen ankommen koennen, hier muss noch keine Abbruchbed. getestet werden
-        while time_needed < self.length/20000000:
+        #Teil 1: Sim bis frueheste Teilchen ankommen koennen, hier muss noch keine Abbruchbed. getestet werden. 
+        # 0.1, da dann das Carriergas durch ist.
+        while time_needed < 0.1: #time_needed < self.length/2000000: #TODO Keine hartgecodeten zahlen!?
             locations, mobile_states = self._simulate_step(locations, mobile_states, number)
-            time_needed += 0.00001
-            logging.log(10, time_needed)
+            time_needed += 0.0001
+            #logging.log(20, time_needed)
         # Zeit soll hier 1/10s sein
         logging.log(20, "Teil1 vorbei, zeit:%s, simdauer:%s", time_needed, time.clock()-starttime)
         #Teil 2: Ab jetzt koennen Teilchen fertig sein, teste erst, dann x neue Runden
         while True:
             # d ist bitmaske aller aktuell angekommenen Teilchen
-            d = locations < self.length
+            d = locations <= self.length
             logging.log(10, locations)
             logging.log(13, d[0])
-            logging.log(15, "in der trueschleife, zeit: %s", time_needed)
+            logging.log(15, "in der trueschleife, zeit: %s, d:%s", time_needed, len(d))
             # die beiden Arrays aktualisieren (rauswerfen aller fertigen Teilchen)
             locations = locations[d]
             mobile_states = mobile_states[d]   
@@ -126,9 +128,9 @@ class Simulation():
                 break    
             
             # Damit es schneller geht, nach je x schritten nur testen
-            for x in range (1000):
+            for x in range (10):
                 locations, mobile_states = self._simulate_step(locations, mobile_states, number)
-                time_needed+=0.00001
+                time_needed+=0.0001
         
         #print time.clock()-starttime
         self.times = arrival_counter
@@ -140,7 +142,7 @@ class Simulation():
         particles = [(state, location) for state, location in particle_list if location < self.length]
         
         #extrahiere zeiten fertiger Teilchen
-        times = [location-self.length for state, location in particle_list if location >= self.length]
+        times = [(location-self.length)/200 for state, location in particle_list if location >= self.length]
 
         #Rueckgabe der nicht fertigen Teilchen und Ankunftszeiten fertiger Teilchen
         return particles, times
@@ -202,8 +204,8 @@ class Simulation():
         
         # solange noch Ereignisse ausstehen, wird simuliert
         # in teil1 kann noch kein Teilchen fertig werden
-       # teil1 = int(length)
-        for act_time in range(int(length)):
+        teil1 = int(length)
+        for act_time in range(teil1):
             #TODO warum int von length, ist das nicht int?
             if act_time in events:
                 # particle_list enthaelt teilchen die fuer act_time simuliert werden sollen
@@ -220,9 +222,11 @@ class Simulation():
                 # abgearbeitete events loeschen        
                 del events[act_time]
         # ab jetzt koennen teilchen fertig werden    
-        act_time = int(length)
+        act_time = teil1
         logging.log(15,"teil1vorbei")
-        logging.log(20, "teil1 %s, realtime: %s sec, events: %s", act_time, time.clock()-starttime, len(events))    
+        logging.log(20, "teil1 %s, realtime: %s sec, events: %s", act_time, time.clock()-starttime, len(events))
+        #logging.log(20, "fertige %s", self._test_finished(particle_list))
+        #logging.log(20, particle_list)
         while len(events) > 1:
             if act_time in events:
                 #if (act_time % 10000) == 0:
@@ -234,7 +238,8 @@ class Simulation():
                 particle_list, times = self._test_finished(particle_list)
                 arrival_counter.extend([(act_time+(date/200)) for date in times])
                 
-                #logging.log(25, "noch da2")
+                #logging.log(25, "noch da2, %s", arrival_counter)
+                #time.sleep(1)
                 # Falls die Teilchen dieses Zeitpunktes alle durch sind, wird nicht mehr simuliert
                 # sonst Simulation wie oben
                 if len(particle_list) > 0:
@@ -288,7 +293,7 @@ class Simulation():
         return scipy.optimize.fsolve(lambda x : fun1(x) - fun2(x), x0)      
     
     def calculate(self):
-        """Berechne Momente. Berechne Breite und Hoehe bei halber Peakhoehe, sowie Loc und Scale, ausgehen von Gaussverteilung"""
+        """Berechne Momente, Breite und Hoehe bei halber Peakhoehe, sowie Loc und Scale, ausgehend von Gaussverteilung"""
         # Momente berechnen
         self.mean = np.mean(self.times) 
         self.variance = np.var(self.times)
@@ -296,7 +301,7 @@ class Simulation():
         self.kurtosis = scipy.stats.kurtosis(self.times)
         
         # Peakdaten berechnen
-        # Parameter fuer passende Gausskurve zum Schneiden
+        # Finde Parameter fuer passende Gausskurve zum Schneiden
         loc_n, scale_n = scipy.stats.norm.fit(self.times)
         # halben Maximalwert berechnen
         halfmax = 1/(math.sqrt(2*math.pi)*scale_n *2)
@@ -310,7 +315,7 @@ class Simulation():
         # print ("max bei", norm(loc), "starte test bei:", loc-scale, loc+scale)
         # finde Schnittpunkte zwischen Linie auf halber Hoehe und Gausskurve, Startwerte sind median +- standardabweichung
         intersections = self._find_intersection(linie, norm, [loc_n+scale_n, loc_n-scale_n])
-        print (intersections)
+        logging.log(15, "Intersections %s", intersections)
         
         #width ist Abstand zwischen den Schnittpunkten
         width = abs(max(intersections) - min(intersections))
@@ -331,25 +336,29 @@ def get_argument_parser():
 
 # Nutzung für Testzwecke
 def main():
-    number = 1000
-    length = 20000
+    number = 10000
+    length = 200000
     print ("n", number, "l", length, time.strftime("%d%b%Y_%H:%M:%S"))
     p = get_argument_parser()
     args = p.parse_args()
-    neueSim = Simulation(0.9991, 0.775, length, number, "T", [])
-    loc_n, scale_n, halfmax  = 5, 2, 4
-    norm = lambda x: np.exp(-(x-loc_n)**2 / (2*scale_n**2)) / math.sqrt(2*math.pi * scale_n**2)
-    linie = lambda x: halfmax + 0*x
-    print (neueSim._find_intersection(norm, linie, 5))
+    neueSim = Simulation(0.99992, 0.8, length, number, "E", [])
+    #loc_n, scale_n, halfmax  = 5, 2, 4
+    #norm = lambda x: np.exp(-(x-loc_n)**2 / (2*scale_n**2)) / math.sqrt(2*math.pi * scale_n**2)
+    #linie = lambda x: halfmax + 0*x
+    #print (neueSim._find_intersection(norm, linie, 5))
     #neueSim.simulate()
     neueSim.simulate_by_event()
-    #print (neueSim, neueSim.times)
-    n, bins, patches = plt.hist(neueSim.times, 50, normed=1, alpha=0.5)   
-    #neueSim.simulate_each_timestep()
-    print (neueSim.mode)
-    n, bins, patches = plt.hist(neueSim.times, 50, normed=1, alpha=0.5)
     neueSim.calculate()
-    print (neueSim.params, neueSim.mean, neueSim.pd, neueSim.pd[0])
+    print("pd by event", neueSim.pd)
+    n, bins, patches = plt.hist(neueSim.times, 50, normed=1, alpha=0.5)   
+    plt.show()
+    #neueSim.simulate_each_timestep()
+    #neueSim.calculate()
+    #print ("times by step", neueSim, neueSim.times)
+    #print ("pd by timestep", neueSim.pd)
+    #n, bins, patches = plt.hist(neueSim.times, 50, normed=1, alpha=0.5)
+    #neueSim.calculate()
+    #print (neueSim.params, neueSim.mean, neueSim.pd, neueSim.pd[0])
     
     plt.show()
        

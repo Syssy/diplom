@@ -18,8 +18,25 @@ from matplotlib import colors, cm
 
 import simulation_2p as simulation
 
-def plot_single_peak(data, from_file = False, qq = scipy.stats.norm):
-    return None
+def plot_single_peak(peak, ff = False, num_bins=50, qq = scipy.stats.norm):
+    '''Plotte fuer einen Peak das Histogramm sowie qq-Plot zur Verteilung qq'''
+    data = peak
+    if ff:
+        with open (peak, 'rb') as daten:
+            data = pickle.load(daten)
+            #print(data)
+    #print(data)        
+    n, bins, patches = plt.hist(data.times, num_bins, normed=1, alpha=0.5 )
+    x = np.arange(50000, 250000, 100)
+    if qq == scipy.stats.invgauss:
+        print ("ig-params", scipy.stats.invgauss.fit(data.times))
+        mu, loc, scale =  scipy.stats.invgauss.fit(data.times)
+        plt.plot(x,scipy.stats.invgauss.pdf(x,mu, loc, scale))
+        print ('skew', scipy.stats.skew(data.times))
+        sm.qqplot(np.array(data.times), qq, distargs=(mu,),  line = 'r')
+    elif qq == scipy.stats.norm:
+        sm.qqplot(np.array(data.times), qq, line='r')
+
 
 def plot_widthmap(sim_array, nr_ps=10, nr_pm=10):
     print ("plot heatmap of width")
@@ -45,7 +62,7 @@ def plot_widthmap(sim_array, nr_ps=10, nr_pm=10):
     cbar = fig.colorbar(cax)#, ticks=[np.amin(to_plot), 0, np.amax(to_plot)])*
             
 def plot_widthandskew(sim_list, plotwidth = True, plotskew = False):
-    peak_data = []
+    data_data = []
     sims = []
     for sim in sim_list:
         try:
@@ -427,7 +444,8 @@ def plot_single_histqq_ff(datei, num_bins=50):
         plt.plot(x,scipy.stats.invgauss.pdf(x,mu, loc, scale))
         print ('skew', scipy.stats.skew(sim.times))
         
-        sm.qqplot(np.array(sim.times), scipy.stats.invgauss, distargs=(mu,),  line = 'r')
+        #sm.qqplot(np.array(sim.times), scipy.stats.invgauss, distargs=(mu,),  line = 'r')
+    plt.show()    
                
 def plot_qq(datei, qq_Plot, fit_qq_Plot, compare_Dist = scipy.stats.invgauss):
     with open(datei, 'rb') as csvfile:
@@ -452,6 +470,7 @@ def plot_qq(datei, qq_Plot, fit_qq_Plot, compare_Dist = scipy.stats.invgauss):
         #txt.set_bbox(dict(facecolor='k', alpha=0.1))
        # print "nr2",
         ax = fig.add_subplot(222)
+     
         sm.qqplot (np.array(liste[1]), compare_Dist, distargs= (0.005,),  line = 'r', ax =ax)
         #txt = ax.text(-1.8, 3500, str(params[1]) ,verticalalignment='top')
         #txt.set_bbox(dict(facecolor='k', alpha=0.1))
@@ -494,11 +513,86 @@ def plot_qq(datei, qq_Plot, fit_qq_Plot, compare_Dist = scipy.stats.invgauss):
 
     plt.show()
 
+# erstelle liste mit peakdaten zur gegebenen simulationsliste und plotte für diese das zeit/breiten- bzw zwei/skew-verhältnis
+def plot_simulations(sim_list): #TODO: copypaste aus 2_param_v005, ggf überarbeiten
+    """Erstelle diverse Plots"""
+    #plotkram.plot_widthmap(sim_list)
+    logging.log(25, "starte plotting")
+    sims = plotkram.plot_widthandskew(sim_list)
+    #peak_data = []
+    #sims = []
+    #for sim in sim_list:
+        #try:
+            #pd = (sim.params, sim.pd[0], sim.pd[1], sim.pd[2], sim.skewness)
+            ##willkürlich gewählt: loc <> xy, scale < z width < v...
+            #if sim.pd[0][0] < 240 and sim.pd[0][1] < 60 and sim.pd[1] < 50 and sim.pd[0][0] > 0:
+                #peak_data.append(pd)
+                #sims.append(sim)
+                ##print ("pd", pd)
+                ##with open(filename, "r+") as data:
+                ##   x = data.read()
+                  ## print (data, x)
+                    ##data.write(str(pd) + '\n')    
+        #except AttributeError as err:
+            #print (sim.params, err)
+            #sim.recalculate_moments()
+            #with open('simulated_data/l' + str(sim.length) + "/n" + str(number) + '/Sim_' + str(round(sim.params[0], 10)) + 
+                      #'_' + str(round(sim.params[1], 10)) + ".p", "wb") as datei:
+                #pickle.dump(sim, datei)
+            #pd = (sim.params, sim.pd[0], sim.pd[1], sim.pd[2], sim.skewness)
+            ##willkürlich gewählt: loc <> xy, scale < z width < v...
+            #if sim.pd[0][0] < 240 and sim.pd[0][1] < 60 and sim.pd[1] < 50 and sim.pd[0][0] > 0:
+                #peak_data.append(pd)
+                #sims.append(sim)
+                
+    #if len(peak_data) > 0:
+        #plt.show()
+    #logging.log(25, "plotte Groessenverhaeltnisse")
+    ##print ("pd", peak_data)
+    #filename = "l" + str(sim.length) + "n" + str(number) + "_peakdaten.p"
+    #with open(filename, "wb") as data:
+        #pickle.dump(peak_data, data)
+    #peak_width.plot_relation(filename)
+    #logging.log (15, "plot1 fertig")
+        
+    # und jetzt noch ein Spektrum mit max 48 Chroms
+    if len(sims) < 29:
+        figg = plt.figure()
+        legende = list()
+        pp = list()
+        time_max = 0
+        colors = my_magic_color_generator(len(sims))
+        plt.ylim((0, 1))
+        plt.xlim((0, 250))
+        for i, si in enumerate(sims):
+            logging.log(24, "simparams: %s, peakdaten %s, max %f", si, pd, max(si.times))
+            # teste hier auf bestimmte eigenschaften
+            if (si.pd[0][0]<240 and si.pd[0][0]>0.01):
+                time_max = max(time_max, max(si.times))
+                n, bins, patches = plt.hist(si.times, 50, normed=1, color = next(colors), alpha=0.5)
+                pp.append(patches[0])
+                legende.append(str(round(si.params[0], 10)) + ' ' + str(round(si.params[1], 10)))        
+        plt.suptitle("l:" + str(sims[0].length) + " n:" + str(number))
+        figg.legend(pp, legende)
+        plt.show()    
+        
+        # evtl noch ein Spektrum mit hinzugefuegten Rauschen und ohne farbliche Unterscheidung
+        if len(sim_list) < 25:
+            noise = []
+            for i in range(int(number*len(sim_list)/10)):
+                #noise.append(random.uniform(0, round(time_max)))
+                noise.append(random.uniform(0, 240))
+            for sim in sim_list:
+                for t in sim.times:
+                    noise.append(t)
+            plt.hist(noise, 500, normed = 1, alpha = 0.6)
+            #plt.show()
+
 def get_argument_parser():
     p = argparse.ArgumentParser(
         description = "beschreibung")
     #p.add_argument("--langerbefehl", "-l", help='hilfe', action='store_true', dest = 'destination')   
-    p.add_argument("--inputfile", "-i", help = "input file (pickled) to plot a heatmap, n x n Matrix")
+    p.add_argument("--inputfile", "-i", help = "input file")
     p.add_argument("--moment", "-m" , help = "which moment to plot as heatmap")
     p.add_argument("--singlefile", "-sf", action = "store_true", help = "plot a heatmap from single file with multiple simulations")
     p.add_argument("--singlesimulation", '-ss', action = "store_true", help = "plot a single simulation (histogram and qq)")
@@ -511,7 +605,7 @@ def main():
     p = get_argument_parser()
     args = p.parse_args()
     
-    plot_single_histqq_ff(args.inputfile)
+    #plot_single_histqq_ff(args.inputfile)
     
     if args.recalculate:
         filename = args.inputfile
@@ -564,6 +658,7 @@ def main():
             
     if args.singlesimulation:
         plot_single_histqq_ff(args.inputfile)
+        plot_single_peak(args.inputfile, ff=True)
 
 
     

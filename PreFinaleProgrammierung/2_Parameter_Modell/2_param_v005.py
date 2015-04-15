@@ -22,83 +22,6 @@ import simulation_2p as simulation
 import peak_width_2p as peak_width
 
 
-# erstelle liste mit peakdaten zur gegebenen simulationsliste und plotte für diese das zeit/breiten- bzw zwei/skew-verhältnis
-def plot_simulations(sim_list): #TODO: In myPlottings?
-    """Erstelle diverse Plots"""
-    #plotkram.plot_widthmap(sim_list)
-    logging.log(25, "starte plotting")
-    sims = plotkram.plot_widthandskew(sim_list)
-    #peak_data = []
-    #sims = []
-    #for sim in sim_list:
-        #try:
-            #pd = (sim.params, sim.pd[0], sim.pd[1], sim.pd[2], sim.skewness)
-            ##willkürlich gewählt: loc <> xy, scale < z width < v...
-            #if sim.pd[0][0] < 240 and sim.pd[0][1] < 60 and sim.pd[1] < 50 and sim.pd[0][0] > 0:
-                #peak_data.append(pd)
-                #sims.append(sim)
-                ##print ("pd", pd)
-                ##with open(filename, "r+") as data:
-                ##   x = data.read()
-                  ## print (data, x)
-                    ##data.write(str(pd) + '\n')    
-        #except AttributeError as err:
-            #print (sim.params, err)
-            #sim.recalculate_moments()
-            #with open('simulated_data/l' + str(sim.length) + "/n" + str(number) + '/Sim_' + str(round(sim.params[0], 10)) + 
-                      #'_' + str(round(sim.params[1], 10)) + ".p", "wb") as datei:
-                #pickle.dump(sim, datei)
-            #pd = (sim.params, sim.pd[0], sim.pd[1], sim.pd[2], sim.skewness)
-            ##willkürlich gewählt: loc <> xy, scale < z width < v...
-            #if sim.pd[0][0] < 240 and sim.pd[0][1] < 60 and sim.pd[1] < 50 and sim.pd[0][0] > 0:
-                #peak_data.append(pd)
-                #sims.append(sim)
-                
-    #if len(peak_data) > 0:
-        #plt.show()
-    #logging.log(25, "plotte Groessenverhaeltnisse")
-    ##print ("pd", peak_data)
-    #filename = "l" + str(sim.length) + "n" + str(number) + "_peakdaten.p"
-    #with open(filename, "wb") as data:
-        #pickle.dump(peak_data, data)
-    #peak_width.plot_relation(filename)
-    #logging.log (15, "plot1 fertig")
-        
-    # und jetzt noch ein Spektrum mit max 48 Chroms
-    if len(sims) < 29:
-        figg = plt.figure()
-        legende = list()
-        pp = list()
-        time_max = 0
-        colors = my_magic_color_generator(len(sims))
-        plt.ylim((0, 1))
-        plt.xlim((0, 250))
-        for i, si in enumerate(sims):
-            logging.log(24, "simparams: %s, peakdaten %s, max %f", si, pd, max(si.times))
-            # teste hier auf bestimmte eigenschaften
-            if (si.pd[0][0]<240 and si.pd[0][0]>0.01):
-                time_max = max(time_max, max(si.times))
-                n, bins, patches = plt.hist(si.times, 50, normed=1, color = next(colors), alpha=0.5)
-                pp.append(patches[0])
-                legende.append(str(round(si.params[0], 10)) + ' ' + str(round(si.params[1], 10)))        
-        plt.suptitle("l:" + str(sims[0].length) + " n:" + str(number))
-        figg.legend(pp, legende)
-        plt.show()    
-        
-        # evtl noch ein Spektrum mit hinzugefuegten Rauschen und ohne farbliche Unterscheidung
-        if len(sim_list) < 25:
-            noise = []
-            for i in range(int(number*len(sim_list)/10)):
-                #noise.append(random.uniform(0, round(time_max)))
-                noise.append(random.uniform(0, 240))
-            for sim in sim_list:
-                for t in sim.times:
-                    noise.append(t)
-            plt.hist(noise, 500, normed = 1, alpha = 0.6)
-            #plt.show()
-
-    return sim_list
-
 def combine_params(args, kwargs = 5): #TODO Auf die sinnvollen beschraenken
     """Kombiniere Wahrscheinlichkeiten als ps- und pm-Parameter fuer die Simulation"""
     p_combinations = []
@@ -152,10 +75,12 @@ def combine_params(args, kwargs = 5): #TODO Auf die sinnvollen beschraenken
     
     if args == "viele005":
         schrittweite = 0.00001
-        ps_catalogue = np.arange(0.99992, 0.99999, schrittweite)
+        #ps_catalogue = np.arange(0.99992, 0.99999, schrittweite)
+        ps_catalogue = [0.9992, 0.99992]
         
         schrittweite = 0.05
-        pm_catalogue = np.arange(0.5, 0.99, schrittweite)
+        #pm_catalogue = np.arange(0.5, 0.99, schrittweite)
+        pm_catalogue = [0.99, 0.9, 0.7, 0.5, 0.3, 0.1, 0.05, 0.01, 0.005, 0.001]
         
         p_combinations = []
         for ps in ps_catalogue:
@@ -218,8 +143,7 @@ def combine_params(args, kwargs = 5): #TODO Auf die sinnvollen beschraenken
                    (0.99994, 0.395), (0.99994, 0.4),
                    (0.99993, 0.295), (0.99993, 0.3),
                    (0.99991, 0.1), (0.99991, 0.105)                   
-            ]
-        
+            ]        
     if args == "auswahl125":
         p_combinations = [(0.99997, 0.626), (0.99997, 0.628), (0.99997, 0.630), (0.99997, 0.632),(0.99997, 0.634),
                    (0.99996, 0.5),
@@ -372,7 +296,7 @@ def get_argument_parser():
     p.add_argument("--choicenumber", "-cn", type = int, default = "5",
                    help = "bei zufaelliger Parameterwahl: Wie viele Kombinationen sollen gewaehlt werden")
     p.add_argument("--pcombioption", "-p",  
-                   help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden")
+                   help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: choice, viele, viele005, auswahl, auswahlx, d1-3, einige, random, wdh")#TODO
     p.add_argument("--reverse", "-r", action = "store_true",
                    help = "Reihenfolge der p_combinations invertieren")
     p.add_argument("--length", "-l", type = int, default = "200000",
