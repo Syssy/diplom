@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[handout]{beamer}
 
 \hypersetup{
   pdfstartpage=1,
@@ -13,6 +13,7 @@
 \usepackage{wasysym}
 
 \usepackage[T1]{fontenc}
+\usepackage{textcomp}
 
 \usetheme{Singapore}
 \useinnertheme{circles}
@@ -78,52 +79,31 @@
 %}
 
 \section{Einleitung}
-
-%\begin{frame}
-%\frametitle {}
-%
-%\end {frame}
+\subsection*{Motivation}
 
 \begin{frame}
-\frametitle {PAA für das 2-Parameter Modell}
+\frametitle {Worum geht es?}
+``Multikapillarsäule'', MCC(engl. Multi Capillary Column)
+\begin{itemize}
+ \item Trennsäule in der Gaschromatographie
+\end{itemize}
 
-\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm, thick,
-  state node/.style={circle,fill=white,draw,font=\sffamily\bfseries, minimum height=30pt, text width = 1.6cm, align = center},
-  operation node/.style= {regular polygon, regular polygon sides=3,  fill = white, draw, inner sep=  0pt},
-  emission node/.style={rectangle, fill = lightgray!50, draw, text width = 1.5cm}]
-
-       % \draw[fill=green] (current page.north west) rectangle (current page.south east);
-%  
-  \node[state node] (s) at (2, 1)  {stationär};
-  \node[state node] (m) [right = of s] {mobil};
-  \node[operation node, align = center] (os)  at (1.5,0.2) {$+$};
-  \node[operation node, align = center] (om)  at (7.5,0.2) {$+$};
-
-  \path[every node/.style={font=\sffamily\large}]
-
-    (s)   edge [bend right] node [below] {$1-p_s$} (m)
-            edge [loop left] node {$p_s$} (s)
-        
-    (m)  edge [bend right] node[above]{$1-p_m$} (s)
-             edge [loop right] node {$p_m$} (m)
-        ;
-
-  \fill[color=lightgray!40] (1.1, 3.5) --(2,1.5) -- (2.9,3.5) -- cycle ;
-  \fill[color=lightgray!40] (6.05, 3.5) -- (6.95,1.5) -- (7.85,3.5) -- cycle ;
-
-  \node[emission node, align = center] (em) [above of = m] {$e(0) = 0$\\$e(1)=1$};
-  \node[emission node, align = center] (es) [above of = s] {$e(0) = 1$\\$e(1)=0$};
-  
-\end{tikzpicture}
-
-
+%(Kurz anreissen, später mehr)
+``Simulation''
+\begin{itemize}
+ \item Keine physikalische Simulation der Moleküle
+ \item Keine Interpolation vorhandender Messungen
+ \item sondern: Modell für chromatographischen Prozess
+\end{itemize}
+%(Was ich nicht tue, was es schon gibt?, einfaches Modell)
 \end {frame}
 
-\section{Gaschromatographie}
 
+\section{Gaschromatographie}
+\subsection*{Allgemeines}
 
 \begin{frame}
-\frametitle{Prinzip der Gaschromatographie} 
+\frametitle{Allgemeines zur Chromatographie} 
 
 \begin{itemize}
  \item Verfahren zur Auftrennung von Stoffgemischen
@@ -140,9 +120,35 @@
   \end{itemize}
 
 \end{itemize}
-
  
 \end{frame}
+
+
+\begin{frame}
+\frametitle {Gaschromatographie in Kapillarsäulen}
+
+Eine MCC besteht aus ca. 1000 Kapillaren mit je
+\begin{itemize}
+ \item 20\,-\,80 \textmu m Durchmesser
+ \item stationäre Phase ist Flüssigkeitsfilm, ca. 0.1\,-\,0.8\,\textmu m dick
+\end{itemize}
+ 
+$\rightarrow$ MCC etwa 2\,-6\, mm dick und 20\,cm lang
+
+
+
+% \begin{figure}
+%  \centering
+%   \includegraphics[width = 0.4\textwidth]{MultiCapillaryColumn}
+%   \caption{Multikapillarsäule\footnote{http://yas.yanaco.co.jp/products/import-gc-ims.html}}
+% \end{figure}
+\begin{center}
+  \includegraphics[width = 0.4\textwidth]{MultiCapillaryColumn}
+  Querschnitt einer MCC \footnote{http://yas.yanaco.co.jp/products/import-gc-ims.html}
+\end{center}
+
+
+\end {frame}
 
 
 \begin{frame}
@@ -214,25 +220,318 @@
 
 \end {frame}
 
-\section{Modell}
 
 \begin{frame}
-\frametitle {noch ein titel}
+\frametitle {Nach Durchlaufen der Säule}
+%Peaks, Spektrogramme, Peakformen, Lage etc
+\begin{itemize}
+ \item Detektion der aus Säule austretenden Substanzen
+ \item Detektion der Menge, keine Unterscheidung der Substanzen
+ \item Spektrogramm aus mehreren Peaks (Bild an Tafel malen)
+ \item Alternativ: Weitere Analyse durch zum Beispiel
+ \begin{itemize}
+  \item Massenspektrometrie (MS)
+  \item Ionen-Mobilitäts-Spektrometrie (IMS)
+ \end{itemize}
+\end{itemize}
+$\rightarrow$ Vorliegende Datensätze aus MCC-IMS-Kopplung
+\end {frame}
+
+\subsection*{Peaks}
+
+\begin{frame}
+\frametitle {Charakteristika der Peaks}
+
+Peak charakterisiert durch:
+\begin{itemize}
+ \item Lage des Maximums
+ \item Form
+  \begin{itemize}
+    \item Idealfall: Gaußkurve 
+    \item Abweichung: Fronting, Tailing (Bild an Tafel mit Tailing)
+  \end{itemize}
+ \item Breite
+ \begin{itemize}
+  \item Breite auf halber Maximalhöhe
+  \item Bei Tailing/Fronting: getrennte Werte für rechts und links des Maximums
+ \end{itemize}
+\end{itemize}
 
 \end {frame}
 
 
-%\begin{frame}
-%\frametitle {}
-%
-%\end {frame}
-%\section{}
+\begin{frame}
+\frametitle {Beobachtungen an den vorliegenden Daten(1)}
 
+%(Screenshot von Visual Now, Peakdatengewinnung)
+\begin{figure}
+ \centering
+ \includegraphics[width=0.83\textwidth]{BD15_1304101102_ims}
+\end{figure}
 
+\end {frame}
 
 
 \begin{frame}
+  \frametitle{Beobachtungen an den vorliegenden Daten(2)}
+\begin{itemize}
+ \item Oft Tailing
+ \item Peaks zu Beginn des Spektrums oft schmaler
+\end{itemize}
+
+\end {frame}
+
+
+\begin{frame}
+\frametitle {Peakdatengewinnung}
+
+%(Screenshot von Visual Now, Peakdatengewinnung)
+\begin{figure}
+ \centering
+ \includegraphics[width=0.9\textwidth]{BD15_1304101102_180_2}
+\end{figure}
+
+\end {frame}
+
+
+\begin{frame}
+\frametitle {Ziel}
+
+Gesucht:
+\begin{itemize}
+ \item Entsprechung von Peakcharakteristika zu Simulationsparametern
+\end{itemize}
+Vorgehensweise:
+\begin{enumerate}
+ \item Start mit einfachem Modell
+ \item Simulation mit verschiedenen Parametern
+ \item Überprüfung, ob Referenzpeaks angenähert werden können
+ \item Verfeinerung/Erweiterung des Modells
+ \item Wiederholung von 2-5 bis ausreichend angenähert
+\end{enumerate}
+
+\end {frame}
+
+
+\section{Modell}
+\subsection*{Annahmen}
+
+\begin{frame}
+\frametitle {Modell für die Chromatographie}
+ 
+Prinzip:
+\begin{itemize}
+ \item 2 Phasen: stationär und mobil
+ \item Wechsel dazwischen, bzw Verweilen in der Phase
+\end{itemize}
+
+Modell:
+\begin{itemize}
+ \item 2 Zustände: $s$ und $m$
+ \item Wechselwahrscheinlichkeiten
+ \begin{itemize}
+  \item $s \rightarrow s: p_s$
+  \item $s \rightarrow m: 1-p_s$
+  \item $m \rightarrow m: p_m$
+  \item $m \rightarrow s: 1-p_m$ 
+ \end{itemize}
+
+\end{itemize}
+
+ 
+\end{frame}
+
+
+\begin{frame}
+\frametitle {Graphische Darstellung des Modells}
+\usetikzlibrary{arrows,%
+                topaths}%
+\tikzstyle{knoten}=[draw,-,thick,fill=none,inner sep=0pt, minimum width=25pt, circle]
+\tikzstyle{kante}=[draw,-,thick,black]
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries}]
+
+  \node[main node] (s)  {stat};
+  \node[main node] (m) [right of=s] {mob};
+
+  \path[every node/.style={font=\sffamily\small}]
+
+    (s)   edge [bend right] node [below] {$1-p_s$} (m)
+            edge [loop left] node {$p_s$} (s)
+        
+    (m)  edge [bend right] node[above]{$1-p_m$} (s)
+             edge [loop right] node {$p_m$} (m)
+        ;
+\end{tikzpicture}
+\end {frame}
+
+\begin{frame}
+\frametitle {Simulationseckdaten}
+
+\begin{itemize}
+ \item Länge festgelegt auf 200000 Einheiten 
+ \begin{itemize}
+  \item 1 Einheit = 0.2 mm
+ \end{itemize}
+ \item 5000 Teilchen
+ \begin{itemize}
+  \item Ergibt bei graphischer Ausgabe gut erkennbare Peaks
+ \end{itemize}
+
+\end{itemize}
+
+\end {frame}
+
+\begin{frame}
+\frametitle {Simulationsarten}
+
+Simulation ``step-by-step''
+\begin{itemize}
+ \item Jeder Zeitschritt wird simuliert
+ \item Jeweils Ort und Zustand jedes Teilchens festhalten
+\end{itemize}
+
+Simulation ``by-event''
+\begin{itemize}
+ \item Zu Beginn für jedes Teilchen Zeitpunkt des nächsten Phasenwechsels bestimmen
+ \item Nur zu relevanten Zeitpunkten entsprechende Teilchen simulieren
+ \begin{itemize}
+  \item Bei hohen Wahrscheinlichkeiten kürzere Laufzeit
+ \end{itemize}
+
+\end{itemize}
+
+
+\end {frame}
+
+
+
+\subsection*{PAA}
+\begin{frame}
+\frametitle {Probabilistischer Arithmetischer Automat}
+
+\begin{itemize}
+ \item Modell zur Beschreibung einer Folge zufälliger Operationen
+  \begin{itemize}
+   \item Zustände und Übergänge
+   \item Emissionen
+   \item Werte
+  \end{itemize}
+
+ \item Automat ist zu jedem Zeitpunkt mit bestimmter Wahrscheinlichkeit in jedem Zustand
+ \item jede mögliche Emission findet mit bestimmter Wahrscheinlichkeit statt
+ \item Werte aus den Emissionen und einer Operation berechnet
+\end{itemize}
+\end {frame}
+
+\begin{frame}
+\frametitle {Definition PAA}
+
+\begin{definition}[Probabilistischer Arithmetischer Automat]
+Ein Probabilistischer Arithmetischer Automat (PAA) ist ein Tupel
+$ \mathcal{P} = (\mathcal{Q}, q_0, T, \mathcal{V}, v_0, \mathcal{E}, (e_q)_{q\in\mathcal{Q}}, (\theta_q)_{q\in\mathcal{Q}})$
+mit:
+\begin{itemize}
+ \item $\mathcal{Q}$ endliche Menge von Zuständen; $q_0 \in \mathcal{Q}$ Startzustand
+ \item $T: \mathcal{Q} \times \mathcal{Q} \rightarrow [0,1]$ Übergangsfunktion mit $\sum_{q' \in \mathcal{Q}} T(q, q') = 1 $ d.h. $(T(q,q'))_{q,q' \in \mathcal{Q}}$ ist stochastische Matrix
+ \item $\mathcal{V}$ Menge von Werten; $v_0$ Startwert
+ \item $\mathcal{E}$ endliche Menge von Emissionen
+ \item $e_q: \mathcal{E} \rightarrow [0,1]$ Wahrscheinlichkeitsverteilung der Emissionen für jeden Zustand
+ \item $\theta_q: \mathcal{V} \times \mathcal{E} \rightarrow \mathcal{V}$ Operation für jeden Zustand
+\end{itemize}
+%TODO Merken, was Markoffkette und HMM ist!
+\end{definition}
+
+\end {frame}
+
+
+\begin{frame}
+\frametitle {PAA für das 2-Parameter Modell}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm, thick,
+  state node/.style={circle,fill=white,draw,font=\sffamily\bfseries, minimum height=30pt, text width = 1.6cm, align = center},
+  operation node/.style= {regular polygon, regular polygon sides=3,  fill = white, draw, inner sep=  0pt},
+  emission node/.style={rectangle, fill = lightgray!50, draw, text width = 1.8cm}]
+
+       % \draw[fill=green] (current page.north west) rectangle (current page.south east);
+%  
+  \node[state node] (s) at (2, 1)  {stationär};
+  \node[state node] (m) [right = of s] {mobil};
+  \node[operation node, align = center] (os)  at (1.5,0.2) {$+$};
+  \node[operation node, align = center] (om)  at (7.5,0.2) {$+$};
+
+  \path[every node/.style={font=\sffamily\large}]
+
+    (s)   edge [bend right] node [below] {$1-p_s$} (m)
+            edge [loop left] node {$p_s$} (s)
+        
+    (m)  edge [bend right] node[above]{$1-p_m$} (s)
+             edge [loop right] node {$p_m$} (m)
+        ;
+
+  \fill[color=lightgray!40] (1.1, 3.5) --(2,1.5) -- (2.9,3.5) -- cycle ;
+  \fill[color=lightgray!40] (6.05, 3.5) -- (6.95,1.5) -- (7.85,3.5) -- cycle ;
+
+  \node[emission node, align = center] (em) [above of = m] {$e_m(0) = 0$\\$e_m(1)=1$};
+  \node[emission node, align = center] (es) [above of = s] {$e_s(0) = 1$\\$e_s(1)=0$};
+  
+\end{tikzpicture}
+\end {frame}
+
+
+
+\section{Ergebnisse und Ausblick}
+\subsection*{Ergebnisse}
+
+\begin{frame}
+\frametitle {Simulationsergebnisse}
+
+\end {frame}
+
+\begin{frame}
+\frametitle {Grenzen des 2-Parameter Modells}
+
+\end {frame}
+
+\subsection*{Ausblick}
+
+\begin{frame}
+\frametitle {Weitere mögliche Modelle}
+
+\begin{itemize}
+ \item Bisher keine Unterscheidung zwischen Adsorption und Lösung
+ \item Weiterer stationärer Zustand
+ \begin{itemize}
+  \item Keine Übergänge zwischen den stationären Zuständen
+  \item Nßeuer Zustand als Zwischenzustand
+ \end{itemize}
+ \item 
+\end{itemize}
+
+\end {frame}
+%\section{}
+
+\begin{frame}
 \frametitle {Zusammenfassung}
+\begin{itemize}
+ \item Prinzip der Gaschromatographie
+ \begin{itemize}
+  \item Wechsel zwischen zwei Phasen
+  \item Peakbeschreibungen
+ \end{itemize}
+ \item 2-Parameter Modell
+ \begin{itemize}
+  \item Simulation dieses Modells
+ \end{itemize}
+ \item PAA
+ \item weiteres Modell nötig
+ \begin{itemize}
+  \item mehrere Erweiterungen denkbar
+ \end{itemize}
+
+\end{itemize}
 
 \end {frame}
 
