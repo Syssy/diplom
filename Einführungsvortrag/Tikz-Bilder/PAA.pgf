@@ -19,24 +19,24 @@
 
        % \draw[fill=green] (current page.north west) rectangle (current page.south east);
 %  
-  \node[state node] (s) at (2, 1)  {stationÃ¤r};
-  \node[state node] (m) [right = of s] {mobil};
+  \node[state node] (m) at (2, 1)  {mobil};
+  \node[state node] (s) [right = of m] {stationÃ¤r};
   \node[operation node, align = center] (os)  at (1.5,0.2) {$+$};
   \node[operation node, align = center] (om)  at (7.5,0.2) {$+$};
 
   \path[every node/.style={font=\sffamily\large}]
 
-    (s)   edge [bend right] node [below] {$1-p_s$} (m)
-            edge [loop left] node {$p_s$} (s)
+    (m)   edge [bend left] node [above] {$1-p_m$} (s)
+            edge [loop left] node {$p_m$} (m)
         
-    (m)  edge [bend right] node[above]{$1-p_m$} (s)
-             edge [loop right] node {$p_m$} (m)
+    (s)  edge [bend left] node[below]{$1-p_s$} (m)
+             edge [loop right] node {$p_s$} (s)
         ;
 
   \fill[color=lightgray!40] (1.1, 3.5) --(2,1.5) -- (2.9,3.5) -- cycle ;
   \fill[color=lightgray!40] (6.05, 3.5) -- (6.95,1.5) -- (7.85,3.5) -- cycle ;
 
-  \node[emission node, align = center] (em) [above of = m] {$e_m(0) = 0$\\$e_m(1)=1$};
-  \node[emission node, align = center] (es) [above of = s] {$e_s(0) = 1$\\$e_s(1)=0$};
+  \node[emission node, align = center] (em) [above of = s] {$e_m(0) = 1$\\$e_m(1)=0$};
+  \node[emission node, align = center] (es) [above of = m] {$e_s(0) = 0$\\$e_s(1)=1$};
   
 \end{tikzpicture}
