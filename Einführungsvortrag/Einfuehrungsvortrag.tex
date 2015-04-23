@@ -1,4 +1,4 @@
-\documentclass[handout]{beamer}
+\documentclass{beamer}
 %[handout]
 \hypersetup{
   pdfstartpage=1,
@@ -53,7 +53,8 @@
 \subtitle{Einführungsvortrag Diplomarbeit}
 \author[E.Böhmer]{Elisabeth Böhmer}
 \date{\today}
-\institute [TuDO] {Technische Universität Dortmund\\}
+\institute [TuDO] {Technische Universität Dortmund\\Fakultät für Informatik\\Lehrstuhl 11}
+
 
 
 
@@ -61,6 +62,11 @@
 
 \frame[plain]{
 	\titlepage
+	\begin{center}
+	\textcolor{tugreen}{Betreuer:\\
+	Prof. Dr. Sven Rahmann\\
+	Prof. Dr. Jörg Rahnenführer}
+	\end{center}
 }
 
 % Für Overlays: 
@@ -84,18 +90,18 @@
 
 \begin{frame}
 \frametitle {Worum geht es?}
-\pause
-``Multikapillarsäule'', MCC(engl. Multi Capillary Column)
+
+``Multikapillarsäule''\onslide<2->{, MCC (engl. Multi Capillary Column)}
 \begin{itemize}
- \item Trennsäule in der Gaschromatographie
+ \item <2-> {Trennsäule in der Gaschromatographie}
 \end{itemize}
-\pause
+
 %(Kurz anreissen, später mehr)
-``Simulation''
+\onslide<1->{``Simulation''}
 \begin{itemize}
- \item <+-> Keine physikalische Simulation der Moleküle
- \item <+-> Keine Interpolation vorhandender Messungen
- \item <+-> Sondern: Modell für chromatographischen Prozess
+ \item <3-> Keine physikalische Simulation der Moleküle
+ \item <4-> Keine Interpolation vorhandender Messungen
+ \item <5-> sondern: Modell für chromatographischen Prozess
 \end{itemize}
 %(Was ich nicht tue, was es schon gibt?, einfaches Modell)
 \end {frame}
@@ -227,7 +233,7 @@ $\rightarrow$ MCC etwa $2\,-6$\,mm dick und $20$\,cm lang
 \frametitle {Nach Durchlaufen der Säule}
 %Peaks, Spektrogramme, Peakformen, Lage etc
 \begin{itemize}
- \item Detektion der aus Säule austretenden Substanzen
+ \item Detektion der austretenden Substanzen
  \item Detektion der Menge, keine Unterscheidung der Substanzen
  \item Spektrogramm aus mehreren Peaks% (Bild an Tafel malen)
  \item<2-> Alternativ: Weitere Analyse durch zum Beispiel
@@ -273,6 +279,17 @@ Peak charakterisiert durch:
 
 \end {frame}
 
+
+% \begin{frame}
+% \frametitle {Beobachtungen an den vorliegenden Daten}
+% 
+% %(Screenshot von Visual Now, Peakdatengewinnung)
+% \begin{figure}
+%  \centering
+%  \includegraphics[width=0.83\textwidth]{BD15_1304101102_ims}
+% \end{figure}
+
+%\end {frame}
 % \begin{frame}
 %   \frametitle{Beobachtungen an den vorliegenden Daten(2)}
 % \begin{itemize}
@@ -310,7 +327,7 @@ Vorgehensweise:
  \item <+->  Simulation mit verschiedenen Parametern
  \item <+-> Überprüfung, ob Referenzpeaks angenähert werden können
  \item <+-> Verfeinerung/Erweiterung des Modells
- \item <+-> Wiederholung von 2-5 bis ausreichend angenähert
+ \item <+-> Wiederholung von 2-4 bis ausreichend angenähert
 \end{enumerate}
 
 \end {frame}
@@ -352,15 +369,15 @@ Vorgehensweise:
 
 \usetikzlibrary{arrows,%
                 topaths}%
-\tikzstyle{knoten}=[draw,-,thick,fill=none,inner sep=0pt, minimum width=25pt, circle]
+\tikzstyle{knoten}=[draw,-,thick,fill=none,inner sep=0pt, minimum width=35pt, circle]
 \tikzstyle{kante}=[draw,-,thick,black]
 \usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit}
 
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
-  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries}]
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries,text width = 1cm}]
 
-  \node[main node] (s)  {stat};
-  \node[main node] (m) [left of=s] {mob};
+  \node[main node] (s)  {\,\,\,\,\,$s$};
+  \node[main node] (m) [left of=s] {\,\,\,\,$m$};
 
   \path[every node/.style={font=\sffamily\small}]
 
@@ -380,9 +397,9 @@ Vorgehensweise:
 \begin{itemize}
  \item Länge festgelegt auf $200.000$ Einheiten 
  \begin{itemize}
-  \item 1 Einheit = $0,2$\,mm
+  \item 1 Einheit = $1$\,\textmu m
  \end{itemize}
- \item $5000$ Teilchen
+ \item $1000 - 10000$ Teilchen
  \begin{itemize}
   \item Ergibt bei graphischer Ausgabe gut erkennbare Peaks
  \end{itemize}
@@ -500,26 +517,26 @@ mit:
 \end{block}
 
 \end {frame}
-
-\begin{frame}
-\frametitle {Definition PAA}
-
-\begin{definition}[Probabilistischer Arithmetischer Automat]
-Ein Probabilistischer Arithmetischer Automat (PAA) ist ein Tupel
-$ \mathcal{P} = (\mathcal{Q}, q_0, T, \mathcal{E}, (e_q)_{q\in\mathcal{Q}},\mathcal{V}, v_0, (\theta_q)_{q\in\mathcal{Q}})$
-mit:
-\begin{itemize}
- \item $\mathcal{Q}$ endliche Menge von Zuständen; $q_0 \in \mathcal{Q}$ Startzustand
- \item $T: \mathcal{Q} \times \mathcal{Q} \rightarrow [0,1]$ Übergangsfunktion mit $\sum_{q' \in \mathcal{Q}} T(q, q') = 1 $ d.h. $(T(q,q'))_{q,q' \in \mathcal{Q}}$ ist stochastische Matrix
- \item $\mathcal{E}$ endliche Menge von Emissionen
- \item $e_q: \mathcal{E} \rightarrow [0,1]$ Wahrscheinlichkeitsverteilung der Emissionen für jeden Zustand
- \item $\mathcal{V}$ Menge von Werten; $v_0$ Startwert
- \item $\theta_q: \mathcal{V} \times \mathcal{E} \rightarrow \mathcal{V}$ Operation für jeden Zustand
-\end{itemize}
-%TODO Merken, was Markoffkette und HMM ist!
-\end{definition}
-
-\end {frame}
+% 
+% \begin{frame}
+% \frametitle {Definition PAA}
+% 
+% \begin{definition}[Probabilistischer Arithmetischer Automat]
+% Ein Probabilistischer Arithmetischer Automat (PAA) ist ein Tupel
+% $ \mathcal{P} = (\mathcal{Q}, q_0, T, \mathcal{E}, (e_q)_{q\in\mathcal{Q}},\mathcal{V}, v_0, (\theta_q)_{q\in\mathcal{Q}})$
+% mit:
+% \begin{itemize}
+%  \item $\mathcal{Q}$ endliche Menge von Zuständen; $q_0 \in \mathcal{Q}$ Startzustand
+%  \item $T: \mathcal{Q} \times \mathcal{Q} \rightarrow [0,1]$ Übergangsfunktion mit $\sum_{q' \in \mathcal{Q}} T(q, q') = 1 $ d.h. $(T(q,q'))_{q,q' \in \mathcal{Q}}$ ist stochastische Matrix
+%  \item $\mathcal{E}$ endliche Menge von Emissionen
+%  \item $e_q: \mathcal{E} \rightarrow [0,1]$ Wahrscheinlichkeitsverteilung der Emissionen für jeden Zustand
+%  \item $\mathcal{V}$ Menge von Werten; $v_0$ Startwert
+%  \item $\theta_q: \mathcal{V} \times \mathcal{E} \rightarrow \mathcal{V}$ Operation für jeden Zustand
+% \end{itemize}
+% %TODO Merken, was Markoffkette und HMM ist!
+% \end{definition}
+% 
+% \end {frame}
 
 \section{Ergebnisse und Ausblick}
 \subsection*{Ergebnisse}
@@ -536,7 +553,7 @@ mit:
 \frametitle {Parameterkombinationen für gegebene Retentionszeit}
 \begin{figure}
  \centering
- \includegraphics[width=0.85\textwidth]{params_50}
+ \includegraphics[width=0.85\textwidth]{params_75}
 \end{figure}
 \end {frame}
 
