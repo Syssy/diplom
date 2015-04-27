@@ -3,13 +3,45 @@
 
 \section{2-Parameter Modell}
 
-Als Grundlage für die Entwicklung eines Simulationsmodells dient die Beobachtung des chromatographischen Prozesses. Dieser ist wie in TODO beschrieben gekennzeichnet durch viele Teilchen, welche häufig zwischen der stationären und mobilen Phase wechslen. Es liegt also nahe, dass im Modell ebenfalls Teilchen simuliert werden, die zwischen zwei Zuständen, welche die beiden Phasen repräsentieren, wechseln. Der Phasenwechsel geschieht jeweils mit einer bestimmten Wahrscheinlichkeit. Dabei kann es möglich sein, dass die Wahrscheinlichkeiten für den Wechsel in die eine oder andere Richtung voneinander abhängig sind, jedoch muss dies nicht sein, sodass für das Modell der allgemeinere Fall von unabhängigen Wahrscheinlichkeiten angenommen wird. Es sei also $p_s$ die Wahrscheinlichkeit, dass ein Teilchen, welches sich bereits in der stationären Phase befindet, auch stationär bleibt und $1-p_s$ die Wahrscheinlichkeit, dass es in die mobile Phase übergeht. Analog seien $p_m$ und $1-p_m$ die Wahrscheinlichkeiten, dass ein mobiles Teilchen in der mobilen Phase bleibt bzw. zur stationären Phase wechselt. 
+Als Grundlage für die Entwicklung eines Simulationsmodells dient die Beobachtung des chromatographischen Prozesses. Dieser ist wie in Kapitel \ref{chapter:gru} beschrieben gekennzeichnet durch viele Teilchen, welche häufig zwischen der stationären und mobilen Phase wechslen. Es liegt also nahe, dass im Modell ebenfalls Teilchen simuliert werden, die zwischen zwei Zuständen, welche die beiden Phasen repräsentieren, wechseln. Der Phasenwechsel geschieht jeweils mit einer bestimmten Wahrscheinlichkeit. Dabei kann es möglich sein, dass die Wahrscheinlichkeiten für den Wechsel in die eine oder andere Richtung voneinander abhängig sind. Da dies jedoch nicht sein muss, wird für das Modell der allgemeinere Fall von unabhängigen Wahrscheinlichkeiten angenommen. Es sei also $p_s$ die Wahrscheinlichkeit, dass ein Teilchen, welches sich bereits in der stationären Phase befindet, auch stationär bleibt und $1-p_s$ die Wahrscheinlichkeit, dass es in die mobile Phase übergeht. Analog seien $p_m$ und $1-p_m$ die Wahrscheinlichkeiten, dass ein mobiles Teilchen in der mobilen Phase bleibt bzw. zur stationären Phase wechselt. 
 
 
-Damit ergibt sich als Modell ein einfacher Automat mit zwei Zuständen $\mathcal{Q} = {s, m}$ \todo{Formale Beschreibung meines Modells}
+Damit ergibt sich als Modell ein einfacher Automat mit zwei Zuständen $\mathcal{Q} = \{s, m\}$ und den oben beschriebenen Transitionen. Eine graphische Darstellung des Modells zeigt \ref{tikz:2p_Mod} \todo{Formale Beschreibung meines Modells}
 
-Für die Simulation müssen x Teilchen den Automaten durchlaufen, dabei Ort festhalten für abbruchbedingung und zeit für peak
-Das ganze 1000 mal wiederholen da je nur eine kapillare simuliert wurde
+\begin{figure}[h]
+ \centering
+
+\usetikzlibrary{arrows,%
+                topaths}%
+\tikzstyle{knoten}=[draw,-,thick,fill=none,inner sep=0pt, minimum width=35pt, circle]
+\tikzstyle{kante}=[draw,-,thick,black]
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries,text width = 1cm}]
+
+  \node[main node] (s)  {\,\,\,\,\,$s$};
+  \node[main node] (m) [left of=s] {\,\,\,\,$m$};
+
+  \path[every node/.style={font=\sffamily\small}]
+
+    (s)   edge [bend left] node [below] {$1-p_s$} (m)
+            edge [loop right] node {$p_s$} (s)
+        
+    (m)  edge [bend left] node[above]{$1-p_m$} (s)
+             edge [loop left] node {$p_m$} (m)
+        ;
+\end{tikzpicture}
+
+\caption{Graphische Darstellung des 2-Parameter Modells}
+\label{tikz:2p_Mod}
+\end{figure}
+
+Für die Simulation müssen viele Teilchen, ausgehend vom mobilen Zustand, den Automaten durchlaufen. Dabei wird zusätzlich zum Zustand der Teilchen auch der Ort, an dem sie sich befinden, verwaltet. Wenn sich ein Teilchen im mobilen Zustand befindet, wird dieser Ortszähler erhöht. Außerdem werden die insgesamt benötigten Schritte gezählt. Dadurch leiten sich dann die Ankunftszeiten der Teilchen bei Erreichen eines bestimmten Wertes des Ortszählers ab.
+
+% für abbruchbedingung und zeit für peak
+% Das ganze 1000 mal wiederholen da je nur eine kapillare simuliert wurde
+Der genaue Ablauf der Simulation wird in Kapitel \ref{chapter:imp} beschrieben.
 
 % Grundlage: Phasenwechsel
 % Das eigentliche Modell
@@ -19,9 +51,15 @@ Das ganze 1000 mal wiederholen da je nur eine kapillare simuliert wurde
 % Modell als PAA
 Blabla...
 
-Der PAA ist formal definiert durch: $\mathcal{Q} = {s, m}$, $q_0 = m$, $T = 
+Der PAA ist formal definiert durch: $\mathcal{Q} = \{s, m\}$, $q_0 = m$, $T =
+ \begin{pmatrix}
+  p_{m} & 1-p_{m}  \\
+  1-p_{s} & p_{s} \\
+ \end{pmatrix}$, $\mathcal{E} = \{0, 1\}$, $e_s(0) = 1, e_s(1)=0, e_m(0) = 0, e_m(1)=1$,
+ $\mathcal{V} = [0, \ldots, l]$ , $v_0 = 0$, $\theta_s = \theta_m = + $
+ \todo{PAA für das Modell}
 
-\begin{figure}
+\begin{figure}[h]
  \centering
   \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm, thick,
    state node/.style={circle,fill=white,draw,font=\sffamily\bfseries, minimum height=30pt, text width = 1.6cm, align = center},
@@ -56,10 +94,124 @@ Der PAA ist formal definiert durch: $\mathcal{Q} = {s, m}$, $q_0 = m$, $T =
 
 Und noch mehr Text, der sich auf \ref{PAA_2P} bezieht
 
+\subsection{Grenzen des Modells}
+Eine genaue Analyse der Peaks, die mit dem 2-Parameter Modell erzeugt werden können, findet sich in Kapitel \ref{chapter:eva}. An dieser Stelle sei nur vorweg genommen, dass es zwei Hauptprobleme mit dem Modell zu geben scheint. 
+Zum Einen scheint es in den vorliegenden Datensätzen einige Peaks zu geben, deren kombinierte Lage und Breite nicht mit dem Modell simulierbar sind. Alle Simulationen ergeben zumindest geringfügig breitere Peaks. Zum Anderen weisen fast keine der simulierten Peaks ein Tailing auf. 
+
+
 \subsection{Probleme mit dem Modell}
 % Probleme damit
 
 \section{Weiteres Modell}
 \todo{Erweiterung des Modells, wenn diese existiert}
+
+Bisher keine Unterscheidung zwischen Adsorption und Lösung
+ 
+ 
+ Weiterer stationärer Zustand:
+\begin{figure}
+\subfigure[Keine Übergänge]{\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\small\bfseries},
+  knoten/.style={thick,fill=none,inner sep=0pt, minimum width=25pt, circle}]
+
+  \node[knoten] (im){};
+  \node[main node] (m) [left of = im]{mob};
+  \node[main node] (s1) [above right of = im]{ads};
+  \node[main node] (s2) [below right of = im]{lsg};
+
+  \path[every node/.style={font=\sffamily\small}]
+        
+    (m)  edge [bend left] node[above left]{$p_a$} (s1) 
+            edge [bend right] node[below left]{$p_l$} (s2)
+             edge [loop left] node {$p_m$} (m)
+
+    (s2)   edge node [right] {$1-p_l^*$} (m)
+            edge [loop right] node {$p_l^*$} (s1)
+        
+    (s1)  edge node [right] {$1-p_a^*$} (m)
+	  edge [loop right] node {$p_a^*$} (s1)
+
+        ;
+\end{tikzpicture}}\hfill
+\subfigure[Zwischenzustand]{\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.2cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\small\bfseries}]
+
+   \node[main node] (m)  {mob};
+  \node[main node] (s1) [right of = m]{stat1};
+  \node[main node] (s2) [right of = s1]{stat2};
+
+  \path[every node/.style={font=\sffamily\small}]
+
+    (s2)   edge [bend left] node [below] {$1-p_s$} (s1)
+            edge [loop right] node {$p_s$} (s1)
+        
+    (s1)   edge [bend left] node [above] {$p_j$} (s2)
+            edge [bend left] node[below] {$p_k$} (m)
+			edge [loop above] node {$p_i$} (s1)
+        
+    (m)  edge [bend left] node[above]{$1-p_m$} (s1)
+             edge [loop left] node {$p_m$} (m)
+        ;
+\end{tikzpicture}}
+\caption{Mögliche weitere Modelle}
+\end{figure}
+ 
+% Keine Übergänge zwischen den stationären Zuständen
+%  \begin{figure}[h]
+%   \centering
+%   \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=1.5cm,
+%   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\tiny\bfseries},
+%   knoten/.style={thick,fill=none,inner sep=0pt, minimum width=25pt, circle}]
+% 
+%   \node[knoten] (im){};
+%   \node[main node] (m) [left of = im]{mob};
+%   \node[main node] (s1) [above right of = im]{ads};
+%   \node[main node] (s2) [below right of = im]{lsg};
+% 
+%   \path[every node/.style={font=\sffamily\tiny}]
+%         
+%     (m)  edge [bend left] node[above left]{$p_a$} (s1) 
+%             edge [bend right] node[below left]{$p_l$} (s2)
+%              edge [loop left] node {$p_m$} (m)
+% 
+%     (s2)   edge node [right] {$1-p_l^*$} (m)
+%             edge [loop right] node {$p_l^*$} (s1)
+%         
+%     (s1)  edge node [right] {$1-p_a^*$} (m)
+% 	  edge [loop right] node {$p_a^*$} (s1)
+% 
+%         ;
+% \end{tikzpicture}
+% 
+%  \end{figure}
+%  
+%  Neuer Zustand als Zwischenzustand
+% \begin{figure}[h!]
+%  \centering
+%   
+%   \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
+%   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\tiny\bfseries}]
+% 
+%    \node[main node] (m)  {mob};
+%   \node[main node] (s1) [right of = m]{stat1};
+%   \node[main node] (s2) [right of = s1]{stat2};
+% 
+%   \path[every node/.style={font=\sffamily\tiny}]
+% 
+%     (s2)   edge [bend left] node [below] {$1-p_s$} (s1)
+%             edge [loop right] node {$p_s$} (s1)
+%         
+%     (s1)   edge [bend left] node [above] {$p_j$} (s2)
+%             edge [bend left] node[below] {$p_k$} (m)
+% 			edge [loop above] node {$p_i$} (s1)
+%         
+%     (m)  edge [bend left] node[above]{$1-p_m$} (s1)
+%              edge [loop left] node {$p_m$} (m)
+%         ;
+% \end{tikzpicture}
+% \end{figure}
+
+
+Außerdem existieren Idee, noch eine Sättigung der freien Plätze zur Adsorption einzubauen
 % Erweiterung um weiteren (stat) Zustand um Unterschied zwischen Lösung und Adsorption zu haben
 % Ideen zur Geschwindigkeit und warum das Quatsch ist. ?
