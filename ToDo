@@ -359,3 +359,18 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * Welche Ergebnisse sollen in den Vortrag?
  * Noch mal einen Plot wie in 7a erstellen, aber mit je 10000 Teilchen.
  * In der simulation noch mal nachrechnen, welche Einheiten nun korrekt sind
+ * Muss ganz dringend den PAA mit dem PAA überprüfen, welche Zeiten jetzt realistisch sind. Habe ein Faktor10 Problem -> Plotten
+ 
+23.04.2015
+ * Plots per Inkscape nachbearbeiten für Lesbarkeit
+ * Markoff-Ketten erwähnen
+ * Sven vorher Folien zeigen
+ * Zahlen auch in den Plot zur Lesbarkeit trennen
+ * Ausprobieren in python: r"p_s" oder so ähnlich. Noch mal Henning/Nina fragen
+ * Cooles "Video", wie die Teilchen da durch wandern (zu mehreren Zeitpunkten als Bild ausgeben und zusammen schneiden)
+ * Die neuen Modelle umsetzen, vor allem theoretische Überlegungen, zur Berechnung. Zustände nicht mehr einfach als true/false darstellbar
+ * Gedanken zur Adsoptions-Sättigung machen, wie ist das einbaubar?
+ * In VisualNow überprüfen, ob tatsächlich die sehr intensiven Peaks oben abgeschnitten sind
+ * Gedanken machen, ob nur der Maximalpunkt, oder Intervall betrachtet werden soll
+ * Baustellen sortieren
+ * Weiter schreiben, besonders Dinge, die ich im Vortrag erwähnt habe
