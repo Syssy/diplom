@@ -60,21 +60,13 @@ class Simulation():
         zzv = np.random.random(number)
         zzv2 = zzv < self.params[0]
         zzv3 = zzv < self.params[1]
-        logging.log(10, zzv[0:10])
-        logging.log(10, zzv2[0:10])
-        logging.log(10, zzv3[0:10])
         #berechne neuen Zustand für die Teilchen    
         # entweder: vorher mobil und bleibe es (zzv3, pm)
         # oder: war nicht mobil und bleibe nicht (invertiert zu oder)
         new_mobile_states =  np.bitwise_or(np.bitwise_and(mobile_states, zzv3), (np.invert(np.bitwise_or(mobile_states, zzv2))))
         # wenn mobil, addiere 200 zum Ort; Festlegung auf 0.2mm mitte November 2014
-        new_locations = locations + (200 * new_mobile_states)
-        
-        logging.log(10, locations[0:10])
-        logging.log(10, new_locations[0:10])
-        logging.log(10, mobile_states[0:10])
-        logging.log(10, new_mobile_states[0:10])
-        
+        new_locations = locations + (100 * new_mobile_states)
+               
         return new_locations, new_mobile_states
 
     def simulate_each_timestep(self):
@@ -87,6 +79,7 @@ class Simulation():
         time_needed = 0
         # Anzahl zu simulierender Teilchen
         number = self.number
+        time_step = 1
         
         # aktuelle Orte der Teilchen
         locations = np.zeros(number)
@@ -95,18 +88,14 @@ class Simulation():
     
         #Teil 1: Sim bis frueheste Teilchen ankommen koennen, hier muss noch keine Abbruchbed. getestet werden. 
         # 0.1, da dann das Carriergas durch ist.
-        while time_needed < 0.1: #time_needed < self.length/2000000: #TODO Keine hartgecodeten zahlen!?
+        while time_needed < self.length/100:
             locations, mobile_states = self._simulate_step(locations, mobile_states, number)
-            time_needed += 0.0001
-            #logging.log(20, time_needed)
-        # Zeit soll hier 1/10s sein
+            time_needed += time_step
         logging.log(20, "Teil1 vorbei, zeit:%s, simdauer:%s", time_needed, time.clock()-starttime)
         #Teil 2: Ab jetzt koennen Teilchen fertig sein, teste erst, dann x neue Runden
         while True:
             # d ist bitmaske aller aktuell angekommenen Teilchen
             d = locations <= self.length
-            logging.log(10, locations)
-            logging.log(13, d[0])
             logging.log(15, "in der trueschleife, zeit: %s, d:%s", time_needed, len(d))
             # die beiden Arrays aktualisieren (rauswerfen aller fertigen Teilchen)
             locations = locations[d]
@@ -120,20 +109,19 @@ class Simulation():
             if number < 1:
                 logging.log(25, "fertig, simzeit: %s, realtime: %s", time_needed, (time.clock()-starttime))
                 break
-            if time_needed > 240:
-                logging.log(25, "dat bringt nix, %s", (time.clock()-starttime))
+            if time_needed > 2400000:
+                logging.log(25, "das bringt nix, Überschreitung der Maximalzeit von 240s, %s", (time.clock()-starttime))
                 # alle noch nicht fertigen Teilchen bekommen 100 Sek Strafe, damit man sieht, dass Simulation nicht zu Ende durchgefuehrt wurde
                 for j in range(len(locations)):
                     arrival_counter.append(time_needed+100)
                 break    
             
             # Damit es schneller geht, nach je x schritten nur testen
-            for x in range (10):
+            for x in range (100):
                 locations, mobile_states = self._simulate_step(locations, mobile_states, number)
-                time_needed+=0.0001
+                time_needed+=time_step
         
-        #print time.clock()-starttime
-        self.times = arrival_counter
+        self.times = [date/20000 for date in arrival_counter]
        
     def _test_finished(self, particle_list):
         """Teste, ob die Teilchen schon durch sind. Aufruf durch simulate_by_event"""
@@ -143,7 +131,7 @@ class Simulation():
         
         #extrahiere zeiten fertiger Teilchen
         times = [(location-self.length)/200 for state, location in particle_list if location >= self.length]
-
+        
         #Rueckgabe der nicht fertigen Teilchen und Ankunftszeiten fertiger Teilchen
         return particles, times
         
@@ -152,15 +140,11 @@ class Simulation():
         
         # extrahiere je eine liste von Zustaenden und Orten
         states, locations = zip(*particle_list)
-        logging.log(10, "Zustaende %s", states[0:10])
-        logging.log(10, "Orte %s", locations[0:10])
         
         # Geometrisch verteilt: Zeitspannen bis zum naechsten Erfolg, jeweils fuer alle Teilchen und fuer ps und pm
         periods_ps = scipy.stats.geom.rvs(1-self.params[0], size = len(particle_list))
         periods_pm = scipy.stats.geom.rvs(1-self.params[1], size = len(particle_list))
         
-        logging.log(10, "periods_ps %s", periods_ps[0:10])
-        logging.log(10, "periods_pm %s", periods_pm[0:10])
         #fuer pm nur die mobilen Zustaende relevant
         periods_pm *= states
         # Zustaende aendern
@@ -170,12 +154,8 @@ class Simulation():
         #neue events nach den jeweilig relevanten Zeitspannen erstellen
         periods = periods_pm + periods_ps
         
-        logging.log(10, "periods_ps %s", periods_ps[0:10])
-        logging.log(10, "periods_pm %s", periods_pm[0:10])
-        logging.log(10, "periods %s", periods[0:10])   
-        
         # gehe nur bei den mobilen Zustaenden weiter
-        locations += (periods_pm * 200)  
+        locations += (periods_pm * 100)  
         logging.log(10, "locations %s", locations[0:10])
         
         new_events = list(zip(periods, states, locations))
@@ -198,50 +178,41 @@ class Simulation():
         for i in range(number):
             hl.append((True, 0))
         events[act_time]=hl
+        #act_time = 1
         
-        # Hier kommen die Ankunftstimes rein
+        # Hier kommen die Ankunftszeiten rein
         arrival_counter = []
         
         # solange noch Ereignisse ausstehen, wird simuliert
         # in teil1 kann noch kein Teilchen fertig werden
-        teil1 = int(length)
-        for act_time in range(teil1):
-            #TODO warum int von length, ist das nicht int?
+        #teil1 = int(length)
+        #for act_time in range(int(length/5)):
+            ##TODO warum int von length, ist das nicht int?
+            #if act_time in events:
+                ## particle_list enthaelt teilchen die fuer act_time simuliert werden sollen
+                #particle_list = np.array(events[act_time])
+                #new_events = self._simulate_event(particle_list)
+                ## neue events einsortieren
+                #for timediff, state, location in new_events:
+                    #try:
+                        ## Zeitpunkt schon vorhanden -> einfuegen
+                        #events[act_time + timediff].append((state, location))
+                    #except KeyError as err:
+                        ## Zeitpunkt noch nicht vorhanden -> erstellen
+                        #events.update({act_time + timediff:[(state, location)]})
+                ## abgearbeitete events loeschen        
+                #del events[act_time]
+        while len(events) >= 1:
             if act_time in events:
-                # particle_list enthaelt teilchen die fuer act_time simuliert werden sollen
-                particle_list = np.array(events[act_time])
-                new_events = self._simulate_event(particle_list)
-                # neue events einsortieren
-                for timediff, state, location in new_events:
-                    try:
-                        # Zeitpunkt schon vorhanden -> einfuegen
-                        events[act_time + timediff].append((state, location))
-                    except KeyError as err:
-                        # Zeitpunkt noch nicht vorhanden -> erstellen
-                        events.update({act_time + timediff:[(state, location)]})
-                # abgearbeitete events loeschen        
-                del events[act_time]
-        # ab jetzt koennen teilchen fertig werden    
-        act_time = teil1
-        logging.log(15,"teil1vorbei")
-        logging.log(20, "teil1 %s, realtime: %s sec, events: %s", act_time, time.clock()-starttime, len(events))
-        #logging.log(20, "fertige %s", self._test_finished(particle_list))
-        #logging.log(20, particle_list)
-        while len(events) > 1:
-            if act_time in events:
-                #if (act_time % 10000) == 0:
-                #    logging.log(15, "tu noch was %s, events: %s", act_time/100000, len(events))
-                logging.log(11, "bei time: %s events: %s", act_time/100000, events[act_time])
-                logging.log(11, "betrachte zeitpunkt %s", act_time)
+                logging.log(15, "betrachte zeitpunkt %s", act_time)
                 # teste, ob zum aktuellen Zeitpunkt schon Teilchen fertig, fuege deren Zeiten ein
                 particle_list = np.array(events[act_time])
                 particle_list, times = self._test_finished(particle_list)
-                arrival_counter.extend([(act_time+(date/200)) for date in times])
+                arrival_counter.extend([(act_time-(date)) for date in times])
                 
-                #logging.log(25, "noch da2, %s", arrival_counter)
-                #time.sleep(1)
+                #logging.log(5, "noch da2, %s", arrival_counter)
                 # Falls die Teilchen dieses Zeitpunktes alle durch sind, wird nicht mehr simuliert
-                # sonst Simulation wie oben
+                # sonst Simulation aller events
                 if len(particle_list) > 0:
                     new_events = self._simulate_event(particle_list)
                     for timediff, state, location in new_events:
@@ -256,8 +227,8 @@ class Simulation():
             #naechste Zeit betrachen    
             act_time += 1  
         # Zeitpunkte normalisieren    
-        self.times = [date/100000 for date in arrival_counter]
-        logging.log(25, "fertig, simzeit: %s, realtime: %s", act_time/100000, (time.clock()-starttime))
+        self.times = [date/20000 for date in arrival_counter]
+        logging.log(25, "fertig, simschritte: %s, realtime: %s", act_time, (time.clock()-starttime))
         
     def set_pd(self, pd, v = version_number):
         """setzt Peakdaten und Versionsnummer neu, falls veraltet, nicht vorhanden, nicht zu gebrauchen"""
@@ -341,25 +312,24 @@ def main():
     print ("n", number, "l", length, time.strftime("%d%b%Y_%H:%M:%S"))
     p = get_argument_parser()
     args = p.parse_args()
-    neueSim = Simulation(0.99992, 0.8, length, number, "E", [])
-    #loc_n, scale_n, halfmax  = 5, 2, 4
-    #norm = lambda x: np.exp(-(x-loc_n)**2 / (2*scale_n**2)) / math.sqrt(2*math.pi * scale_n**2)
-    #linie = lambda x: halfmax + 0*x
-    #print (neueSim._find_intersection(norm, linie, 5))
+    neueSim = Simulation(0.9992, 0.9, length, number, "E", [])
+  
     #neueSim.simulate()
-    neueSim.simulate_by_event()
-    neueSim.calculate()
-    print("pd by event", neueSim.pd)
-    n, bins, patches = plt.hist(neueSim.times, 50, normed=1, alpha=0.5)   
-    plt.show()
-    #neueSim.simulate_each_timestep()
+    #neueSim.simulate_by_event()
     #neueSim.calculate()
+    #print("pd by event", neueSim.pd, len(neueSim.times))
+    #n, bins, patches = plt.hist(neueSim.times, 50, normed=1, alpha=0.5)   
+    #plt.ylabel("")
+    #plt.xlabel("Zeit / s")
+    #plt.title("ps: "+ str(neueSim.params[0])+" pm: "+ str(neueSim.params[1]) + " by event")
+    #plt.show()
+    neueSim.simulate_each_timestep()
+    neueSim.calculate()
     #print ("times by step", neueSim, neueSim.times)
-    #print ("pd by timestep", neueSim.pd)
-    #n, bins, patches = plt.hist(neueSim.times, 50, normed=1, alpha=0.5)
+    print ("pd by timestep", neueSim.pd, len(neueSim.times))
+    n, bins, patches = plt.hist(neueSim.times, 50, normed=1, alpha=0.5)
     #neueSim.calculate()
     #print (neueSim.params, neueSim.mean, neueSim.pd, neueSim.pd[0])
-    
     plt.show()
        
 if __name__ == "__main__":
