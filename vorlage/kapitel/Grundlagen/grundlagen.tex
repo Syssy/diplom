@@ -12,13 +12,8 @@ Es existieren zum einen die Flüssigchromatographie (LC, engl. Liquid Chromatogr
 \todo{Muss englische Worterklärung kursiv oä?}
 bei der die mobile Phase eine Flüssigkeit ist und die stationäre Phase ein Feststoff. Bei der Gaschromatographie (GC) ist die mobile Phase ein Gas und es wird zusätzlich nach der stationären Phase unterschieden. Ist diese ein Feststoff, so spricht man von gepackten Säulen. Bei der Kapillartechnik hingegen werden die Trennsäulen innen mit einem Flüssigkeitsfilm als stationäre Phase beschichtet.
 
-
-
-
 % Die Gaschromatographie (GC) ist ein Verfahren, mit dem gasförmig vorliegende Stoffgemische aufgetrennt oder analysiert werden können. 
 % Die Auftrennung erfolgt dabei zwischen zwei sogenannten Phasen, der stationären und der mobilen Phase, welche sich in unterschiedlichen Aggregatzuständen befinden und untereinander nicht mischen. 
-
-
 
 % Allgeinprinzip: Phasen, Phasenwechsel
 % Arten der Chroma -> Interessant GC mit Kapillartechnik
@@ -32,6 +27,7 @@ Beispielsweise kann die GC in einer Multikapillarsäule (MCC, engl. Multi Capill
 \subsection{Der chromatograpische Prozess}
 Die Substanzen unterscheiden sich vor allem durch ihre Wechselwirkungen mit der stationären Phase. Während dieser Wechselwirkungen haften die Teilchen an der stationären Phase, bewegen sich also nicht fort. Finden wenig Wechselwirkungen statt, passieren die Teilchen die Säule schneller, als wenn viele Wechselwirkungen stattfinden. Dies beeinflusst die Retentionszeit, also die Zeit, die zum Durchlaufen der Säule gebraucht wird.
 \todo{Ausführlich den chroma Proz beschreiben}
+\todo{Inklusive Gleichgewicht der Phasen im Inneren des Pulks}
 
 %\todo{Wegen Datensätzen muss das doch rein
 \subsection{Detektion}
@@ -48,6 +44,23 @@ Die für diese Arbeit vorliegenden Referenzdatensätze stammen aus einer solchen
 %
 Zu beobachten ist, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden. Ideale Peaks haben die Form einer Gaußkurve.
 
+
+\subsection{Technische Daten}
+Eine MCC besteht aus ca. $1000$ Kapillaren mit je
+\begin{itemize}
+ \item $20\,-\,80$\,\textmu m Durchmesser
+ \item Stationäre Phase ist Flüssigkeitsfilm, ca. $0,1\,-\,0,8$\,\textmu m dick
+\end{itemize}
+ 
+$\rightarrow$ MCC etwa $2\,-6$\,mm dick und $20$\,cm lang
+\todo{Technische Daten belegen}
+
+\begin{figure}
+ \centering
+  \includegraphics[width = 0.5\textwidth]{bilder/MultiCapillaryColumn}\\
+  \caption[Querschnitt einer MCC]{Querschnitt einer MCC \protect\footnotemark}
+\end{figure}
+\footnotetext{http://yas.yanaco.co.jp/products/import-gc-ims.html}
 
 \subsection{Peakcharakteristika}
 Um später die simulierten Peaks mit denen aus den Referenzdatensätzen gut vergleichen zu können, sollen nun einige Eigenschaften aufgeführt werden, die einen Peak beschreiben.

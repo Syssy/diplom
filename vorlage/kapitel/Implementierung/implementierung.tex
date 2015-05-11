@@ -4,7 +4,14 @@
 \label{chapter:imp}
 \todo{Kapitel Implementierung schreiben}
 
-\section{Simulation}
+\section{Simulation des 2-Parameter-Modells}
+
+\subsection{Festlegung der Einheiten}
+$20$ cm entspricht 200000 Schritten, in die MCC unterteilt wird.
+1 Schritt ist damit $1$\,\textmu m
+Trägergas hat nach etwa $0,1$ Sekunden die Säule durchlaufen.
+Eine Zeiteinheit entspricht demnach ca. 0.1/200000 Sekunden 0.0000005s 0.0005ms $0,5$\,\textmu s
+
 
 \subsection{Step-by-step}
 Es kann entweder jeder Zeitschritt der Chromatographie simuliert und dabei für jedes Teilchen entschieden werden, ob es sich bewegt. Dabei angenommen, dass die Wahrscheinlichkeit der Wechselwirkung unabhängig vom aktuellen Ort oder dem Zeitpunkt des letzten Phasenwechsels ist. Es wird für jedes Teilchen festgehalten, wo es sich befindet und ähnlich wie bei der echten Chromatographie beobachtet, wann wie viele Teilchen die Säule durchquert haben. 
