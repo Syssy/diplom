@@ -374,3 +374,23 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * Gedanken machen, ob nur der Maximalpunkt, oder Intervall betrachtet werden soll
  * Baustellen sortieren
  * Weiter schreiben, besonders Dinge, die ich im Vortrag erwähnt habe
+ 
+ * Im Mom gehe ich ja jeweils 200 Einheiten vor, das entspricht 1000 Einzelschritten bei einer Länge von 200000. Wenn ich das auf ne kleinere Schritteinheit umstelle, muss ich auch die Zeiteinheit anpassen, d.h. bei je eine Einheit pro Schritt nicht mehr durch 10000 Teilen, sondern durch 2000000
+ 
+
+30.04.2015
+ * Zur 3-Zustände Simulation: Erweiterbar machen durch 3er-Array, z.B. 0-0-1 für Vorwärtsschritte und Matrix für Übergänge. Zustände dann als 1-2-3 abspeichern
+ * Habe jetzt zwar die Einheiten in der _2p so festgelegt, dass step und event das gleiche liefern, muss aber noch mal viele Sim laufen lassen und mich dafür auf eine Schrittweite festlegen. Momentan liegt die bei 100. Bei der neuen Schrittweite dann auch noch mal alle pd überprüfen, ob die auch gleich sind. Alternativ die Einheiten auf Teilchenebene festlegen, dass da keine Zahlen mehr fest in den Methoden stehen.
+ * 3-states: Versuchen die by-event (_simulate_event) zu parallelisieren. Das lohnt sich aber nur, wenn viele Events zum gleichen Zeitpunkt statt finden (Params nicht zu nah an 1, dh events in kürzerern abständen), wahrscheinlich lohnt an gleicher Stelle eher eine gute Implementierung für die by-step Variante. 
+ * by-event lohnt sowieso nur bei extremen wkeiten, da diese aber momentan parallel mit mittleren wkeiten vorkommen, lohnt evtl doch eine parallelisierung
+ 
+ * Sollte jetzt erst mal die 2p fertig überarbeiten, vor allem brauche ich demnächst wieder den peakfinder, gerade bei 4/6 Params wird es bald unübersichtlich.
+ * seaborn (zum plotten) evtl paket nachinstallieren
+ 
+
+07.05.2015
+ * PAA
+ * Experimente starten und Ergebnisse auswerten.
+ * Gute Idee, wie ich die Auswertung mache! Wie finde ich heraus, welche Paramkombis gut sind?
+ * Wenn ich ans Annähern der Peaks kommme: Sekantenverfahren, Dommi noch mal ansprechen
+ * Hochzeitshaarschmuck raussuchen

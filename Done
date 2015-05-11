@@ -236,4 +236,29 @@ läuft
  * Die Vortragsfolien entwickeln sich weiter
  
 23.04.2015
- *
+ * Vortrag gehalten
+ * Noch mal schrittweise meine beiden Sim-Arten durchgegangen. 
+ * Mein Faktor10-Problem war ein Python2-Problem, welches sich mit from __future__ import division beheben lies und trat wohl auch nie mit Python3 auf.
+ 
+30.04.2015
+ * Die Sim in der _2p sollten jetzt gleiche Ergebnisse liefern
+ * 3-states angefangen und die by-event läuft auch. vergleich (mit genau einer paramkombi) mit der 2p erfolgreich, ist bei 1000 Teilchen sogar schneller, aber leider etwa linear, während die alte sim da deutlich besser ist. 
+ * Den zweiten und dritten Zustand tauschen geht auch und wenn ich nur die beiden stat mit rein nehme, kommen die Teilchen nicht vom Fleck, verteilen sich aber auf die beiden Zustände, so wie gewünscht
+ * Beispielzeiten für die verschiedenen Sim: ps=0.9994, pm=0.7, n=5000(1000), l=200000, Schrittweite = 100
+  ** 2p, timestep: 86s (32s)
+  ** 2p, event: 169s (86s)
+  ** 3s, timestep: 254s (100s)
+  ** 3s, event: 222s (55s)
+ * Neue Modelle: 
+  ** 3a) Keine Übergänge zwischen den Zuständen:
+   *** Wenn die W'keit, in beide reinzugehen, ähnlich ist, aber sehr unterschiedliche W'keiten habe, entsteht zumindest kein Tailing
+   *** Kann ein Tailing erzeugen, ähnlich, wie bei der 2p, da gab es ja auch die ganz bestimmte param-kombi. ich hoffe nun, dass ich mit hilfe des anderen stat zustands das ganze verschieben kann. solange die w'keit in den tailingzustand überzugehen, bleibt, müsste das tailing sichtbar bleiben. Bisher gelingt das zu verschiedenen Zeitpunkten 
+ 
+07.05.2015
+ * Experimentierphase hat begonnen
+ * 3a liefert auf jeden Fall brauchbare Peaks (zumindest auf den ersten Blick) Es sind auch eher schmale, schiefe dabei. 3b) sieht erst mal schlechter aus.
+ 
+
+ 
+ 
+ 
