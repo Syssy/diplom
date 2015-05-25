@@ -257,8 +257,10 @@ läuft
 07.05.2015
  * Experimentierphase hat begonnen
  * 3a liefert auf jeden Fall brauchbare Peaks (zumindest auf den ersten Blick) Es sind auch eher schmale, schiefe dabei. 3b) sieht erst mal schlechter aus.
+ * my_plottings_2p überarbeitet und getestet und kommentiert.
  
-
+21.05.2015
+ * Erste Intensitätsplot zur Rauschwertbestimmung fertig. Passt auch, wenn nur ein einzelner Peak im Chromatogramm. 
  
- 
+ .
  

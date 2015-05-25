@@ -390,7 +390,28 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
 
 07.05.2015
  * PAA
- * Experimente starten und Ergebnisse auswerten.
- * Gute Idee, wie ich die Auswertung mache! Wie finde ich heraus, welche Paramkombis gut sind?
+ * Experimente starten (ok) und Ergebnisse auswerten.
+ * Gute Idee, wie ich die Auswertung mache! Wie finde ich heraus, welche Paramkombis gut sind? 
+  ** Tatsächliche Daten raussuchen, gucken, ob ich da annähnernd dran komme. 
+  ** Werte für die Schiefe, bzw rechts und linksbreite berechnen
+  ** Überprüfen, wie ausagekräftig diese sind
  * Wenn ich ans Annähern der Peaks kommme: Sekantenverfahren, Dommi noch mal ansprechen
+ * Brauche klare Werte, wann ein Peak "gut" ist
  * Hochzeitshaarschmuck raussuchen
+ * mit np hist die bins berechnen. davon offset für die mitte der bins und damit plotten (Mail von Bianca) ok
+ * in den Plottings einige methoden überarbeiten, da zu unflexibel (vorgegebene quadratische anzahl etc) ok
+ * [0.5, 0.4, 0.1], [0.0095, 0.99, 0.0005], [0.0003, 0.9996, 0.0001]] in der 3s(6p) T und E vergleichen
+ * habe beim plottesten noch folgende, tailing erzeugende kombi gefunden: (0.1 0.99) bzw (0.05, 0.99) natürlich extrem früh, aber sollte ich mir merken
+ * Schiefe der echten Daten berechnen 
+ * Noch eine Idee für den Plotkram: grundsätzlich nur noch ohne fromfile starten, aber ins main und über argparse die möglichkeit einbauen, dateien zu öffen zur direktbenutzung
+ * Problem bei der Berechnung der Schiefe: In den Referenzdaten: Bis wohin geht ein Peak, was gehört zum Rauschen? Wie rechne ich das raus? Oder eher doch die Breite auf halber Höhe rechts und links des Maximums nehmen? Diese Daten liegen für die Referenzen vor, müsste ich für meine Daten berechnen.
+ * Muss sowieso die Berechnungen (calculate) komplett anpassen, da das alles auf Normalverteilung beruht.
+  ** Wie berechne ich das Maximum und die Maximalstelle?
+  
+21.05.2015  
+ * In den Referenzdaten ein Histogramm über die Intensitäten machen. Das Rauschen am Anfang soll (in etwa) eine Gaußkurve bilden, das sind dann die Werte, die rausfallen, bzw, den höchsten Wert (gespiegelt von der ersten Hälfte) ziehe ich dann von allen Werten ab. Die Schiefe berechne ich dann über alle Datenpunkte ausgehend vom Maximum bis zum ersten erreichen von 0. Sollten das zu wenige Datenpunkte sein, auch jeweils das Nachbarchromatrogramm nehmen.
+ * Was tun bei mehreren Peaks im Chromatogramm? Lokale Umgebung macht schon Sinn, da zb in der Nähe des RIP die Rauschwerte deutlich höher sind, als sonst
+ * Terminklärung zum Treffen mit Rahnenführer
+ 
+ 
+ 
