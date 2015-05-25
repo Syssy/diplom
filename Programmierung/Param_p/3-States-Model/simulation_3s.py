@@ -13,7 +13,7 @@ import random
 import scipy.stats   
 import numpy as np
 import matplotlib.pyplot as plt
-
+import seaborn
 
 # Speichert alle interessanten Dinge einer Simulation ab
 # Hat Methoden zur Simulation, sowie zur Berechnung von Peakdaten
@@ -30,7 +30,7 @@ class Simulation():
         number - Anzahl simulierter Teilchen
         mode - Wie wird simuliert, each_timestep (T) oder by_event (E)
         times - Ankunftszeiten
-        pd - aus den times errechnete Peakdaten: ((loc, scale), width, height)
+        pd - aus den times errechnete Peakdaten: ((loc, scale), (width, left-width, right-width), height)
         v - Versionsnummer eben ;)
         """
         #TODO: Vielleicht sinnvoll abzuspeichern, welches Modell, falls nur 4 Parameter
@@ -180,7 +180,7 @@ class Simulation():
 
             # Abbruchbedingung: alle teilchen angekommen :) oder Simulation dauert schon zu lange :(
             number = len(locations)
-            if number < 1:
+            if number < 5:
                 logging.log(25, "fertig, simzeit: %s, realtime: %s", steps_needed, (time.clock()-starttime))
                 break
             if steps_needed > 4800000:
@@ -268,21 +268,21 @@ class Simulation():
         global summe
         summe = 0
         num_ev = 0
-        # Ereignisse als dict. Jeweils als key einen Zeitpunkt (enthaelt nur diejenigen, wo auch was passiert, Vergangenheit wird geloescht) und eine Liste aller Teilchen, mit denen dann was passieren soll
-        events = {}
+        # Ereignisse als dict. Jeweils als key einen Zeitpunkt (enthaelt nur diejenigen, wo auch was passiert, Vergangenheit wird geloescht) und eine Liste aller Teilchen, mit denen dann was passieren soll. Init mit mehreren leeren Listen, damit Abbruchbedingung passt
+        events = {1:[], 2:[], 3:[], 4:[]}
         hl = list()
         # Init: Zu Zeitpunkt 0 passiert mit allen Teilchen was
         # Teilchen repraesentiert als Tupel von Zustand (0=stat, 1=mob) und Ort
         for i in range(number):
             hl.append((0, 0))
-        events[act_time]=hl
+        events[0]=hl
         #act_time = 1
         
         # Hier kommen die Ankunftszeiten rein
         arrival_counter = []
         
         # solange noch Ereignisse ausstehen, wird simuliert
-        while len(events) >= 1 and act_time < 4800000:
+        while len(events) >= 5 and act_time < 4800000:
         #while act_time < 10:
             if act_time in events:
                 logging.log(15, "betrachte zeitpunkt %s", act_time)
@@ -316,7 +316,7 @@ class Simulation():
             for ev in events:
                 #print (ev, events[ev])
                 for teilchen in events[ev]:
-                    arrival_counter.append(act_time+1000000) #TODO richtig?
+                    arrival_counter.append(act_time+2000000) #TODO richtig?
         #print (arrival_counter)
         print (summe/num_ev)
         self.times = [date/20000 for date in arrival_counter]
@@ -362,7 +362,15 @@ class Simulation():
         '''finde Schnittpunkt zweier Funktionen (fun1, fun2) ausgehend von geschätzten Wert(en) x0'''
         return scipy.optimize.fsolve(lambda x : fun1(x) - fun2(x), x0)      
     
-    def calculate(self): #TODO: 3s
+    
+    def ig_function(self, mu_i, loc_i, scale_i, x):
+        if x <= 0:
+            return 0
+        else:
+            return np.exp(-(scale_i*((x-loc_i) - mu_i)**2) /(2* (x-loc_i) * mu_i**2)) * math.sqrt(2*math.pi*(x-loc_i)**3)
+     
+    
+    def calculate(self): #TODO: Peakdata anpassen
         """Berechne Momente, Breite und Hoehe bei halber Peakhoehe, sowie Loc und Scale, ausgehend von Gaussverteilung"""
         # Momente berechnen
         self.mean = np.mean(self.times) 
@@ -373,24 +381,48 @@ class Simulation():
         # Peakdaten berechnen
         # Finde Parameter fuer passende Gausskurve zum Schneiden
         loc_n, scale_n = scipy.stats.norm.fit(self.times)
+        mu_i, loc_i, scale_i= scipy.stats.invgauss.fit(self.times)
+        print ("igparams: ", mu_i, loc_i, scale_i)
+        hist, bins = np.histogram(self.times, bins=50, normed = True)
+        offset = bins[1:]-bins[:-1]
+        print ("hist", hist, "\nmax", max(hist), "argmax", np.argmax(hist), "len", len(hist))
+        print ("bins", bins, "maxdings", bins[np.argmax(hist)+1], "len", len(bins))
+        #plt.plot([bins[np.argmax(hist)+1],bins[np.argmax(hist)+1]] , [0, max(hist)])
+        #plt.show()
+        x = np.linspace(min(self.times)-50, max(self.times)+50, 1000000)
+        plt.plot(bins[:-1]+offset, hist, x, scipy.stats.invgauss.pdf(x, mu_i, loc_i, scale_i), x, scipy.stats.norm.pdf(x, loc_n, scale_n), [bins[np.argmax(hist)+1], bins[np.argmax(hist)+1], bins[np.argmax(hist)+1]] , [0, max(hist)/2, max(hist)])
+        #plt.show()
         # halben Maximalwert berechnen
-        halfmax = 1/(math.sqrt(2*math.pi)*scale_n *2)
+        halfmax = max(hist) / 2
+        #halfmax = 1/(math.sqrt(2*math.pi)*scale_n *2)
         #print ("halfmax", halfmax)
             
         # Funktionen erstellen, die dann für die find intersections genutzt werden. TODO: Hier noch andere verteilungen ermöglichen
-        # Funktion der Normalverteilung.
-        norm = lambda x: np.exp(-(x-loc_n)**2 / (2*scale_n**2)) / math.sqrt(2*math.pi * scale_n**2)
+        # Funktion der Normalverteilung
+        norm = lambda x: np.exp(-(x-loc_n)**2 /(2*scale_n**2)) / math.sqrt(2*math.pi * scale_n**2)
         # Funktion einer Linie
         linie = lambda x: halfmax + 0*x
+        # Funktion der IG
+        ig_funct = lambda x: np.exp(-(scale_i*((x-loc_i) - mu_i)**2) /(2* (x-loc_i) * mu_i**2)) * math.sqrt(2*math.pi*(x-loc_i)**3)
+        print (norm(5))
+        print(ig_funct(70))
+        
+        print ("test", self._find_intersection(linie, self.testfunction, [loc_i+scale_i]))
+        intersections = self._find_intersection(linie, norm, [loc_n+scale_n, loc_n-scale_n])
+        print (intersections)
+        sects = self._find_intersection(linie, ig_funct, [loc_n-scale_n])
+        print (sects)
+        time.sleep(1)
         # print ("max bei", norm(loc), "starte test bei:", loc-scale, loc+scale)
         # finde Schnittpunkte zwischen Linie auf halber Hoehe und Gausskurve, Startwerte sind median +- standardabweichung
-        intersections = self._find_intersection(linie, norm, [loc_n+scale_n, loc_n-scale_n])
         logging.log(15, "Intersections %s", intersections)
         
         #width ist Abstand zwischen den Schnittpunkten
+        l_w = loc_n - min(intersections)
+        r_w = max(intersections) - loc_n
         width = abs(max(intersections) - min(intersections))
         ls =  (loc_n, scale_n)
-        pd = (ls, width, halfmax)
+        pd = (self.mean, (width, l_w, r_w), halfmax)
         self.set_pd(pd)
 
 def check_params(params):
@@ -404,8 +436,6 @@ def check_params(params):
             return False
     return True
     
-   
-
 # für Kommandozeilentests, Aufruf nur in main()    
 def get_argument_parser():
     p = argparse.ArgumentParser(
@@ -481,9 +511,7 @@ def main(): #TODO: 3s
                     plt.savefig("p"+ str(neueSim.params[0])+"_"+ str(neueSim.params[1])+"_"+ str(neueSim.params[2]) + "_timestep_n" + str(number) + ".png")
                     plt.hold(False)
                     #plt.show()
-       
-       
-       
+             
 if __name__ == "__main__":
     logging.basicConfig(level=20)
     main()

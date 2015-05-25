@@ -19,16 +19,16 @@ import seaborn
 import simulation_3s as sim
 
 def save_figure(sim, save, show):
-    if sim.mean > 0.1 and sim.mean < 180 and sim.pd[1] > 1 and sim.pd[1] < 25:
+    #if sim.mean > 0.1 and sim.mean < 180 and sim.pd[1][0] > 1 and sim.pd[1][0] < 25:
         logging.log(30, "params, %s", sim )
         logging.log(29, "mean, %s", sim.mean )
-        logging.log(29, "ls, breite, h, %s", sim.pd )
+        logging.log(29, "max, breite, h, %s", sim.pd )
         logging.log(29, "skew, %s", sim.skewness )
         n, bins, patches = plt.hist(sim.times, 150, normed=1, alpha=0.5)
         plt.ylabel("")
         plt.xlabel("Zeit / s")
         plt.title("params: " + str(sim))
-        info = "loc " +  str(sim.pd[0][0]) + "\nbreite " + str(sim.pd[1]) + "\nskew " + str(sim.skewness)
+        info = "max " +  str(sim.pd[0]) + "\nbreite " + str(sim.pd[1]) + "\nskew " + str(sim.skewness)
         #plt.text(1.5*sim.mean, 2*sim.pd[2], info, size=12, ha="center", va="center", bbox = dict(boxstyle="round", fc=(1., 1., 1.),))
         plt.figtext(0.7, 0.8, info, size=12, ha="center", va="center", bbox = dict(boxstyle="round", fc=(1., 1., 1.),))
         #print (neueSim.params, neueSim.mean, neueSim.pd, neueSim.pd[0])
@@ -65,7 +65,8 @@ def start_simulations(length, number, mode, p_combinations):
                     # test, ob aktuelle version. Im Moment nicht nötig, aber schmeißt noch AttributeError, wenn nicht vorhanden, sodass Dinge nachberechnet werden können, spaeter kann hier weitere versionanpassung rein
                     if mySim.version < 1.0:
                         logging.log(31, "alte version, update")
-                        mySim = update_sim(mySim)
+                        mySim.calculate()
+                        #mySim = update_sim(mySim)
                         store = True
                     # Sim mit gleichen Params zwar vorhanden, aber nicht nutzbar, da Länge/Anzahl verschieden, sollte nicht vorkommen, da im filename/path schon laenge und anzahl drin sind
                     if (not mySim.length == length) or (not mySim.number == number):
@@ -116,7 +117,6 @@ def start_simulations(length, number, mode, p_combinations):
                         pickle.dump(mySim, data)  
             results.append(mySim)
             #logging.log(20, "peakdaten: ls, b, h: %s", mySim.pd)
-            save_figure(mySim, True, False)
     return results
 
 def combine_params(args):  
@@ -203,22 +203,56 @@ def combine_params(args):
     #print (param_list)
     return param_list
 
+def get_argument_parser():
+    p = argparse.ArgumentParser(
+        description = "Beschreibung") 
+    p.add_argument("--choicenumber", "-cn", type = int, default = "5",
+                   help = "bei zufaelliger Parameterwahl: Wie viele Kombinationen sollen gewaehlt werden")
+    p.add_argument("--pcombioption", "-p",  
+                   help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: choice, viele, viele005, auswahl, auswahlx, d1-3, einige, random, wdh")#TODO
+    p.add_argument("--reverse", "-r", action = "store_true",
+                   help = "Reihenfolge der p_combinations invertieren")
+    p.add_argument("--length", "-l", type = int, default = "200000",
+                   help = "Laenge der Saeule")
+    p.add_argument("--number", "-n", type = int, default = "1000",
+                   help = "Anzahl zu simulierender Teilchen")
+    p.add_argument("--mode", "-m", default = "E", 
+                   help = "Art der Simulation; E = by-event, T = each_timestep")
+    p.add_argument("--savefig", "-sf", action = "store_true", 
+                   help = "Plot der Simulationen speichern")
+    
+    p.add_argument("--test", "-t", action = "store_true", help = "nutzlos; Test")
+    return p
+
 
 def main(): #TODO: 3s
     number = 2000
     length = 200000
     print ("n", number, "l", length, time.strftime("%d%b%Y_%H:%M:%S"))
-    #p = get_argument_parser()
-    #args = p.parse_args()
+    p = get_argument_parser()
+    args = p.parse_args()
     
     #params = [[0.5, 0.499, 0.001],[0.0005, 0.9995, 0.0],[0.000001, 0.0, 0.99999]]
     #params = [[0.7,0.0,0.3],[0.0,0.0,0.0],[0.0006, 0.0, 0.9994]]
     #params = [[0.7,0.3,0.0],[0.00006, .99994, 0.0],[0.0,0.0,0.0]]
     #params = [[0.0,0.5,0.5],[0.0,0.5,0.5],[0.0, 0.5, 0.5]]
     
-    param_list = combine_params("3a")
+    param_list = combine_params(args.pcombioption)
+    if args.reverse:
+        param_list.reverse()
     
-    start_simulations(length, number, "E", param_list)
+    sims = start_simulations(length, number, args.mode, param_list)
+    if args.savefig:
+        for sim in sims:
+            save_figure(sim, True, False)
+    
+    for sim in sims:
+        #time.sleep(1)
+        if sim.skewness > 0.5 and sim.mean < 180: 
+            save_figure(sim, False, True)
+            sim.calculate()
+            #plt.show()
+            time.sleep(1)
     #pms = [[0.8, 0.199, 0.001],[0.5, 0.499, 0.001],[0.5, 0.4999, 0.0001]]
     #pas = [[0.0008, 0.9992, 0.0],[0.0005, 0.9995, 0.0],[0.0001, 0.9999, 0.0]]
     #pls = [[0.00005, 0.0, 0.99995],[0.00001, 0.0, 0.99999],[0.000005, 0.0, 0.999995]]
@@ -259,5 +293,5 @@ def main(): #TODO: 3s
        
        
 if __name__ == "__main__":
-    logging.basicConfig(level=26)
+    logging.basicConfig(level=25)
     main()
