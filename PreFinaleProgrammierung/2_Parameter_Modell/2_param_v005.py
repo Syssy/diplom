@@ -11,6 +11,7 @@ import time
 import logging
 import argparse
 import os
+import sys
 
 import numpy as np
 import scipy.stats as stats
@@ -22,21 +23,21 @@ import simulation_2p as simulation
 import peak_width_2p as peak_width
 
 
-def combine_params(args, kwargs = 5): #TODO Auf die sinnvollen beschraenken
+def combine_params(args, nr_of_choice = 5): #TODO Auf die sinnvollen beschraenken
     """Kombiniere Wahrscheinlichkeiten als ps- und pm-Parameter fuer die Simulation"""
     p_combinations = []
     if not args:
         args = "choice"
-    print ("args", args, "kwargs", kwargs)
+    logging.log(20, "args" + args + "nr_of_choice" + str(nr_of_choice))
     if args == "choice":                    
         schrittweite = 0.000002
         ps_catalogue = np.arange(0.9998, 0.99997, schrittweite)
         pm_catalogue = np.arange(0.1, 0.9999, schrittweite*10)
-        print (pm_catalogue)
+        #print (pm_catalogue)
         
-        for zahl in range(kwargs):
-                pm = random.choice(ps_catalogue)
-                ps = random.choice(pm_catalogue) 
+        for zahl in range(nr_of_choice):
+                ps = random.choice(ps_catalogue)
+                pm = random.choice(pm_catalogue) 
                 p_combinations.append((ps, pm))
         logging.log(25, p_combinations)        
        # logging.log(25, ps_catalogue, pm_catalogue)        
@@ -76,11 +77,11 @@ def combine_params(args, kwargs = 5): #TODO Auf die sinnvollen beschraenken
     if args == "viele005":
         schrittweite = 0.00001
         #ps_catalogue = np.arange(0.99992, 0.99999, schrittweite)
-        ps_catalogue = [0.9992, 0.99992]
+        ps_catalogue = [0.999, 0.9992, 0.9998, 0.99992]
         
         schrittweite = 0.05
         #pm_catalogue = np.arange(0.5, 0.99, schrittweite)
-        pm_catalogue = [0.99, 0.9, 0.7, 0.5, 0.3, 0.1, 0.05, 0.01, 0.005, 0.001]
+        pm_catalogue = [0.99, 0.9, 0.3, 0.1]
         
         p_combinations = []
         for ps in ps_catalogue:
@@ -97,7 +98,7 @@ def combine_params(args, kwargs = 5): #TODO Auf die sinnvollen beschraenken
         p_combinations = [(0.9996, 0.99992),  (0.998, 0.992),(0.997, 0.99),(0.996, 0.99),  (0.998, 0.991)]
         
         p_combinations = [(0.99985, 0.62),(0.99985, 0.63), (0.99985, 0.64), (0.99985, 0.65)]
-        p_combinations = [(0.9998, 0.5)]
+        p_combinations = [(0.99988, 0.45)]
         #p_combinations = [(0.99994, 0.85), (0.9999, 0.75),(0.999945, 0.01), (0.9998, 0.4),(0.999825, 0.001), (0.99992, 0.9)]
         #p_combinations = [(0.99991, 0.75),(0.99991, 0.76),(0.99991, 0.77),(0.99991, 0.78),(0.99991, 0.79)]
 
@@ -155,8 +156,9 @@ def combine_params(args, kwargs = 5): #TODO Auf die sinnvollen beschraenken
     
     # groessere  
     if args == "einige": 
-        ps_catalogue = [0.999, 0.9995, 0.9999, 0.99991, 0.99992, 0.99993, 0.99994, 0.99995]
-        pm_catalogue = [0.99, 0.9, 0.7, 0.5, 0.4, 0.3, 0.2, 0.1, 0.01, 0.001, 0.0001]
+        ps_catalogue = [0.9989, 0.9995, 0.9997]
+        #ps_catalogue = [0.999, 0.9995, 0.9999, 0.99991, 0.99992, 0.99993, 0.99994, 0.99995]
+        pm_catalogue = [0.99, 0.9, 0.7, 0.5, 0.4, 0.3, 0.2, 0.1, 0.01, 0.0001]
         
        # p_combinations.append((1, 1))
         for ps in ps_catalogue:
@@ -203,7 +205,7 @@ def combine_params(args, kwargs = 5): #TODO Auf die sinnvollen beschraenken
                 p_combinations.append((round(ps, 10), round(pm, 10)))
         
     if args == "wdh":#???
-        p_combinations = [(0.99, 0.99)]
+        p_combinations = [(0.999, 0.999), (0.05, 0.99)]
     
     logging.log(20, "p_combinations %s, anzahl: %s", p_combinations, len(p_combinations))    
     return (sorted(list(set(p_combinations))))
@@ -221,12 +223,12 @@ def start_simulations(length, number, mode, p_combinations):
             sim_exists = True
             store = False
             try:
-                filename = 'simulated_data/l' + str(length) + "/n" + str(number) + '/Sim_' + str(round(ps,10)) + '_' + str(round(pm,10)) + ".p" 
+                filename = 'simulated_data/l' + str(length) + "/n" + str(number) + '/Sim_' + str(round(ps,10)) + '_' + str(round(pm,10)) + ".pp" 
                 logging.log(25,"filename: %s", filename)
                 with open(filename, 'rb') as data:
                     logging.log(20,"geoeffnet")
                     mySim = pickle.load(data)
-                    logging.log(20, mySim)
+                    logging.log(22, mySim)
                     # test, ob aktuelle version. Im Moment nicht nötig, aber schmeißt noch AttributeError, wenn nicht vorhanden, sodass Dinge nachberechnet werden können, spaeter kann hier weitere versionanpassung rein
                     if mySim.version < 4.1:
                         logging.log(31, "alte version, update")
@@ -238,6 +240,9 @@ def start_simulations(length, number, mode, p_combinations):
                         sim_exists = False
                         # neue Sim nötig
                         logging.log(39, "neue Sim")
+                    if mode != mySim.mode:
+                        logging.log(35, "andere Simulationsart gewuenscht, simuliere neu")
+                        sim_exists = False
             # alte Version, daher aktualisieren
             except AttributeError as err:
                 store = True
@@ -312,7 +317,7 @@ def get_argument_parser():
 def main():
     starttime = time.clock()
     logging.log(35, time.strftime("%d%b%Y_%H:%M:%S"))
-    
+   
     p = get_argument_parser()
     args = p.parse_args()
        
@@ -322,10 +327,30 @@ def main():
         p_combinations.reverse()
     
     new_sims = start_simulations(args.length, args.number, args.mode, p_combinations)
+    filename = "testspeicherung"
+    with open (filename, "wb") as data:
+        pickle.dump(new_sims, data)
+    #Tests fuer Plotkram
+    plotkram.plot_spectrum(new_sims, 1000)
+    for i in range(len(new_sims)):
+        plotkram.plot_single_peak(new_sims[i], qq= scipy.stats.norm)
+        time.sleep(2)
+    plotkram.plot_widthmap(new_sims)
+    plotkram.plot_widthandskew(new_sims)
+    plotkram.plot_params_at_time(new_sims, 50, 10, True)
+    plotkram.plot_heatmap_of_moments(filename, ff = True, moment= "mean")
+    plotkram.plot_heatmap_of_moments(new_sims, moment="mean") 
+    #plotkram.plot_4_heatmaps(filename, ff=True, moment="mean")   
+    #plotkram.plot_4_heatmaps(new_sims, moment="mean") 
+    plotkram.plot_simlist_ff(filename, True, True, True, True, True, compare_Dist = scipy.stats.gamma)
+    plotkram.plot_simlist(new_sims, True, False, True, True, True)
     
     # Ende :)
     print ("Zeit " + str(time.clock()-starttime))
     
 if __name__ == "__main__":
-    logging.basicConfig(level=25)
-    main() 
+    if sys.version_info.major < 3:
+        print ("Bitte python3 verwenden")
+        exit()
+    logging.basicConfig(level=20)
+    main()
