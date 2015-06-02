@@ -410,8 +410,19 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
   
 21.05.2015  
  * In den Referenzdaten ein Histogramm über die Intensitäten machen. Das Rauschen am Anfang soll (in etwa) eine Gaußkurve bilden, das sind dann die Werte, die rausfallen, bzw, den höchsten Wert (gespiegelt von der ersten Hälfte) ziehe ich dann von allen Werten ab. Die Schiefe berechne ich dann über alle Datenpunkte ausgehend vom Maximum bis zum ersten erreichen von 0. Sollten das zu wenige Datenpunkte sein, auch jeweils das Nachbarchromatrogramm nehmen.
- * Was tun bei mehreren Peaks im Chromatogramm? Lokale Umgebung macht schon Sinn, da zb in der Nähe des RIP die Rauschwerte deutlich höher sind, als sonst
- * Terminklärung zum Treffen mit Rahnenführer
+ * Was tun bei mehreren Peaks im Chromatogramm? Lokale Umgebung macht schon Sinn, da zb in der Nähe des RIP die Rauschwerte deutlich höher sind, als sonst. Auch starkes Tailing verursacht höhere Rauschwerte, sodass das tatsächliche Ausmaß des Schwanz nicht erkannt wird. (Optisch aber sofort zu erkennen)
+ * Terminklärung zum Treffen mit Rahnenführer (ok)
+ * Ideen für die Verschiebung der Peaks nach vorne bei gleicher Breite: Sättigung der Adsorption mit einbeziehen. Überlegung, ob das dann beim 3s Model, auch auf Lösungszustand zutrifft oder wie da halt die Abhängigkeiten sind. Dabei müsste für jeden Ort/Ortsbereich eine Sättigung in jedem Schritt berechnet, gespeichert werden und davon abhängig die Wkeit zum Übergang verändert werden. Das erhöht im Prinzip pm (wodurch Peaks ja schneller werden) Wenn dabei die Breite gleich bleibt, wäre das super. Möglicherweise müssen dafür aber viel mehr Teilchen simuliert werden, um einen sinnvollen Wert für die Sättigung zu erreichen?! Umsetzung als eventsim stelle ich mir schwer/unmöglich vor, da dort vorhersage der Sättigung nötig wäre. in der timestepsim aber würde ich einfach zweischrittig arbeiten, alle übergangskandidaten noch mal auf zweite wkeit testen, ob sie hängen bleiben können.
+ * Könnte noch mal gut etwas Grundlagenliteratur brauchen, um abzuklären, was für Ideen jetzt realistisch sind.
+ * Vorgehen bei der Schiefebestimmung: 
+  ** Finde Maximalwert und Maximalstelle des Peaks
+  ** Erzeuge Wertehistogramm des Chromatogramms
+  ** Finde darin Maximalwert / "Gausskurve" zur Bestimmung des Rauschlevels
+  ** Nehme vom Peak, ausgehend von der Maximalstelle, alle Werte bis zum ersten Erreichen des Rauschlevels (in beide Richtungen)
+  ** Bereche aus diesen Daten die Schiefe
+ * sim3s, stepweite einstellbar machen (ok)
  
- 
- 
+28.05.2015
+ * Das ganze Gedönse mit resim etc in extra-Methode verschieben, wo ich teste, welche der Kombis tatsächlich simuliert werden müssen
+ * Zu den Referenzdaten: Zur Bestimmung der Schiefen, das muss eh per Hand ausgewählt werden, was das sinnvoll ist. Mich würde interessieren, wie breit so ein Gesamt-Peak ist, wenn ich alle dazugehörigen Spalten zusammen rechne.
+ * PAA weiter machen
