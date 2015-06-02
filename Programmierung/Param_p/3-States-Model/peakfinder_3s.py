@@ -10,6 +10,7 @@ import time
 import math
 import random
 import os
+import fnmatch
 
 import scipy.stats   
 import numpy as np
@@ -42,7 +43,7 @@ def save_figure(sim, save, show):
         plt.close()
     #time.sleep(1)
 
-def start_simulations(length, number, mode, p_combinations):
+def start_simulations(length, number, mode, p_combinations, resimulate = False, rsmode = False):
     '''Teste, ob Simulationen in geeigneter Version vorhanden sind und simuliere ggf. neu'''
     # nr_todo: wie viele noch nicht bearbeitet, nr_ready: wie viele schon fertig
     nr_todo, nr_ready = len(p_combinations), 0    
@@ -53,43 +54,47 @@ def start_simulations(length, number, mode, p_combinations):
         #if sim.check_params(params):
             #logging.log(24, "ps, pm, %(ps)f %(pm)f", locals())
             # gehe erst mal davon aus, dass Sim vorhanden ist, daher nicht speichern, sondern auf Aktualitaet ueberpruefen
-            sim_exists = True
             store = False
-            try:
-                filename = 'simulated_data/l' + str(length) + "/n" + str(number) + '/Sim_' + str(params[0])+"_"+ str(params[1])+"_"+ str(params[2]) + ".p" 
-                logging.log(25,"filename: %s", filename)
-                with open(filename, 'rb') as data:
-                    logging.log(20,"geoeffnet")
-                    mySim = pickle.load(data)
-                    logging.log(20, mySim)
-                    # test, ob aktuelle version. Im Moment nicht nötig, aber schmeißt noch AttributeError, wenn nicht vorhanden, sodass Dinge nachberechnet werden können, spaeter kann hier weitere versionanpassung rein
-                    if mySim.version < 1.0:
-                        logging.log(31, "alte version, update")
-                        mySim.calculate()
-                        #mySim = update_sim(mySim)
-                        store = True
-                    # Sim mit gleichen Params zwar vorhanden, aber nicht nutzbar, da Länge/Anzahl verschieden, sollte nicht vorkommen, da im filename/path schon laenge und anzahl drin sind
-                    if (not mySim.length == length) or (not mySim.number == number):
-                        logging.warn('neue Sim nötig, da Laenge oder Anzahl falsch,')
-                        sim_exists = False
-                        # neue Sim nötig
-                        logging.log(39, "neue Sim")
-            # alte Version, daher aktualisieren
-            except AttributeError as err:
-                store = True
-                logging.log(25, err)
-                mySim = update_sim(mySim)
-            # Kombination nicht vorhanden, daher neue Sim machen
-            except IOError:
-                sim_exists =  False
-                logging.log(25,"%s, simuliere, da nicht vorhanden, todo %s, ready %s", params, nr_todo, nr_ready)
-            
-            # diverse Fehler, im Zweifel wohl auch neu simulieren ? TODO
-            except (EOFError, UnicodeDecodeError, TypeError)  as err:
-                logging.log(40, err)
-                sim_exists = False
+            if resimulate:
+                sim_exists = False 
+            else:
+                sim_exists = True
+                try:
+                    mySim = sim.Simulation(params, length, number, "*")
+                    filename = 'simulated_data/l' + str(length) + "/n" + str(number) + "/" + str(mySim) + ".p"
+                    logging.log(25,"filename: %s", filename)
+                    with open(filename, 'rb') as data:
+                        logging.log(20,"geoeffnet")
+                        mySim = pickle.load(data)
+                        logging.log(20, mySim)
+                        # test, ob aktuelle version. Im Moment nicht nötig, aber schmeißt noch AttributeError, wenn nicht vorhanden, sodass Dinge nachberechnet werden können, spaeter kann hier weitere versionanpassung rein
+                        if mySim.version < 1.0:
+                            logging.log(31, "alte version, update")
+                            mySim.calculate()
+                            #mySim = update_sim(mySim)
+                            store = True
+                        # Sim mit gleichen Params zwar vorhanden, aber nicht nutzbar, da Länge/Anzahl verschieden, sollte nicht vorkommen, da im filename/path schon laenge und anzahl drin sind
+                        if (not mySim.length == length) or (not mySim.number == number):
+                            logging.warn('neue Sim nötig, da Laenge oder Anzahl falsch,')
+                            sim_exists = False
+                            # neue Sim nötig
+                            logging.log(39, "neue Sim")
+                # alte Version, daher aktualisieren
+                except AttributeError as err:
+                    store = True
+                    logging.log(25, err)
+                    mySim = update_sim(mySim)
+                # Kombination nicht vorhanden, daher neue Sim machen
+                except IOError:
+                    sim_exists =  False
+                    logging.log(25,"%s, simuliere, da nicht vorhanden, todo %s, ready %s", params, nr_todo, nr_ready)
                 
-            #Nur der Uebersicht halber    
+                # diverse Fehler, im Zweifel wohl auch neu simulieren
+                except (EOFError, UnicodeDecodeError, TypeError)  as err:
+                    logging.log(40, err)
+                    sim_exists = False
+                    
+                #Nur der Uebersicht halber    
             nr_todo -= 1
             nr_ready += 1 
             
@@ -102,8 +107,8 @@ def start_simulations(length, number, mode, p_combinations):
                # Jetzt noch abspeichern, entweder nach Update oder nach Neusimulation
             if store:    
                 try:
-                    filename = 'simulated_data/l' + str(length) + "/n" + str(number) + '/Sim_' + str(params[0])+"_"+ str(params[1])+"_"+ str(params[2]) + ".p" 
-                    logging.log(25, "Speichern, %s, %s", time.strftime("%d%b%Y_%H:%M:%S"), mySim)
+                    filename = 'simulated_data/l' + str(length) + "/n" + str(number) + '/' + str(mySim) + ".p" 
+                    logging.log(23, "Speichern, %s, %s", time.strftime("%d%b%Y_%H:%M:%S"), mySim)
                     with open(filename, 'wb') as data:
                         pickle.dump(mySim, data)
                 # Ornder existieren nicht, daher neu anlegen        
@@ -122,8 +127,8 @@ def start_simulations(length, number, mode, p_combinations):
 def combine_params(args):  
     param_list = []
     if args=="3a":
-        pmms = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]
-        pmls = [0.01, 0.001, 0.0005, 0.0001] 
+        pmms = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]
+        pmls = [0.01, 0.005, 0.001, 0.0005, 0.0001, 0.0005] 
         pms = []
         for pmm in pmms:
             for pml in pmls:
@@ -137,7 +142,7 @@ def combine_params(args):
             pas.append([pam, paa, 0.0])
         #print (pas)
         
-        plls = [0.99999, 0.999993, 0.999996, 0.999999]
+        plls = [0.99995, 0.99999, 0.999995, 0.999999]
         pls = []
         for pll in plls:
             plm = 1 - pll
@@ -203,13 +208,23 @@ def combine_params(args):
     #print (param_list)
     return param_list
 
+def rename():
+    for file in os.listdir('./simulated_data/l1000/n2000'):
+        if fnmatch.fnmatch(file, 'Sim_*.p'):
+            print (file)
+            with open("simulated_data/l1000/n2000/"+str(file), 'rb') as data:
+                mySim = pickle.load(data)
+                print (mySim)
+                with open("simulated_data/l1000/n2000/"+ str(mySim) + ".p", 'wb') as dat:
+                    pickle.dump(mySim, dat)
+
 def get_argument_parser():
     p = argparse.ArgumentParser(
         description = "Beschreibung") 
     p.add_argument("--choicenumber", "-cn", type = int, default = "5",
                    help = "bei zufaelliger Parameterwahl: Wie viele Kombinationen sollen gewaehlt werden")
     p.add_argument("--pcombioption", "-p",  
-                   help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: choice, viele, viele005, auswahl, auswahlx, d1-3, einige, random, wdh")#TODO
+                   help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: 3a, 3b oder 6p")
     p.add_argument("--reverse", "-r", action = "store_true",
                    help = "Reihenfolge der p_combinations invertieren")
     p.add_argument("--length", "-l", type = int, default = "200000",
@@ -220,14 +235,17 @@ def get_argument_parser():
                    help = "Art der Simulation; E = by-event, T = each_timestep")
     p.add_argument("--savefig", "-sf", action = "store_true", 
                    help = "Plot der Simulationen speichern")
-    
+    p.add_argument("--resimulate", "-rs", action = "store_true", 
+                   help = "Eventuell vorhandene Simulationen ignorieren, neu simulieren")
+    p.add_argument("--rsmode", "-rsm", 
+                   help = "Neu simulieren, wenn Modus noch nicht vorhanden")
     p.add_argument("--test", "-t", action = "store_true", help = "nutzlos; Test")
     return p
 
 
-def main(): #TODO: 3s
+def main(): 
     number = 2000
-    length = 200000
+    length = 1000
     print ("n", number, "l", length, time.strftime("%d%b%Y_%H:%M:%S"))
     p = get_argument_parser()
     args = p.parse_args()
@@ -237,14 +255,22 @@ def main(): #TODO: 3s
     #params = [[0.7,0.3,0.0],[0.00006, .99994, 0.0],[0.0,0.0,0.0]]
     #params = [[0.0,0.5,0.5],[0.0,0.5,0.5],[0.0, 0.5, 0.5]]
     
+    #rename()
+    
     param_list = combine_params(args.pcombioption)
     if args.reverse:
         param_list.reverse()
     
-    sims = start_simulations(length, number, args.mode, param_list)
-    if args.savefig:
-        for sim in sims:
-            save_figure(sim, True, False)
+    #TODO: Optionen fuer Resimulate (alle fuer gewuenschten Modus neu simulieren) und rsMode, (zusätzliche Sim im gewuenschten Modus, falls so noch nicht vorhanden)
+    
+    
+    if args.rsmode:
+        sims = start_simulations(length, number, args.rsmode, param_list, rsmode = True)
+    else:
+        sims = start_simulations(length, number, args.mode, param_list, args.resimulate)
+    #if args.savefig:
+        #for sim in sims:
+            #save_figure(sim, True, False)
     
     for sim in sims:
         #time.sleep(1)

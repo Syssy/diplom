@@ -22,7 +22,7 @@ class Simulation():
     """
     version_number = 1.0
     
-    def __init__(self, params, length, number, mode, times = [], pd = (), version = version_number):
+    def __init__(self, params, length, number, mode, step = 200, times = [], pd = (), version = version_number):
         """__init__
         
         params - Parameter; Wahrscheinlichkeit, stationaer/mobil zu bleiben, wenn ein Teilchen schon in diesem Zustand ist
@@ -42,6 +42,7 @@ class Simulation():
         self.length = length
         self.number = number
         self.mode = mode
+        self.step = step
         if times:
             self.times = times
             self.mean = np.mean(self.times)
@@ -77,7 +78,7 @@ class Simulation():
             result.append(r)    
         return result
  
-    def _simulate_step(self, locations, mobile_states, number): #TODO: 3s
+    def _simulate_step(self, locations, mobile_states, number):
         """Simuliere einen Schritt für alle Teilchen innerhalb der each_timestep-Simulation
         
         Wahrscheinlichkeit stationaer/mobil zu bleiben, Zugriff über self.params
@@ -97,7 +98,7 @@ class Simulation():
         maske_1 = mobile_states == 1
         maske_2 = mobile_states == 2
         
-        new_locations = locations + (maske_0 *100)
+        new_locations = locations + (maske_0 *self.step)
         
                
         uebergang_00 = zzv > self.kum_params[0][0]
@@ -142,7 +143,7 @@ class Simulation():
         #print (" ")
         return new_locations, new_mobile_states
 
-    def simulate_each_timestep(self): #TODO: 3s
+    def simulate_each_timestep(self):
         """ Simuliere jeden Zeitschritt fuer jedes Teilchen"""
         # starttime für Laufzeitmessungen
         starttime = time.clock()
@@ -162,7 +163,7 @@ class Simulation():
     
         #Teil 1: Sim bis frueheste Teilchen ankommen koennen, hier muss noch keine Abbruchbed. getestet werden. 
         # 0.1, da dann das Carriergas durch ist.
-        while steps_needed < self.length/100:
+        while steps_needed < (self.length/self.step):
             locations, mobile_states = self._simulate_step(locations, mobile_states, number)
             steps_needed += time_step
         #logging.log(20, "Teil1 vorbei, zeit:%s, simdauer:%s", steps_needed, time.clock()-starttime)
@@ -183,11 +184,11 @@ class Simulation():
             if number < 5:
                 logging.log(25, "fertig, simzeit: %s, realtime: %s", steps_needed, (time.clock()-starttime))
                 break
-            if steps_needed > 4800000:
+            if steps_needed > 2400*(self.length/self.step):
                 logging.log(25, "das bringt nix, Überschreitung der Maximalzeit, %s", (time.clock()-starttime))
                 # alle noch nicht fertigen Teilchen bekommen 100 Sek Strafe, damit man sieht, dass Simulation nicht zu Ende durchgefuehrt wurde
                 for j in range(len(locations)):
-                    arrival_counter.append(steps_needed+2000000)
+                    arrival_counter.append(steps_needed+(self.length/self.step)*1000)
                 break    
             
             # Damit es schneller geht, nach je x schritten nur testen
@@ -195,21 +196,21 @@ class Simulation():
                 locations, mobile_states = self._simulate_step(locations, mobile_states, number)
                 steps_needed+=time_step
         
-        self.times = [date/20000 for date in arrival_counter]
+        self.times = [date/(10*(self.length/self.step)) for date in arrival_counter]
        
-    def _test_finished(self, particle_list): #TODO: 3s
+    def _test_finished(self, particle_list): 
         """Teste, ob die Teilchen schon durch sind. Aufruf durch simulate_by_event"""
         
         #extrahiere nicht fertige Teilchen als (zustands-ort)-Paare
         particles = [(state, location) for state, location in particle_list if location < self.length]
         
         #extrahiere zeiten fertiger Teilchen
-        times = [(location-self.length)/200 for state, location in particle_list if location >= self.length]
+        times = [(location-self.length)/self.step for state, location in particle_list if location >= self.length]
         
         #Rueckgabe der nicht fertigen Teilchen und Ankunftszeiten fertiger Teilchen
         return particles, times
         
-    def _simulate_event(self, particle_list): #TODO: 3s
+    def _simulate_event(self, particle_list):
         """Simuliere ein zeitliches Event, gebe neue Ereignisliste zurueck, Aufruf durch simulate_by_event"""
         
         periods, n_states, n_locations = [], [], []
@@ -231,9 +232,8 @@ class Simulation():
             zz = random.random()
             
             #print("period ", period, " zz ", zz)
-            
-            #TODO neue zustandsberechnung überprüfen für volle drei Zustände!
-            # Berechne neuen Zustand (gehe 1 weiter und evtl noch einen, falls zufalls das sagt, mod 3)
+           
+            # Berechne neuen Zustand (gehe 1 weiter und evtl noch einen, falls Zufall das sagt, mod 3)
             n_zustand = (s + 1 + ( zz > self.zielmatrix[s])) % 3
             #print ("rechnung ", (s+1+(zz > self.zielmatrix[s]))%3, "bool ",zz > self.zielmatrix[s]  )
             
@@ -245,11 +245,10 @@ class Simulation():
             
             #Wenn alter Zustand mobil war, gehe vor, sonst nicht
             if s == 0:
-                n_locations.append(l+period*100)
+                n_locations.append(l+period*self.step)
             else:
                 n_locations.append(l)
-           # print ("Zustaende ", s, n_zustand, " gehe ",l, period, loc)
-            
+ 
             #n_locations.append(loc)
             #Entsprechende neue Zustaende und Zeitpunkte anhaengen
             n_states.append(n_zustand)
@@ -257,7 +256,7 @@ class Simulation():
             
         return list(zip(periods, n_states, n_locations)) #new_events
         
-    def simulate_by_event(self): #TODO: 3s
+    def simulate_by_event(self):
         """Simuliere mit Hilfe einer Liste von Events"""
         starttime = time.clock()
         logging.log(25, "Starte Sim, Event")
@@ -269,7 +268,7 @@ class Simulation():
         summe = 0
         num_ev = 0
         # Ereignisse als dict. Jeweils als key einen Zeitpunkt (enthaelt nur diejenigen, wo auch was passiert, Vergangenheit wird geloescht) und eine Liste aller Teilchen, mit denen dann was passieren soll. Init mit mehreren leeren Listen, damit Abbruchbedingung passt
-        events = {1:[], 2:[], 3:[], 4:[]}
+        events = {1:[], 2:[], 3:[], 4:[], 5:[]}
         hl = list()
         # Init: Zu Zeitpunkt 0 passiert mit allen Teilchen was
         # Teilchen repraesentiert als Tupel von Zustand (0=stat, 1=mob) und Ort
@@ -283,6 +282,7 @@ class Simulation():
         
         # solange noch Ereignisse ausstehen, wird simuliert
         while len(events) >= 5 and act_time < 4800000:
+            #print(events[act_time])
         #while act_time < 10:
             if act_time in events:
                 logging.log(15, "betrachte zeitpunkt %s", act_time)
@@ -311,31 +311,40 @@ class Simulation():
             act_time += 1  
         # Zeitpunkte normalisieren
         #print (events)
-        if len(events) > 0:
+        #TODO: Muss hier fuer alle, die noch in den Events stehen, testen, ob sie drueber sind und wenn ja, die passende Zeit eintragen, wenn nein, Strafzeit
+        if len(events) > 5:
             print ("Das wird nix")
             for ev in events:
+                particle_list = np.array(events[ev])
+                print("particles", ev, particle_list)
+                particle_list, times = self._test_finished(particle_list)
+                arrival_counter.extend([(act_time-(date)) for date in times])
+                
                 #print (ev, events[ev])
-                for teilchen in events[ev]:
-                    arrival_counter.append(act_time+2000000) #TODO richtig?
+                for teilchen in particle_list:
+                    arrival_counter.append(act_time+((self.length/self.step)*1000))
+        if len(events) <=5:
+            logging.log(25, "Zeitpunkt, %s, uebrige Events %s", act_time, events) 
         #print (arrival_counter)
-        print (summe/num_ev)
-        self.times = [date/20000 for date in arrival_counter]
+        #print (summe/num_ev)
+        self.times = [date/(10*self.length/self.step) for date in arrival_counter]
         logging.log(25, "fertig, simschritte: %s, realtime: %s", act_time, (time.clock()-starttime))
         
-    def set_pd(self, pd, v = version_number): #TODO: 3s
+        
+    def set_pd(self, pd, v = version_number):
         """setzt Peakdaten und Versionsnummer neu, falls veraltet, nicht vorhanden, nicht zu gebrauchen"""
         self.pd = pd
         self.version = v
 
     def __repr__(self):
-        result = ''
+        result = '_'
         for param in self.params:
             result+=("[")
-            for p in param:
-                result+=(str(round(p, 6)) + " ")
-            result+=("] ")
+            for i in range(len(param)-1):
+                result+=(str(round(param[i], 6)) + "_")
+            result+=(str(round(param[-1], 6)) + "]")
         #result+=("]")                      
-        return (result + self.mode)
+        return (self.mode + result)
         
     def get_moment(self, moment):
         """Gebe den Wert des moment zurück."""
@@ -349,14 +358,16 @@ class Simulation():
             return self.kurtosis
         return None
         
-    def simulate(self, mode = None):  #TODO: 3s
-        '''Simuliert je nach Modus, TODO: Achtung, Direktaufruf der Simulationsmethoden fuehrt zu potenziell falsch eingetragenem Mode'''
+    def simulate(self, mode = None):
+        '''Simuliert je nach Modus'''
         if self.mode == "E" or mode == "E":
             self.simulate_by_event()
         elif self.mode == "T" or mode == "T":
             self.simulate_each_timestep()
         else:
             print ("Bitte gewuenschten Simulationsmodus mit angeben ", self.mode, "nicht gueltig")
+        #plt.hist(self.times)
+        #plt.show()
     
     def _find_intersection(self, fun1, fun2, x0):
         '''finde Schnittpunkt zweier Funktionen (fun1, fun2) ausgehend von geschätzten Wert(en) x0'''
@@ -372,58 +383,62 @@ class Simulation():
     
     def calculate(self): #TODO: Peakdata anpassen
         """Berechne Momente, Breite und Hoehe bei halber Peakhoehe, sowie Loc und Scale, ausgehend von Gaussverteilung"""
+        """Neu: Berechne Momente und Interquartilsabstand"""
         # Momente berechnen
         self.mean = np.mean(self.times) 
         self.variance = np.var(self.times)
         self.skewness = scipy.stats.skew(self.times)
         self.kurtosis = scipy.stats.kurtosis(self.times)
         
-        # Peakdaten berechnen
-        # Finde Parameter fuer passende Gausskurve zum Schneiden
-        loc_n, scale_n = scipy.stats.norm.fit(self.times)
-        mu_i, loc_i, scale_i= scipy.stats.invgauss.fit(self.times)
-        print ("igparams: ", mu_i, loc_i, scale_i)
-        hist, bins = np.histogram(self.times, bins=50, normed = True)
-        offset = bins[1:]-bins[:-1]
-        print ("hist", hist, "\nmax", max(hist), "argmax", np.argmax(hist), "len", len(hist))
-        print ("bins", bins, "maxdings", bins[np.argmax(hist)+1], "len", len(bins))
-        #plt.plot([bins[np.argmax(hist)+1],bins[np.argmax(hist)+1]] , [0, max(hist)])
-        #plt.show()
-        x = np.linspace(min(self.times)-50, max(self.times)+50, 1000000)
-        plt.plot(bins[:-1]+offset, hist, x, scipy.stats.invgauss.pdf(x, mu_i, loc_i, scale_i), x, scipy.stats.norm.pdf(x, loc_n, scale_n), [bins[np.argmax(hist)+1], bins[np.argmax(hist)+1], bins[np.argmax(hist)+1]] , [0, max(hist)/2, max(hist)])
-        #plt.show()
-        # halben Maximalwert berechnen
-        halfmax = max(hist) / 2
-        #halfmax = 1/(math.sqrt(2*math.pi)*scale_n *2)
-        #print ("halfmax", halfmax)
+        #Interquartilsabstand als Mass fuer die Breite
+        self.iqr = np.percentile(self.times, 75) - np.percentile(self.times, 25)
+        
+        ## Peakdaten berechnen
+        ## Finde Parameter fuer passende Gausskurve zum Schneiden
+        #loc_n, scale_n = scipy.stats.norm.fit(self.times)
+        #mu_i, loc_i, scale_i= scipy.stats.invgauss.fit(self.times)
+        #print ("igparams: ", mu_i, loc_i, scale_i)
+        #hist, bins = np.histogram(self.times, bins=50, normed = True)
+        #offset = bins[1:]-bins[:-1]
+        #print ("hist", hist, "\nmax", max(hist), "argmax", np.argmax(hist), "len", len(hist))
+        #print ("bins", bins, "maxdings", bins[np.argmax(hist)+1], "len", len(bins))
+        ##plt.plot([bins[np.argmax(hist)+1],bins[np.argmax(hist)+1]] , [0, max(hist)])
+        ##plt.show()
+        #x = np.linspace(min(self.times)-50, max(self.times)+50, 1000000)
+        #plt.plot(bins[:-1]+offset, hist, x, scipy.stats.invgauss.pdf(x, mu_i, loc_i, scale_i), x, scipy.stats.norm.pdf(x, loc_n, scale_n), [bins[np.argmax(hist)+1], bins[np.argmax(hist)+1], bins[np.argmax(hist)+1]] , [0, max(hist)/2, max(hist)])
+        ##plt.show()
+        ## halben Maximalwert berechnen
+        #halfmax = max(hist) / 2
+        ##halfmax = 1/(math.sqrt(2*math.pi)*scale_n *2)
+        ##print ("halfmax", halfmax)
             
-        # Funktionen erstellen, die dann für die find intersections genutzt werden. TODO: Hier noch andere verteilungen ermöglichen
-        # Funktion der Normalverteilung
-        norm = lambda x: np.exp(-(x-loc_n)**2 /(2*scale_n**2)) / math.sqrt(2*math.pi * scale_n**2)
-        # Funktion einer Linie
-        linie = lambda x: halfmax + 0*x
-        # Funktion der IG
-        ig_funct = lambda x: np.exp(-(scale_i*((x-loc_i) - mu_i)**2) /(2* (x-loc_i) * mu_i**2)) * math.sqrt(2*math.pi*(x-loc_i)**3)
-        print (norm(5))
-        print(ig_funct(70))
+        ## Funktionen erstellen, die dann für die find intersections genutzt werden. TODO: Hier noch andere verteilungen ermöglichen
+        ## Funktion der Normalverteilung
+        #norm = lambda x: np.exp(-(x-loc_n)**2 /(2*scale_n**2)) / math.sqrt(2*math.pi * scale_n**2)
+        ## Funktion einer Linie
+        #linie = lambda x: halfmax + 0*x
+        ## Funktion der IG
+        #ig_funct = lambda x: np.exp(-(scale_i*((x-loc_i) - mu_i)**2) /(2* (x-loc_i) * mu_i**2)) * math.sqrt(2*math.pi*(x-loc_i)**3)
+        #print (norm(5))
+        #print(ig_funct(70))
         
-        print ("test", self._find_intersection(linie, self.testfunction, [loc_i+scale_i]))
-        intersections = self._find_intersection(linie, norm, [loc_n+scale_n, loc_n-scale_n])
-        print (intersections)
-        sects = self._find_intersection(linie, ig_funct, [loc_n-scale_n])
-        print (sects)
-        time.sleep(1)
-        # print ("max bei", norm(loc), "starte test bei:", loc-scale, loc+scale)
-        # finde Schnittpunkte zwischen Linie auf halber Hoehe und Gausskurve, Startwerte sind median +- standardabweichung
-        logging.log(15, "Intersections %s", intersections)
+        ##print ("test", self._find_intersection(linie, self.testfunction, [loc_i+scale_i]))
+        #intersections = self._find_intersection(linie, norm, [loc_n+scale_n, loc_n-scale_n])
+        #print (intersections)
+        #sects = self._find_intersection(linie, ig_funct, [loc_n-scale_n])
+        #print (sects)
+        #time.sleep(1)
+        ## print ("max bei", norm(loc), "starte test bei:", loc-scale, loc+scale)
+        ## finde Schnittpunkte zwischen Linie auf halber Hoehe und Gausskurve, Startwerte sind median +- standardabweichung
+        #logging.log(15, "Intersections %s", intersections)
         
-        #width ist Abstand zwischen den Schnittpunkten
-        l_w = loc_n - min(intersections)
-        r_w = max(intersections) - loc_n
-        width = abs(max(intersections) - min(intersections))
-        ls =  (loc_n, scale_n)
-        pd = (self.mean, (width, l_w, r_w), halfmax)
-        self.set_pd(pd)
+        ##width ist Abstand zwischen den Schnittpunkten
+        #l_w = loc_n - min(intersections)
+        #r_w = max(intersections) - loc_n
+        #width = abs(max(intersections) - min(intersections))
+        #ls =  (loc_n, scale_n)
+        #pd = (self.mean, (width, l_w, r_w), halfmax)
+        #self.set_pd(pd)
 
 def check_params(params):
     for p in params:
@@ -448,9 +463,9 @@ def get_argument_parser():
     return p
 
 # Nutzung für Testzwecke
-def main(): #TODO: 3s
+def main(): 
     number = 2000
-    length = 200000
+    length = 1000
     print ("n", number, "l", length, time.strftime("%d%b%Y_%H:%M:%S"))
     p = get_argument_parser()
     args = p.parse_args()
@@ -460,6 +475,19 @@ def main(): #TODO: 3s
     #params = [[0.7,0.3,0.0],[0.00006, .99994, 0.0],[0.0,0.0,0.0]]
     #params = [[0.0,0.5,0.5],[0.0,0.5,0.5],[0.0, 0.5, 0.5]]
     
+    params =[[0.5, 0.499, 0.001], [9.999999999998899e-05, 0.9999, 0.0], [9.99999999995449e-06, 0.0, 0.99999]]
+    #[[0.5, 0.5, 0.000],[0.0007, 0.9993, 0.0],[0.000001, 0.0, 0.99999]]
+    neueSim = Simulation(params, length, number, "E")
+    print ("params", params)
+    neueSim.simulate()
+    neueSim.calculate()
+    #print("pd by EVENT", neueSim.pd, len(neueSim.times))
+    n, bins, patches = plt.hist(neueSim.times, 50, normed=1, alpha=0.5)   
+    plt.ylabel("")
+    plt.xlabel("Zeit / s")
+    plt.title("params: "+ str(neueSim.params[0])+" "+ str(neueSim.params[1])+" "+ str(neueSim.params[2]) + " by event")
+    plt.show()       
+           
     pmms = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
     pmls = [0.01, 0.001, 0.0005, 0.0001] 
     pms = []
@@ -486,7 +514,7 @@ def main(): #TODO: 3s
                 params = [pm, pa, pl]                
                 neueSim = Simulation(params, length, number, "E", [])
     
-                if neueSim.check_params(params):
+                if check_params(params):
                     #print ("params", params)
                     #neueSim.simulate_by_event()
                     #neueSim.calculate()
