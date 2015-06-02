@@ -401,6 +401,7 @@ def get_argument_parser():
     return p
 
 def main():
+    '''Fuer Testzwecke'''
     p = get_argument_parser()
     args = p.parse_args()
        
@@ -423,7 +424,7 @@ def main():
         plot_heatmap_from_file(filename,0, args.moment, args.recalculate)
         plot_4_heats_from_file(filename, args.moment, args.recalculate)
         
-    if args.multiple_files: #TODO
+    if args.multiple_files: 
         number = args.number
         print( "multiple_files: ", number)
         filename = args.inputfile

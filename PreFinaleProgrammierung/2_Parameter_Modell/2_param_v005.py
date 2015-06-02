@@ -75,13 +75,13 @@ def combine_params(args, nr_of_choice = 5): #TODO Auf die sinnvollen beschraenke
         print (len(p_combinations))
     
     if args == "viele005":
-        schrittweite = 0.00001
-        #ps_catalogue = np.arange(0.99992, 0.99999, schrittweite)
-        ps_catalogue = [0.999, 0.9992, 0.9998, 0.99992]
+        schrittweite = 0.00005
+        ps_catalogue = np.arange(0.999, 0.9998, schrittweite)
+        #ps_catalogue = [0.999, 0.9992, 0.9998, 0.99992]
         
         schrittweite = 0.05
-        #pm_catalogue = np.arange(0.5, 0.99, schrittweite)
-        pm_catalogue = [0.99, 0.9, 0.3, 0.1]
+        pm_catalogue = np.arange(0.1, 0.9, schrittweite)
+        #pm_catalogue = [0.99, 0.9, 0.3, 0.1]
         
         p_combinations = []
         for ps in ps_catalogue:
@@ -203,7 +203,7 @@ def combine_params(args, nr_of_choice = 5): #TODO Auf die sinnvollen beschraenke
             pm = random.random()
             if ps > 0.999:# and pm > 0.99:
                 p_combinations.append((round(ps, 10), round(pm, 10)))
-        
+     
     if args == "wdh":#???
         p_combinations = [(0.999, 0.999), (0.05, 0.99)]
     
@@ -223,7 +223,7 @@ def start_simulations(length, number, mode, p_combinations):
             sim_exists = True
             store = False
             try:
-                filename = 'simulated_data/l' + str(length) + "/n" + str(number) + '/Sim_' + str(round(ps,10)) + '_' + str(round(pm,10)) + ".pp" 
+                filename = 'simulated_data/l' + str(length) + "/n" + str(number) + '/Sim_' + str(round(ps,10)) + '_' + str(round(pm,10)) + ".p" 
                 logging.log(25,"filename: %s", filename)
                 with open(filename, 'rb') as data:
                     logging.log(20,"geoeffnet")
@@ -240,9 +240,9 @@ def start_simulations(length, number, mode, p_combinations):
                         sim_exists = False
                         # neue Sim nötig
                         logging.log(39, "neue Sim")
-                    if mode != mySim.mode:
-                        logging.log(35, "andere Simulationsart gewuenscht, simuliere neu")
-                        sim_exists = False
+                    #if mode != mySim.mode:
+                    #    logging.log(35, "andere Simulationsart gewuenscht, simuliere neu")
+                    #    sim_exists = False
             # alte Version, daher aktualisieren
             except AttributeError as err:
                 store = True
@@ -253,7 +253,7 @@ def start_simulations(length, number, mode, p_combinations):
                 sim_exists =  False
                 logging.log(25,"%s, %s, simuliere, da nicht vorhanden, todo %s, ready %s", round(ps, 10), round(pm,10), nr_todo, nr_ready)
             
-            # diverse Fehler, im Zweifel wohl auch neu simulieren ? TODO
+            # diverse Fehler, im Zweifel wohl auch neu simulieren
             except (EOFError, UnicodeDecodeError, TypeError)  as err:
                 logging.log(40, err)
                 sim_exists = False
@@ -288,7 +288,7 @@ def start_simulations(length, number, mode, p_combinations):
             logging.log(20, "peakdaten: ls, b, h: %s", mySim.pd)
     return results
         
-    # Updatet von alter Version TODO:Sollte überflüssig sein
+    # Updatet von alter Version
 def update_sim(aSim):
     width, heigth, ls = peak_width.calculate_width(aSim.times, 50, False, aSim.params)
     pd = (ls, width, heigth)
@@ -301,7 +301,7 @@ def get_argument_parser():
     p.add_argument("--choicenumber", "-cn", type = int, default = "5",
                    help = "bei zufaelliger Parameterwahl: Wie viele Kombinationen sollen gewaehlt werden")
     p.add_argument("--pcombioption", "-p",  
-                   help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: choice, viele, viele005, auswahl, auswahlx, d1-3, einige, random, wdh")#TODO
+                   help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: choice, viele, viele005, auswahl, auswahlx, d1-3, einige, random, wdh")
     p.add_argument("--reverse", "-r", action = "store_true",
                    help = "Reihenfolge der p_combinations invertieren")
     p.add_argument("--length", "-l", type = int, default = "200000",
@@ -327,23 +327,23 @@ def main():
         p_combinations.reverse()
     
     new_sims = start_simulations(args.length, args.number, args.mode, p_combinations)
-    filename = "testspeicherung"
-    with open (filename, "wb") as data:
-        pickle.dump(new_sims, data)
+    #filename = "testspeicherung"
+    #with open (filename, "wb") as data:
+    #    pickle.dump(new_sims, data)
     #Tests fuer Plotkram
-    plotkram.plot_spectrum(new_sims, 1000)
-    for i in range(len(new_sims)):
-        plotkram.plot_single_peak(new_sims[i], qq= scipy.stats.norm)
-        time.sleep(2)
+    #plotkram.plot_spectrum(new_sims, 1000)
+    #for i in range(len(new_sims)):
+    #    plotkram.plot_single_peak(new_sims[i], qq= scipy.stats.norm)
+    #    time.sleep(2)
     plotkram.plot_widthmap(new_sims)
     plotkram.plot_widthandskew(new_sims)
-    plotkram.plot_params_at_time(new_sims, 50, 10, True)
-    plotkram.plot_heatmap_of_moments(filename, ff = True, moment= "mean")
-    plotkram.plot_heatmap_of_moments(new_sims, moment="mean") 
+    #plotkram.plot_params_at_time(new_sims, 50, 10, True)
+    #plotkram.plot_heatmap_of_moments(filename, ff = True, moment= "mean")
+    #plotkram.plot_heatmap_of_moments(new_sims, moment="mean") 
     #plotkram.plot_4_heatmaps(filename, ff=True, moment="mean")   
     #plotkram.plot_4_heatmaps(new_sims, moment="mean") 
-    plotkram.plot_simlist_ff(filename, True, True, True, True, True, compare_Dist = scipy.stats.gamma)
-    plotkram.plot_simlist(new_sims, True, False, True, True, True)
+    #plotkram.plot_simlist_ff(filename, True, True, True, True, True, compare_Dist = scipy.stats.gamma)
+    #plotkram.plot_simlist(new_sims, True, False, True, True, True)
     
     # Ende :)
     print ("Zeit " + str(time.clock()-starttime))

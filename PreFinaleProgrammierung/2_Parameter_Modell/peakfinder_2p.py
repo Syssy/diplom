@@ -128,7 +128,7 @@ def find_good_params(retention_time, zahl = 1):
     pkombis = []
     number_of_good = 0
     for sim in approximate_sims:
-        if (sim.pd[0][0] - retention_time) > 0.1*epsilon: #TODO war auf 0.1*epsilon
+        if (sim.pd[0][0] - retention_time) > 0.1*epsilon: 
             logging.log(20, "nahe %s, %s, %s", sim.params[0], sim.params[1], sim.pd)
             #print ("neuer test bei", sim.params[0]+0.1*(1-sim.params[0]), "und", sim.params[1]+0.1*sim.params[1])
             pkombis.append((sim.params[0], sim.params[1]+0.1*sim.params[1]))

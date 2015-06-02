@@ -30,6 +30,7 @@ class Simulation():
         length - Laenge der Saule
         number - Anzahl simulierter Teilchen
         mode - Wie wird simuliert, each_timestep (T) oder by_event (E)
+        step - Anzahl Einzelschritte je Simulationsschritt, aus historischen Gruenden dabei, Vergleichbarkeit mit alten Simulationen
         times - Ankunftszeiten
         pd - aus den times errechnete Peakdaten: ((loc, scale), width, height)
         v - Versionsnummer eben ;)
@@ -96,8 +97,8 @@ class Simulation():
         mobile_states = np.array([True]*number)
     
         #Teil 1: Sim bis frueheste Teilchen ankommen koennen, hier muss noch keine Abbruchbed. getestet werden. 
-        # Carrier ist nach length Schritten durch bei einzelschritten, sonst bei length/step
-        while time_needed < self.length/self.step:
+        # Carrier ist nach length Schritten durch bei einzelschritten, sonst bei length/step; das entspricht momentan 0.1 sec
+        while time_needed < (self.length/self.step):
             locations, mobile_states = self._simulate_step(locations, mobile_states, number)
             time_needed += time_step
         logging.log(20, "Teil1 vorbei, zeit:%s, simdauer:%s", time_needed, time.clock()-starttime)
@@ -119,18 +120,18 @@ class Simulation():
                 logging.log(25, "fertig, simzeit: %s, realtime: %s", time_needed, (time.clock()-starttime))
                 break
             if time_needed > 2400*(self.length/self.step):#24000000:
-                logging.log(30, "Überschreitung der Maximalzeit von 240s, %s", (time.clock()-starttime))
-                # alle noch nicht fertigen Teilchen bekommen 100 Sek Strafe, damit man sieht, dass Simulation nicht zu Ende durchgefuehrt wurde
+                logging.log(30, "Ueberschreitung der Maximalzeit von 240s, %s", (time.clock()-starttime))
+                # alle noch nicht fertigen Teilchen bekommen Strafe, damit man sieht, dass Simulation nicht zu Ende durchgefuehrt wurde
                 for j in range(len(locations)):
                     arrival_counter.append(time_needed+(self.length/self.step)*1000)
                 break    
             
             # Damit es schneller geht, nach je x schritten nur testen
-            for x in range (1):
+            for x in range (10):
                 locations, mobile_states = self._simulate_step(locations, mobile_states, number)
                 time_needed+=time_step
-        
-        self.times = [date/10000 for date in arrival_counter]
+        # durch Schritte pro Sekunde teilen, zur normierung der zeiten
+        self.times = [date/(10*(self.length/self.step)) for date in arrival_counter]
        
     def _test_finished(self, particle_list):
         """Teste, ob die Teilchen schon durch sind. Aufruf durch simulate_by_event"""
@@ -220,7 +221,7 @@ class Simulation():
             #naechste Zeit betrachen    
             act_time += 1  
         # Zeitpunkte normalisieren    
-        self.times = [date/10000 for date in arrival_counter]
+        self.times = [date/(10*self.length/self.step) for date in arrival_counter]
         logging.log(25, "fertig, simschritte: %s, realtime: %s", act_time, (time.clock()-starttime))
         
     def set_pd(self, pd, v = version_number):
@@ -244,7 +245,7 @@ class Simulation():
         return None
         
     def simulate(self, mode = None):
-        '''Simuliert je nach Modus, TODO: Achtung, Direktaufruf der Simulationsmethoden fuehrt zu potenziell falsch eingetragenem Mode'''
+        '''Simuliert je nach Modus'''
         if self.mode == "E" or mode == "E":
             self.simulate_by_event()
         elif self.mode == "T" or mode == "T":
@@ -271,8 +272,7 @@ class Simulation():
         halfmax = 1/(math.sqrt(2*math.pi)*scale_n *2)
         #print ("halfmax", halfmax)
             
-        # Funktionen erstellen, die dann für die find intersections genutzt werden. TODO: Hier noch andere verteilungen ermöglichen
-        # Funktion der Normalverteilung.
+        # Funktionen der Normalverteilung erstellen, die dann für die find intersections genutzt wird. 
         norm = lambda x: np.exp(-(x-loc_n)**2 / (2*scale_n**2)) / math.sqrt(2*math.pi * scale_n**2)
         # Funktion einer Linie
         linie = lambda x: halfmax + 0*x
@@ -305,16 +305,16 @@ def main():
     print ("n", number, "l", length, time.strftime("%d%b%Y_%H:%M:%S"))
     p = get_argument_parser()
     args = p.parse_args()
-    neueSim = Simulation(0.000999, 0.999999, length, number, None, 20)
+    neueSim = Simulation(0.999, 0.999, length, number, None, 10)
   
-    neueSim.simulate_by_event()
-    neueSim.calculate()
-    print("pd by event", neueSim.pd, len(neueSim.times))
-    n, bins, patches = plt.hist(neueSim.times, 50, alpha=0.5)   
-    plt.ylabel("")
-    plt.xlabel("Zeit / s")
-    plt.title("ps: "+ str(neueSim.params[0])+" pm: "+ str(neueSim.params[1]) + " by event")
-    plt.show()
+    #neueSim.simulate_by_event()
+    #neueSim.calculate()
+    #print("pd by event", neueSim.pd, len(neueSim.times))
+    #n, bins, patches = plt.hist(neueSim.times, 50, alpha=0.5)   
+    #plt.ylabel("")
+    #plt.xlabel("Zeit / s")
+    #plt.title("ps: "+ str(neueSim.params[0])+" pm: "+ str(neueSim.params[1]) + " by event")
+    #plt.show()
     
     neueSim.simulate_each_timestep()
     neueSim.calculate()
