@@ -96,21 +96,21 @@ Und noch mehr Text, der sich auf \ref{PAA_2P} bezieht
 
 \subsection{Grenzen des Modells}
 Eine genaue Analyse der Peaks, die mit dem 2-Parameter Modell erzeugt werden können, findet sich in Kapitel \ref{chapter:eva}. An dieser Stelle sei nur vorweg genommen, dass es zwei Hauptprobleme mit dem Modell zu geben scheint. 
-Zum Einen scheint es in den vorliegenden Datensätzen einige Peaks zu geben, deren kombinierte Lage und Breite nicht mit dem Modell simulierbar sind. Alle Simulationen ergeben zumindest geringfügig breitere Peaks. Zum Anderen weisen fast keine der simulierten Peaks ein Tailing auf. 
+
+Zum Einen scheint es in den vorliegenden Datensätzen einige Peaks zu geben, deren kombinierte Lage und Breite nicht mit dem Modell simulierbar sind. Es ist zwar sowohl in den echten wie auch in den simulierten Daten die klare Tendenz zu erkennen, dass Peaks, die zu einer höheren Retentionszeit auftreten, auch breiter sind, als frühe Peaks. Es gibt also keine sehr schmalen Peaks am Ende des Spektrums. Allerdings existieren einige Peaks, deren Breite geringer ist, als alle mit dem Modell simulierbaren Peaks zu dieser Retentionszeit.
+%Alle Simulationen ergeben zumindest geringfügig breitere Peaks. 
+
+Zum Anderen weisen fast keine der simulierten Peaks ein Tailing auf. Lediglich ein sehr stark eingeschränkter Parameterbereich erzeugt ein Tailing. Das führt dazu, dass Tailing nur in einem sehr kleinen Retentionszeitbereich auftritt, allerdings nicht, wie es in den Referenzdaten zu beobachten ist, zu den eher späten Zeiten.
 
 
-\subsection{Probleme mit dem Modell}
-% Probleme damit
+\section{Weitere Modelle}
+\todo{Erweiterung des Modells}
+\todo{In Intro auf Gleichgewicht bei Adsoption eingehen, -> Modellerweiterung}
 
-\section{Weiteres Modell}
-\todo{Erweiterung des Modells, wenn diese existiert}
-
-Bisher keine Unterscheidung zwischen Adsorption und Lösung
+Bisher fand keine Unterscheidung zwischen Adsorption und Lösung der Teilchen an bzw. in der stationären Phase statt. In der Realität können beide Wechselwirkungen parallel zueinander statt finden. Außerdem ist es möglich, dass sich die Wahrscheinlichkeiten, in einen der beiden Zustände überzugehen oder in die mobile Phase zurückzukehren, unterscheiden. Daher liegt es nahe, einen neuen Zustand einzuführen, sodass die Adsorption und die Lösung voneinander getrennt behandelt werden. Die Tatsache, dass Tailing, wie bereits anfangs erwähnt, unter anderem durch zusätzlich Adsorptionseffekte verursacht sein kann, lässt vermuten, dass durch eine Anpassung der Parameter ein Tailing in der Simulation verursacht werden kann. 
  
- 
- Weiterer stationärer Zustand:
-\begin{figure}
-\subfigure[Keine Übergänge]{\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
+\begin{figure}[h]
+\subfigure[Getrennte Zustände]{\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\small\bfseries},
   knoten/.style={thick,fill=none,inner sep=0pt, minimum width=25pt, circle}]
 
@@ -154,7 +154,11 @@ Bisher keine Unterscheidung zwischen Adsorption und Lösung
         ;
 \end{tikzpicture}}
 \caption{Mögliche weitere Modelle}
+\label{tikz:4p_Mod}
 \end{figure}
+ 
+In \ref{tikz:4p_Mod} sind zwei Möglichkeiten gezeigt, dem bisherigen Modell einen neuen Zustand hinzuzufügen.
+\todo{genaue Beschreibung der möglichen Modelle}
  
 % Keine Übergänge zwischen den stationären Zuständen
 %  \begin{figure}[h]
@@ -211,7 +215,10 @@ Bisher keine Unterscheidung zwischen Adsorption und Lösung
 % \end{tikzpicture}
 % \end{figure}
 
+Eine weitere Möglichkeit, das Modell zu verändern, besteht darin, das Gleichgewicht, welches sich zwischen den beiden Phasen aufbaut, zu berücksichtigen. Damit müssten die Wahrscheinlichkeiten, den Zustand zu wechseln, nicht mehr fest vorgegeben sein, sondern sich dynamisch während der Simulation aus der aktuellen Verteilung der Teilchen an einem bestimmten Ort auf die Zustände berechnen.
 
 Außerdem existieren Idee, noch eine Sättigung der freien Plätze zur Adsorption einzubauen
+
+
 % Erweiterung um weiteren (stat) Zustand um Unterschied zwischen Lösung und Adsorption zu haben
 % Ideen zur Geschwindigkeit und warum das Quatsch ist. ?
