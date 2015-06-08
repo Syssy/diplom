@@ -423,6 +423,12 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * sim3s, stepweite einstellbar machen (ok)
  
 28.05.2015
- * Das ganze Gedönse mit resim etc in extra-Methode verschieben, wo ich teste, welche der Kombis tatsächlich simuliert werden müssen
+ * 3s: Das ganze Gedönse mit resim etc in extra-Methode verschieben, wo ich teste, welche der Kombis tatsächlich simuliert werden müssen
  * Zu den Referenzdaten: Zur Bestimmung der Schiefen, das muss eh per Hand ausgewählt werden, was das sinnvoll ist. Mich würde interessieren, wie breit so ein Gesamt-Peak ist, wenn ich alle dazugehörigen Spalten zusammen rechne.
+ * In den Referenzdaten die IQR berechnen, gleiches für die 2p-Sim, vergleichen, ob das evtl bessere Ergebnisse liefert
  * PAA weiter machen
+ * Ich bin mir nicht ganz sicher, ob meine Daten geeignet vorliegen, um den IQR zu berechnen. Wahrscheinlich sind die Sim-Daten richtig, aber die Ref-Daten müsste ich erst umwandeln. Ja, müssen umgewandelt werden
+ * Was ich jetzt nicht verstehe: Habe einen Peak kumuliert und dabei einmal etwas Rauschen links und rechts mitgenommen, sodass der Peak insgesamt weniger hoch wurde als beim anderen Versuch, wo ich enger abgeschnitten habe. Komischerweise weist der Peak mit zuviel nebendran einen längeren Tail und größeren IQR auf. Verstehe ich nicht. Könnte Zufall sein, denn das Wertehistogramm ist nur geringfügig unterschiedlich, aber da macht es einen Unterschied, da das Maximum verschoben ist. Durch den längeren Tail ergibt sich natürlich auch ein größerer IQR. Mit anderem Peak noch mal probieren
+ * in der 2p-sim: normalisierung ändern, dass verschieden lange säulen auch zum tragen kommen. (am ende, das passt irgendwie nicht) ok
+ * Sinnvoll wäre ein Invalid-Flag für abgebrochene Simulationen, damit diese nicht mehr in den Plots auftauchen oder irgendwie mitausgewertet werden. Aktuell gibt es bei der event-sim (2p) noch keine zeit-abbruch bedingung, fraglich, ob das nicht vielleicht sinnvoll ist, es so zu lassen... Evtl koennte fuer alle invalids bei der by-step einfach nachher die event genutzt werden, um zum Ende zu führen 
+ * Abbruchtest anpassen auf Länge (ok)

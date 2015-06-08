@@ -264,8 +264,8 @@ läuft
  * Berechnung der Schiefe der Referenzdaten läuft. 
  * Treffen mit Rahnenführer: IQR als Maß fuer die Breite, sowie demnächst robustes Maß für Schiefe
 
- .
 28.05.2015
  * Simuliere für l=170000 um herauszufinden, ob evtl bei kürzerer Säule die knapp verfehlten Peakbreiten erreicht werden können
- * Benennung der Sim geändert
- * 
+ * Benennung der Sim 
+ * Umstellung der Breite auf IQR
+ * Fehler entdeckt in der Normalisierung der arrival_counter daten. Bisher wurde unabhängig von der Länge auf eine Totzeit (Zeit für Driftgas) von 0.1 normalisiert, was allerdings Quatsch ist, beachtet man verschiedene Säulenlängen. Das wurde behoben
