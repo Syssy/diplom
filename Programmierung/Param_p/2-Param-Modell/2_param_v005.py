@@ -16,6 +16,7 @@ import numpy as np
 import scipy.stats as stats
 import scipy
 import matplotlib.pyplot as plt
+import statsmodels.api as sm
 
 import plotkram
 import simulation
@@ -298,7 +299,7 @@ def combine_params(args, kwargs = 5):
         pkombis = [(0.9996, 0.99992),  (0.998, 0.992),(0.997, 0.99),(0.996, 0.99),  (0.998, 0.991)]
         
         pkombis = [(0.99985, 0.62),(0.99985, 0.63), (0.99985, 0.64), (0.99985, 0.65)]
-        pkombis = [(0.9998, 0.5)]
+        pkombis = [(0.99985, 0.3)]
         #pkombis = [(0.99994, 0.85), (0.9999, 0.75),(0.999945, 0.01), (0.9998, 0.4),(0.999825, 0.001), (0.99992, 0.9)]
         #pkombis = [(0.99991, 0.75),(0.99991, 0.76),(0.99991, 0.77),(0.99991, 0.78),(0.99991, 0.79)]
 
@@ -327,6 +328,7 @@ def combine_params(args, kwargs = 5):
                    (0.99991, 0.54),(0.99991, 0.55),(0.99991, 0.56),
                    (0.9999, 0.5), (0.9999, 0.51),
                    (0.99989, 0.45),
+                   (0.99987, 0.3), (0.99987, 0.33),
                    (0.99985, 0.23),(0.99985, 0.24),(0.99985, 0.25)
             ]
     if args == "auswahl75":
@@ -357,7 +359,8 @@ def combine_params(args, kwargs = 5):
     
     # groessere  
     if args == "einige": 
-        ps_catalogue = [0.999, 0.9995, 0.9999, 0.99991, 0.99992, 0.99993, 0.99994, 0.99995]
+        #ps_catalogue = [0.999, 0.9995, 0.9999, 0.99991, 0.99992, 0.99993, 0.99994, 0.99995]
+        ps_catalogue = [0.9989, 0.9993, 0.9995, 0.9997]
         pm_catalogue = [0.99, 0.9, 0.7, 0.5, 0.4, 0.3, 0.2, 0.1, 0.01, 0.001, 0.0001]
         
        # pkombis.append((1, 1))
@@ -405,7 +408,7 @@ def combine_params(args, kwargs = 5):
                 pkombis.append((round(ps, 10), round(pm, 10)))
         
     if args == "wdh":#???
-        pkombis = [(0.995, 0.991)]
+        pkombis = [(0.999, 0.999), (0.05, 0.99)]
     
     logging.log(20, "pkombis %s, anzahl: %s", pkombis, len(pkombis))    
     return (sorted(list(set(pkombis))))
@@ -456,7 +459,7 @@ def main():
     global length, number
     length = 200000
     # Anzahl der zu simulierenden Teilchen
-    number = 5000
+    number = 10000
     
     # Die Simulationen werden hier zwischengespeichert
     ergebnisse = []
@@ -506,7 +509,7 @@ def main():
                 store =  True
                 logging.log(25,"%s, %s, simuliere, da nicht vorhanden, todo %s, ready %s", round(ps, 10), round(pm,10), nr_todo, nr_ready)
                 
-                mySim = simulation.Simulation(round(ps, 10), round(pm,10), length, number, "E")
+                mySim = simulation.Simulation(round(ps, 10), round(pm,10), length, number, "T")
                 mySim.simulate_by_event()
                 width, heigth, ls = peak_width.fpwahph(mySim.times, 50, False, mySim.params)
                 pd = (ls, width, heigth)
@@ -539,15 +542,31 @@ def main():
     #    pickle.dump(ergebnisse[3].times, data)
     
     #Die Zeit- Hoehen/skew- Plots und Spektrum erstellen:
-    ergebnisse = plot_simulations(ergebnisse)  
+    #ergebnisse = plot_simulations(ergebnisse)  
  
-    
-    #n, bins, patches = plt.hist(ergebnisse[0].times, 50, normed=1, alpha=0.5 )
+    print(ergebnisse[0].pd)
+    n, bins, patches = plt.hist(ergebnisse[0].times, 40, normed=1, alpha=0.5, label = "ps = "+str(ergebnisse[0].params[0])+"\npm = "+str(ergebnisse[0].params[1]))
+    plt.xlabel("Zeit")
+    plt.ylabel("")
+    #print sim_array[i][j].length
+    plt.suptitle("Laenge:"+ str(length)+ " Anzahl:"+ str(number))
+    plt.legend()
     plt.show()
+    print(ergebnisse[1].pd)
+    n, bins, patches = plt.hist(ergebnisse[1].times, 40, normed=1, alpha=0.5, label = "ps = "+str(ergebnisse[1].params[0])+"\npm = "+str(ergebnisse[1].params[1]))
+    plt.xlabel("Zeit")
+    plt.ylabel("")
+    #print sim_array[i][j].length
+    plt.suptitle("Laenge:"+ str(length)+ " Anzahl:"+ str(number))
+    plt.legend()
+    plt.show()
+    
+    
+#    plotkram.plot_widthandskew(ergebnisse)
     
     # Ende :)
     print ("Zeit " + str(time.clock()-startzeit))
     
 if __name__ == "__main__":
-    logging.basicConfig(level=25)
+    logging.basicConfig(level=20)
     main() 

@@ -37,21 +37,21 @@ def simulatestep(ps, pm, teilchenort, teilchenmobil, number):
     # Hauptschleife, hier wird simuliert
 def simulate(ps, pm, length, teilchenort, teilchenmobil):
     startzeit = time.clock()
-    #print "Teste jetzt: ", round(ps,6), round (pm,6), '  ',
+    print "Teste jetzt: ", round(ps,6), round (pm,6), '  ',
     hilfscounter = []
     zeit = 0
     number = len(teilchenort)
  
     #Teil 1: Sim bis Länge, hier muss noch keine Abbruchbed. getestet werden
-    while zeit < length/10000:
+    while False:#zeit < length/10000:
         teilchenort, teilchenmobil = simulatestep(ps, pm, teilchenort, teilchenmobil, number)
-        zeit += 0.0001
-
+        zeit += 0.00001
+        #logging.log(20, "%s %s", length/10000, zeit)
     logging.log(25, "Teil1 vorbei, zeit:%s", zeit)
     #Teil 2: Ab jetzt können Teilchen fertig sein
     while True:
     # Damit es schneller geht, nach je x schritten nur testen
-        for x in range (100):
+        for x in range (1000):
             teilchenort, teilchenmobil = simulatestep(ps, pm, teilchenort, teilchenmobil, number)
             zeit+=0.0001
 
@@ -59,7 +59,7 @@ def simulate(ps, pm, length, teilchenort, teilchenmobil):
         d = teilchenort <= length*1
         logging.log(10, teilchenort)
         logging.log(10,d)
-        logging.log(10, zeit)
+        logging.log(15, zeit)
         # die beiden aktualisieren (rauswerfen aller fertigen teilchen)
         teilchenort = teilchenort[d]
         teilchenmobil = teilchenmobil[d]   
@@ -275,7 +275,7 @@ def kombiniere(args, kwargs = 5):
                 pkombis.append((round(ps, 5), round(pm, 5)))
         
     if args == "wdh":
-        pkombis = [(0.995, 0.991)]
+        pkombis = [(0.9992, 0.999)]
     logging.log(25, "pkombis %s, anzahl: %s", pkombis, len(pkombis))
     return (sorted(list(set(pkombis))))
 
@@ -320,9 +320,9 @@ def main():
     # Meine ganzen Variablen, TODO: Soll spaeter mal eingelesen werden
     # Laenge der zu simulierenden Strecke
     global length, number
-    length = 1000000
+    length = 200000
     # Anzahl der zu simulierenden Teilchen
-    number = 1000
+    number = 10000
     
     # Zählt, wie viele Schritte nötig waren, wird eine Liste von Listen, je eine pro gestestetem Parameter
     #counter = []
@@ -339,7 +339,7 @@ def main():
             # gehe erst mal davon aus, dass Sim vorhanden ist, daher nicht speichern
             speichern = False
             try:
-                filename = 'v004/l'+str(length)+"/n"+str(number)+ '/Sim_'+ str(round(ps,5)) +'_' +  str(round(pm,5))+ ".p" 
+                filename = 'v004/l'+str(length)+"/n"+str(number)+ '/Sim_'+ str(round(ps,5)) +'_' +  str(round(pm,5))+ ".pp" 
                 logging.log(15,"filename: %s", filename)
                 with open(filename, 'rb') as datei:
                     logging.log(20,"geoeffnet")
@@ -355,7 +355,7 @@ def main():
                         speichern = True
                         # neue Sim nötig
                         logging.log(39, "neue Sim")
-                        mySim = simulation.Simulation(round(ps, 5), round(pm,5), length, number, simulate(round(ps, 5), round(pm, 5), length, np.zeros(number), np.array([True]*number))) 
+                        mySim = simulation.Simulation(round(ps, 5), round(pm,5), length, number, "S", simulate(round(ps, 5), round(pm, 5), length, np.zeros(number), np.array([True]*number))) 
             
             # alte Version, daher aktualisieren
             except AttributeError as err:
@@ -367,10 +367,15 @@ def main():
             except IOError:
                 speichern =  True
                 logging.log(25,"%s, %s, simuliere, da nicht vorhanden, todo %s, ready %s", round(ps, 5), round(pm,5), todo, ready)
-                mySim = simulation.Simulation(round(ps, 5), round(pm,5), length, number, simulate(round(ps,5), round(pm, 5), length, np.zeros(number), np.array([True]*number)))
-                breite, hoehe, ls = peak_width.fpwahph(mySim.times, 50, False, mySim.params)
-                pd = (ls, breite, hoehe)
-                mySim.set_pd(pd)
+                zeitendings =simulate(round(ps,5), round(pm, 5), length, np.zeros(number), np.array([True]*number))
+                n, bins, patches = plt.hist(zeitendings, 50, normed = 1, alpha = 0.5)
+                plt.show()
+                #mySim = simulation.Simulation(round(ps, 5), round(pm,5), length, number, "S", simulate(round(ps,5), round(pm, 5), length, np.zeros(number), np.array([True]*number)))
+                print( peak_width.fpwahph(zeitendings, 50, False))
+#                breite, hoehe, ls = peak_width.fpwahph(mySim.times, 50, False, mySim.params)
+                #print(ls, breite, hoehe)
+                #pd = (ls, breite, hoehe)
+                #mySim.set_pd(pd)
             
             # komischer Fehler, im Zweifel wohl auch neu simulieren ? TODO
             except (EOFError, UnicodeDecodeError, TypeError)  as err:
@@ -380,7 +385,7 @@ def main():
             todo -= 1
             ready += 1 
             ergebnisse.append(mySim)
-            logging.log(20, mySim.pd)
+            #logging.log(20, mySim.pd)
             if speichern:
                 filename = 'v004/l'+str(length)+"/n"+str(number)+ '/Sim_'+ str(round(ps,5)) +'_' +  str(round(pm,5))+ ".p" 
                 logging.log(20, "Speichern, %s, %s", time.strftime("%d%b%Y_%H:%M:%S"), mySim)
@@ -395,11 +400,14 @@ def main():
     #    pickle.dump(ergebnisse[3].times, datei)
     
     #Die Zeit- Hoehen/skew- Plots und Spektrum erstellen:
+    n, bins, patches = plt.hist(ergebnisse[0].times, 50, normed=1, alpha=0.5 )
+    plt.show()
+    
     ergebnisse = plotte(ergebnisse)  
  
     # Ende :)
     print ("Zeit "+str(time.clock()- startzeit))
     
 if __name__ == "__main__":
-    logging.basicConfig(level=25)
+    logging.basicConfig(level=20)
     main() 

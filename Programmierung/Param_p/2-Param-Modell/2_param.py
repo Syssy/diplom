@@ -18,11 +18,11 @@ startzeit = time.clock()
 
 # Meine ganzen Variablen, Todo: Soll spaeter mal eingelesen werden
 # Laenge der zu simulierenden Strecke
-length = 100000
+length = 1000
 # Anzahl der zu simulierenden Teilchen
-number = 10000
+number = 1000
 # Die Parameter (ps, pm) Damit man was zu vergleichen hat, mehrere davon
-params = [(0.5, 0.5),(0.9, 0.5),(0.999, 0.999),(0.5, 0.9)]
+params = [(0.5, 1),(0.9, 0.9999),(0.9992, 0.9),(0.9992, 0.8)]
 # Zählt, wie viele Schritte nötig waren, wird eine Liste von Listen, je eine pro gestestetem Parameter
 counter = []
 hilfscounter = []

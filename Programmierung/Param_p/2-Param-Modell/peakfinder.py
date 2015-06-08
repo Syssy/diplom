@@ -141,7 +141,7 @@ def find_good_params(retention_time, zahl = 1):
             pkombis.append((sim.params[0], sim.params[1]-0.1*sim.params[1]))
             pkombis.append((sim.params[0] + 0.1*(1-sim.params[0]), sim.params[1]))
         elif (abs(retention_time-sim.pd[0][0])) < 0.1*epsilon :
-            logging.log(25, "sim: %s, %s", retention_time, sim.pd[0])
+            logging.log(19, "sim: %s, %s", retention_time, sim.pd[0])
             number_of_good += 1      
     
     plot_all_width(get_approximate_sims(retention_time, 15, epsilon, 15), retention_time+epsilon, retention_time-epsilon)
@@ -165,8 +165,8 @@ def get_argument_parser():
     p.add_argument("--width", "-w", type = float, help = "gewuenschte Breite")
     p.add_argument("--widepsilon", "-we", type = float, help = "moegliche Abweichung der Breite")
     p.add_argument("--destdir", "-d", help = "Ordner, in dem die Simulationen sind")
-    p.add_argument("--length", "-l", type = int, help = "Laenge der Saeule")
-    p.add_argument("--number", "-n", type = int, help = "Anzahl der Teilchen")
+    p.add_argument("--length", "-l", default = "200000", type = int, help = "Laenge der Saeule")
+    p.add_argument("--number", "-n", default = "1000", type = int, help = "Anzahl der Teilchen")
     p.add_argument("--test", "-atgfjzfjzf", action = "store_true", help = "plot a heatmap from single file with multiple simulations")
     return p
 
@@ -181,20 +181,20 @@ def main():
     length = args.length
     number = args.number
     
-    for j in range(1):
+    for j in range(2):
         i=j-1
         logging.log(25, "Runde %s, epsilonj: %s, epsiloni: %s", j,  pow(10, 0-j), pow(10, 0-i))
         #find_good_params(25, 0-i)
-        find_good_params(50, 0-i)
+        #find_good_params(50, 0-i)
         find_good_params(50, 0-j)
-        #find_good_params(75, 0-i)
+        find_good_params(75, 0-j)
         #find_good_params(100, 0-i)
-        #find_good_params(125, 0-i)
-        #zfind_good_params(150, pow(10, 0-i))
+        #find_good_params(125, 0-j)
+        #find_good_params(150, pow(10, 0-j))
         #find_good_params(175, pow(10, 0-i))
         #find_good_params(200, pow(10, 0-i))
     
-    plot_all_width(list_of_all_sims)
+    #plot_all_width(list_of_all_sims)
     
     approximate_sims = get_approximate_sims(args.retention, args.width, args.retepsilon, args.widepsilon)
     plot_all_width(approximate_sims)
@@ -236,5 +236,5 @@ def main():
     print ("Zeit " + str(time.clock()-startzeit))
     
 if __name__ == "__main__":
-    logging.basicConfig(level=22)
+    logging.basicConfig(level=20)
     main() 
