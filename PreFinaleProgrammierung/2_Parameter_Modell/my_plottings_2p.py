@@ -56,46 +56,47 @@ def plot_widthmap(sim_array):
     pm_list = sorted(list(set([sim.params[1] for sim in sim_array])))
     #print ("ps", ps_list, "pm", pm_list)   
     #Alle Breiten ins array, das sind die zu plottenden Daten
-    array_of_width = [[sim.pd[1] for sim in sim_array if sim.params[0]==ps] for ps in ps_list]
+    array_of_width = [[sim.pd[3] for sim in sim_array if sim.params[0]==ps] for ps in ps_list]
     #print ("breiten", array_of_width)
     #Plot erstellen
-    fig, ax = plt.subplots() 
+    fig, ax = plt.subplots()
     cax = ax.imshow(array_of_width, origin = 'lower', interpolation="nearest", extent = [0,len(pm_list),0,len(ps_list)])  
     #Skala passend setzen
     plt.yticks(np.arange(len(ps_list)), ps_list)
     plt.xticks(np.arange(len(pm_list)), pm_list)
     # Beschriftungen
-    plt.ylabel("pm")
-    plt.xlabel("ps")
+    plt.ylabel("ps")
+    plt.xlabel("pm")
     plt.suptitle("widthmap")
     #Colorbar als Legende
     cbar = fig.colorbar(cax)
     plt.show()
             
 def plot_widthandskew(sim_list, plot_width = True, plot_skew = False):
-    '''Erstelle quasi Scatterplots, mit jeder Punkt ist eine Sim, beschriftet mit seinen Params, Koords aus Zeitpunkt und Breite/Schiefe'''
+    '''Erstelle quasi Scatterplots, mit jeder Punkt ist eine Sim, beschriftet mit seinen Params, Koords aus Zeitpunkt und IQR/Schiefe'''
     #logging.log(22, "plotte Groessenverhaeltnisse")
     fig2 = plt.figure()
     #Gewuenschte Plots erstellen und Beschriften
     if plot_width:
         ax3 = fig2.add_subplot(1,1+plot_skew,1)
-        ax3.set_ylabel("Breite")
+        ax3.set_ylabel("breite")
         ax3.set_xlabel("Zeit")
         ax3.set_title("ps \n pm")
         #ax3.legend
     if plot_skew:
         ax4 = fig2.add_subplot(1,1+plot_width,1+plot_width)
-        ax4.set_ylabel("Breite")
+        ax4.set_ylabel("Skewness")
         ax4.set_xlabel("Zeit")
-        ax4.set_title("Skew")
+        ax4.set_title("Schiefe")
     #Alle Peakdaten plotten
     for sim in sim_list:
-        if plot_width:
-            (loc, scale), breite, height = sim.pd
-            point = ax3.plot([loc], [breite], "ro-")
-            t = ax3.text(loc, breite, str(sim.params[0])+'\n'+str(sim.params[1]), size= "small")#oder xx-small
-        if plot_skew:
-            anotherpoint = ax4.plot([loc], [skew], "bx")  
+        if sim.valid:
+            if plot_width:
+                (loc, scale), breite, height, iqr = sim.pd
+                point = ax3.plot([loc], [breite], "ro-")
+                t = ax3.text(loc, breite, str(sim.params[0])+'\n'+str(sim.params[1]), size= "small")#oder xx-small
+            if plot_skew:
+                anotherpoint = ax4.plot([loc], [sim.skewness], "bx")  
     plt.show()
      
 def plot_params_at_time(sim_list, t, epsilon = 0.1, show_params = False):
@@ -110,11 +111,11 @@ def plot_params_at_time(sim_list, t, epsilon = 0.1, show_params = False):
         if abs(sim.pd[0][0] - t) > epsilon:
             logging.log(24, "Abweichung zu gross, %s, bei sim %s", sim.pd[0], sim)
         else:
-            #Groesse der Punkte zeigt Breite des Peaks    
-            ax.plot(sim.params[0], sim.params[1], "co", markersize = sim.pd[1]*2)
+            #Groesse der Punkte zeigt Breite(IQR) des Peaks    
+            ax.plot(sim.params[0], sim.params[1], "co", markersize = sim.pd[3]*2)
             if show_params:
-                ax.text((sim.params[0]), sim.params[1], str(round(sim.pd[1], 2)))
-        logging.log(21, sim.pd[1])
+                ax.text((sim.params[0]), sim.params[1], str(round(sim.pd[3], 2)))
+        logging.log(21, sim.pd[3])
     plt.suptitle("Parameter fuer Zeit "+ str(t) + " mit Epsilon " + str(epsilon))
     plt.show()    
     

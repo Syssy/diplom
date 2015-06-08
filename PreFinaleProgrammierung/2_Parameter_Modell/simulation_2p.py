@@ -21,9 +21,9 @@ import matplotlib.pyplot as plt
 class Simulation():
     """Simuliert und speichert Daten einer Simulation
     """
-    version_number = 7.0
+    version_number = 8.0
     
-    def __init__(self, ps, pm, length, number, mode, step = 200, times = [], pd = (), version = version_number):
+    def __init__(self, ps, pm, length, number, mode, step = 200, times = [], pd = (), valid = True, version = version_number):
         """__init__
         
         ps, pm - Parameter; Wahrscheinlichkeit, stationaer/mobil zu bleiben, wenn ein Teilchen schon in diesem Zustand ist
@@ -32,7 +32,8 @@ class Simulation():
         mode - Wie wird simuliert, each_timestep (T) oder by_event (E)
         step - Anzahl Einzelschritte je Simulationsschritt, aus historischen Gruenden dabei, Vergleichbarkeit mit alten Simulationen
         times - Ankunftszeiten
-        pd - aus den times errechnete Peakdaten: ((loc, scale), width, height)
+        pd - aus den times errechnete Peakdaten: ((loc, scale), width, height), iqr
+        valid - Flag, ob simulation gueltig (ungueltig zb nach Ueberschreitung der Maximalzeit)
         v - Versionsnummer eben ;)
         """
         self.params = (ps, pm)
@@ -49,6 +50,7 @@ class Simulation():
         # peakdaten der form: ((loc,scale),width,height)
         if pd:
             self.pd = pd
+        self.valid = valid
         self.version = version
 
     #Fuer das Sortieren einer Liste von Simulationen, als key = ...
@@ -89,7 +91,6 @@ class Simulation():
         # Anzahl zu simulierender Teilchen
         number = self.number
         self.mode="T"
-        time_step = 1
         
         # aktuelle Orte der Teilchen
         locations = np.zeros(number)
@@ -98,9 +99,9 @@ class Simulation():
     
         #Teil 1: Sim bis frueheste Teilchen ankommen koennen, hier muss noch keine Abbruchbed. getestet werden. 
         # Carrier ist nach length Schritten durch bei einzelschritten, sonst bei length/step; das entspricht momentan 0.1 sec
-        while time_needed < (self.length/self.step):
+        while time_needed <= (self.length/self.step):
             locations, mobile_states = self._simulate_step(locations, mobile_states, number)
-            time_needed += time_step
+            time_needed += 1
         logging.log(20, "Teil1 vorbei, zeit:%s, simdauer:%s", time_needed, time.clock()-starttime)
         #Teil 2: Ab jetzt koennen Teilchen fertig sein, teste erst, dann x neue Runden
         while True:
@@ -119,8 +120,9 @@ class Simulation():
             if number < 1:
                 logging.log(25, "fertig, simzeit: %s, realtime: %s", time_needed, (time.clock()-starttime))
                 break
-            if time_needed > 2400*(self.length/self.step):#24000000:
+            if time_needed > 240*(50*self.step):#24000000: #TODO
                 logging.log(30, "Ueberschreitung der Maximalzeit von 240s, %s", (time.clock()-starttime))
+                self.valid = False
                 # alle noch nicht fertigen Teilchen bekommen Strafe, damit man sieht, dass Simulation nicht zu Ende durchgefuehrt wurde
                 for j in range(len(locations)):
                     arrival_counter.append(time_needed+(self.length/self.step)*1000)
@@ -129,9 +131,11 @@ class Simulation():
             # Damit es schneller geht, nach je x schritten nur testen
             for x in range (10):
                 locations, mobile_states = self._simulate_step(locations, mobile_states, number)
-                time_needed+=time_step
+                time_needed+=1
         # durch Schritte pro Sekunde teilen, zur normierung der zeiten
-        self.times = [date/(10*(self.length/self.step)) for date in arrival_counter]
+        #self.times = [date/(10*(self.length/self.step)) for date in arrival_counter]
+        self.times = [date/(50*self.step) for date in arrival_counter]
+        #self.times = arrival_counter
        
     def _test_finished(self, particle_list):
         """Teste, ob die Teilchen schon durch sind. Aufruf durch simulate_by_event"""
@@ -175,7 +179,7 @@ class Simulation():
     def simulate_by_event(self):
         """Simuliere mit Hilfe einer Liste von Events"""
         starttime = time.clock()
-        logging.log(25, "simuliere %s", self.params)
+        logging.log(20, "simuliere %s E", self.params)
         length = self.length
         number = self.number
         self.mode = "E"
@@ -221,7 +225,8 @@ class Simulation():
             #naechste Zeit betrachen    
             act_time += 1  
         # Zeitpunkte normalisieren    
-        self.times = [date/(10*self.length/self.step) for date in arrival_counter]
+        self.times = [date/(50*self.step) for date in arrival_counter]
+
         logging.log(25, "fertig, simschritte: %s, realtime: %s", act_time, (time.clock()-starttime))
         
     def set_pd(self, pd, v = version_number):
@@ -260,32 +265,42 @@ class Simulation():
     def calculate(self):
         """Berechne Momente, Breite und Hoehe bei halber Peakhoehe, sowie Loc und Scale, ausgehend von Gaussverteilung"""
         # Momente berechnen
-        self.mean = np.mean(self.times) 
-        self.variance = np.var(self.times)
-        self.skewness = scipy.stats.skew(self.times)
-        self.kurtosis = scipy.stats.kurtosis(self.times)
-        
-        # Peakdaten berechnen
-        # Finde Parameter fuer passende Gausskurve zum Schneiden
-        loc_n, scale_n = scipy.stats.norm.fit(self.times)
-        # halben Maximalwert berechnen
-        halfmax = 1/(math.sqrt(2*math.pi)*scale_n *2)
-        #print ("halfmax", halfmax)
+        if self.valid:
+            self.mean = np.mean(self.times) 
+            self.variance = np.var(self.times)
+            self.skewness = scipy.stats.skew(self.times)
+            self.kurtosis = scipy.stats.kurtosis(self.times)
             
-        # Funktionen der Normalverteilung erstellen, die dann für die find intersections genutzt wird. 
-        norm = lambda x: np.exp(-(x-loc_n)**2 / (2*scale_n**2)) / math.sqrt(2*math.pi * scale_n**2)
-        # Funktion einer Linie
-        linie = lambda x: halfmax + 0*x
-        # print ("max bei", norm(loc), "starte test bei:", loc-scale, loc+scale)
-        # finde Schnittpunkte zwischen Linie auf halber Hoehe und Gausskurve, Startwerte sind median +- standardabweichung
-        intersections = self._find_intersection(linie, norm, [loc_n+scale_n, loc_n-scale_n])
-        logging.log(15, "Intersections %s", intersections)
-        
-        #width ist Abstand zwischen den Schnittpunkten
-        width = abs(max(intersections) - min(intersections))
-        ls =  (loc_n, scale_n)
-        pd = (ls, width, halfmax)
+            # Peakdaten berechnen
+            # Finde Parameter fuer passende Gausskurve zum Schneiden
+            loc_n, scale_n = scipy.stats.norm.fit(self.times)
+            # halben Maximalwert berechnen
+            halfmax = 1/(math.sqrt(2*math.pi)*scale_n *2)
+            #print ("halfmax", halfmax)
+                
+            # Funktionen der Normalverteilung erstellen, die dann für die find intersections genutzt wird. 
+            norm = lambda x: np.exp(-(x-loc_n)**2 / (2*scale_n**2)) / math.sqrt(2*math.pi * scale_n**2)
+            # Funktion einer Linie
+            linie = lambda x: halfmax + 0*x
+            # print ("max bei", norm(loc), "starte test bei:", loc-scale, loc+scale)
+            # finde Schnittpunkte zwischen Linie auf halber Hoehe und Gausskurve, Startwerte sind median +- standardabweichung
+            intersections = self._find_intersection(linie, norm, [loc_n+scale_n, loc_n-scale_n])
+            logging.log(15, "Intersections %s", intersections)
+            
+            #width ist Abstand zwischen den Schnittpunkten
+            width = abs(max(intersections) - min(intersections))
+            ls =  (loc_n, scale_n)
+            
+            #IQR berechnen
+            iqr =  np.percentile(self.times, 75) - np.percentile(self.times, 25)
+            
+            pd = (ls, width, halfmax, iqr)
+        else:
+            self.mean, self.variance, self.skewness, self.kurtosis = 0,0,0,0
+            pd = ((0,0),0,0,0)
+        #direkt die v-nr mitsetzen
         self.set_pd(pd)
+       
 
 # für Kommandozeilentests, Aufruf nur in main()    
 def get_argument_parser():
@@ -300,22 +315,26 @@ def get_argument_parser():
 
 # Nutzung für Testzwecke
 def main():
-    number = 1000
-    length = 200000
+    number = 2000
+    length = 100000
     print ("n", number, "l", length, time.strftime("%d%b%Y_%H:%M:%S"))
     p = get_argument_parser()
     args = p.parse_args()
-    neueSim = Simulation(0.999, 0.999, length, number, None, 10)
+    neueSim = Simulation(0.9997, 0.3, length, number, None, 200)
   
     #neueSim.simulate_by_event()
     #neueSim.calculate()
-    #print("pd by event", neueSim.pd, len(neueSim.times))
+    #print("pd by t1", neueSim.pd, len(neueSim.times))
     #n, bins, patches = plt.hist(neueSim.times, 50, alpha=0.5)   
     #plt.ylabel("")
     #plt.xlabel("Zeit / s")
-    #plt.title("ps: "+ str(neueSim.params[0])+" pm: "+ str(neueSim.params[1]) + " by event")
+    #plt.title("ps: "+ str(neueSim.params[0])+" pm: "+ str(neueSim.params[1]) + " by t1")
     #plt.show()
     
+    length = 100000
+    neueSim.length = length
+    #neueSim.step = 100
+    #print (neueSim.length)
     neueSim.simulate_each_timestep()
     neueSim.calculate()
     #print ("times by step", neueSim, neueSim.times)

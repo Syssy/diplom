@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 
 import my_plottings_2p as plotkram
 import simulation_2p as simulation
-import peak_width_2p as peak_width
+#import peak_width_2p as peak_width
 
 
 def combine_params(args, nr_of_choice = 5): #TODO Auf die sinnvollen beschraenken
@@ -76,11 +76,12 @@ def combine_params(args, nr_of_choice = 5): #TODO Auf die sinnvollen beschraenke
     
     if args == "viele005":
         schrittweite = 0.00005
-        ps_catalogue = np.arange(0.999, 0.9998, schrittweite)
+        #0.9985 0.9998
+        ps_catalogue = np.arange(0.99965, 0.9998, schrittweite)
         #ps_catalogue = [0.999, 0.9992, 0.9998, 0.99992]
         
         schrittweite = 0.05
-        pm_catalogue = np.arange(0.1, 0.9, schrittweite)
+        pm_catalogue = np.arange(0.1, 0.45, schrittweite)
         #pm_catalogue = [0.99, 0.9, 0.3, 0.1]
         
         p_combinations = []
@@ -205,7 +206,7 @@ def combine_params(args, nr_of_choice = 5): #TODO Auf die sinnvollen beschraenke
                 p_combinations.append((round(ps, 10), round(pm, 10)))
      
     if args == "wdh":#???
-        p_combinations = [(0.999, 0.999), (0.05, 0.99)]
+        p_combinations = [(0.9991, 0.1)]
     
     logging.log(20, "p_combinations %s, anzahl: %s", p_combinations, len(p_combinations))    
     return (sorted(list(set(p_combinations))))
@@ -229,10 +230,11 @@ def start_simulations(length, number, mode, p_combinations):
                     logging.log(20,"geoeffnet")
                     mySim = pickle.load(data)
                     logging.log(22, mySim)
-                    # test, ob aktuelle version. Im Moment nicht nötig, aber schmeißt noch AttributeError, wenn nicht vorhanden, sodass Dinge nachberechnet werden können, spaeter kann hier weitere versionanpassung rein
-                    if mySim.version < 4.1:
+                    # test, ob aktuelle version, falls nicht, muessen pd nachberechent werden.
+                    # Je nach version noch weitere anpassungen noetig
+                    if mySim.version < 8:
                         logging.log(31, "alte version, update")
-                        mySim = update_sim(mySim)
+                        mySim.calculate()
                         store = True
                     # Sim mit gleichen Params zwar vorhanden, aber nicht nutzbar, da Länge/Anzahl verschieden, sollte nicht vorkommen, da im filename/path schon laenge und anzahl drin sind
                     if (not mySim.length == length) or (not mySim.number == number):
@@ -247,7 +249,7 @@ def start_simulations(length, number, mode, p_combinations):
             except AttributeError as err:
                 store = True
                 logging.log(25, err)
-                mySim = update_sim(mySim)
+                mySim.calculate()
             # Kombination nicht vorhanden, daher neue Sim machen
             except IOError:
                 sim_exists =  False
@@ -290,10 +292,42 @@ def start_simulations(length, number, mode, p_combinations):
         
     # Updatet von alter Version
 def update_sim(aSim):
-    width, heigth, ls = peak_width.calculate_width(aSim.times, 50, False, aSim.params)
-    pd = (ls, width, heigth)
-    aSim.set_pd(pd)
+    aSim.calculate()
+    #width, heigth, ls = peak_width.calculate_width(aSim.times, 50, False, aSim.params)
+    #pd = (ls, width, heigth)
+    #aSim.set_pd(pd)
     return aSim
+
+def update_sims(length, number):
+    '''Aenderungen fuer alle Sim mit l/n durchfuehren'''
+    for file in os.listdir('./simulated_data/l' + str(length) + "/n" + str(number) + "/"):
+        #if fnmatch.fnmatch(file, 'Sim_*.p'):
+            #print (file)
+            with open("simulated_data/l" + str(length) + "/n" + str(number) + "/"+str(file), 'rb') as data:
+                try:
+                    mySim = pickle.load(data)
+                    # Jetzt Aenderungen durchfuehren!
+                    print (mySim)
+                    if max(mySim.times)>240:
+                        mySim.valid = False
+                    else:
+                        mySim.valid = True
+                    mySim.calculate()    
+                    with open("simulated_data/l"+ str(length) + "/n" + str(number) + "/Sim_"
+                            + str(round(mySim.params[0],8)) + '_' + str(round(mySim.params[1],8)) + ".p", 'wb') as dat:
+                        pickle.dump(mySim, dat)
+                        #time.sleep(2)
+                except AttributeError as err:
+                    print ("Fehler", err)
+                    #time.sleep(0.5)
+                except (UnicodeDecodeError, TypeError) as err:
+                    print ("Fehler", err)
+                    #time.sleep(1)
+                    #TODO update
+                    # Und wieder abspeichern
+                except:
+                    print ("Fehler", file)
+                    time.sleep(1)
 
 def get_argument_parser():
     p = argparse.ArgumentParser(
@@ -310,6 +344,8 @@ def get_argument_parser():
                    help = "Anzahl zu simulierender Teilchen")
     p.add_argument("--mode", "-m", default = "E", 
                    help = "Art der Simulation; E = by-event, T = each_timestep")
+    p.add_argument("--update", "-u", action = "store_true",
+                   help = "Wenn Aenderungen vorliegen, koennen diese auf alle vorhandenen Simulationen angewendet werden")
     
     p.add_argument("--test", "-t", action = "store_true", help = "nutzlos; Test")
     return p
@@ -320,7 +356,11 @@ def main():
    
     p = get_argument_parser()
     args = p.parse_args()
-       
+      
+    # Update auf neue Version:
+    if args.update:
+        update_sims(args.length, args.number)
+      
     #liste aller zu simulierenden kombis erstellen
     p_combinations = combine_params(args.pcombioption, args.choicenumber)
     if args.reverse:
@@ -333,8 +373,8 @@ def main():
     #Tests fuer Plotkram
     #plotkram.plot_spectrum(new_sims, 1000)
     #for i in range(len(new_sims)):
-    #    plotkram.plot_single_peak(new_sims[i], qq= scipy.stats.norm)
-    #    time.sleep(2)
+        #plotkram.plot_single_peak(new_sims[i], qq= scipy.stats.norm)
+        #time.sleep(2)
     plotkram.plot_widthmap(new_sims)
     plotkram.plot_widthandskew(new_sims)
     #plotkram.plot_params_at_time(new_sims, 50, 10, True)
@@ -343,7 +383,7 @@ def main():
     #plotkram.plot_4_heatmaps(filename, ff=True, moment="mean")   
     #plotkram.plot_4_heatmaps(new_sims, moment="mean") 
     #plotkram.plot_simlist_ff(filename, True, True, True, True, True, compare_Dist = scipy.stats.gamma)
-    #plotkram.plot_simlist(new_sims, True, False, True, True, True)
+    #plotkram.plot_simlist(new_sims, False, False, True, False, False)
     
     # Ende :)
     print ("Zeit " + str(time.clock()-starttime))
@@ -352,5 +392,5 @@ if __name__ == "__main__":
     if sys.version_info.major < 3:
         print ("Bitte python3 verwenden")
         exit()
-    logging.basicConfig(level=20)
+    logging.basicConfig(level=25)
     main()
