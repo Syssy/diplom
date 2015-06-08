@@ -31,7 +31,7 @@ class ims:
                 i = -1
                 for line in f:
                     i += 1
-                    linie = str(line.strip(), encoding="utf8")
+                    linie = str(line.strip(), encoding="latin-1")#TODO oder utf8
                     num_lines = 0;
                     if len(linie) < 2: continue
                     qsp = linie.split(",")
@@ -69,7 +69,7 @@ class ims:
             '''    
             elif filetype == "ims":
                 data = f.read(3)
-                # Länge und Strings einlesen
+                # Laenge und Strings einlesen
                 for i in range(29):
                     data = f.read(2)
                     length = unpack("<h", data)[0]

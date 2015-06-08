@@ -41,8 +41,9 @@ class imsFile:
             
                 i = -1
                 for line in f:
+                    #print (line)
                     i += 1
-                    linie = str(line.strip(), encoding="utf8")
+                    linie = str(line.strip(), encoding="latin-1") #TODO Hier stand anfangs noch utf8, das schmeisst aber fehler
                     num_lines = 0;
                     if len(linie) < 2: continue
                     qsp = linie.split(",")
@@ -189,22 +190,26 @@ if __name__ == "__main__":
     marker = ['.', '*', 'x', '+']
     # Matrix in RxT
     
-   # print (a.points)
+    #print (a.points)
+    
     
     #print (a)
     newl = np.array(a.points)
     #print (len(a.points[0]), type(a.points[0]))
     #print (np.shape(newl))
     #print (sig(newl[245][1476]),sig(newl[250][801]),sig(newl[240][1476]), sig(newl[235][14]))
-   # print (a.points[250])
-  #  chrom = list()
+    #print (a.points[250])
+    chrom = list()
     # betrachte ein einzelnes Chromatogram/Spektrum
-   # for i in range(len(newl)):
-    #    wert = newl[i][1476]
+    for i in range(len(newl)):
+        wert = newl[i][1000]
         #print (wert, end=",")
-     #   chrom.append(wert)
+        chrom.append(wert)
     
-   # plt.plot(chrom)
+    #plt.plot(chrom)
+    #plt.show()
+    #plt.hist(chrom, 50)
+    #plt.show()
     #print (newl[1500])
     aspec = newl[244]#[1455:1540]
     aspeclist = list()
@@ -243,6 +248,8 @@ if __name__ == "__main__":
     #plt.legend()
      
     # Matrix in RxT
+    #plt.plot(a.points[250])
+    #plt.show()
     plt.imshow(a.points, interpolation="nearest", origin="lower",vmin=0, vmax=100, cmap=cmap, extent = a.extent, aspect="auto")      
     #plt.subplots_adjust(left=0.02, bottom=0.02, right=1, top=1, wspace=None, hspace=None)
     plt.legend()
