@@ -13,7 +13,7 @@ import random
 import scipy.stats   
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn
+#import seaborn
 
 # Speichert alle interessanten Dinge einer Simulation ab
 # Hat Methoden zur Simulation, sowie zur Berechnung von Peakdaten
@@ -184,7 +184,8 @@ class Simulation():
             if number < 5:
                 logging.log(25, "fertig, simzeit: %s, realtime: %s", steps_needed, (time.clock()-starttime))
                 break
-            if steps_needed > 2400*(self.length/self.step):
+            #if steps_needed > 2400*(self.length/self.step):
+            if time_needed > 240*(50*self.step):
                 logging.log(25, "das bringt nix, Überschreitung der Maximalzeit, %s", (time.clock()-starttime))
                 # alle noch nicht fertigen Teilchen bekommen 100 Sek Strafe, damit man sieht, dass Simulation nicht zu Ende durchgefuehrt wurde
                 for j in range(len(locations)):
@@ -196,7 +197,8 @@ class Simulation():
                 locations, mobile_states = self._simulate_step(locations, mobile_states, number)
                 steps_needed+=time_step
         
-        self.times = [date/(10*(self.length/self.step)) for date in arrival_counter]
+        #self.times = [date/(10*(self.length/self.step)) for date in arrival_counter]
+        self.times = [date/(50*self.step) for date in arrival_counter]
        
     def _test_finished(self, particle_list): 
         """Teste, ob die Teilchen schon durch sind. Aufruf durch simulate_by_event"""
@@ -327,7 +329,8 @@ class Simulation():
             logging.log(25, "Zeitpunkt, %s, uebrige Events %s", act_time, events) 
         #print (arrival_counter)
         #print (summe/num_ev)
-        self.times = [date/(10*self.length/self.step) for date in arrival_counter]
+        #self.times = [date/(10*self.length/self.step) for date in arrival_counter]
+        self.times = [date/(50*self.step) for date in arrival_counter]
         logging.log(25, "fertig, simschritte: %s, realtime: %s", act_time, (time.clock()-starttime))
         
         
