@@ -1,13 +1,20 @@
-#using PyPlot
+using PyPlot
 
-println("Hello World!") 
+println("Los geht's") 
 
 function updateDistributions!(ps::Float32, pm::Float32, rps, rpm, index)
-    #println("do something")
-    rs1 = Array(Float32, length(rps))
+    #= ps, pm: Parameter
+       rps, rpm: Arrays die Werte fuer mobil/stat enthalten (Wert: WKeit an jeweiliger position)
+       index: zur spaeteren Verschiebung des Arrays
+       return: Neue rps, rpm, index
+    =#
+    #rs1 = Array(Float32, length(rps))
+    # rs/m1/1 sind hilfsarrays, aus denen die neuen rps und rpm berechnet werden
     rs1 = rps * ps
     rs2 = rpm * (1.0f0-pm)
+    # unshift! fuegt am Anfang ein
     unshift!(rs2, 0.0f0)
+    # push! fuegt am Ende ein
     push!(rs1, 0.0f0)
         
     rm1 = rps * (1.0f0-ps)
@@ -23,11 +30,13 @@ function updateDistributions!(ps::Float32, pm::Float32, rps, rpm, index)
     rpm = rm1 + rm2
         
         #zu kleine Werte am Anfang rausschmeissen, damit das array nicht zu gross wird
+        # Dann auch passend den Index verschieben
         #TODO sinnvoller wert?
         #println("rps vorher ", rps)
         #println("rpm vorher ", rpm)
-    if (rps[1] < 1.0f-20)  & (rpm[1] < 1.0f-20)
+    if (rps[1] < 1.0f-17)  & (rpm[1] < 1.0f-17)
         index += 1
+        # shift! loescht am Anfang
         shift!(rps)
         shift!(rpm)
     end
@@ -35,7 +44,8 @@ function updateDistributions!(ps::Float32, pm::Float32, rps, rpm, index)
         #println(rps, rpm)
         #gleiches fuer das Ende
         #TODO ebenfalls ueberpruefen
-    if (rps[end] < 1.0f-20) & (rpm[end] < 1.0f-20)
+    if (rps[end] < 1.0f-17) & (rpm[end] < 1.0f-17)
+        #pop! loescht am Ende
         pop!(rps)
         pop!(rpm)
     end
@@ -44,9 +54,10 @@ end
 
 
 function waitingTimeForValue(ps::Float32, pm::Float32, value, maxTime)
-    println("los")
+    #println("los")
     #result::Vector{Float32}
     #println(result, typeof(result))
+    # Beginne mit quasi leerem ergebnis, wkeitsmasse 1 in mobil und 0 in stat
     result = zeros(Float32, 1)
     rps = zeros(Float32, 1)
     rpm = ones(Float32, 1)
@@ -58,8 +69,18 @@ function waitingTimeForValue(ps::Float32, pm::Float32, value, maxTime)
     
     for i = 1:maxTime
         if !(value>index)
+            #Warum break? -> sonst Fehler (Bounds Ex) beim push ins result, da laenge der rpm zu kurz ist
+            # Ausserdem ist halt das Ziel erreicht
+            # TODO: Sind hier noch Restwahrscheinlichkeiten übrig, um die man sich kümmern muss?
+            #print("break, rpm ", rpm, " rps ", rps)
+            println ("break, fertig")
             break
         end
+         
+#         if (sum(result)) > 1
+#             println ("break, summe erreicht")
+#             break
+#         end
         
         rps, rpm, index = updateDistributions!(ps, pm, rps, rpm, index)
         #println("rps ", rps)
@@ -71,19 +92,42 @@ function waitingTimeForValue(ps::Float32, pm::Float32, value, maxTime)
             rpm[value-index+1] = 0
             rps[value-index+1] = 0
         else
+            #das wird im prinzip nicht benoetigt, wenn man den index nutzt
             push!(result, 0.0f0)
             #println("FAlse")
         end
-        #println("result ", result)
-    end
+        #println(" result ", length(result))
+        end
     #println(result)
     return result
 end
 
-@time(waitingTimeForValue(0.99f0, 0.99f0, 100, 500))
-#res = waitingTimeForValue(0.99f0, 0.99f0, 10000, 50000)
-#println(res)
-println("ende")
+# for i = 1:5
+#     @time(waitingTimeForValue(0.9992f0, 0.99f0, 1000, 1000000))
+# end
+ps = 0.999f0
+pm = 0.991f0
+laenge = 1000
+maxtime = 50000
+#for ps in 0.999f0:0.0001f0:0.9999f0
+#    for pm in 0.99f0:0.001f0:0.999f0
+
+println("ps:", ps, " ps: ", pm)
+        res = @time(waitingTimeForValue(ps, pm, laenge, maxtime))
+        #print (dauer)
+        #res = waitingTimeForValue(ps, pm, laenge, maxtime)
+        println("Summe ", sum(res))
+        plt.plot(res)
+        plt.ylabel("")
+        plt.xlabel("Zeit / Schritten")
+        plt.title("PAA; Params: ps:$ps, pm:$pm")
+        plt.savefig("savefigs_julia/l$laenge/$ps __$pm .png")
+        plt.clf()
+        writecsv("savedata_julia/l$laenge/$ps _$pm", res)
+    #end
+#end    
+println("fertig")
+
 # 
 # function myPAA(ps::Float32, pm::Float32, len::Int64)
 #     rps = zeros(Float32, 1)
