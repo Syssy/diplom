@@ -277,7 +277,7 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * Stoffe wie amines, alcoholes, carboxyl etc prone to tailing wegen hydrogen bonding (Genauere Ursachen?)
  * Um Tailing festzustellen: Peakbreiten in 10% der Höhe messen. 
  * Für Halbwertsbreite evtl noch Basislinienhöhe abziehen? Damit müssten die gemessenen Breiten größer werden, da die Höhe abnimmt und Peaks auf der Hälfte breiter werden
- * Noch mal an Dommis Rechner -> hatte ich für die Höhen die Basislinie abgezogen? 
+ * Noch mal an Dommis Rechner -> hatte ich für die Höhen die Basislinie abgezogen? (ja, hatte ich, mehr oder weniger)
  * Was soll zum PAA ins expose? 
  
 
@@ -354,7 +354,7 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * Zeitanalyse: Am meisten Zeit scheinen push! und unshift! zu benötigen, keine Ahnung, wie ich das umgehen kann. Alternativ könnte ich doch mal eher den PAA aus mosdi nachprogrammieren, glaube aber kaum, dass das was bringt
 
 09.04.2015
- * Bei den Peaks noch mal die Breiten überprüfen, dabei Basisrauschen beachten (dadurch werden die vielleicht schmaler, wenn Rauschen abgezogen werden muss) 
+ * Bei den Peaks noch mal die Breiten überprüfen, dabei Basisrauschen beachten (dadurch werden die vielleicht schmaler, wenn Rauschen abgezogen werden muss) ok -> nein, leider!
  * Screenshot / jpg-Export von den Visual Now - Ansichten
  * Welche Ergebnisse sollen in den Vortrag?
  * Noch mal einen Plot wie in 7a erstellen, aber mit je 10000 Teilchen.
@@ -397,7 +397,6 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
   ** Überprüfen, wie ausagekräftig diese sind
  * Wenn ich ans Annähern der Peaks kommme: Sekantenverfahren, Dommi noch mal ansprechen
  * Brauche klare Werte, wann ein Peak "gut" ist
- * Hochzeitshaarschmuck raussuchen
  * mit np hist die bins berechnen. davon offset für die mitte der bins und damit plotten (Mail von Bianca) ok
  * in den Plottings einige methoden überarbeiten, da zu unflexibel (vorgegebene quadratische anzahl etc) ok
  * [0.5, 0.4, 0.1], [0.0095, 0.99, 0.0005], [0.0003, 0.9996, 0.0001]] in der 3s(6p) T und E vergleichen
@@ -432,3 +431,6 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * in der 2p-sim: normalisierung ändern, dass verschieden lange säulen auch zum tragen kommen. (am ende, das passt irgendwie nicht) ok
  * Sinnvoll wäre ein Invalid-Flag für abgebrochene Simulationen, damit diese nicht mehr in den Plots auftauchen oder irgendwie mitausgewertet werden. Aktuell gibt es bei der event-sim (2p) noch keine zeit-abbruch bedingung, fraglich, ob das nicht vielleicht sinnvoll ist, es so zu lassen... Evtl koennte fuer alle invalids bei der by-step einfach nachher die event genutzt werden, um zum Ende zu führen 
  * Abbruchtest anpassen auf Länge (ok)
+ * Bei den PAA (sowohl mosdi, als auch julia) kommt bei manchen Kombis ein recht "hoher" Wert heraus am ersten Zeitpunkt, der nicht null ist, danach beginnt der normale Peak, diesen Effekt bekomme ich bei den Simulationen nicht. Keine Ahnung, woran das liegt. -> Auch in der Sim, nur durch die bins fällt das dort nicht auf.
+ * PAA3s kommentieren, testen, aufräumen. In mosdi Ergebnisse erhalten, Seriensimulationen erstellen.
+ * 

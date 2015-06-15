@@ -1,0 +1,34 @@
+Hier kommt alles an wichtigen Todos rein, die vielleicht auch über längere Zeit hier stehen dürfen, aber nicht vergessen werden sollten. Hier wird auch gelöscht, was erledigt wurde
+
+Sim, allgemein:
+ * Robustes Maß fuer Schiefe
+ * Peakfinder: Von Dommi das Sekantenverfahren erklären lassen
+ * Sinnvoller Einsatz der Invalid-Flags
+
+2p-Sim:
+ * Vergleich der Peakbreiten bei verschiedenen Längen, wenn das nicht passt: Sättigung einbauen
+ * Review/Finalisierung von Peakfinder 
+ * Review/Finalisierung von v005
+ 
+3s-Sim:
+ * Sinnvolle Parameterbereiche bestimmen, diese simulieren und Tabelle mit daraus resultierenden Peakdaten erstellen
+ * Herausfinden, bei welchen P-Kombis by-step oder by-event besser sind
+ * habe beim plottesten noch folgende, tailing erzeugende kombi gefunden: (0.1 0.99) bzw (0.05, 0.99) natürlich extrem früh, aber sollte ich mir merken
+ * ReSim-Optionen. Vorbearbeitung der pcombis
+ 
+Referenzdaten:
+ * In VisualNow überprüfen, ob tatsächlich die sehr intensiven Peaks oben abgeschnitten sind
+ * Berechnung der Peakdaten komplettieren/Aufschreiben, warum und so
+
+PAA:
+ * Fertig stellen:
+  ** Ergebnisse Abspeichern, seriensimulation  (java)
+  ** Kommentieren
+ * Plots
+ * PAA-Daten und Simulationen vergleichen / Unterschiede berechnen / Ab wie vielen Teilchen hinreichend genau? Existieren Differenzen?
+ * Laufzeittests zwischen Julia, Mosdi und Simulationen
+
+Schreiben:
+ * Schreiben halt
+
+

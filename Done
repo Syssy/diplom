@@ -265,7 +265,11 @@ läuft
  * Treffen mit Rahnenführer: IQR als Maß fuer die Breite, sowie demnächst robustes Maß für Schiefe
 
 28.05.2015
- * Simuliere für l=170000 um herauszufinden, ob evtl bei kürzerer Säule die knapp verfehlten Peakbreiten erreicht werden können
- * Benennung der Sim 
- * Umstellung der Breite auf IQR
- * Fehler entdeckt in der Normalisierung der arrival_counter daten. Bisher wurde unabhängig von der Länge auf eine Totzeit (Zeit für Driftgas) von 0.1 normalisiert, was allerdings Quatsch ist, beachtet man verschiedene Säulenlängen. Das wurde behoben
+ * Simuliere für l=170000 um herauszufinden, ob evtl bei kürzerer Säule die knapp verfehlten Peakbreiten erreicht werden können (Dabei Fehler entdeckt s.u.)
+ * 3s: Umbenennung der Sim 
+ * Teilweise Umstellung der Breite auf IQR
+ * Fehler entdeckt in der Normalisierung der arrival_counter daten. Bisher wurde unabhängig von der Länge auf eine Totzeit (Zeit für Driftgas) von 0.1 normalisiert, was allerdings Quatsch ist, beachtet man verschiedene Säulenlängen. Das wurde behoben (2p/3s). Das ganze noch mal korrigiert, denn ich hatte wohl noch mal Mist gebaut. Das (gewünschte) Verhalten: Doppelte Säulenlänge bei doppelter Schrittgröße liefert gleiches Ergebnis. Ebenso ist die Abbruchzeit unabhängig von der Länge oder Schrittgröße, sondern deren Zahlenwert soll einstellbar sein
+ * Tests mit Invalid-Flag fuer abgebrochene Sims
+ * PAA: 2p läuft, Julia liefert gleiche Ergebnisse wie mosdi. Im Wesentlichen sind die Ergebnisse auch mit den Simulationen identisch. Erst dachte ich, das dieser hohe Anfangspeak bei 0.999/0.999 l=1000 anders ist, als bei den Simulationen, aber durch die Kumulation fällt das da nur nicht auf. Das sollte aber kein Problem darstellen, da bei den realen Messungen ja auch nur "gelegentlich" gemessen wird.
+ * PAA 3s sieht ähnlich gut aus. Die Ergebnisse von Julia, mosdi und den Simulationen sehen gleich aus. 
+ * PAA: Zeitlich ist Julia echt am schnellsten, je nach Parameterwahl macht das einen krassen Unterschied
