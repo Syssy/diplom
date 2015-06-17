@@ -1,7 +1,5 @@
 using PyPlot
 
-println("Los geht's") 
-
 function updateDistributions!(params::Array{Float32,2}, distributions, index, num_states)
     #= ps, pm: Parameter
        distributions: Matrix die Werte fuer mobil/stat enthaelt (Wert: WKeit an jeweiliger position)
@@ -10,12 +8,12 @@ function updateDistributions!(params::Array{Float32,2}, distributions, index, nu
     =#
     # Erstelle Hilfsmatrix aus Arrays. Jedes Array wird später befüllt aus einer alten Verteilung mal entsprechender Uebergangswahrscheinlichkeit. Bei 3 Zustaenden ergeben sich so 9 Arrays
     hilfsdings = Array(Any, num_states)
-    #println ("hilfsdings beim befuellen ", hilfsdings, typeof(hilfsdings))
     for i in 1:num_states
         hilfsdings[i] = Array(Any, num_states)
     end
+    #TODO: besser das hilfsarray anlegen... Array(Any, (3,3)) klappt nicht
     
-    # Inhalte der Hilfsarrays berechnen
+    # Inhalte der Hilfsarrays berechnen -> TODO Formel dafuer aufschreiben, > schreiben, s.u.
     for i in 1:num_states
         for j in 1:num_states
             #print ("dist $i ", distributions[i])
@@ -26,7 +24,6 @@ function updateDistributions!(params::Array{Float32,2}, distributions, index, nu
             #println ("hilfsdingsij ", hilfsdings[i][j])
         end
     end
-    #println("hilfsdings ", hilfsdings)
     
     # Verschieben der mobilen Daten. Als Ausgleich bei den anderen Arrays ein Feld hinten anfuegen
     for i in 1:num_states
@@ -45,36 +42,59 @@ function updateDistributions!(params::Array{Float32,2}, distributions, index, nu
             new_dist[i] += hilfsdings[j][i]
         end
     end
-    
-    #vorneschneiden = False
-    #hintenschneiden = False
-    #TODO allgemeiner machen
-    
-    if (new_dist[1][1] < 1.0f-17)  & (new_dist[2][1]< 1.0f-17)  & (new_dist[3][1] < 1.0f-17) 
-        index += 1
-        shift!(new_dist[1])
-        shift!(new_dist[2])
-        shift!(new_dist[3])
-        #print ("shift ", length(new_dist[1]))
-        #sleep(1)
-    end
-    
-    if (new_dist[1][end] < 1.0f-17)  & (new_dist[2][end]<1.0f-17)  & (new_dist[3][end] < 1.0f-17) 
-        pop!(new_dist[1])
-        pop!(new_dist[2])
-        pop!(new_dist[3])
-        #print ("pop", length(new_dist[1]))
-        #sleep(1)       
-    end
-
-#     for i in 1:num_states
-#         if new_dist[i][1] 
-#     end
-    
 
     return new_dist, index        
 end
 
+
+function cut_Dist(distributions, index, num_states)    
+    # Wenn Werte zu Beginn oder Schluss der Arrays zu klein sind, werden diese abgeschnitten
+    # Dazu muessen alle Arrays zu kleine Werte an der entsprechenden Stelle haben
+    
+    if  (length(distributions[1]) < 2)
+        return distributions, index
+    end
+    while length(distributions[1]) > 1
+        vorneschneiden = true
+        # Vorne testen
+        for i in 1:num_states
+            if distributions[i][1] >= 1.0f-17
+                vorneschneiden = false
+                break
+            end
+        end
+        #Vorne abschneiden
+        if vorneschneiden
+            index += 1
+            #println ("shift")
+            for i in 1:num_states
+                shift!(distributions[i])
+            end
+        else
+            break
+        end
+    end #while
+    
+    while length(distributions[1]) > 1
+        hintenschneiden = true
+        # Hinten testen    
+        for i in 1:num_states
+            if distributions[i][end] >= 1.0f-17
+                hintenschneiden = false
+                break
+            end
+        end
+        # Hinten abschneiden
+        if hintenschneiden
+            for i in 1:num_states
+                pop!(distributions[i])
+            end
+        else
+            break
+        end
+    end #while true    
+    return distributions, index
+end
 
 function waitingTimeForValue(params::Array{Float32, 2}, value, maxTime, num_states = 3)
     # Beginne mit quasi leerem ergebnis, wkeitsmasse 1 in mobil und 0 in stat
@@ -93,52 +113,44 @@ function waitingTimeForValue(params::Array{Float32, 2}, value, maxTime, num_stat
     #distributions = reshape(distributions, 3,1)
     #TODO fuer andere anzahl an zustaenden
     distributions = Array[[1],[0],[0]]
-    println(distributions)
+    #println(distributions)
     
     index = 1
-    
-    for i = 1:maxTime
+    #Main loop
+    for i = 1:10:maxTime
+        #print ("i ", i, " ", length(distributions[1]), "   ")
         if !(value>index)
             #Ziel erreicht
             println ("break, fertig")
             break
         end
-         
-#         if (sum(result)) > 1
-#             println ("break, summe erreicht")
-#             break
-#         end
-        
         distributions, index = updateDistributions!(params, distributions, index, num_states)
-        #println("rps ", rps)
-        #println("rpm ", rpm)
-        #print("value ", value, " index ", index)        
-        #println(distributions[1])
-        #println(" ")
-    
-        if (length(distributions[1]) > value-index)
-            #println(" d1 ", length(distributions[1]), " length ", (value-index+1) )
-            
-           # push!(result, (rps[value-index+1]+rpm[value-index+1]))
-            summe = 0
-            for i in 1:num_states
-                summe += pop!(distributions[i])
-                #println(distributions[i][end])
-                #println (pop!(distributions[i]))
-            end
-            push!(result, summe)
-          #  rpm[value-index+1] = 0
-          #  rps[value-index+1] = 0
-        else
-            #das wird im prinzip nicht benoetigt, wenn man den index nutzt
-            push!(result, 0.0f0)
-            #println("FAlse")
-        end
-        #println(" result ", length(result))
-        end
-    #println(result)
+        # ein Berechnungsschritt
+        for j = 1:10
+        distributions, index = cut_Dist(distributions, index, num_states)
+            #print("value ", value, " index ", index)        
+            #println(distributions[1])
+            if (length(distributions[1]) > value-index)
+                #println(" d1 ", length(distributions[1]), " length ", (value-index+1) )
+                summe = 0
+                for i in 1:num_states
+                    summe += pop!(distributions[i])
+                    #println(distributions[i][end])
+                    #println (pop!(distributions[i]))
+                end
+                push!(result, summe)
+            else
+                #das wird im prinzip nicht benoetigt, wenn man den index nutzt
+                push!(result, 0.0f0)
+                #println("FAlse")
+            end #if-else
+            #println(" result ", length(result))
+        end # for inner loop
+    end #for main loop
+            #println(result)
     return result
 end
+
 
 function combineParams()
     pmms = [0.5f0, 0.7f0, 0.9f0, 0.99f0]
@@ -182,12 +194,15 @@ end
 #     @time(waitingTimeForValue(0.9992f0, 0.99f0, 1000, 1000000))
 # end
 laenge = 1000
-maxtime = 300000
+maxtime = 2400000
 
-params = [0.4f0 0.599f0 0.001f0; 0.01f0 0.99f0 0.0f0; 0.00005f0 0.0f0 0.99995f0]
+params = [0.3f0 0.699f0 0.01f0; 0.001f0 0.999f0 0.0f0; 0.00005f0 0.0f0 0.99995f0]
 #params = [0.999f0 0.001f0 0.00f0; 0.001f0 0.999f0 0.0f0; 0.00005f0 0.0f0 0.99995f0]
+#println(params)
+params =[0.4f0 0.599f0 0.001f0; 0.01f0 0.99f0 0.0f0; 0.00005f0 0.0f0 0.99995f0]
 
 param_list = combineParams()
+
 
 #for params in param_list
     println(strftime(time()))
@@ -210,5 +225,6 @@ param_list = combineParams()
         end
         writecsv("savedata_julia/l$laenge/$params", res)
  #   end
-#end  
+#end
+# end    
 # println("fertig")
