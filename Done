@@ -273,3 +273,8 @@ läuft
  * PAA: 2p läuft, Julia liefert gleiche Ergebnisse wie mosdi. Im Wesentlichen sind die Ergebnisse auch mit den Simulationen identisch. Erst dachte ich, das dieser hohe Anfangspeak bei 0.999/0.999 l=1000 anders ist, als bei den Simulationen, aber durch die Kumulation fällt das da nur nicht auf. Das sollte aber kein Problem darstellen, da bei den realen Messungen ja auch nur "gelegentlich" gemessen wird.
  * PAA 3s sieht ähnlich gut aus. Die Ergebnisse von Julia, mosdi und den Simulationen sehen gleich aus. 
  * PAA: Zeitlich ist Julia echt am schnellsten, je nach Parameterwahl macht das einen krassen Unterschied
+ * Habe weitere interessante Phänomene bei den PAA3s gefunden, aber nur, weil da halt bis zum Ende simuliert wird und nicht abgebrochen. Ist wahrscheinlich gar nicht relevant
+ * PAA in Julia in seriensimulation
+ * Verschiedene Versuche, das noch zu beschleunigen, mit mäßigem Erfolg
+ 
+18.06.2015

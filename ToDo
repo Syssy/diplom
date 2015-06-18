@@ -433,4 +433,9 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * Abbruchtest anpassen auf Länge (ok)
  * Bei den PAA (sowohl mosdi, als auch julia) kommt bei manchen Kombis ein recht "hoher" Wert heraus am ersten Zeitpunkt, der nicht null ist, danach beginnt der normale Peak, diesen Effekt bekomme ich bei den Simulationen nicht. Keine Ahnung, woran das liegt. -> Auch in der Sim, nur durch die bins fällt das dort nicht auf.
  * PAA3s kommentieren, testen, aufräumen. In mosdi Ergebnisse erhalten, Seriensimulationen erstellen.
- * 
+ * Für Donnerstag Graphiken vorbereiten
+ 
+18.06.2015
+ * Mail an Salome wegen robuster Maße ok
+ * Dommi nach 16er Gemisch fragen/ 6er per Hand die Daten berechnen
+ * Latex: Modern CV für Lebenslauf
