@@ -13,6 +13,8 @@
 *.thm
 *.pyc
 *.directory
+*.mem
+*.loa
 Programmierung/PAA/savedata_julia
 Programmierung/PAA/savefigs_julia
 Programmierung/Param_p/3-States-Model/savefig
