@@ -105,14 +105,14 @@ end
 # for i = 1:5
 #     @time(waitingTimeForValue(0.9992f0, 0.99f0, 1000, 1000000))
 # end
-ps = 0.999f0
-pm = 0.991f0
+ps = 0.9995f0
+pm = 0.3f0
 laenge = 1000
-maxtime = 50000
+maxtime = 2400000
 #for ps in 0.999f0:0.0001f0:0.9999f0
 #    for pm in 0.99f0:0.001f0:0.999f0
 
-println("ps:", ps, " ps: ", pm)
+println("ps:", ps, " pm: ", pm)
         res = @time(waitingTimeForValue(ps, pm, laenge, maxtime))
         #print (dauer)
         #res = waitingTimeForValue(ps, pm, laenge, maxtime)
