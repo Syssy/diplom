@@ -14,6 +14,7 @@ import scipy.stats
 import numpy as np
 import matplotlib.pyplot as plt
 
+import my_plottings_2p as plotkram
 #import peak_width_2p
 
 # Speichert alle interessanten Dinge einer Simulation ab
@@ -80,7 +81,7 @@ class Simulation():
                
         return new_locations, new_mobile_states
 
-    def simulate_each_timestep(self):
+    def simulate_each_timestep(self, maxtime=240):
         """ Simuliere jeden Zeitschritt fuer jedes Teilchen"""
         # starttime für Laufzeitmessungen
         starttime = time.clock()
@@ -120,7 +121,9 @@ class Simulation():
             if number < 1:
                 logging.log(25, "fertig, simzeit: %s, realtime: %s", time_needed, (time.clock()-starttime))
                 break
-            if time_needed > 240*(50*self.step):#24000000: #TODO
+            if time_needed > 2400000:#*(self.length/self.step):
+            #if time_needed > maxtime*(10*self.length/self.step):
+            #if time_needed > 240*(50*self.step):#24000000: #TODO
                 logging.log(30, "Ueberschreitung der Maximalzeit von 240s, %s", (time.clock()-starttime))
                 self.valid = False
                 # alle noch nicht fertigen Teilchen bekommen Strafe, damit man sieht, dass Simulation nicht zu Ende durchgefuehrt wurde
@@ -129,13 +132,14 @@ class Simulation():
                 break    
             
             # Damit es schneller geht, nach je x schritten nur testen
-            for x in range (10):
+            for x in range (50):
                 locations, mobile_states = self._simulate_step(locations, mobile_states, number)
                 time_needed+=1
         # durch Schritte pro Sekunde teilen, zur normierung der zeiten
         #self.times = [date/(10*(self.length/self.step)) for date in arrival_counter]
-        self.times = [date/(50*self.step) for date in arrival_counter]
+        #self.times = [date/(50*self.step) for date in arrival_counter]
         #self.times = arrival_counter
+        self.times = [date/10000 for date in arrival_counter]
        
     def _test_finished(self, particle_list):
         """Teste, ob die Teilchen schon durch sind. Aufruf durch simulate_by_event"""
@@ -225,7 +229,9 @@ class Simulation():
             #naechste Zeit betrachen    
             act_time += 1  
         # Zeitpunkte normalisieren    
-        self.times = [date/(50*self.step) for date in arrival_counter]
+        #self.times = [date/(50*self.step) for date in arrival_counter]
+        #self.times = arrival_counter
+        self.times = [date/10000 for date in arrival_counter]
 
         logging.log(25, "fertig, simschritte: %s, realtime: %s", act_time, (time.clock()-starttime))
         
@@ -315,23 +321,25 @@ def get_argument_parser():
 
 # Nutzung für Testzwecke
 def main():
-    number = 2000
-    length = 100000
-    print ("n", number, "l", length, time.strftime("%d%b%Y_%H:%M:%S"))
+    number = 10000
+    length = 1000
+    step = 1
+    print ("n", number, "l", length, "s", step, time.strftime("%d%b%Y_%H:%M:%S"))
     p = get_argument_parser()
     args = p.parse_args()
-    neueSim = Simulation(0.9997, 0.3, length, number, None, 200)
+    neueSim = Simulation(0.999, 0.999, length, number, None, step)
   
-    #neueSim.simulate_by_event()
-    #neueSim.calculate()
-    #print("pd by t1", neueSim.pd, len(neueSim.times))
-    #n, bins, patches = plt.hist(neueSim.times, 50, alpha=0.5)   
-    #plt.ylabel("")
-    #plt.xlabel("Zeit / s")
-    #plt.title("ps: "+ str(neueSim.params[0])+" pm: "+ str(neueSim.params[1]) + " by t1")
-    #plt.show()
+    neueSim.simulate_by_event()
+    neueSim.calculate()
+    print("pd by t1", neueSim.pd, len(neueSim.times))
+    n, bins, patches = plt.hist(neueSim.times, 50, alpha=0.5, normed =True)   
+    plt.ylabel("")
+    plt.xlabel("Zeit / s")
+    plt.title("ps: "+ str(neueSim.params[0])+" pm: "+ str(neueSim.params[1]) + " by t1")
+    plt.show()
+    plotkram.plot_simlist([neueSim], False, False, True, False, False, num_bins = len(set(neueSim.times)))
     
-    length = 100000
+    #length = 20000
     neueSim.length = length
     #neueSim.step = 100
     #print (neueSim.length)

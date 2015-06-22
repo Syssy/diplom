@@ -206,7 +206,7 @@ def combine_params(args, nr_of_choice = 5): #TODO Auf die sinnvollen beschraenke
                 p_combinations.append((round(ps, 10), round(pm, 10)))
      
     if args == "wdh":#???
-        p_combinations = [(0.9991, 0.1)]
+        p_combinations = [(0.999,0.999)]
     
     logging.log(20, "p_combinations %s, anzahl: %s", p_combinations, len(p_combinations))    
     return (sorted(list(set(p_combinations))))

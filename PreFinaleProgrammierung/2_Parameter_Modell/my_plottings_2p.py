@@ -369,7 +369,6 @@ def plot_spectrum(sim_list, maxtime=250):
     #plotkram.plot_widthmap(sim_list)
     logging.log(25, "starte plotting")
     sims = sim_list
-        
     #ein Spektrum mit max 30 Chroms
     if len(sims) < 30:
         figg = plt.figure()
