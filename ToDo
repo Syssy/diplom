@@ -439,3 +439,5 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * Mail an Salome wegen robuster Maße ok
  * Dommi nach 16er Gemisch fragen/ 6er per Hand die Daten berechnen
  * Latex: Modern CV für Lebenslauf
+ * csv-Tabelle mit Parametern (zum sortieren) sowie Peakdaten (erst mal Loc und IQR, später noch Schiefe) -> Herausfinden sinnvoller Parameterkombis für nicht zu breite aber tailende Peaks zu allen Zeitpunkten
+ * Warum habe ich auch 0en am Ende der csv-Dateien? + Besser abspeichern, sodass index auch genutzt wird.
