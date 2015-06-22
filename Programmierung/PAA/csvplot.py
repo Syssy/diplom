@@ -8,24 +8,26 @@ import logging
 import argparse
 import time
 import math
+import os
+import csv
 
 import scipy.stats   
 #import scipy.optimize
 import numpy as np
 import matplotlib.pyplot as plt
 
-def plot_from_julia(filename):
+def plot(filename):
     with open(filename, "r") as data:
-        print (data)
+        print ("data", data)
         wkeiten, wkeiten2 = [], []
         for i, x in enumerate(data):
             wkeiten.append(float(x))
-            if i > 9990 and i < 10010:
+            if i > 708000 and i < 708200:
                 print (i, x)
-        print (wkeiten[9990:10010])
+        #print ("ausschnitt", wkeiten[9990:10010])
         plt.plot(wkeiten)
         plt.show()
-        print (sum(wkeiten), len(wkeiten))  
+        print ("sum, len wkeiten ", sum(wkeiten), len(wkeiten))  
         laenge = len(wkeiten)
         bins = 100
         print (laenge//bins)
@@ -34,15 +36,51 @@ def plot_from_julia(filename):
             for j in range(laenge//bins):
                 summe += (wkeiten[(i*(laenge//bins))+j])
             wkeiten2.append(summe)
-        print (wkeiten2, sum(wkeiten2))    
+        print ("wkeiten2", wkeiten2, sum(wkeiten2))    
         plt.plot(wkeiten2)
         plt.show()
     
-        
+def erzeuge_Tabelle(directory):
+    filenames = [name for name in os.listdir(directory) if name.startswith("Sim_")]
+    params = [name[4:] for name in filenames]
+    params = [p.split("_") for p in params]
+    #params = [[p.strip(" ").split(" ") for p in pp] for pp in params]
+    print (params[1])
+    newparams = []
+    for pkombi in params:
+        param = []
+        for p in pkombi:
+            param.append(float(p))
+        newparams.append(param)
+    print (newparams)
+    for filename in filenames[1:2]:
+        print (filename)
+        with open(directory+filename, "r") as data:
+            reader = csv.reader(data)
+            mytimes = []
+            for line in reader:
+                mytimes.append(line)
+            #    print (line)
+            #print (mytimes)
+            print ("data", data)
+            mytimes = np.array(mytimes)
+            print (len(mytimes), type(mytimes))
+            print ("max", max(mytimes))
+            print ("argmax", np.argmax(mytimes[500000:700000]))
+            plt.plot(mytimes)
+            plt.show()
+            
+    #TODO aus den Daten die PD, also Loc, IQR und QK 
+    with open('mycsvfile.csv', 'w', newline='') as csvfile:
+        mywriter = csv.writer(csvfile)
+        mywriter.writerows(newparams)
+      
+      
 def main():
-    #plot_from_julia("filename")
-    plot_from_julia("output2")
-    time.sleep(2)
+    erzeuge_Tabelle("savedata_julia/l1000/")
+    time.sleep(20)
+    plot("filename")
+    #plot("output2")
     with open("filename", "r") as data:
         #print (data)
         wkeiten = data.readline().strip().split(",")

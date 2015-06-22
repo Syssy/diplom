@@ -1,4 +1,4 @@
-using PyPlot
+#using PyPlot
 
 
 function cut_Distributions(distributions, index)
@@ -138,8 +138,9 @@ function waitingTimeForValue(params::Array{Float32, 2}, value, maxTime, num_stat
 end
 
 function combineParams()
-    pmms = [0.01f0, 0.1f0, 0.3f0]#, 0.5f0, 0.7f0, 0.9f0, 0.99f0]
-    pmls = [0.001f0, 0.0005f0, 0.0001f0, 0.00005f0, 0.00001f0] 
+    pmms = [0.005f0, 0.007f0, 0.01f0, 0.1f0, 0.3f0, 0.5f0, 0.7f0, 0.9f0, 0.99f0]
+    # 0.00001f0 ist zu klein, nicht ausreichend teilchen drin, daher kein schönes tailing
+    pmls = [0.001f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.0003f0, 0.00005f0, 0.00001f0] 
     pms = Array(Any, 0)
     for pmm in pmms
         for pml in pmls
@@ -148,7 +149,7 @@ function combineParams()
         end 
     end
        
-    paas = [0.997f0, 0.998f0, 0.999f0, 0.9993f0, 0.9996f0]   
+    paas = [0.995f0, 0.997f0, 0.998f0, 0.999f0, 0.9991f0, 0.9992f0, 0.9993f0, 0.9994f0, 0.9995f0, 0.9996f0, 0.9999f0]   
     pas = Array(Any, 0)
     for paa in paas
         pam = 1 - paa
@@ -156,7 +157,8 @@ function combineParams()
     end
     #print (pas)
     
-    plls = [0.99995f0, 0.999975f0, 0.99999f0, 0.999995f0, 0.999999f0]
+    #0.999999f0 ist zu groß
+    plls = [0.999925f0, 0.99995f0, 0.99975f0, 0.99999f0, 0.999993f0, 0.999995f0, 0.999997f0, 0.999999f0]
     pls = Array(Any, 0)
     for pll in plls
         plm = 1 - pll
@@ -190,30 +192,43 @@ param_list = combineParams()
 println(length(param_list))
 
 for params in param_list
-   println(strftime(time()))
-   println (params)
+    println(strftime(time()))
+    #println (params)
     if isfile("savedata_julia/l$laenge/$params")
-   #    res = readcsv("savedata_julia/l$laenge/$params")
    #    println("Summe ", sum(res))
    #    if (sum(res) < 0.999 )
    #        println("zu gering bei $params")
    #    end
-        println ("isfile")
-    else
-        #for i in 1:10
-        res = @time(waitingTimeForValue(params, laenge, maxtime))
-        println("Summe ", sum(res))
-        #end
-        if (sum(res) >= 0.9 )
-            plt.plot(res)
-            plt.ylabel("")
-     
-     plt.xlabel("Zeit / Schritten")
-            plt.title("PAA; Params: $params")
-            plt.savefig("savefigs_julia/l$laenge/$params .png")
-            plt.clf()
+        filename = "savedata_julia/l$laenge/Sim"
+        #println (filename, " ")
+        for i in 1:3
+            for j in 1:3
+        #        println (i, " ", params[i, j])
+                filename = filename * "_" * string(params[i, j])
+                #println (filename)
+            end
         end
-        writecsv("savedata_julia/l$laenge/$params", res)
+        if !isfile(filename)
+            println ("filename: ", filename, " ")
+            res = readcsv("savedata_julia/l$laenge/$params")
+            writecsv(filename, res)
+        end
+        #println ("isfile, $params")
+    #else
+        #for i in 1:10
+#         res = @time(waitingTimeForValue(params, laenge, maxtime))
+#         println("Summe ", sum(res))
+#         #end
+#         if (sum(res) >= 0.9 )
+#             plt.plot(res)
+#             plt.ylabel("")
+#      
+#      plt.xlabel("Zeit / Schritten")
+#             plt.title("PAA; Params: $params")
+#             plt.savefig("savefigs_julia/l$laenge/$params .png")
+#             plt.clf()
+#         end
+#         writecsv("savedata_julia/l$laenge/$params", res)
    end
 end  
 # println("fertig")
