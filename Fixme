@@ -1,7 +1,14 @@
 Hier kommt alles an wichtigen Todos rein, die vielleicht auch über längere Zeit hier stehen dürfen, aber nicht vergessen werden sollten. Hier wird auch gelöscht, was erledigt wurde
 
+Besprechung:
+ * Fragen:
+    ** 
+ * Berichte:
+    **
+ * Geplant:
+    ** 
+
 Sim, allgemein:
- * Robustes Maß fuer Schiefe
  * Peakfinder: Von Dommi das Sekantenverfahren erklären lassen
  * Sinnvoller Einsatz der Invalid-Flags, bei den Sims sowie PAA
 
@@ -11,7 +18,6 @@ Sim, allgemein:
  * Review/Finalisierung von v005
  
 3s-Sim:
- * Sinnvolle Parameterbereiche bestimmen, diese simulieren und Tabelle mit daraus resultierenden Peakdaten erstellen
  * Herausfinden, bei welchen P-Kombis by-step oder by-event besser sind
  * habe beim plottesten noch folgende, tailing erzeugende kombi gefunden: (0.1 0.99) bzw (0.05, 0.99) natürlich extrem früh, aber sollte ich mir merken
  * ReSim-Optionen. Vorbearbeitung der pcombis
@@ -19,21 +25,19 @@ Sim, allgemein:
 Referenzdaten:
  * In VisualNow überprüfen, ob tatsächlich die sehr intensiven Peaks oben abgeschnitten sind
  * Berechnung der Peakdaten komplettieren/Aufschreiben, warum und so
+ * Für die Peaks die IQR und IQK bestimmen
 
 PAA:
- * Fertig stellen:
-  ** Kommentieren julia
  * PAA-Daten und Simulationen vergleichen / Unterschiede berechnen / Ab wie vielen Teilchen hinreichend genau? Existieren Differenzen?
  * Laufzeittests zwischen Julia, Mosdi und Simulationen
  * bei kleinem pmm mal noch größere pll testen
+ * Was ist ein Guter schiefewert mit dem koeff? -> ab > 0.01 was zu sehen, richtig schief ab 0.1/0.2
+ * Komprimiere Sim-Daten (zb faktor 100), speichere das ganze wieder als .p ab, inklusive peakdaten, plot geeignet verschieben (offset), beschriftung passend, inkl pd
+ * review, umstrukturierung, aufräumen
  
 Schreiben:
  * Schreiben halt
  * 3-s Modell
  * home/bio/book/unsorted liegen diverse gescannte Bücher. evlt mal da nach statistik literatur gucken
  
-Arbeit:
- * Raussuchen: 
-  ** Studienbescheinigung
-  ** Zurückliegende Beschäftigung
 

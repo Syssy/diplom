@@ -440,4 +440,16 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * Dommi nach 16er Gemisch fragen/ 6er per Hand die Daten berechnen
  * Latex: Modern CV für Lebenslauf
  * csv-Tabelle mit Parametern (zum sortieren) sowie Peakdaten (erst mal Loc und IQR, später noch Schiefe) -> Herausfinden sinnvoller Parameterkombis für nicht zu breite aber tailende Peaks zu allen Zeitpunkten
+ * Segfault bei np.argmax?! -> jetzt sind keine Strings mehr, sondern floats im Array und es funktioniert wieder
  * Warum habe ich auch 0en am Ende der csv-Dateien? + Besser abspeichern, sodass index auch genutzt wird.
+ * argmax zur Bestimmung des Peakmaximums. Restliche Peakdaten???
+ * Wie wandle ich meine Wahrscheinlichkeiten in Daten um, aus denen ich Mittelwert, Varianz, IQR etc berechnen kann?
+ * In der pd-Tabelle sind noch einige Max bei 0.0999, das macht keinen Sinn -> doch, das sind die mit anfangsausschlag und nachfolgendem Tailing
+ * Bei dem Koeffizienten "Gute" Schiefewerte rausfinden
+ * Was genau will ich bei den Plots? -> Komprimiere Sim-Daten (zb faktor 100), speichere das ganze wieder als .p ab, inklusive peakdaten, plot geeignet verschieben (offset), beschriftung passend, inkl pd
+ * wenn ich den index verschoben habe, muss auf jeden fall eine null ins result, weil für den fall, dass die länge zwar schon auf 1000 ist, habe ich den kleinsten wert aber schon rausgeschmissen, es wäre also falsch, einen anderen Wert auch noch zu löschen. Warum pop! beim berechnen der resultwerte? berechne ich den index falsch? -> Hatte mich mit vorne und hinten vertan, was den index angeht. Ist alles richtig, so wie es ist
+ 
+25.06.2015
+ * Zum Aufschreiben: Neues Kapitel "Methoden", wo dann die Sachen reinkommen, die ich bisher in die Implementierung gesteckt hätte. Also Graphiken, wie was berechnet wird, Formel dazu, die man dann einfach runter implementieren kann. Ins implementierungskapitel kommt dann eher kurz welche Sprache, welche Abhängigkeiten (zb Scipy), Überblick, welche Klasse was tut, evtl. welche Methode wo implementiert ist.
+ * Plot zum Zusammenhang von Parametern und Peakdaten: Plotte für bestimmten Zeitpunkt auf den Achsen Breite und Schiefe, jeweils Punkte für die Parameter, Punkte beschriften. Das wird zwar evtl unübersichtlich wegen der vielen Parameter, ist aber trotzdem sinnvoll. -> Vergleich möglich mit 2p-Modell, wo ja kaum ein Zeitpunkt überhaupt Schiefe hat. 
+ * Nachbearbeitung der julia-sim aufbereiten, *.p anlegen

@@ -278,3 +278,11 @@ läuft
  * Verschiedene Versuche, das noch zu beschleunigen, mit mäßigem Erfolg
  
 18.06.2015
+ * Basisversion der pd-Tabelle steht
+ * Robustes schiefemaß ist der Interquantilskoeffizient (Yale-Bowley bzw Yale-Kendall)
+ * Bei IQK ist Wert > 0.02 schon leicht erkennbare Schiefe. Bei meinen Peaks aber meist nur schwaches Tailing auf niedrigem Niveau. Bei Wert > 0.4 meist extrem schmale Peaks am Spektrumsbeginn oder tatsächlich sehr ausgeprägtes, schönes Tailing
+ * 0 am Ende scheinen gar nicht vorzukommen, sind nur extrem kleine Werte bei sehr langem Tailing
+ * Peaks mit max bei 0.9999 etc und p50 woanders sind welche mit hohem Anfangsausschlag (genau ein zeitpunkt) und nachfolgendem Peak
+ 
+25.06.2015
+ *
