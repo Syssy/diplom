@@ -4,7 +4,12 @@
 \label{chapter:imp}
 \todo{Kapitel Implementierung schreiben}
 
-\section{Simulation des 2-Parameter-Modells}
+\section{Simulation der Modelle}
+Zur Simulation der beiden Modelle wurde Python (Python3) verwendet.
+
+Abhängigkeiten von Numpy(Arrays zur schnelleren Verarbeitung), Scipy (Berechnung von Peakdaten) und PyPlot (graphische Darstellung) 
+
+Mit der 3-s kann auch 2p simuliert werden, indem nicht benötigte Übergangswahrscheinlichkeiten auf 0 gesetzt werden. Die reine 2p-Simulation ist aber deutlich schneller, da nur auf boolschen Werten gearbeitet werden muss.
 
 \subsection{Festlegung der Einheiten}
 $20$ cm entspricht 200000 Schritten, in die MCC unterteilt wird.
@@ -25,6 +30,18 @@ Bei Übergangswahrscheinlichkeiten, die sehr groß oder klein sind, kommt es sel
 % Die Simulation in Python, beide Varianten (Also by-event und step-by-step) 
 % -> Algorithmen?
 
-\section{PAA}
-Die Berechnung des PAA in Java, dabei Referenz auf mosdi (Zitiere Paper, in dem das vorgestellt wird und sage, dass ich das verwende)
+\section{Simulation des PAA}
+Die Berechnung des PAA existiert in Java, dabei Referenz auf mosdi (Zitiere Paper, in dem das vorgestellt wird und sage, dass ich das verwende)
 \todo{Implementierung des PAA beschreiben; erst wenn evtl nachprogrammierung fertig}
+da allerdings zu langsam: abgespeckte version nachprogrammiert in julia
+
+Warum Julia? 
+
+Was kann meine PAA-Version und was nicht?
+
+Laufzeitvergleich bei gleichen Ergebnissen
+
+Nachbearbeitung der Ergebnisse wieder in Python
+
+
+

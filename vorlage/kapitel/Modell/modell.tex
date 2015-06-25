@@ -110,10 +110,10 @@ Zum Anderen weisen fast keine der simulierten Peaks ein Tailing auf. Lediglich e
 Bisher fand keine Unterscheidung zwischen Adsorption und Lösung der Teilchen an bzw. in der stationären Phase statt. In der Realität können beide Wechselwirkungen parallel zueinander statt finden. Außerdem ist es möglich, dass sich die Wahrscheinlichkeiten, in einen der beiden Zustände überzugehen oder in die mobile Phase zurückzukehren, unterscheiden. Daher liegt es nahe, einen neuen Zustand einzuführen, sodass die Adsorption und die Lösung voneinander getrennt behandelt werden. Die Tatsache, dass Tailing, wie bereits anfangs erwähnt, unter anderem durch zusätzlich Adsorptionseffekte verursacht sein kann, lässt vermuten, dass durch eine Anpassung der Parameter ein Tailing in der Simulation verursacht werden kann. 
  
 \begin{figure}[h]
-\subfigure[Getrennte Zustände]{\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
+\begin{subfigure}[t]{0.45\textwidth}\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\small\bfseries},
   knoten/.style={thick,fill=none,inner sep=0pt, minimum width=25pt, circle}]
-
+{
   \node[knoten] (im){};
   \node[main node] (m) [left of = im]{mob};
   \node[main node] (s1) [above right of = im]{ads};
@@ -131,11 +131,14 @@ Bisher fand keine Unterscheidung zwischen Adsorption und Lösung der Teilchen an
     (s1)  edge node [right] {$1-p_a^*$} (m)
 	  edge [loop right] node {$p_a^*$} (s1)
 
-        ;
-\end{tikzpicture}}\hfill
-\subfigure[Zwischenzustand]{\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.2cm,
+        ;}
+\end{tikzpicture}\hfill
+\caption{Getrennte Zustände}
+\label{tikz:4p_Mod_a}
+\end{subfigure}
+\begin{subfigure}[t]{0.45\textwidth}\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.2cm,
   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\small\bfseries}]
-
+{
    \node[main node] (m)  {mob};
   \node[main node] (s1) [right of = m]{stat1};
   \node[main node] (s2) [right of = s1]{stat2};
@@ -151,8 +154,11 @@ Bisher fand keine Unterscheidung zwischen Adsorption und Lösung der Teilchen an
         
     (m)  edge [bend left] node[above]{$1-p_m$} (s1)
              edge [loop left] node {$p_m$} (m)
-        ;
-\end{tikzpicture}}
+        ;}
+\end{tikzpicture}
+\caption{Zwischenzustand}
+\label{tikz:4p_Mod_b}
+\end{subfigure}
 \caption{Mögliche weitere Modelle}
 \label{tikz:4p_Mod}
 \end{figure}
