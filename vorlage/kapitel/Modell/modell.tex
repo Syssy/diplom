@@ -3,6 +3,8 @@
 
 \section{2-Parameter Modell}
 
+Kapitelübersicht: Man kann unterscheiden zwischen verschiedenen Modellen (2p/3s) und den Arten, wie diese umgesetzt werden (Teilchensim oder PAA)
+
 Als Grundlage für die Entwicklung eines Simulationsmodells dient die Beobachtung des chromatographischen Prozesses. Dieser ist wie in Kapitel \ref{chapter:gru} beschrieben gekennzeichnet durch viele Teilchen, welche häufig zwischen der stationären und mobilen Phase wechslen. Es liegt also nahe, dass im Modell ebenfalls Teilchen simuliert werden, die zwischen zwei Zuständen, welche die beiden Phasen repräsentieren, wechseln. Der Phasenwechsel geschieht jeweils mit einer bestimmten Wahrscheinlichkeit. Dabei kann es möglich sein, dass die Wahrscheinlichkeiten für den Wechsel in die eine oder andere Richtung voneinander abhängig sind. Da dies jedoch nicht sein muss, wird für das Modell der allgemeinere Fall von unabhängigen Wahrscheinlichkeiten angenommen. Es sei also $p_s$ die Wahrscheinlichkeit, dass ein Teilchen, welches sich bereits in der stationären Phase befindet, auch stationär bleibt und $1-p_s$ die Wahrscheinlichkeit, dass es in die mobile Phase übergeht. Analog seien $p_m$ und $1-p_m$ die Wahrscheinlichkeiten, dass ein mobiles Teilchen in der mobilen Phase bleibt bzw. zur stationären Phase wechselt. 
 
 
@@ -105,7 +107,11 @@ Zum Anderen weisen fast keine der simulierten Peaks ein Tailing auf. Lediglich e
 
 \section{Weitere Modelle}
 \todo{Erweiterung des Modells}
-\todo{In Intro auf Gleichgewicht bei Adsoption eingehen, -> Modellerweiterung}
+\todo{In Intro auf Gleichgewicht bei Adsoption eingehen, -> Modellerweiterung} 
+
+Evtl kann diese section auch als subsection in das 3s modell rein, da sowohl modell 3a als auch 3b darunter fallen. Der letzte Absatz zu 
+weiteren möglichen erweiterungen kann dann als kleiner absatz ganz ans ende des modellkapitels und wird im ausblick noch mal aufgegriffen
+
 
 Bisher fand keine Unterscheidung zwischen Adsorption und Lösung der Teilchen an bzw. in der stationären Phase statt. In der Realität können beide Wechselwirkungen parallel zueinander statt finden. Außerdem ist es möglich, dass sich die Wahrscheinlichkeiten, in einen der beiden Zustände überzugehen oder in die mobile Phase zurückzukehren, unterscheiden. Daher liegt es nahe, einen neuen Zustand einzuführen, sodass die Adsorption und die Lösung voneinander getrennt behandelt werden. Die Tatsache, dass Tailing, wie bereits anfangs erwähnt, unter anderem durch zusätzlich Adsorptionseffekte verursacht sein kann, lässt vermuten, dass durch eine Anpassung der Parameter ein Tailing in der Simulation verursacht werden kann. 
  
