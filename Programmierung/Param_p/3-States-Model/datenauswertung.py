@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*- 
-# Berechung der Schiefe von Referenzdaten
+# Berechung der Schiefe/IQR/IQK von Referenzdaten
 
 from __future__ import division
 import pickle
@@ -74,56 +74,59 @@ def main():
     #print (data3)
     #plt.imshow(data3, origin = "lower", interpolation="nearest",vmin=-3, vmax=80)
     #plt.show()
-    #data3 = data3[200:1400,1045:1080]
+    data3 = data3[200:1400,1045:1080]
     #data3 = data3[200:1400,1037:1105]
-    data3 = data3[200:1400,1057:1059]
+    #data3 = data3[200:1400,1057:1059]
     data3 = [[-wert for wert in dings] for dings in data3]
-    #print (data4)
-    plt.imshow(data3, origin = "lower", interpolation="nearest",vmin=0, vmax=100)
-    plt.show()
+    #print (kum_data)
+    #plt.imshow(data3, origin = "lower", interpolation="nearest",vmin=0, vmax=100)
+    #plt.show()
     
-    #aufsummieren
-    data4 = []
+    #aufsummieren, kum_data enthaelt dann kumulierte werte ueber den Peak (also tatsaechlich alle Teilchen, wie in meinen sims)
+    kum_data = []
     for i in range(len(data3)):
-        data4.append(sum(data3[i]))
-    data4 = [wert/len(data3[0]) for wert in data4]
-    plt.plot(data4)
+        kum_data.append(sum(data3[i]))
+    kum_data = [wert/len(data3[0]) for wert in kum_data]
+    plt.plot(kum_data)
     plt.show()
 
     
-    #Schiefe berechnen:
+    #Charakteristika berechnen:
     #Maxstelle
-    maximalstelle = np.argmax(np.array(data4))
-    maximalwert = max(data4)
-    print(maximalstelle, maximalwert)
+    maximalstelle = np.argmax(np.array(kum_data))
+    maximalwert = max(kum_data)
+    print("maximums ", maximalstelle, maximalwert)
     # Wertehistogramm, mit so vielen Bins wie verschiedene Werte
-    n, bins = np.histogram(data4, bins=max(data4)+abs(min(data4)))
-    print (n, np.argmax(n))
+    n, bins = np.histogram(kum_data, bins=max(kum_data)+abs(min(kum_data)))
+    print ("wertehistogramm", n, np.argmax(n))
     # Rauschschwelle: Bestimme Maximalstelle des Wertehistogramms, bei doppeltem Index (soll ja normalverteilt sein) liegt die Schwelle
     rauschschwelle = bins[2*np.argmax(n)]
-    plt.hist(data4, bins = max(data4) + abs(min(data4)))
+    plt.hist(kum_data, bins = max(kum_data) + abs(min(kum_data)))
     plt.show()
     # Rausschneiden des Peaks, erst hinten, dann vorne
-    for i in range(maximalstelle,len(data4)):
-        if data4[i] < rauschschwelle:
-            data4 = data4[:i]
+    for i in range(maximalstelle,len(kum_data)):
+        if kum_data[i] < rauschschwelle:
+            kum_data = kum_data[:i]
             break
     for i in range(maximalstelle, 0, -1):
-        if data4[i] < rauschschwelle:
-            data4 = data4[i:]
+        if kum_data[i] < rauschschwelle:
+            kum_data = kum_data[i:]
             break
-    print (data4)    
-    print ("Schiefe", scipy.stats.skew(data4))
+    print ("Peakdaten", kum_data, " summe ", sum(kum_data))    
+    wsumme = sum(kum_data)
+    print ("Schiefe", scipy.stats.skew(kum_data))
     data5 = []
-    for i, n in enumerate(data4):
+    for i, n in enumerate(kum_data):
         for j in range(int(n)):
             data5.append(i)
+    # die Quartile so zu berechnen liefert sehr ähnliche ergebnisse wie das aufsummieren per hand, so wie es in der sim_PAA gemacht ist
+    print (np.percentile(data5, 25),np.percentile(data5, 50), np.percentile(data5, 75))
     print ("IQR", (np.percentile(data5, 75) - np.percentile(data5, 25)))
     plt.plot([np.percentile(data5, 75), np.percentile(data5, 75)], [0,30])
     plt.plot([np.percentile(data5, 25),np.percentile(data5, 25)], [0,30])
     plt.plot([np.percentile(data5, 50),np.percentile(data5, 50)], [0,50])
-    plt.hist(data5, bins= len(data4))
-    plt.plot(data4)
+    plt.hist(data5, bins= len(kum_data))
+    plt.plot(kum_data)
     plt.show()
     
   
