@@ -34,6 +34,8 @@ PAA:
  * Was ist ein Guter schiefewert mit dem koeff? -> ab > 0.01 was zu sehen, richtig schief ab 0.1/0.2
  * Komprimiere Sim-Daten (zb faktor 100), speichere das ganze wieder als .p ab, inklusive peakdaten, plot geeignet verschieben (offset), beschriftung passend, inkl pd
  * review, umstrukturierung, aufräumen
+ * Normalisierung/Compression der Daten. Will nicht nur 1 Datenpunkt pro Sekunde, wie speichere ich das sinnvoll ab? Rechne aktuell mit Zehntelsekunden, dann passt das, ist aber ungewohnt
+ 
  
 Schreiben:
  * Schreiben halt

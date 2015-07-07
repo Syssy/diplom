@@ -285,4 +285,6 @@ läuft
  * Peaks mit max bei 0.9999 etc und p50 woanders sind welche mit hohem Anfangsausschlag (genau ein zeitpunkt) und nachfolgendem Peak
  
 25.06.2015
- *
+ * Basisversion des Plots steht: Plotte für best Zeitpunkt an den Achsen die IQR und IQK und die Punkte jeweils für einen Peak. Beschriftung mit Params
+ * Erstelle jeweils Tabelle für alle Peaks mit gewünschten Eigenschaften. Darin: Die Params und die Pd
+ * Mich wieder in die Referenzdatenauswertung eingedacht
