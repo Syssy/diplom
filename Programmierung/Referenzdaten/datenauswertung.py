@@ -41,8 +41,8 @@ def calculate_peakdata(aPeak):
     for i in range(len(data)):
         kum_data.append(sum(data[i]))
     kum_data = [wert/len(data[0]) for wert in kum_data]
-    #plt.plot(kum_data)
-    #plt.show()
+    plt.plot(kum_data)
+    plt.show()
      #Charakteristika berechnen:
     #Maxstelle
     maximalstelle = np.argmax(np.array(kum_data))
@@ -101,8 +101,8 @@ def calculate_peakdata(aPeak):
     plt.plot([np.percentile(data5, 25),np.percentile(data5, 25)], [0,30])
     plt.plot([np.percentile(data5, 50),np.percentile(data5, 50)], [0,50])
     plt.hist(data5, bins= len(kum_data))
-    #plt.plot(kum_data)
-    #plt.show()
+    plt.plot(kum_data)
+    plt.show()
    
     return aPeak
 
@@ -132,11 +132,11 @@ def main():
         #print ("pd vorher ", peak)
         #peak = calculate_peakdata(peak)
         #print ("pd nachher ", peak)
-    pd_table = [calculate_peakdata(peak) for peak in pd_table]
+    pd_table = [calculate_peakdata(peak) for peak in pd_table[20:]]
     
-    with open ("calc_"+ args.inputfile, "w") as myfile:
-        csvwriter = csv.writer(myfile)
-        csvwriter.writerows(pd_table)
+    #with open ("calc_"+ args.inputfile, "w") as myfile:
+        #csvwriter = csv.writer(myfile)
+        #csvwriter.writerows(pd_table)
     #data_files = set([pd_table[i][0] for i in range(len(pd_table))])
     #print (data_files)
     
