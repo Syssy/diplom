@@ -22,10 +22,11 @@ Sim, allgemein:
  * habe beim plottesten noch folgende, tailing erzeugende kombi gefunden: (0.1 0.99) bzw (0.05, 0.99) natürlich extrem früh, aber sollte ich mir merken
  * ReSim-Optionen. Vorbearbeitung der pcombis
  
-Referenzdaten:
- * In VisualNow überprüfen, ob tatsächlich die sehr intensiven Peaks oben abgeschnitten sind
+Referenzdaten: (überflüssig)
+ * In VisualNow überprüfen, ob tatsächlich die sehr intensiven Peaks oben abgeschnitten sind, alternativ vergleich mit der handgeschriebenen tabelle
  * Berechnung der Peakdaten komplettieren/Aufschreiben, warum und so
  * Für die Peaks die IQR und IQK bestimmen
+ * Zum Kopieren von der Uni: cp boehmer@citrin.cs.tu-dortmund.de:../ims/R06_Zeitspanne_lm/Daten_lm/BD19_1408300548_ims.csv BD19_1408300548_ims.csv
 
 PAA:
  * PAA-Daten und Simulationen vergleichen / Unterschiede berechnen / Ab wie vielen Teilchen hinreichend genau? Existieren Differenzen?
@@ -35,11 +36,21 @@ PAA:
  * Komprimiere Sim-Daten (zb faktor 100), speichere das ganze wieder als .p ab, inklusive peakdaten, plot geeignet verschieben (offset), beschriftung passend, inkl pd
  * review, umstrukturierung, aufräumen
  * Normalisierung/Compression der Daten. Will nicht nur 1 Datenpunkt pro Sekunde, wie speichere ich das sinnvoll ab? Rechne aktuell mit Zehntelsekunden, dann passt das, ist aber ungewohnt
- 
+ * Plots zur Flächenabdeckung zu Zeitpunkt und mit 3 festen Parametern
+ * Das compress (oder wo anders) macht fehler in der pd berechnung. siehe springende maxima bei     pmm = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    pml = [0.0001]
+    paa = [0.999]
+    pll = [0.99995]
+    Das Problem ist wohl behoben, es müssen nur noch alle julias noch comprimiert werden
+    neues Problem: bei pmm=0.4 ist einfach zu früh. siehe bild. gibt es eine erklärung dafür oder liege ich irgendwie falsch? mit mosdi überprüfen, evtl bei länge von 100, alternativ normale sims starten
  
 Schreiben:
  * Schreiben halt
  * 3-s Modell
  * home/bio/book/unsorted liegen diverse gescannte Bücher. evlt mal da nach statistik literatur gucken
- 
+ * Sämtliche Hinweise auf Referenzdaten entfernen, in hypothetische Formulierungen ändern
+ * tablesgenerator.com für Tabellen in latex erstellen
 
+
+ 
+ 

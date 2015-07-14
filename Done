@@ -288,3 +288,23 @@ läuft
  * Basisversion des Plots steht: Plotte für best Zeitpunkt an den Achsen die IQR und IQK und die Punkte jeweils für einen Peak. Beschriftung mit Params
  * Erstelle jeweils Tabelle für alle Peaks mit gewünschten Eigenschaften. Darin: Die Params und die Pd
  * Mich wieder in die Referenzdatenauswertung eingedacht
+ 
+09.07.2015
+ * Auch wenn jetzt "überflüssig": Referenzdaten ausgewertet, Tabelle mit den Peakdaten erstellt und Breite/Schiefe berechnet
+ * Benenne sims um, damit nur noch die betrachteten 4 Params im namen vorkommen
+ * Fehler in der Peakdatenberechnung entdeckt und behoben (maximum wurde falsch berechnet, wenn offset vorhanden war, da dieser zwei mal durch 10000 geteilt wurde)
+ * Durch die Neuberechnung habe ich jetzt auch Peaks an einigen Zeitpunkten, wo ich vorher vergeblich gesucht habe *seufz*
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
