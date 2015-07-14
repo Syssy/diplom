@@ -24,7 +24,7 @@ def plot(filename):
             wkeiten.append(float(x))
             #if i > 708000 and i < 708200:
             #    print (i, x)
-        #print ("ausschnitt", wkeiten[9990:10010])
+        print ("ausschnitt", wkeiten[9990:10010])
         plt.plot(wkeiten)
         plt.show()
         ##print ("sum, len wkeiten ", sum(wkeiten), len(wkeiten))  
@@ -40,22 +40,13 @@ def plot(filename):
         #plt.plot(wkeiten2)
         #plt.show()
     
+ 
 def erzeuge_Tabelle(directory):
     filenames = [name for name in os.listdir(directory) if name.startswith("Sim_")]
-    #params = [name[4:] for name in filenames]
-    #params = [p.split("_") for p in params]
-    ##params = [[p.strip(" ").split(" ") for p in pp] for pp in params]
-    ##print (params[1])
-    #newparams = []
-    #for pkombi in params:
-        #param = []
-        #for p in pkombi:
-            #param.append(float(p))
-        #newparams.append(param)
-    ##print (newparams)
+    normfactor = 10000
     starttime = time.clock()
     peakdata = []
-    for filename in filenames[0:5]:
+    for filename in filenames:
         params = [float(p) for p in filename[4:].split("_")]
         print (filename)
         with open(directory+filename, "r") as data:
@@ -64,6 +55,8 @@ def erzeuge_Tabelle(directory):
             for line in data:
             #    print (line)
                 mytimes.append(float(line))
+            offset = (mytimes.pop(0)/normfactor)
+            #print (offset, " ", mytimes[0:10])
             #daten zusammenfassen
             #newtimes = []
             ##print (mytimes)
@@ -74,7 +67,7 @@ def erzeuge_Tabelle(directory):
                 #newtimes.append(summe)    
             mytimes = np.array(mytimes)
             #print ("argmax", np.argmax(mytimes))
-            #print ("summe", sum(mytimes))
+            print ("summe", sum(mytimes))
             wsumme = sum(mytimes)
             if wsumme < 0.9:
                 continue
@@ -84,40 +77,37 @@ def erzeuge_Tabelle(directory):
                 p25+= mytimes[i]
                 i += 1
            # print ("p25", i)
-            quartiles[0] = i/10000
+            quartiles[0] = i/normfactor
             p50 = p25
             while p50 < 0.5 * wsumme:
                 p50 += mytimes[i]
                 i += 1
-            quartiles[1] = i/10000
+            quartiles[1] = i/normfactor
            # print ("p50", i)
             p75 = p50
             while p75 < 0.75 * wsumme:
                 p75 += mytimes[i]
                 i += 1
-            quartiles[2] = i/10000
+            quartiles[2] = i/normfactor
            # print ("p75", i)   
             print (quartiles)
             # Lage des Maximums, quartile, iqr, qk
             iqr = (quartiles[2] - quartiles[0])
-            qk = (quartiles[2] + quartiles[0] - 2*quartiles[1]) / (quartiles[2] - quartiles[0])
             #print (type(params))
             #print ("max, quartiles, iqr, qk")
             #print (pd)
-            #print (" ")
-            #if qk < 0.001:
-                #print ("  ", qk)
             #plt.plot(mytimes)
             #plt.show()
+            qk = (quartiles[2] + quartiles[0] - 2*quartiles[1]) / (quartiles[2] - quartiles[0])
             if qk > 0.2 and (np.argmax(mytimes) > 500000):
                 print ("    ", qk)
                 #plt.plot(mytimes)
-                params.extend([np.argmax(mytimes)/10000, quartiles, iqr, qk]) 
+                params.extend([offset + np.argmax(mytimes)/normfactor, quartiles, iqr, qk]) 
                 peakdata.append(params)
                 #plt.show()
     print ("zeit", time.clock() - starttime)       
     #TODO aus den Daten die PD, also Loc, IQR und QK 
-    with open('schiefe_dinger.csv', 'w', newline='') as csvfile:
+    with open('mycsv.csv', 'w', newline='') as csvfile:
         mywriter = csv.writer(csvfile)
         #mywriter.writerows (tabelle)
         print ("laengen", len(peakdata))
@@ -125,41 +115,60 @@ def erzeuge_Tabelle(directory):
             mywriter.writerow(peakdata[i])
     print ("fertig mit Tabelle")  
       
-def plot_all(directory):
-    filenames = [name for name in os.listdir(directory) if name.startswith("Sim_")]
+def plot_all(source_directory):
+    dest_directory = "savefigs_python/l1000"
+    filenames = [name for name in os.listdir(source_directory) if name.startswith("Sim_")]
     all_params = [[float(p) for p in filename[4:].split("_")] for filename in filenames]
-    for pkombi in all_params:
-        
-    
-      
+    for pkombi, filename in zip(all_params, filenames):
+        print (pkombi, filename)
+        if not os.path.exists(dest_directory+filename+".png"):
+           # with open(source_directory+filename, "r") as data:
+            with open(source_directory+"Sim_0.9_0.1_0.0_0.001_0.999_0.0_5.0e-5_0.0_0.99995", "r") as data:
+                wkeiten = [float(x) for x in data]
+                #print (type(wkeiten))
+                offset = wkeiten.pop(0)
+                plt.plot(wkeiten)
+                plt.ylabel("")
+                plt.xlabel("Zeit / Schritten")
+                plt.xlim(0, len(wkeiten)+offset)
+                plt.suptitle("PAA; Params: "+ str(pkombi))
+                #plt.savefig(dest_directory + "/" + filename[4:] + ".png")
+                plt.show()
+                plt.clf()
+                time.sleep(5)
+
+
+def compress_data(source_directory, comp_factor = 10000):
+    dest_directory = "savefigs_python/l1000"
+    filenames = [name for name in os.listdir(source_directory) if name.startswith("Sim_")]
+    all_params = [[float(p) for p in filename[4:].split("_")] for filename in filenames]
+    for pkombi, filename in zip(all_params, filenames):
+        print ("pkombi, filename", pkombi, filename)
+        if not os.path.exists(dest_directory+filename+".p"):
+            with open (source_directory + filename , "r" ) as data:
+                wkeiten = [float(x) for x in data]
+                offset = wkeiten.pop(0)/comp_factor 
+                pd = calculate(wkeiten, offset, comp_factor)
+                print ("peakdata", pd)
+                comp_probs = []
+                for i in range(comp_factor):
+                    secsum = 0
+                    for j in range((len(wkeiten)//comp_factor)):
+                        secsum += wkeiten[i*(len(wkeiten)//comp_factor) + j]
+                    comp_probs.append(secsum)    
+                pd2 = calculate(comp_probs, offset, 1)
+                print("pd2 ", pd)
+                
+
+       
 def main():
     mypath = "savedata_julia/l1000/"
-    erzeuge_Tabelle(mypath)
+    #plot(mypath + "Sim_0.99_0.0049999906_0.005_0.003000021_0.997_0.0_2.4974346e-5_0.0_0.999975")
+    #plot_all(mypath)
+    #erzeuge_Tabelle(mypath)
     #time.sleep(10)
     #plot(mypath + "Sim_0.3_0.69_0.01_0.000100016594_0.9999_0.0_5.0008297e-5_0.0_0.99995")
-    plot(mypath + "Sim_0.99_0.0049999906_0.005_0.003000021_0.997_0.0_2.4974346e-5_0.0_0.999975")
-
-    #plot("output2")
-    
-    #with open("filename", "r") as data:
-        ##print (data)
-        #wkeiten = data.readline().strip().split(",")
-        ##print (type(wkeiten[0]))
-        ##print (wkeiten)
-        #wkeiten2, wkeiten3 = [], []
-        #for i in range(len(wkeiten)-1):
-            ##print(wkeiten[i], type(wkeiten[i]))
-            #wkeiten2.append(float(wkeiten[i]))
-            #print(wkeiten2[i], i)
-        #print (sum(wkeiten2))    
-        #for i in range(100):
-            #summe = 0
-            #for j in range(1000):
-                #summe += wkeiten2[i*j]
-            #wkeiten3.append(summe)
-        #print (wkeiten3)    
-        #n, bin, patches = plt.hist(wkeiten3, 50)
-        #plt.show()
+    compress_data(mypath)
        
 if __name__ == "__main__":
     logging.basicConfig(level=20)

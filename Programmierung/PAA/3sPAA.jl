@@ -1,4 +1,4 @@
-#using PyPlot
+using PyPlot
 
 
 function cut_Distributions(distributions, index)
@@ -133,11 +133,11 @@ function combineParams()
     # TODO: Aktuell nur Kombination fuer Modell 3a)
     
     #Erstelle zunaechst Listen fuer Einzelwahrscheinlichkeiten fuer mobilen Ausgangszustand...
-    pmms = [0.05f0, 0.1f0, 0.2f0, 0.3f0, 0.4f0, 0.5f0, 0.6f0, 0.7f0, 0.8f0]
-    #pmms = [0.005f0, 0.007f0, 0.01f0, 0.03f0, 0.05f0, 0.1f0, 0.2f0, 0.3f0, 0.4f0, 0.5f0, 0.6f0, 0.7f0, 0.8f0, 0.9f0, 0.99f0]
+    pmms = [0.005f0, 0.01f0, 0.05f0, 0.1f0, 0.15f0, 0.2f0, 0.25f0, 0.3f0, 0.35f0, 0.4f0, 0.45f0, 0.5f0, 0.55f0, 0.6f0, 0.65f0, 0.7f0, 0.75f0, 0.8f0, 0.85f0, 0.9f0, 0.95f0]
+    #pmms = [0.005f0, 0.007f0, 0.01f0, 0.03f0, 0.05f0,  0.1f0, 0.15f0, 0.2f0, 0.25f0, 0.3f0, 0.35f0, 0.4f0, 0.45f0, 0.5f0, 0.55f0, 0.6f0, 0.65f0, 0.7f0, 0.75f0, 0.8f0, 0.85f0, 0.9f0, 0.95f0, 0.99f0]
     # 0.00001f0 ist zu klein, nicht ausreichend teilchen drin, daher kein schönes tailing
-    pmls = [0.005f0, 0.001f0, 0.0007f0, 0.0005f0, 0.0003f0] 
-    #pmls = [0.01f0, 0.005f0, 0.001f0, 0.0007f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.00003f0, 0.00005f0, 0.00001f0] 
+    pmls = [0.005f0, 0.001f0, 0.0007f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.00005f0] 
+    #pmls = [0.01f0, 0.005f0, 0.001f0, 0.0007f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.00005f0, 0.00003f0, 0.00001f0] 
     pms = Array(Any, 0)
     for pmm in pmms
         for pml in pmls
@@ -146,7 +146,7 @@ function combineParams()
         end 
     end
     # ... fuer adsorbierten Ausgangszustand...  
-    paas = [0.998f0, 0.9985f0, 0.999f0, 0.9991f0, 0.9992f0, 0.9993f0, 0.9994f0, 0.9995f0]   
+    paas = [0.998f0, 0.9985f0, 0.999f0, 0.9991f0, 0.9992f0, 0.9993f0, 0.9994f0, 0.9995f0, 0.9996f0]   
     #paas = [0.994f0, 0.995f0, 0.997f0, 0.998f0, 0.9985f0, 0.999f0, 0.9991f0, 0.9992f0, 0.9993f0, 0.9994f0, 0.9995f0, 0.9996f0, 0.9999f0]   
     pas = Array(Any, 0)
     for paa in paas
@@ -154,7 +154,7 @@ function combineParams()
         push!(pas,([pam paa 0.0f0]))
     end
     # ... und fuer geloesten Ausgangszustand
-    plls = [0.9999f0, 0.999925f0,0.99995f0, 0.99999f0, 0.999993f0, 0.999995f0, 0.999999f0]
+    plls = [0.9999f0, 0.999925f0, 0.99995f0, 0.999975f0, 0.99999f0, 0.999993f0, 0.999995f0, 0.999997f0, 0.999999f0]
     #0.999999f0 ist zu groß
     #plls = [0.9999f0, 0.999925f0, 0.99995f0, 0.999975f0, 0.99999f0, 0.999993f0, 0.999995f0, 0.999996f0, 0.999997f0, 0.999999f0]
     pls = Array(Any, 0)
@@ -187,8 +187,17 @@ maxtime = 2400000
 #params = [0.8f0 0.195f0 0.005f0; 0.0004f0 0.9996f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
 #params = [0.9f0 0.1f0 0.0f0; 0.001f0 0.999f0 0.0f0; 0.00005f0 0.0f0 0.99995f0]
 #params[0.5 0.49995 5.0e-5; 0.004999995 0.995 0.0; 1.001358e-5 0.0 0.99999] 
-
-param_list = combineParams()
+params = [0.5f0 0.1f0 0.0f0; 0.001f0 0.999f0 0.0f0; 0.00005f0 0.0f0 0.99995f0]
+params = [0.4f0 0.59995f0 5.0f-05; 0.002f0 0.998f0 0.0f0; 5.0f-05 0.0f0 0.999995f0]
+param_list = Array(Any, 0)
+push!(param_list, params)
+params = [0.4f0 0.59995f0 5.0f-05; 0.002f0 0.998f0 0.0f0; 0.00005f0 0.0f0 0.99995f0]
+push!(param_list, params)
+params = [0.4f0 0.59995f0 5.0f-05; 0.002f0 0.998f0 0.0f0; 0.00002f0 0.0f0 0.99998f0]
+push!(param_list, params)
+params = [0.4f0 0.59995f0 5.0f-05; 0.002f0 0.998f0 0.0f0; 0.000015f0 0.0f0 0.999985f0]
+push!(param_list, params)
+#param_list = combineParams()
 #reverse!(param_list)
 println(length(param_list))
 
@@ -202,20 +211,20 @@ for params in param_list
         end
     end
     if !isfile(filename)
-   # if isfile("savedata_julia/l$laenge/$params")
-   #    println("Summe ", sum(res))
-   #    if (sum(res) < 0.999 )
-   #        println("zu gering bei $params")
-   #    end
-#         #println (filename, " ")
-#         if !isfile(filename)
-#             println ("filename: ", filename, " ")
-#             res = readcsv("savedata_julia/l$laenge/$params")
-#             writecsv(filename, res)
-#         end
-#        println ("isfile, $params")
-    #else
-#         #for i in 1:10
+#    # if isfile("savedata_julia/l$laenge/$params")
+#    #    println("Summe ", sum(res))
+#    #    if (sum(res) < 0.999 )
+#    #        println("zu gering bei $params")
+#    #    end
+# #         #println (filename, " ")
+# #         if !isfile(filename)
+# #             println ("filename: ", filename, " ")
+# #             res = readcsv("savedata_julia/l$laenge/$params")
+# #             writecsv(filename, res)
+# #         end
+# #        println ("isfile, $params")
+#     #else
+# #         #for i in 1:10
         println (params)
         println(strftime(time()))
         res = @time(waitingTimeForValue(params, laenge, maxtime))
@@ -223,16 +232,16 @@ for params in param_list
         println("Summe ", sum(res[2:end]))
 #         #end
         writecsv(filename, res)
-    end
-#         if (sum(res) >= 0.9 )
-#             plt.plot(res[2:end])
-#             #plt.xticks([0, len(res)], [res[1], (len(res) + res[0]))
-#             plt.ylabel("")
-#             plt.xlabel("Zeit / Schritten")
-#             plt.title("PAA; Params: $params")
-#             plt.savefig("savefigs_julia/l$laenge/$params .png")
-#             plt.clf()
-       # end
+   # end
+        if (sum(res) >= 0.9 )
+            plt.plot(res[2:end])
+            #plt.xticks([0, len(res)], [res[1], (len(res) + res[0]))
+            plt.ylabel("")
+            plt.xlabel("Zeit / Schritten")
+            plt.title("PAA; Params: $params")
+            plt.savefig("savefigs_julia/l$laenge/$params .png")
+            plt.clf()
+       end
     end
 end  
-# println("fertig")
+println("fertig")
