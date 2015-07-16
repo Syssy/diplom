@@ -36,13 +36,15 @@ PAA:
  * Komprimiere Sim-Daten (zb faktor 100), speichere das ganze wieder als .p ab, inklusive peakdaten, plot geeignet verschieben (offset), beschriftung passend, inkl pd
  * review, umstrukturierung, aufräumen
  * Normalisierung/Compression der Daten. Will nicht nur 1 Datenpunkt pro Sekunde, wie speichere ich das sinnvoll ab? Rechne aktuell mit Zehntelsekunden, dann passt das, ist aber ungewohnt
- * Plots zur Flächenabdeckung zu Zeitpunkt und mit 3 festen Parametern
- * Das compress (oder wo anders) macht fehler in der pd berechnung. siehe springende maxima bei     pmm = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-    pml = [0.0001]
-    paa = [0.999]
-    pll = [0.99995]
-    Das Problem ist wohl behoben, es müssen nur noch alle julias noch comprimiert werden
-    neues Problem: bei pmm=0.4 ist einfach zu früh. siehe bild. gibt es eine erklärung dafür oder liege ich irgendwie falsch? mit mosdi überprüfen, evtl bei länge von 100, alternativ normale sims starten
+ * Plots zur Flächenabdeckung zu Zeitpunkt
+
+ vor neusimulation:
+ pd, params, offset [49.075900000000004, [8.6954, 9.6867, 10.7241], 2.0287000000000006, 0.022723911864740536] [0.4, 0.59995, 5e-05, 0.0019999743, 0.998, 0.0, 2.4974346e-05, 0.0, 0.999975] 39.4801
+ nach neuberechnung:
+ pd, params, offset [49.075900000000004, [48.1755, 49.1668, 50.2042], 2.0287000000000006, 0.022723911864738787] [0.4, 0.59995, 5e-05, 0.0019999743, 0.998, 0.0, 2.4974346e-05, 0.0, 0.999975] 39.4801
+ nach neusimulation ohne offset:
+ pd, params, offset [30.001200000000001, [29.0998, 30.0911, 31.1286], 2.0288000000000004, 0.0227720820189234] [0.4, 0.59995, 5e-05, 0.002, 0.998, 0.0, 2.5e-05, 0.0, 0.999975] 0.0
+
  
 Schreiben:
  * Schreiben halt

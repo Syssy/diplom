@@ -292,8 +292,10 @@ läuft
 09.07.2015
  * Auch wenn jetzt "überflüssig": Referenzdaten ausgewertet, Tabelle mit den Peakdaten erstellt und Breite/Schiefe berechnet
  * Benenne sims um, damit nur noch die betrachteten 4 Params im namen vorkommen
- * Fehler in der Peakdatenberechnung entdeckt und behoben (maximum wurde falsch berechnet, wenn offset vorhanden war, da dieser zwei mal durch 10000 geteilt wurde)
+ * Fehler in der Peakdatenberechnung entdeckt und behoben (maximum wurde falsch berechnet, wenn offset vorhanden war, da dieser zwei mal durch 10000 geteilt wurde), ebenso fehlte der offset bei den Quartilen, das hatte aber keine weiteren Auswirkungen, da die Abstände ja gleich blieben
  * Durch die Neuberechnung habe ich jetzt auch Peaks an einigen Zeitpunkten, wo ich vorher vergeblich gesucht habe *seufz*
+ * Fehler in der offsetberechnung bei Julia entdeckt: Es wurde nicht nur zu Beginn der Sim, sondern auch am Ende 0 reingeschrieben, die dann in der offset-variante natürlich vorne mit drauf addiert wurden. In der Konsequenz heißt das, dass alle mit offset neu simuliert werden müssen.
+ * Die betreffenden wurden umbenannt und können neu simuliert werden. Leider sind das 150 GB
  
  
  
