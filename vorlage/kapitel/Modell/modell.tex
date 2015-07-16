@@ -43,7 +43,7 @@ Für die Simulation müssen viele Teilchen, ausgehend vom mobilen Zustand, den A
 
 % für abbruchbedingung und zeit für peak
 % Das ganze 1000 mal wiederholen da je nur eine kapillare simuliert wurde
-Der genaue Ablauf der Simulation wird in Kapitel \ref{chapter:imp} beschrieben.
+Der genaue Ablauf der Simulation wird in Kapitel \ref{chapter:meth} beschrieben.
 
 % Grundlage: Phasenwechsel
 % Das eigentliche Modell
@@ -99,138 +99,13 @@ Und noch mehr Text, der sich auf \ref{PAA_2P} bezieht
 \subsection{Grenzen des Modells}
 Eine genaue Analyse der Peaks, die mit dem 2-Parameter Modell erzeugt werden können, findet sich in Kapitel \ref{chapter:eva}. An dieser Stelle sei nur vorweg genommen, dass es zwei Hauptprobleme mit dem Modell zu geben scheint. 
 
-Zum Einen scheint es in den vorliegenden Datensätzen einige Peaks zu geben, deren kombinierte Lage und Breite nicht mit dem Modell simulierbar sind. Es ist zwar sowohl in den echten wie auch in den simulierten Daten die klare Tendenz zu erkennen, dass Peaks, die zu einer höheren Retentionszeit auftreten, auch breiter sind, als frühe Peaks. Es gibt also keine sehr schmalen Peaks am Ende des Spektrums. Allerdings existieren einige Peaks, deren Breite geringer ist, als alle mit dem Modell simulierbaren Peaks zu dieser Retentionszeit.
+\todo{Umformulierung auf hypothetische Peaks}
+Einfach darstellen, wie es ist (Zu jedem Zeitpunkt scheint es eine Minimalbreite zu geben, die mit diesem Modell nicht unterschritten werden kann)
+, und dass es evtl wünschenswert wäre, schmalere Peaks zu manchen Zeitpunkten zu haben
+
+** Die Sache mit den Peaks die zu schmal für meine Sim waren fällt ja quasi weg, es gibt ohne Daten keine Hinweise darauf, dass es nötig ist, schmalere Peaks zu erzeugen. Daher einfach aufschreiben, DASS da eine Grenze ist (nach oben aber fast beliebig breit)
+% Zum Einen scheint es in den vorliegenden Datensätzen einige Peaks zu geben, deren kombinierte Lage und Breite nicht mit dem Modell simulierbar sind. Es ist zwar sowohl in den echten wie auch in den simulierten Daten die klare Tendenz zu erkennen, dass Peaks, die zu einer höheren Retentionszeit auftreten, auch breiter sind, als frühe Peaks. Es gibt also keine sehr schmalen Peaks am Ende des Spektrums. Allerdings existieren einige Peaks, deren Breite geringer ist, als alle mit dem Modell simulierbaren Peaks zu dieser Retentionszeit.
 %Alle Simulationen ergeben zumindest geringfügig breitere Peaks. 
 
-Zum Anderen weisen fast keine der simulierten Peaks ein Tailing auf. Lediglich ein sehr stark eingeschränkter Parameterbereich erzeugt ein Tailing. Das führt dazu, dass Tailing nur in einem sehr kleinen Retentionszeitbereich auftritt, allerdings nicht, wie es in den Referenzdaten zu beobachten ist, zu den eher späten Zeiten.
+Zum Anderen weisen fast keine der simulierten Peaks ein Tailing auf. Lediglich ein sehr stark eingeschränkter Parameterbereich erzeugt ein Tailing. Das führt dazu, dass Tailing nur in einem sehr kleinen Retentionszeitbereich auftritt, allerdings nicht, wie es in tatsächlichen Daten zu beobachten ist, zu den eher späten Zeiten.
 
-
-\section{Weitere Modelle}
-\todo{Erweiterung des Modells}
-\todo{In Intro auf Gleichgewicht bei Adsoption eingehen, -> Modellerweiterung} 
-
-Evtl kann diese section auch als subsection in das 3s modell rein, da sowohl modell 3a als auch 3b darunter fallen. Der letzte Absatz zu 
-weiteren möglichen erweiterungen kann dann als kleiner absatz ganz ans ende des modellkapitels und wird im ausblick noch mal aufgegriffen
-
-
-Bisher fand keine Unterscheidung zwischen Adsorption und Lösung der Teilchen an bzw. in der stationären Phase statt. In der Realität können beide Wechselwirkungen parallel zueinander statt finden. Außerdem ist es möglich, dass sich die Wahrscheinlichkeiten, in einen der beiden Zustände überzugehen oder in die mobile Phase zurückzukehren, unterscheiden. Daher liegt es nahe, einen neuen Zustand einzuführen, sodass die Adsorption und die Lösung voneinander getrennt behandelt werden. Die Tatsache, dass Tailing, wie bereits anfangs erwähnt, unter anderem durch zusätzlich Adsorptionseffekte verursacht sein kann, lässt vermuten, dass durch eine Anpassung der Parameter ein Tailing in der Simulation verursacht werden kann. 
- 
-\begin{figure}[h]
-\begin{subfigure}[t]{0.45\textwidth}\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
-  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\small\bfseries},
-  knoten/.style={thick,fill=none,inner sep=0pt, minimum width=25pt, circle}]
-{
-  \node[knoten] (im){};
-  \node[main node] (m) [left of = im]{mob};
-  \node[main node] (s1) [above right of = im]{ads};
-  \node[main node] (s2) [below right of = im]{lsg};
-
-  \path[every node/.style={font=\sffamily\small}]
-        
-    (m)  edge [bend left] node[above left]{$p_a$} (s1) 
-            edge [bend right] node[below left]{$p_l$} (s2)
-             edge [loop left] node {$p_m$} (m)
-
-    (s2)   edge node [right] {$1-p_l^*$} (m)
-            edge [loop right] node {$p_l^*$} (s1)
-        
-    (s1)  edge node [right] {$1-p_a^*$} (m)
-	  edge [loop right] node {$p_a^*$} (s1)
-
-        ;}
-\end{tikzpicture}\hfill
-\caption{Getrennte Zustände}
-\label{tikz:4p_Mod_a}
-\end{subfigure}
-\begin{subfigure}[t]{0.45\textwidth}\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.2cm,
-  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\small\bfseries}]
-{
-   \node[main node] (m)  {mob};
-  \node[main node] (s1) [right of = m]{stat1};
-  \node[main node] (s2) [right of = s1]{stat2};
-
-  \path[every node/.style={font=\sffamily\small}]
-
-    (s2)   edge [bend left] node [below] {$1-p_s$} (s1)
-            edge [loop right] node {$p_s$} (s1)
-        
-    (s1)   edge [bend left] node [above] {$p_j$} (s2)
-            edge [bend left] node[below] {$p_k$} (m)
-			edge [loop above] node {$p_i$} (s1)
-        
-    (m)  edge [bend left] node[above]{$1-p_m$} (s1)
-             edge [loop left] node {$p_m$} (m)
-        ;}
-\end{tikzpicture}
-\caption{Zwischenzustand}
-\label{tikz:4p_Mod_b}
-\end{subfigure}
-\caption{Mögliche weitere Modelle}
-\label{tikz:4p_Mod}
-\end{figure}
- 
-In \ref{tikz:4p_Mod} sind zwei Möglichkeiten gezeigt, dem bisherigen Modell einen neuen Zustand hinzuzufügen.
-\todo{genaue Beschreibung der möglichen Modelle}
- 
-% Keine Übergänge zwischen den stationären Zuständen
-%  \begin{figure}[h]
-%   \centering
-%   \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=1.5cm,
-%   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\tiny\bfseries},
-%   knoten/.style={thick,fill=none,inner sep=0pt, minimum width=25pt, circle}]
-% 
-%   \node[knoten] (im){};
-%   \node[main node] (m) [left of = im]{mob};
-%   \node[main node] (s1) [above right of = im]{ads};
-%   \node[main node] (s2) [below right of = im]{lsg};
-% 
-%   \path[every node/.style={font=\sffamily\tiny}]
-%         
-%     (m)  edge [bend left] node[above left]{$p_a$} (s1) 
-%             edge [bend right] node[below left]{$p_l$} (s2)
-%              edge [loop left] node {$p_m$} (m)
-% 
-%     (s2)   edge node [right] {$1-p_l^*$} (m)
-%             edge [loop right] node {$p_l^*$} (s1)
-%         
-%     (s1)  edge node [right] {$1-p_a^*$} (m)
-% 	  edge [loop right] node {$p_a^*$} (s1)
-% 
-%         ;
-% \end{tikzpicture}
-% 
-%  \end{figure}
-%  
-%  Neuer Zustand als Zwischenzustand
-% \begin{figure}[h!]
-%  \centering
-%   
-%   \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
-%   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\tiny\bfseries}]
-% 
-%    \node[main node] (m)  {mob};
-%   \node[main node] (s1) [right of = m]{stat1};
-%   \node[main node] (s2) [right of = s1]{stat2};
-% 
-%   \path[every node/.style={font=\sffamily\tiny}]
-% 
-%     (s2)   edge [bend left] node [below] {$1-p_s$} (s1)
-%             edge [loop right] node {$p_s$} (s1)
-%         
-%     (s1)   edge [bend left] node [above] {$p_j$} (s2)
-%             edge [bend left] node[below] {$p_k$} (m)
-% 			edge [loop above] node {$p_i$} (s1)
-%         
-%     (m)  edge [bend left] node[above]{$1-p_m$} (s1)
-%              edge [loop left] node {$p_m$} (m)
-%         ;
-% \end{tikzpicture}
-% \end{figure}
-
-Eine weitere Möglichkeit, das Modell zu verändern, besteht darin, das Gleichgewicht, welches sich zwischen den beiden Phasen aufbaut, zu berücksichtigen. Damit müssten die Wahrscheinlichkeiten, den Zustand zu wechseln, nicht mehr fest vorgegeben sein, sondern sich dynamisch während der Simulation aus der aktuellen Verteilung der Teilchen an einem bestimmten Ort auf die Zustände berechnen.
-
-Außerdem existieren Idee, noch eine Sättigung der freien Plätze zur Adsorption einzubauen
-
-
-% Erweiterung um weiteren (stat) Zustand um Unterschied zwischen Lösung und Adsorption zu haben
-% Ideen zur Geschwindigkeit und warum das Quatsch ist. ?

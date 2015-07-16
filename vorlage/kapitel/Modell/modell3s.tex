@@ -1,0 +1,100 @@
+\section{3-Zustände Modell} 
+
+\todo{Erweiterung des Modells}
+\todo{In Intro auf Gleichgewicht bei Adsoption eingehen, -> Modellerweiterung} 
+
+
+Der letzte Absatz zu weiteren möglichen erweiterungen kann dann als kleiner absatz ganz ans ende des modellkapitels und wird im ausblick noch mal aufgegriffen
+
+
+Bisher fand keine Unterscheidung zwischen Adsorption und Lösung der Teilchen an bzw. in der stationären Phase statt. In der Realität können beide Wechselwirkungen parallel zueinander statt finden. Außerdem ist es möglich, dass sich die Wahrscheinlichkeiten, in einen der beiden Zustände überzugehen oder in die mobile Phase zurückzukehren, unterscheiden. Daher liegt es nahe, einen neuen Zustand einzuführen, sodass die Adsorption und die Lösung voneinander getrennt behandelt werden. Die Tatsache, dass Tailing, wie bereits anfangs erwähnt, unter anderem durch zusätzlich Adsorptionseffekte verursacht sein kann, lässt vermuten, dass durch eine Anpassung der Parameter ein Tailing in der Simulation verursacht werden kann. 
+ 
+\begin{figure}[h]
+\begin{subfigure}[t]{0.45\textwidth}\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\small\bfseries},
+  knoten/.style={thick,fill=none,inner sep=0pt, minimum width=25pt, circle}]
+{
+  \node[knoten] (im){};
+  \node[main node] (m) [left of = im]{mob};
+  \node[main node] (s1) [above right of = im]{ads};
+  \node[main node] (s2) [below right of = im]{lsg};
+
+  \path[every node/.style={font=\sffamily\small}]
+        
+    (m)  edge [bend left] node[above left]{$p_a$} (s1) 
+            edge [bend right] node[below left]{$p_l$} (s2)
+             edge [loop left] node {$p_m$} (m)
+
+    (s2)   edge node [right] {$1-p_l^*$} (m)
+            edge [loop right] node {$p_l^*$} (s1)
+        
+    (s1)  edge node [right] {$1-p_a^*$} (m)
+	  edge [loop right] node {$p_a^*$} (s1)
+
+        ;}
+\end{tikzpicture}\hfill
+\caption{Getrennte Zustände}
+\label{tikz:4p_Mod_a}
+\end{subfigure}
+\begin{subfigure}[t]{0.45\textwidth}\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.2cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\small\bfseries}]
+{
+   \node[main node] (m)  {mob};
+  \node[main node] (s1) [right of = m]{stat1};
+  \node[main node] (s2) [right of = s1]{stat2};
+
+  \path[every node/.style={font=\sffamily\small}]
+
+    (s2)   edge [bend left] node [below] {$1-p_s$} (s1)
+            edge [loop right] node {$p_s$} (s1)
+        
+    (s1)   edge [bend left] node [above] {$p_j$} (s2)
+            edge [bend left] node[below] {$p_k$} (m)
+			edge [loop above] node {$p_i$} (s1)
+        
+    (m)  edge [bend left] node[above]{$1-p_m$} (s1)
+             edge [loop left] node {$p_m$} (m)
+        ;}
+\end{tikzpicture}
+\caption{Zwischenzustand}
+\label{tikz:4p_Mod_b}
+\end{subfigure}
+\caption{Mögliche weitere Modelle}
+\label{tikz:4p_Mod}
+\end{figure}
+ 
+In \ref{tikz:4p_Mod} sind zwei Möglichkeiten gezeigt, dem bisherigen Modell einen neuen Zustand hinzuzufügen.
+In beiden Fällen gibt es je zwei stationäre Zustände, einen für die Adsorption, einen für die Lösung. 
+
+In \ref{tikz:4p_Mod_a} sind die beiden stationären Zustände getrennt voneinander, dazwischen finden keine direkten Übergänge statt. 
+Anschaulich kann man sich vorstellen, dass bei Übertritt in die stationäre Phase schon festgelegt wird, welcher Art der Übergang sein wird.
+Keine Ahnung, ob das hier rein kommt: Es scheint intuitiv sinnvoll zu sein, die Übergangswahrscheinlichkeiten von und zu den beiden Zuständen sehr unterschiedlich zu wählen, damit sie sich nicht einfach wieder zu einer Gesamtwahrscheinlichkeit aufaddieren. In einen der Zustände sollen sie also nur seltener kommen, dafür dort lange verweilen, denn ein solches Verhalten würde zu Tailing führen.
+
+In \ref{tikz:4p_Mod_b} dient der erste stationäre Zustand als Übergangszustand zum zweiten stationären Zustand. Dabei ist der Übergangszustand die Adsorption als Hinweis darauf, dass die Teilchen, die sich in der stationären Phase lösen, zunächst mit deren Oberfläche in Kontakt treten und zumindest kurzzeitig adsorbiert sind, gleiches gilt für die andere Richtung. Nachdem ein Teilchen adsorbiert wurde, besteht die Möglichkeit, dass es sich noch in der stationären Phase löst oder auch adsorbiert bleibt. Auch hier liegt es nahe, die Wahrscheinlichkeiten für die verschiedenen Übergänge so zu gestalten, dass die Teilchen in einem der stationären Zustände seltener aber länger bleiben.
+ 
+\todo{genaue Beschreibung der möglichen Modelle}
+
+
+\subsection{PAA}
+
+Analog zum PAA für nur zwei Zustände kann für drei Zustände ein PAA definiert werden. 
+\todo{3sPAA aufschreiben}
+
+\todo{Bild 3sPAA?}
+
+\todo {kommt diese berechnung nicht eher in die methoden?}
+Berechnung für nächsten Schritt '
+Habe Matrix mit m, a, l und Orten 0...Länge mit den jeweiligen W'keiten
+Neue Matrix:
+$s^{'}_x(n) = s_{x-1}(1) * p_{1,n} + \sum^{|N|}_{m=2}{s_x(m) * p_{m,n}}$
+
+
+\section{Weitere Modelle}
+
+Eine weitere Möglichkeit, das Modell zu verändern, besteht darin, das Gleichgewicht, welches sich zwischen den beiden Phasen aufbaut, zu berücksichtigen. Damit müssten die Wahrscheinlichkeiten, den Zustand zu wechseln, nicht mehr fest vorgegeben sein, sondern sich dynamisch während der Simulation aus der aktuellen Verteilung der Teilchen an einem bestimmten Ort auf die Zustände berechnen.
+
+Außerdem existieren Idee, noch eine Sättigung der freien Plätze zur Adsorption einzubauen
+
+
+% Erweiterung um weiteren (stat) Zustand um Unterschied zwischen Lösung und Adsorption zu haben
+% Ideen zur Geschwindigkeit und warum das Quatsch ist. ?

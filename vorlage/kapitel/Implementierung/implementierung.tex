@@ -7,7 +7,7 @@
 \section{Simulation der Modelle}
 Zur Simulation der beiden Modelle wurde Python (Python3) verwendet.
 
-Abhängigkeiten von Numpy(Arrays zur schnelleren Verarbeitung), Scipy (Berechnung von Peakdaten) und PyPlot (graphische Darstellung) 
+Abhängigkeiten von Numpy(Arrays zur schnelleren Verarbeitung), Scipy (Berechnung von Peakdaten) und PyPlot (graphische Darstellung) sowie statsmodels (für die qq-Plots)
 
 Mit der 3-s kann auch 2p simuliert werden, indem nicht benötigte Übergangswahrscheinlichkeiten auf 0 gesetzt werden. Die reine 2p-Simulation ist aber deutlich schneller, da nur auf boolschen Werten gearbeitet werden muss.
 
@@ -20,11 +20,17 @@ Eine Zeiteinheit entspricht demnach ca. 0.1/200000 Sekunden 0.0000005s 0.0005ms 
 
 \subsection{Step-by-step}
 Es kann entweder jeder Zeitschritt der Chromatographie simuliert und dabei für jedes Teilchen entschieden werden, ob es sich bewegt. Dabei angenommen, dass die Wahrscheinlichkeit der Wechselwirkung unabhängig vom aktuellen Ort oder dem Zeitpunkt des letzten Phasenwechsels ist. Es wird für jedes Teilchen festgehalten, wo es sich befindet und ähnlich wie bei der echten Chromatographie beobachtet, wann wie viele Teilchen die Säule durchquert haben. 
-\todo{Stey by step-Simulation beschreiben}
+\todo{Stey by step-Simulation beschreiben -> Methoden}
 
 \subsection{By-Event}
 Bei Übergangswahrscheinlichkeiten, die sehr groß oder klein sind, kommt es selten zu Zustandsänderungen, sodass es in diesem Fall effizienter ist, eine Wartezeitmethode zu nutzen: Es wird für jedes Teilchen entschieden, wann es den Zustand wechselt und, falls es mobil ist, wie weit es bis dahin weiter wandert. Es werden also nur die tatsächlichen Ereignisse simuliert, Schritte für Zeitpunkte, zu denen nichts passiert, entfallen.
-\todo{by event-simulation beschreibe,}
+\todo{by event-simulation beschreiben -> Methoden}
+
+\subsection{Vergleich von Step-by-Step und By-Event}
+Resultierende Peaks sind (natürlich) gleich. Der Laufzeitvergleich hängt stark von den gewählten Parametern, aber auch Länge der Säule, ab.
+Bei Parametern nah an 1 lohnt meist die By-Event, da dann nur seltener Ereignisse erzeugt werden und viele Schritte in denen nichts (also kein Zustandswechsel) passiert, übersprungen werden können.
+Bei sehr vielen Teilchen lohnt sich eher die Step-by-Step Variante, da die Teilchen, die in Numpy-Arrays als True und False - Werte vorliegen sehr viel schneller verarbeitet werden können, als die Listen, die bei der Event -Variante verwendet werden. Eine weitere Parallelisierung scheint hier aber nicht zu lohnen
+Zumindest bei Parametern extrem nah bei 1 kann sich die Laufzeit der By-Event stark vergrößern, wenn die Säule zu kurz ist, da die Teilchen ``viel zu weit über das Ziel hinausschiessen'', aber das erst später festgestellt wird, wenn das Teilchen wieder betrachtet wird und schon entsprechend viele Zeitschritte vergangen sind. 
 
 % Generelles: Welche Sprachen, warum (?)
 % Die Simulation in Python, beide Varianten (Also by-event und step-by-step) 
@@ -34,6 +40,8 @@ Bei Übergangswahrscheinlichkeiten, die sehr groß oder klein sind, kommt es sel
 Die Berechnung des PAA existiert in Java, dabei Referenz auf mosdi (Zitiere Paper, in dem das vorgestellt wird und sage, dass ich das verwende)
 \todo{Implementierung des PAA beschreiben; erst wenn evtl nachprogrammierung fertig}
 da allerdings zu langsam: abgespeckte version nachprogrammiert in julia
+Größte Unterschiede dabei: start eingeschränkte funktionalität, da addition (von 1) unterstützt, das macht teilweise das arbeiten auf true/false möglich, außerdem auch nur jeweils feste ausgabe von 0 oder 1, festgelegt nach zustand etc.
+außerdem arbeiten mit arrays variabler länge, nur der relevante bereich (wkeiten != 0) wird betrachtet und zusätzlich zu kleine Werte zu beginn und ende der teilchenmasse abgeschnitten, um die länge weiter zu beschränken und dadurch zeit zu sparen (laufzeit linear/quadratisch oder so in irgendwas? noch mal bei mosdi nachgucken) länge sowieso beschränkt durch länge der säule (?????) und nicht durch maximale wartezeit
 
 Warum Julia? 
 
