@@ -15,6 +15,9 @@
 *.directory
 *.mem
 *.loa
+*.lod
 Programmierung/PAA/savedata_julia
 Programmierung/PAA/savefigs_julia
+Programmierung/PAA/savedata_python
 Programmierung/Param_p/3-States-Model/savefig
+Programmierung/Referenzdaten/BD*
