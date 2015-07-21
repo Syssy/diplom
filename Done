@@ -296,8 +296,9 @@ läuft
  * Durch die Neuberechnung habe ich jetzt auch Peaks an einigen Zeitpunkten, wo ich vorher vergeblich gesucht habe *seufz*
  * Fehler in der offsetberechnung bei Julia entdeckt: Es wurde nicht nur zu Beginn der Sim, sondern auch am Ende 0 reingeschrieben, die dann in der offset-variante natürlich vorne mit drauf addiert wurden. In der Konsequenz heißt das, dass alle mit offset neu simuliert werden müssen.
  * Die betreffenden wurden umbenannt und können neu simuliert werden. Leider sind das 150 GB
+ * Etwas geschrieben 
  
- 
+ * faszinierend1 bleibt auch nach neusimulation, ebenso faszinierend2. Der Fehler in kann_nicht_sein ist jedoch weg. In fehler_ruecklaeufiger_zeitpunkt springt leider die 0.999999 immer noch. Das verschwindet, wenn ich statt der Mediane wieder die argmax betrachte
  
  
  

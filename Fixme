@@ -2,18 +2,19 @@ Hier kommt alles an wichtigen Todos rein, die vielleicht auch über längere Zei
 
 Besprechung:
  * Fragen:
-    ** 
+    ** Die Sache mit den Peaks die zu schmal für meine Sim waren fällt ja quasi weg, es gibt ohne Daten keine Hinweise darauf, dass es nötig ist, schmalere Peaks zu erzeugen. Daher einfach aufschreiben, DASS da eine Grenze ist (nach oben aber fast beliebig breit)
  * Berichte:
     **
  * Geplant:
     ** 
 
 Sim, allgemein:
- * Peakfinder: Von Dommi das Sekantenverfahren erklären lassen
+ * Peakfinder: Von Dommi das Sekantenverfahren erklären lassen (das sprengt wohl den Rahmen)
  * Sinnvoller Einsatz der Invalid-Flags, bei den Sims sowie PAA
+ * Überlegen, was ich überhaupt als Simulation und was als PAA verwenden will
 
 2p-Sim:
- * Vergleich der Peakbreiten bei verschiedenen Längen, wenn das nicht passt: Sättigung einbauen
+ * Vergleich der Peakbreiten bei verschiedenen Längen, wenn das nicht passt: Sättigung einbauen (Sättigung wird den Rahmen sprengen) Vergleich trotzdem interessant, kann vielleicht zur letztendlichen Formel mit beitragen
  * Review/Finalisierung von Peakfinder 
  * Review/Finalisierung von v005
  
@@ -21,29 +22,17 @@ Sim, allgemein:
  * Herausfinden, bei welchen P-Kombis by-step oder by-event besser sind
  * habe beim plottesten noch folgende, tailing erzeugende kombi gefunden: (0.1 0.99) bzw (0.05, 0.99) natürlich extrem früh, aber sollte ich mir merken
  * ReSim-Optionen. Vorbearbeitung der pcombis
- 
-Referenzdaten: (überflüssig)
- * In VisualNow überprüfen, ob tatsächlich die sehr intensiven Peaks oben abgeschnitten sind, alternativ vergleich mit der handgeschriebenen tabelle
- * Berechnung der Peakdaten komplettieren/Aufschreiben, warum und so
- * Für die Peaks die IQR und IQK bestimmen
- * Zum Kopieren von der Uni: cp boehmer@citrin.cs.tu-dortmund.de:../ims/R06_Zeitspanne_lm/Daten_lm/BD19_1408300548_ims.csv BD19_1408300548_ims.csv
+
 
 PAA:
  * PAA-Daten und Simulationen vergleichen / Unterschiede berechnen / Ab wie vielen Teilchen hinreichend genau? Existieren Differenzen?
- * Laufzeittests zwischen Julia, Mosdi und Simulationen
- * bei kleinem pmm mal noch größere pll testen
+ * Laufzeittests zwischen Julia, Mosdi und Simulationen, evtl auf dem anderen rechner. Bin jetzt grad verwundert, hab ich mosdi auch mit der momentanen länge von 1000 getestet oder nur mit den 200000 von damals? Vielleicht liefert das ja doch ergebnisse in brauchbarer zeit
  * Was ist ein Guter schiefewert mit dem koeff? -> ab > 0.01 was zu sehen, richtig schief ab 0.1/0.2
- * Komprimiere Sim-Daten (zb faktor 100), speichere das ganze wieder als .p ab, inklusive peakdaten, plot geeignet verschieben (offset), beschriftung passend, inkl pd
  * review, umstrukturierung, aufräumen
  * Normalisierung/Compression der Daten. Will nicht nur 1 Datenpunkt pro Sekunde, wie speichere ich das sinnvoll ab? Rechne aktuell mit Zehntelsekunden, dann passt das, ist aber ungewohnt
  * Plots zur Flächenabdeckung zu Zeitpunkt
+ * Testen, wie sich die Ergebnisse unterscheiden, wenn nicht abgeschnitten wird (oder früher/später) auch auf dem anderen rechner. Dazu: Brauche testparametersatz, der verschiedene Begebenheiten berücksichtigt: frühe/späte/rausragende Peaks, Tailing/keines, breite/mittlere/schmale Peaks
 
- vor neusimulation:
- pd, params, offset [49.075900000000004, [8.6954, 9.6867, 10.7241], 2.0287000000000006, 0.022723911864740536] [0.4, 0.59995, 5e-05, 0.0019999743, 0.998, 0.0, 2.4974346e-05, 0.0, 0.999975] 39.4801
- nach neuberechnung:
- pd, params, offset [49.075900000000004, [48.1755, 49.1668, 50.2042], 2.0287000000000006, 0.022723911864738787] [0.4, 0.59995, 5e-05, 0.0019999743, 0.998, 0.0, 2.4974346e-05, 0.0, 0.999975] 39.4801
- nach neusimulation ohne offset:
- pd, params, offset [30.001200000000001, [29.0998, 30.0911, 31.1286], 2.0288000000000004, 0.0227720820189234] [0.4, 0.59995, 5e-05, 0.002, 0.998, 0.0, 2.5e-05, 0.0, 0.999975] 0.0
 
  
 Schreiben:
@@ -52,7 +41,6 @@ Schreiben:
  * home/bio/book/unsorted liegen diverse gescannte Bücher. evlt mal da nach statistik literatur gucken
  * Sämtliche Hinweise auf Referenzdaten entfernen, in hypothetische Formulierungen ändern
  * tablesgenerator.com für Tabellen in latex erstellen
-
 
  
  
