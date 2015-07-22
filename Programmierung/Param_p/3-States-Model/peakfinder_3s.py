@@ -101,7 +101,7 @@ def start_simulations(length, number, mode, p_combinations, resimulate = False, 
             #Neue Simulation notwendig
             if not sim_exists:
                 store = True
-                mySim = sim.Simulation(params, length, number, mode)
+                mySim = sim.Simulation(params, length, number, mode, step=1)
                 mySim.simulate()
                 mySim.calculate()
                # Jetzt noch abspeichern, entweder nach Update oder nach Neusimulation
@@ -205,7 +205,24 @@ def combine_params(args):
                     if sim.check_params([pm, pa, pl]):
                         param_list.append([pm, pa, pl]) 
     
-    #print (param_list)
+    if args == "testparameter":
+        param_list.append([[0.7, 0.29995, 0.00005],[ 0.005, 0.995, 0.0],[ 0.0001, 0.0, 0.9999]])
+        param_list.append([[0.99, 0.005, 0.005],[ 0.0004, 0.9996, 0.0],[ 0.000025, 0.0, 0.999975]])
+        param_list.append([[0.99, 0.0095, 0.0005],[ 0.005, 0.995, 0.0],[ 0.000075, 0.0, 0.999925]])
+        param_list.append([[0.85, 0.1493, 0.0007],[ 0.003, 0.997, 0.0],[ 0.000003, 0.0, 0.999997]])
+        param_list.append([[0.005, 0.99499, 0.00001],[ 0.0009, 0.9991, 0.0],[ 0.0001, 0.0, 0.9999]])
+        param_list.append([[0.6, 0.399, 0.001],[ 0.0004, 0.9996, 0.0],[ 0.0001, 0.0, 0.9999]])
+        param_list.append([[0.005, 0.9947, 0.0003],[ 0.0009, 0.9991, 0.0],[ 0.000003, 0.0, 0.999997]])
+        param_list.append([[0.5, 0.499, 0.001],[ 0.0005, 0.9995, 0.0],[ 0.00001, 0.0, 0.99999]])
+        param_list.append([[0.05, 0.9495, 0.0005],[ 0.0009, 0.9991, 0.0],[ 0.000005, 0.0, 0.99995]])
+        param_list.append([[0.2, 0.7993, 0.0007],[ 0.0008, 0.9992, 0.0],[ 0.000004, 0.0, 0.999996]])
+        param_list.append([[0.005, 0.999499, 0.00001],[ 0.0005, 0.9995, 0.0],[ 0.0001, 0.0, 0.9999]])
+        param_list.append([[0.15, 0.84995, 0.00005],[ 0.0004, 0.9996, 0.0],[ 0.0001, 0.0, 0.9999]])
+        param_list.append([[0.05, 0.9493, 0.0007],[ 0.0005, 0.9995, 0.0],[ 0.000025, 0.0, 0.999975]])
+        param_list.append([[0.15, 0.845, 0.005],[ 0.0005, 0.9995, 0.0],[ 0.000025, 0.0, 0.999975]])
+        param_list.append([[0.1, 0.899, 0.001],[ 0.0007, 0.9993, 0.0],[ 0.000001, 0.0, 0.999999]])
+    
+    print (param_list)
     return param_list
 
 def rename():
@@ -224,7 +241,7 @@ def get_argument_parser():
     p.add_argument("--choicenumber", "-cn", type = int, default = "5",
                    help = "bei zufaelliger Parameterwahl: Wie viele Kombinationen sollen gewaehlt werden")
     p.add_argument("--pcombioption", "-p",  
-                   help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: 3a, 3b oder 6p")
+                   help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: 3a, 3b, 6p oder testparameter")
     p.add_argument("--reverse", "-r", action = "store_true",
                    help = "Reihenfolge der p_combinations invertieren")
     p.add_argument("--length", "-l", type = int, default = "200000",
