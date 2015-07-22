@@ -21,7 +21,7 @@ Sim, allgemein:
 3s-Sim:
  * Herausfinden, bei welchen P-Kombis by-step oder by-event besser sind
  * habe beim plottesten noch folgende, tailing erzeugende kombi gefunden: (0.1 0.99) bzw (0.05, 0.99) natürlich extrem früh, aber sollte ich mir merken
- * ReSim-Optionen. Vorbearbeitung der pcombis
+ * ReSim-Optionen. Vorbearbeitung der pcombis (was will ich vorverarbeiten?)
 
 
 PAA:
@@ -32,7 +32,7 @@ PAA:
  * Normalisierung/Compression der Daten. Will nicht nur 1 Datenpunkt pro Sekunde, wie speichere ich das sinnvoll ab? Rechne aktuell mit Zehntelsekunden, dann passt das, ist aber ungewohnt
  * Plots zur Flächenabdeckung zu Zeitpunkt
  * Testen, wie sich die Ergebnisse unterscheiden, wenn nicht abgeschnitten wird (oder früher/später) auch auf dem anderen rechner. Dazu: Brauche testparametersatz, der verschiedene Begebenheiten berücksichtigt: frühe/späte/rausragende Peaks, Tailing/keines, breite/mittlere/schmale Peaks
-
+ * pml-feste plot noch mal machen, wenn 0.003 durch ist
 
  
 Schreiben:

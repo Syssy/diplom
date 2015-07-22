@@ -299,7 +299,8 @@ läuft
  * Etwas geschrieben 
  
  * faszinierend1 bleibt auch nach neusimulation, ebenso faszinierend2. Der Fehler in kann_nicht_sein ist jedoch weg. In fehler_ruecklaeufiger_zeitpunkt springt leider die 0.999999 immer noch. Das verschwindet, wenn ich statt der Mediane wieder die argmax betrachte
- 
+ -> Findet nur in nicht relevantem Bereich statt, daher ignorieren
+ * Mit Laufzeitvergleichstests auf dem alten Laptop begonnen
  
  
  

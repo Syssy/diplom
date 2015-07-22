@@ -206,8 +206,8 @@ def plot_3feste_Params(directory, pmm = [], pml = [], paa =[], pll=[], variabel 
                     #plt.plot([myPAA.pd[2]],[myPAA.pd[3]], "o", markersize = (myPAA.pd[0]/10), label=str(myPAA.params[vp]) +" "+ str(myPAA.pd[0]) )
                     #plt.text(myPAA.pd[2], myPAA.pd[3], str(myPAA.params[vp]))
                     # Achsen x:Zeitpunkt, y:Schiefe
-                    plt.plot([myPAA.pd[0]],[myPAA.pd[3]], "o", markersize = (myPAA.pd[2]), label=str(myPAA.params[vp]) +" "+ str(myPAA.pd[2]) )
-                    plt.text(myPAA.pd[0], myPAA.pd[3], str(myPAA.params[vp]))
+                    plt.plot([myPAA.pd[1][1]],[myPAA.pd[3]], "o", markersize = (myPAA.pd[2]), label=str(myPAA.params[vp]) +"  "+ str(round(myPAA.pd[2],2)) )
+                    plt.text(myPAA.pd[1][1], myPAA.pd[3], str(myPAA.params[vp]))
                     # Achsen: x:Zeitpunkt, y:Breite
                     #plt.plot([myPAA.pd[0]],[myPAA.pd[2]], "o", markersize = (myPAA.pd[3]*10), label=str(myPAA.params[vp]) +" "+ str(myPAA.pd[3]) )
                     #plt.text(myPAA.pd[0], myPAA.pd[2], str(myPAA.params[vp]))
@@ -220,7 +220,7 @@ def plot_3feste_Params(directory, pmm = [], pml = [], paa =[], pll=[], variabel 
     print ("todolist", todolist)   
     del mydict[variabel]
     plt.suptitle("fest:" + str(mydict) + "\n variabel: " + variabel)
-    plt.legend(numpoints = 1)
+    plt.legend(title= variabel+ ",  Breite", numpoints = 1, loc = 1)
     plt.show()    
     return
 
@@ -244,34 +244,39 @@ def main():
     #filenames.reverse()
     #umbenennen(dest_directory)
     
-    pmm = [0.4]#0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95]
-    pml = [0.00005]
-    paa = [0.9993]
-    pll = [0.9999, 0.999925, 0.99995, 0.999975, 0.99998, 0.999985, 0.99999, 0.999993, 0.999995, 0.999997, 0.999999]
+    #pmm = [0.8]
+    #pmm = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95]
+    pmm = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    pml = [0.0001]
+    #pml = [0.005, 0.003, 0.001, 0.0007, 0.0005, 0.0003, 0.0001, 0.00005]
+    paa = [0.9992]
+    #paa = [0.997, 0.998, 0.9985, 0.999, 0.9992, 0.9993, 0.9994, 0.9995, 0.9996]
+    pll = [0.99995]
+    #pll = [0.9999, 0.999925, 0.99995, 0.999975, 0.99999, 0.999993, 0.999995, 0.999997, 0.999999]
     
-    plot_3feste_Params(dest_directory, pmm, pml, paa, pll, "pll")
+    plot_3feste_Params(dest_directory, pmm, pml, paa, pll, "pmm")
     
-    param = [0.4, 0.0001, 0.999, 0.99995]
-    filename = dest_directory + "Sim_" + str(pmm[0]) + "_" + str(pml[0]) + "_" + str(paa[0]) + "_" + str(pll[4]) + ".p"
+   # param = [0.4, 0.0001, 0.999, 0.99995]
+   # filename = dest_directory + "Sim_" + str(pmm[0]) + "_" + str(pml[0]) + "_" + str(paa[0]) + "_" + str(pll[4]) + ".p"
    # filename = dest_directory + "Sim_0.1_0.0005_0.9996_0.99999.p"
     
-    filename2 = source_directory+ "Sim_0.4_0.59995_5.0e-5_0.0019999743_0.998_0.0_5.0008297e-5_0.0_0.99995"
+  #  filename2 = source_directory+ "Sim_0.4_0.59995_5.0e-5_0.0019999743_0.998_0.0_5.0008297e-5_0.0_0.99995"
   #  plot_single_peak(filename)
     #plot_peak_from_uncompressed(filename2)
     #plotte_Zeitpunkt(dest_directory, [45,55], [1,15], [0.2,1])  
     
-    #filenames = [name for name in os.listdir(source_directory) if name.startswith("Sim_")]
-    #for filename in filenames:   
-        #params = [float(p) for p in filename[4:].strip(".p").split("_")]   
-        #newfilename = "Sim_" + str(params[0]) + "_" + str(params[2]) + "_" + str(params[4]) + "_" + str(params[8]) + ".p"
-        #if not os.path.exists(dest_directory+newfilename):
-            #with open (source_directory + filename , "r" ) as data:
-                #print(filename)
-                #times = [float(x) for x in data]
-                #params = [float(p) for p in filename[4:].split("_")]
-                #aPAA = PAA(params, 1000, times)
-                #with open(dest_directory+newfilename, "wb") as savedata:
-                    #pickle.dump(aPAA, savedata)
+    filenames = [name for name in os.listdir(source_directory) if name.startswith("Sim_")]
+    for filename in filenames:   
+        params = [float(p) for p in filename[4:].strip(".p").split("_")]   
+        newfilename = "Sim_" + str(params[0]) + "_" + str(params[2]) + "_" + str(params[4]) + "_" + str(params[8]) + ".p"
+        if not os.path.exists(dest_directory+newfilename):
+            with open (source_directory + filename , "r" ) as data:
+                print(filename)
+                times = [float(x) for x in data]
+                params = [float(p) for p in filename[4:].split("_")]
+                aPAA = PAA(params, 1000, times)
+                with open(dest_directory+newfilename, "wb") as savedata:
+                    pickle.dump(aPAA, savedata)
     ##erzeuge_Tabelle(dest_directory, "mycsv.csv", [40,60], [1,20])
     print ("Fertig")    
        

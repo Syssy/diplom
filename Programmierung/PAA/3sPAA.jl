@@ -132,7 +132,7 @@ function combineParams()
     #pmms = [0.005f0, 0.007f0, 0.01f0, 0.03f0, 0.05f0,  0.1f0, 0.15f0, 0.2f0, 0.25f0, 0.3f0, 0.35f0, 0.4f0, 0.45f0, 0.5f0, 0.55f0, 0.6f0, 0.65f0, 0.7f0, 0.75f0, 0.8f0, 0.85f0, 0.9f0, 0.95f0, 0.99f0]
     # 0.00001f0 ist zu klein, nicht ausreichend teilchen drin, daher kein schönes tailing
     #pmls = [0.005f0, 0.001f0, 0.0005f0, 0.0001f0] 
-    pmls = [0.005f0, 0.001f0, 0.0007f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.00005f0] 
+    pmls = [0.005f0, 0.003f0, 0.001f0, 0.0007f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.00005f0] 
     #pmls = [0.01f0, 0.005f0, 0.001f0, 0.0007f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.00005f0, 0.00003f0, 0.00001f0] 
     pms = Array(Any, 0)
     for pmm in pmms
