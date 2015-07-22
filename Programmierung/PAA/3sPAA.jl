@@ -246,7 +246,6 @@ for params in param_list
 # #             writecsv(filename, res)
 # #         end
 # #        println ("isfile, $params")
-<<<<<<< HEAD
 # #     else
         println(strftime(time()), " starte: ")
         print (params, " ")
@@ -265,26 +264,5 @@ for params in param_list
 #             plt.clf()
 #        end
     end
-=======
-#     #else
-    println (params)
-    println(strftime(time()))
-    res = None
-    for i in 1:3
-        res = @time(waitingTimeForValue(params, laenge, maxtime))
-    end
-        writecsv(filename, res)
-   # end
-        if (sum(res) >= 0.9 )
-            plt.plot(res)
-            #plt.xticks([0, len(res)], [res[1], (len(res) + res[0]))
-            plt.ylabel("")
-            plt.xlabel("Zeit / Schritten")
-            plt.title("PAA; Params: $params")
-            plt.savefig("savefigs_julia/l$laenge/$params .png")
-            plt.clf()
-       end
-    #end
->>>>>>> 82b475a574e4583477ebdb1ef0c76b37e252bfaf
 end  
 println("fertig")
