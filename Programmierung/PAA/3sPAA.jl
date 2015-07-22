@@ -79,7 +79,7 @@ function updateDistributions!(params::Array{Float32,2}, distributions, index, nu
         end
     end
     # Zu kleine Werte wegwerfen
-    new_dist, index = cut_Distributions(new_dist, index)
+    #new_dist, index = cut_Distributions(new_dist, index)
 
     return new_dist, index        
 end
@@ -116,13 +116,13 @@ function waitingTimeForValue(params::Array{Float32, 2}, value, maxTime, num_stat
             #println("angekommen, $summe")
             push!(result, summe)
         else
-            #push!(result, 0.0f0)
-            zeitverschiebung += 1
+            push!(result, 0.0f0)
+            #zeitverschiebung += 1
         end
     end
     #TODO, das geht sicher eleganter. Momentan wird der Offset einfach als ersten Wert ins Result geschrieben
     # ist einfach, erfordert Aufpassen bei der Nachverarbeitung
-    unshift!(result, zeitverschiebung)
+    #unshift!(result, zeitverschiebung)
     return result
 end
 
@@ -190,12 +190,35 @@ maxtime = 2400000
 params = [0.5f0 0.1f0 0.0f0; 0.001f0 0.999f0 0.0f0; 0.00005f0 0.0f0 0.99995f0]
 params = [0.4f0 0.59995f0 5.0f-05; 0.002f0 0.998f0 0.0f0; 5.0f-05 0.0f0 0.999995f0]
 param_list = Array(Any, 0)
+params=[0.7f0 0.29995f0 0.00005f0; 0.005f0 0.995f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
 push!(param_list, params)
-params = [0.4f0 0.59995f0 5.0f-05; 0.002f0 0.998f0 0.0f0; 0.00005f0 0.0f0 0.99995f0]
+params=[0.99f0 0.005f0 0.005f0; 0.0004f0 0.9996f0 0.0f0; 0.000025f0 0.0f0 0.999975f0]
 push!(param_list, params)
-params = [0.4f0 0.59995f0 5.0f-05; 0.002f0 0.998f0 0.0f0; 0.00002f0 0.0f0 0.99998f0]
+params=[0.99f0 0.0095f0 0.0005f0; 0.005f0 0.995f0 0.0f0; 0.000075f0 0.0f0 0.999925f0]
 push!(param_list, params)
-params = [0.4f0 0.59995f0 5.0f-05; 0.002f0 0.998f0 0.0f0; 0.000015f0 0.0f0 0.999985f0]
+params=[0.85f0 0.1493f0 0.0007f0; 0.003f0 0.997f0 0.0f0; 0.000003f0 0.0f0 0.999997f0]
+push!(param_list, params)
+params=[0.005f0 0.99499f0 0.00001f0; 0.0009f0 0.9991f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
+push!(param_list, params)
+params=[0.6f0 0.399f0 0.001f0; 0.0004f0 0.9996f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
+push!(param_list, params)
+params=[0.005f0 0.9947f0 0.0003f0; 0.0009f0 0.9991f0 0.0f0; 0.000003f0 0.0f0 0.999997f0]
+push!(param_list, params)
+params=[0.5f0 0.499f0 0.001f0; 0.0005f0 0.9995f0 0.0f0; 0.00001f0 0.0f0 0.99999f0]
+push!(param_list, params)
+params=[0.05f0 0.9495f0 0.0005f0; 0.0009f0 0.9991f0 0.0f0; 0.000005f0 0.0f0 0.99995f0]
+push!(param_list, params)
+params=[0.2f0 0.7993f0 0.0007f0; 0.0008f0 0.9992f0 0.0f0; 0.000004f0 0.0f0 0.999996f0]
+push!(param_list, params)
+params=[0.005f0 0.999499f0 0.00001f0; 0.0005f0 0.9995f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
+push!(param_list, params)
+params=[0.15f0 0.84995f0 0.00005f0; 0.0004f0 0.9996f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
+push!(param_list, params)
+params=[0.05f0 0.9493f0 0.0007f0; 0.0005f0 0.9995f0 0.0f0; 0.000025f0 0.0f0 0.999975f0]
+push!(param_list, params)
+params=[0.15f0 0.845f0 0.005f0; 0.0005f0 0.9995f0 0.0f0; 0.000025f0 0.0f0 0.999975f0]
+push!(param_list, params)
+params=[0.1f0 0.899f0 0.001f0; 0.0007f0 0.9993f0 0.0f0; 0.000001f0 0.0f0 0.999999f0]
 push!(param_list, params)
 #param_list = combineParams()
 #reverse!(param_list)
@@ -210,7 +233,7 @@ for params in param_list
             #println (filename)
         end
     end
-    if !isfile(filename)
+  #  if !isfile(filename)
 #    # if isfile("savedata_julia/l$laenge/$params")
 #    #    println("Summe ", sum(res))
 #    #    if (sum(res) < 0.999 )
@@ -224,17 +247,16 @@ for params in param_list
 # #         end
 # #        println ("isfile, $params")
 #     #else
-# #         #for i in 1:10
-        println (params)
-        println(strftime(time()))
+    println (params)
+    println(strftime(time()))
+    res = None
+    for i in 1:3
         res = @time(waitingTimeForValue(params, laenge, maxtime))
-        println ("offset ", res[1])
-        println("Summe ", sum(res[2:end]))
-#         #end
+    end
         writecsv(filename, res)
    # end
         if (sum(res) >= 0.9 )
-            plt.plot(res[2:end])
+            plt.plot(res)
             #plt.xticks([0, len(res)], [res[1], (len(res) + res[0]))
             plt.ylabel("")
             plt.xlabel("Zeit / Schritten")
@@ -242,6 +264,6 @@ for params in param_list
             plt.savefig("savefigs_julia/l$laenge/$params .png")
             plt.clf()
        end
-    end
+    #end
 end  
 println("fertig")
