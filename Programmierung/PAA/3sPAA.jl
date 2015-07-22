@@ -77,6 +77,7 @@ function updateDistributions!(params::Array{Float32,2}, distributions, index, nu
     end
     # Zu kleine Werte wegwerfen, um Groesse der Arrays zu beschraenken
     new_dist, index = cut_Distributions(new_dist, index)
+
     return new_dist, index        
 end
 
@@ -111,8 +112,10 @@ function waitingTimeForValue(params::Array{Float32, 2}, value, maxTime, num_stat
             push!(result, summe)
         else
             push!(result, 0.0f0)
+
         end
     end
+
     return result
 end
 
@@ -182,22 +185,42 @@ maxtime = 2400000
 #params = [0.8f0 0.195f0 0.005f0; 0.0004f0 0.9996f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
 #params = [0.9f0 0.1f0 0.0f0; 0.001f0 0.999f0 0.0f0; 0.00005f0 0.0f0 0.99995f0]
 #params[0.5 0.49995 5.0e-5; 0.004999995 0.995 0.0; 1.001358e-5 0.0 0.99999] 
-# params = [0.5f0 0.1f0 0.0f0; 0.001f0 0.999f0 0.0f0; 0.00005f0 0.0f0 0.99995f0]
-# params = [0.4f0 0.59995f0 5.0f-05; 0.002f0 0.998f0 0.0f0; 5.0f-05 0.0f0 0.999995f0]
- param_list = Array(Any, 0)
-# push!(param_list, params)
-# params = [0.4f0 0.59995f0 5.0f-05; 0.002f0 0.998f0 0.0f0; 0.00005f0 0.0f0 0.99995f0]
-# push!(param_list, params)
-# params = [0.4f0 0.59995f0 5.0f-05; 0.002f0 0.998f0 0.0f0; 0.000015f0 0.0f0 0.999985f0]
-# push!(param_list, params)
-# params = [0.4f0 0.59995f0 5.0f-05; 0.002f0 0.998f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
-# push!(param_list, params)
-#params = [0.4f0 0.59995f0 5.0f-05; 0.002f0 0.998f0 0.0f0; 0.000025f0 0.0f0 0.999975f0]
-#push!(param_list, params)
 
-# Parameterliste erstellen
-param_list = combineParams()
-reverse!(param_list)
+params = [0.5f0 0.1f0 0.0f0; 0.001f0 0.999f0 0.0f0; 0.00005f0 0.0f0 0.99995f0]
+params = [0.4f0 0.59995f0 5.0f-05; 0.002f0 0.998f0 0.0f0; 5.0f-05 0.0f0 0.999995f0]
+param_list = Array(Any, 0)
+params=[0.7f0 0.29995f0 0.00005f0; 0.005f0 0.995f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
+push!(param_list, params)
+params=[0.99f0 0.005f0 0.005f0; 0.0004f0 0.9996f0 0.0f0; 0.000025f0 0.0f0 0.999975f0]
+push!(param_list, params)
+params=[0.99f0 0.0095f0 0.0005f0; 0.005f0 0.995f0 0.0f0; 0.000075f0 0.0f0 0.999925f0]
+push!(param_list, params)
+params=[0.85f0 0.1493f0 0.0007f0; 0.003f0 0.997f0 0.0f0; 0.000003f0 0.0f0 0.999997f0]
+push!(param_list, params)
+params=[0.005f0 0.99499f0 0.00001f0; 0.0009f0 0.9991f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
+push!(param_list, params)
+params=[0.6f0 0.399f0 0.001f0; 0.0004f0 0.9996f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
+push!(param_list, params)
+params=[0.005f0 0.9947f0 0.0003f0; 0.0009f0 0.9991f0 0.0f0; 0.000003f0 0.0f0 0.999997f0]
+push!(param_list, params)
+params=[0.5f0 0.499f0 0.001f0; 0.0005f0 0.9995f0 0.0f0; 0.00001f0 0.0f0 0.99999f0]
+push!(param_list, params)
+params=[0.05f0 0.9495f0 0.0005f0; 0.0009f0 0.9991f0 0.0f0; 0.000005f0 0.0f0 0.99995f0]
+push!(param_list, params)
+params=[0.2f0 0.7993f0 0.0007f0; 0.0008f0 0.9992f0 0.0f0; 0.000004f0 0.0f0 0.999996f0]
+push!(param_list, params)
+params=[0.005f0 0.999499f0 0.00001f0; 0.0005f0 0.9995f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
+push!(param_list, params)
+params=[0.15f0 0.84995f0 0.00005f0; 0.0004f0 0.9996f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
+push!(param_list, params)
+params=[0.05f0 0.9493f0 0.0007f0; 0.0005f0 0.9995f0 0.0f0; 0.000025f0 0.0f0 0.999975f0]
+push!(param_list, params)
+params=[0.15f0 0.845f0 0.005f0; 0.0005f0 0.9995f0 0.0f0; 0.000025f0 0.0f0 0.999975f0]
+push!(param_list, params)
+params=[0.1f0 0.899f0 0.001f0; 0.0007f0 0.9993f0 0.0f0; 0.000001f0 0.0f0 0.999999f0]
+push!(param_list, params)
+#param_list = combineParams()
+#reverse!(param_list)
 println(length(param_list))
 
 # Simulationen starten, vorher testen, ob diese schon exisitert
@@ -210,7 +233,7 @@ for params in param_list
             #println (filename)
         end
     end
-    if !isfile(filename)
+  #  if !isfile(filename)
 #    # if isfile("savedata_julia/l$laenge/$params")
 #    #    println("Summe ", sum(res))
 #    #    if (sum(res) < 0.999 )
@@ -223,6 +246,7 @@ for params in param_list
 # #             writecsv(filename, res)
 # #         end
 # #        println ("isfile, $params")
+<<<<<<< HEAD
 # #     else
         println(strftime(time()), " starte: ")
         print (params, " ")
@@ -241,5 +265,26 @@ for params in param_list
 #             plt.clf()
 #        end
     end
+=======
+#     #else
+    println (params)
+    println(strftime(time()))
+    res = None
+    for i in 1:3
+        res = @time(waitingTimeForValue(params, laenge, maxtime))
+    end
+        writecsv(filename, res)
+   # end
+        if (sum(res) >= 0.9 )
+            plt.plot(res)
+            #plt.xticks([0, len(res)], [res[1], (len(res) + res[0]))
+            plt.ylabel("")
+            plt.xlabel("Zeit / Schritten")
+            plt.title("PAA; Params: $params")
+            plt.savefig("savefigs_julia/l$laenge/$params .png")
+            plt.clf()
+       end
+    #end
+>>>>>>> 82b475a574e4583477ebdb1ef0c76b37e252bfaf
 end  
 println("fertig")
