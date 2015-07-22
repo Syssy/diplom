@@ -25,12 +25,6 @@ class PAA():
         self.maxtime = maxtime
         self.times = times
         self.source = source
-        # nur bei Julia:
-        if source == "julia":
-            self.offset = times.pop(0)/10000
-        # Bei mosdi sind immer die 0 am Anfang, offset gibt es da nicht
-        else:
-            self.offset = 0
         self.pd = self.calculate_pd()
         self.times = self.compress(comp_factor)
         self.version = version
@@ -57,7 +51,7 @@ class PAA():
         if wsumme < 0.99:
             print ("Summe der Wahrscheinlichkeiten zu gering, moeglicherweise ragt Peak ueber die Maxtime ", self.maxtime, " hinaus")
             iqr, qk = float("nan"), float("nan")
-            return ([self.offset + np.argmax(times), [float("nan"), float("nan"), float("nan")], float("nan"), float("nan")]) 
+            return ([np.argmax(times), [float("nan"), float("nan"), float("nan")], float("nan"), float("nan")]) 
         #print ("summe", wsumme)
         #Quartile berechnen 
         #TODO: Wenn die Quartile nicht ausreichen und beliebige Quantile genutzt werden sollen, Berechnung anpassen
@@ -84,7 +78,7 @@ class PAA():
         # Interquantilskoeffizient (Schiefe)
         qk = (quartiles[2] + quartiles[0] - 2*quartiles[1]) / (quartiles[2] - quartiles[0])
         # Lage des Maximums, quartile, iqr, qk
-        peakdata = ([self.offset + (np.argmax(times)/10000), quartiles, iqr, qk]) 
+        peakdata = ([(np.argmax(times)/10000), quartiles, iqr, qk]) 
         #plt.plot(times)
         #plt.show()
         #print ("peakdata", peakdata)
@@ -155,7 +149,6 @@ def plotte_Zeitpunkt(directory, time_range = [1,240], iqr_range = [0,100], iqk_r
 
 def plot_single_peak(filename):
     '''Einzelnen Peak plotten'''
-    #TODO: Offset berücksichtigen
     with open (filename, "rb") as data:
         aPeak = pickle.load(data)
         plt.plot(aPeak.times)
@@ -174,7 +167,6 @@ def plot_peak_from_uncompressed(filename):
         aPAA = PAA(params, 1000, times)
         print ("ohne compress:", aPAA.pd, len(aPAA.times))
         print ("nach compress:", aPAA.calculate_pd(), len(aPAA.times))
-        print ("offset ", aPAA.offset)
         plt.plot(times)
         plt.show()
         plt.plot(aPAA.times)
@@ -207,7 +199,7 @@ def plot_3feste_Params(directory, pmm = [], pml = [], paa =[], pll=[], variabel 
             #print (filename)
             with open (directory + filename , "rb" ) as data:
                 myPAA = pickle.load(data)
-                print("pd, params, offset", myPAA.pd, myPAA.params, myPAA.offset)
+                print("pd, params", myPAA.pd, myPAA.params)
                 if myPAA.pd[2] == myPAA.pd[2]:
                 #plt.set_label(str(myPAA.params[0]) + str(myPAA.pd[0]))
                     # Achsen x:Breite, y:Schiefe
