@@ -219,7 +219,7 @@ params=[0.15f0 0.845f0 0.005f0; 0.0005f0 0.9995f0 0.0f0; 0.000025f0 0.0f0 0.9999
 push!(param_list, params)
 params=[0.1f0 0.899f0 0.001f0; 0.0007f0 0.9993f0 0.0f0; 0.000001f0 0.0f0 0.999999f0]
 push!(param_list, params)
-#param_list = combineParams()
+param_list = combineParams()
 #reverse!(param_list)
 println(length(param_list))
 

@@ -91,6 +91,7 @@ def erzeuge_Tabelle(directory, csv_name, time_range = [1,240], iqr_range = [0,50
     starttime = time.clock()
     peaks_found = []
     print ("erzeuge_Tabelle")
+    # Ueberpruefe jeden Peak
     for filename in filenames:
         with open(directory+filename, "rb") as mydata:
             myPAA = pickle.load(mydata)
@@ -99,12 +100,12 @@ def erzeuge_Tabelle(directory, csv_name, time_range = [1,240], iqr_range = [0,50
             #time.sleep(1)
             #Ueberpruefung, ob Peak die Vorgaben erfuellt
             if myPAA.pd[0] > time_range[0] and myPAA.pd[0] < time_range[1] and myPAA.pd[2] > iqr_range[0] and myPAA.pd[2] < iqr_range[1] and myPAA.pd[3] > iqk_range[0] and myPAA.pd[3] < iqk_range[1]:
-                #plt.plot(mytimes)
-                params.extend(myPAA.pd) 
+                # Die Peakdaten an die Params dranhaengen, das ganze dann als Zeile der Tabelle
+                params.extend([myPAA.pd[0], myPAA.pd[2], myPAA.pd[3]]) 
+                # params.extend(myPAA.pd)
                 peaks_found.append(params)
                 #plt.show()
     print ("zeit", time.clock() - starttime)       
-    #TODO aus den Daten die PD, also Loc, IQR und QK 
     # Abspeichern der Tabelle als csv Datei
     with open(csv_name, 'w', newline='') as csvfile:
         mywriter = csv.writer(csvfile)
@@ -120,7 +121,17 @@ def plotte_Zeitpunkt(directory, time_range = [1,240], iqr_range = [0,100], iqk_r
     '''Alle zu geg Zeit/IQR/IQK gefundenen Peaks plotten'''
     filenames = [name for name in os.listdir(directory) if name.startswith("Sim_")]
     tabellenname = "xy_" + str(time_range[0]) + "_" + str(time_range[1]) + "_" + str(iqr_range[0]) + "_" + str(iqr_range[1]) + "_"+  str(iqk_range[0]) + "_" + str(iqk_range[1]) + ".csv"
-    peaks_found = erzeuge_Tabelle(directory, tabellenname, time_range, iqr_range, iqk_range)
+    peaks_found = []
+    if os.path.exists(tabellenname):
+        print (tabellenname)
+        with open (tabellenname, "r", newline='') as csvfile:
+            myreader = csv.reader(csvfile)
+            for line in myreader:
+               # print (line)
+                peaks_found.append([float(x) for x in line])
+    else:
+        peaks_found = erzeuge_Tabelle(directory, tabellenname, time_range, iqr_range, iqk_range)
+    
     starttime = time.clock()
     fig = plt.figure()
     plt.suptitle("Zeit: " + str(time_range) + " IQR: " + str(iqr_range) + " IQK: " + str(iqk_range))
@@ -143,8 +154,8 @@ def plotte_Zeitpunkt(directory, time_range = [1,240], iqr_range = [0,100], iqk_r
         #TODO: Die markersize sinnvoll nutzen
         # TODO: Sinnvolle Kennzeichung über formen und farben der punkte
         for i, j in enumerate([0, 2, 4, 8]):
-            ax[i].plot([peak[11]], [peak[12]], "go", markersize = 2*abs(np.median([time_range[1], time_range[0]])-peak[9]))
-            t = ax[i].text(peak[11], peak[12], str(peak[j]), size= "small")
+            ax[i].plot([peak[10]], [peak[11]], "go", markersize = 2*abs(np.median([time_range[1], time_range[0]])-peak[9]))
+            t = ax[i].text(peak[10], peak[11], str(peak[j]), size= "small")
     plt.show()
 
 def plot_single_peak(filename):
@@ -152,6 +163,11 @@ def plot_single_peak(filename):
     with open (filename, "rb") as data:
         aPeak = pickle.load(data)
         plt.plot(aPeak.times)
+        hoehe = np.max(aPeak.times)
+        plt.plot([aPeak.pd[1][0] * 10, aPeak.pd[1][0] * 10], [0, hoehe])
+        plt.plot([aPeak.pd[1][1] * 10, aPeak.pd[1][1] * 10], [0, hoehe])
+        plt.plot([aPeak.pd[1][2] * 10, aPeak.pd[1][2] * 10], [0, hoehe])
+        
         plt.title(filename)
         print (aPeak.pd)
         print (aPeak.params)
@@ -220,7 +236,7 @@ def plot_3feste_Params(directory, pmm = [], pml = [], paa =[], pll=[], variabel 
     print ("todolist", todolist)   
     del mydict[variabel]
     plt.suptitle("fest:" + str(mydict) + "\n variabel: " + variabel)
-    plt.legend(title= variabel+ ",  Breite", numpoints = 1, loc = 1)
+    plt.legend(title= variabel+ ",  breite", numpoints = 1, loc = 4)
     plt.show()    
     return
 
@@ -247,23 +263,23 @@ def main():
     #pmm = [0.8]
     #pmm = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95]
     pmm = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-    pml = [0.0001]
+    pml = [0.001]
     #pml = [0.005, 0.003, 0.001, 0.0007, 0.0005, 0.0003, 0.0001, 0.00005]
-    paa = [0.9992]
+    paa = [0.9985]
     #paa = [0.997, 0.998, 0.9985, 0.999, 0.9992, 0.9993, 0.9994, 0.9995, 0.9996]
-    pll = [0.99995]
+    pll = [0.99999]
     #pll = [0.9999, 0.999925, 0.99995, 0.999975, 0.99999, 0.999993, 0.999995, 0.999997, 0.999999]
     
-    plot_3feste_Params(dest_directory, pmm, pml, paa, pll, "pmm")
+   # plot_3feste_Params(dest_directory, pmm, pml, paa, pll, "pmm")
     
    # param = [0.4, 0.0001, 0.999, 0.99995]
    # filename = dest_directory + "Sim_" + str(pmm[0]) + "_" + str(pml[0]) + "_" + str(paa[0]) + "_" + str(pll[4]) + ".p"
-   # filename = dest_directory + "Sim_0.1_0.0005_0.9996_0.99999.p"
+   # filename = dest_directory + "Sim_0.55_0.0005_0.997_0.999997.p"
     
   #  filename2 = source_directory+ "Sim_0.4_0.59995_5.0e-5_0.0019999743_0.998_0.0_5.0008297e-5_0.0_0.99995"
   #  plot_single_peak(filename)
     #plot_peak_from_uncompressed(filename2)
-    #plotte_Zeitpunkt(dest_directory, [45,55], [1,15], [0.2,1])  
+   # plotte_Zeitpunkt(dest_directory, [15,195], [1,20], [0.5,1])  
     
     filenames = [name for name in os.listdir(source_directory) if name.startswith("Sim_")]
     for filename in filenames:   

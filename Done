@@ -298,12 +298,14 @@ läuft
  * Die betreffenden wurden umbenannt und können neu simuliert werden. Leider sind das 150 GB
  * Etwas geschrieben 
  
- * faszinierend1 bleibt auch nach neusimulation, ebenso faszinierend2. Der Fehler in kann_nicht_sein ist jedoch weg. In fehler_ruecklaeufiger_zeitpunkt springt leider die 0.999999 immer noch. Das verschwindet, wenn ich statt der Mediane wieder die argmax betrachte
+ * faszinierend1 bleibt auch nach neusimulation, ebenso faszinierend2. Das ist jedoch ein so geringer Effekt, bei Rundung auf 2 Nachkommastellen fällt das schon wieder weg. Der Fehler in kann_nicht_sein ist jedoch weg. In fehler_ruecklaeufiger_zeitpunkt springt leider die 0.999999 immer noch. Das verschwindet, wenn ich statt der Mediane wieder die argmax betrachte
  -> Findet nur in nicht relevantem Bereich statt, daher ignorieren
  * Mit Laufzeitvergleichstests auf dem alten Laptop begonnen
+ * Auswirkungen der 4 Params auf Zeitpunkt, Schiefe, Breite untersucht. Es gibt in den meisten Fällen gut beobachtbare Zusammenhänge, zumindest aber immer Kurven, keine Sprünge. 
  
  
- 
+23.07.2015
+ * Kurzer Blick auf die (nicht existenten) Referenzdaten sagt, dass die bisher nicht erreichbar geglaubten Peaks (zu schmal für Zeitpunkt) doch erreichbar sind, wenn man die Schiefe mit bedenkt, bzw, wenn der IQR als Maß genommen wird. Keine Ahnung, warum das vorher mit der Breite nicht ging, wahrscheinlich ist einfach das Maß blöd gewesen oder die Berechnungen falsch. So wie es aussieht, sind mit der neuen Simulation alle Peaks simulierbar
  
  
  

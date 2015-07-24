@@ -4,9 +4,9 @@ Besprechung:
  * Fragen:
     ** Die Sache mit den Peaks die zu schmal für meine Sim waren fällt ja quasi weg, es gibt ohne Daten keine Hinweise darauf, dass es nötig ist, schmalere Peaks zu erzeugen. Daher einfach aufschreiben, DASS da eine Grenze ist (nach oben aber fast beliebig breit)
  * Berichte:
-    **
- * Geplant:
     ** 
+ * Geplant:
+    ** Welche Plots sind weiterhin sinnvoll? Flächenabdeckung weiß ich nicht so ganz, wie. Eher zwei feste Params mit Farbe und Form kennzeichnen?
 
 Sim, allgemein:
  * Peakfinder: Von Dommi das Sekantenverfahren erklären lassen (das sprengt wohl den Rahmen)
@@ -27,12 +27,10 @@ Sim, allgemein:
 PAA:
  * PAA-Daten und Simulationen vergleichen / Unterschiede berechnen / Ab wie vielen Teilchen hinreichend genau? Existieren Differenzen?
  * Laufzeittests zwischen Julia, Mosdi und Simulationen, evtl auf dem anderen rechner. Bin jetzt grad verwundert, hab ich mosdi auch mit der momentanen länge von 1000 getestet oder nur mit den 200000 von damals? Vielleicht liefert das ja doch ergebnisse in brauchbarer zeit
- * Was ist ein Guter schiefewert mit dem koeff? -> ab > 0.01 was zu sehen, richtig schief ab 0.1/0.2
  * review, umstrukturierung, aufräumen
  * Normalisierung/Compression der Daten. Will nicht nur 1 Datenpunkt pro Sekunde, wie speichere ich das sinnvoll ab? Rechne aktuell mit Zehntelsekunden, dann passt das, ist aber ungewohnt
  * Plots zur Flächenabdeckung zu Zeitpunkt
- * Testen, wie sich die Ergebnisse unterscheiden, wenn nicht abgeschnitten wird (oder früher/später) auch auf dem anderen rechner. Dazu: Brauche testparametersatz, der verschiedene Begebenheiten berücksichtigt: frühe/späte/rausragende Peaks, Tailing/keines, breite/mittlere/schmale Peaks
- * pml-feste plot noch mal machen, wenn 0.003 durch ist
+ * pml-fest plot noch mal machen, wenn 0.003 durch ist
 
  
 Schreiben:
@@ -41,6 +39,7 @@ Schreiben:
  * home/bio/book/unsorted liegen diverse gescannte Bücher. evlt mal da nach statistik literatur gucken
  * Sämtliche Hinweise auf Referenzdaten entfernen, in hypothetische Formulierungen ändern
  * tablesgenerator.com für Tabellen in latex erstellen
+ * Das mit der nicht erreichbaren schmalen Breite lag am genutzten Maß. Kommentar rausnehmen?
 
  
  
