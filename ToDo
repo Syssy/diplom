@@ -484,4 +484,5 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * single peak plot mit quartilen
  * Plotte Zeitpunkt mit 1/2 festen Parametern, könnte interessant zu sehen sein, bei größeren Zeitraumgebieten
  * Markersize im plotZeitpunkt ist doof (für große zeitspannen, dafür ist es ja auch eigentich nciht gedacht)
+ * Termin ausmachen
  

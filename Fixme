@@ -6,7 +6,8 @@ Besprechung:
  * Berichte:
     ** 
  * Geplant:
-    ** Welche Plots sind weiterhin sinnvoll? Flächenabdeckung weiß ich nicht so ganz, wie. Eher zwei feste Params mit Farbe und Form kennzeichnen?
+    ** 
+ 
 
 Sim, allgemein:
  * Peakfinder: Von Dommi das Sekantenverfahren erklären lassen (das sprengt wohl den Rahmen)
@@ -14,7 +15,7 @@ Sim, allgemein:
  * Überlegen, was ich überhaupt als Simulation und was als PAA verwenden will
 
 2p-Sim:
- * Vergleich der Peakbreiten bei verschiedenen Längen, wenn das nicht passt: Sättigung einbauen (Sättigung wird den Rahmen sprengen) Vergleich trotzdem interessant, kann vielleicht zur letztendlichen Formel mit beitragen
+ * Vergleich der Peakbreiten bei verschiedenen Längen
  * Review/Finalisierung von Peakfinder 
  * Review/Finalisierung von v005
  
@@ -30,8 +31,7 @@ PAA:
  * review, umstrukturierung, aufräumen
  * Normalisierung/Compression der Daten. Will nicht nur 1 Datenpunkt pro Sekunde, wie speichere ich das sinnvoll ab? Rechne aktuell mit Zehntelsekunden, dann passt das, ist aber ungewohnt
  * Plots zur Flächenabdeckung zu Zeitpunkt
- * pml-fest plot noch mal machen, wenn 0.003 durch ist
-
+ * single peak plot mit quartilen
  
 Schreiben:
  * Schreiben halt
@@ -40,6 +40,7 @@ Schreiben:
  * Sämtliche Hinweise auf Referenzdaten entfernen, in hypothetische Formulierungen ändern
  * tablesgenerator.com für Tabellen in latex erstellen
  * Das mit der nicht erreichbaren schmalen Breite lag am genutzten Maß. Kommentar rausnehmen?
+ * Formulierung des Problems als unbekannte Funktion (siehe Foto 23.7.)
 
  
  
