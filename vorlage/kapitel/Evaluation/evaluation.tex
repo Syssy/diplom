@@ -17,3 +17,37 @@ Evtl Tabelle mit exemplarischen Daten?
 Sinnvolle Parameterbereiche
 
 3a modell liefert tailing, welches bei 3b nicht gefunden wurde (vielleicht einfach nur die falschen parameter ausprobiert?)
+
+\section{Relevanter Parameterbereich / relevate Peaks}
+\todo{Wo erwähnen, dass nach 240 sec Schluss ist?}
+In der experimentellen Phase der Arbeit wurden zunächst im gesamten Parameterraum $[0;1]^3$ einige Simulationen durchgeführt, um herauszufinden, in welchen Bereichen sich Peaks ergeben. 
+Durch die Beschränkung des Spektrums auf $240$ Sekunden scheiden schon viele Parameterkombinationen aus, welche spätere Peaks erzeugen würden. Das betrifft insbesondere diejenigen Kombinationen, die eine geringe Wahrscheinlichkeit haben, mobil zu bleiben oder zu werden, dafür aber mit einer sehr hohen Wahrscheinlichkeit stationär werden oder bleiben. 
+Für die Schiefe soll es zunächst keine Beschränkungen geben, TODO (gibt es ne sinnvolle Obergrenze, Optik mit Werten vergleichen)
+Typischerweise sind Peaks zu Beginn des Spektrums eher schmal, spätere Peaks können breiter werden. Generell lässt sich sagen, dass der IQR eines Peaks geringer sein sollte, als sein Maximalzeitpunkt. Darüber hinaus wurde eine maximale Peakbreite von 10+0.2*maxzeitpunkt TODO festgelegt. Peaks mit höherem IQR sind in einem Spektrum kaum noch als Peaks zu erkennen.
+Sehr breite Peaks sind auch nur dann als Peak zu erkennen, wenn sie sehr schief sind
+Dadurch ergeben sich folgende Einschränkungen für die verschiedenen Parameter:
+\begin{itemize}
+ \item $pmm$: keine generellen Einschränkungen, es wurden für Werte im Intervall $[0,005; 0,99]$ Peaks gefunden. Bei noch kleineren Werten TODO bei größeren Werten TODO
+ \item $pml$: sinnvolle Werte liegen im Bereich $[0,00001; 0,001]$. Bei kleineren Werten ergeben sich auch Peaks, die jedoch kein oder fast kein Tailing mehr aufweisen, sodass auch auf das zwei-Parameter-Modell zurückgegriffen werden kann. Bei größeren Werten verweilen die Teilchen so lange im gelösten Zustand, dass die Peaks extrem breit werden, insbesondere, wenn der Parameter $pll$ auch sehr groß gewählt wurde.
+ \item $paa$: für diesen Parameter wurde der das Intervall auf $[0.997, 0.9996]$ beschränkt. Kleinere Werte sorgen für extrem frühe Peaks. Diese könnten zwar berücksichtigt werden, unterscheiden sich jedoch kaum voneinander. Bei größeren Werten werden die Peaks meist zu breit und zu spät. 
+ \item $pll$: sinnvolle Werte liegen im Bereich $[0,9999; 0,999999]$. Kleinere Werte TODO Bei größeren Werten werden die Teilchen so lange im stationären Zustand gehalten, dass die Peaks meist über das Maximum von 240 Sekunden hinausragen oder zu breit werden. Dies gilt insbesondere, wenn für $pml$ ebenfalls ein großer Wert gewählt wurde
+\end{itemize}
+
+In allen Fällen gilt jedoch, dass auch jeweils die Kombination der Parameter berücksichtigt werden muss, insbesondere, wenn ein Parameter am Rand des jeweils angegebenen Intervalls liegt, kommt es häufig vor, dass er nur in einigen wenigen Kombinationen für realistische Peaks sorgt.
+Beispiele: TODO: ein paar Kombis nennen, die grenzwertig, bzw drüber hinaus sind.
+
+
+
+\section{Einfluss der verschiedenen Parameter auf Peaks}
+
+In den meisten Fällen kann ein deutlicher Zusammenhang zwischen den Parametern und Peakdaten beobachtet werden, diese seien im Folgenden aufgeführt.
+Für den Maximalzeitpunkt des Peaks sowie seine Breite gilt, dass beide größer werden, wenn die Parameter $p_{m,l}$, $p_{a,a}$ und $p_{l,l}$ größer werden oder $p_{m,m}$ kleiner wird. 
+Die Schiefe steigt mit steigendem $p_{l,l}$ und fallendem $p_{a,a}$. Für $p_{m,l} \text{ und } p_{m,m}$ ist zu beobachten, dass bei größer werdenden Parametern die Schiefe zunächst auch ansteigt, ab einem gewissen Wert jedoch sinkt. 
+Da bei einem Wert für $p_{m,l}$ effektiv das zwei-Parameter-Modell zum Einsatz kommt, ist hier fast nie Schiefe zu beobachten, außerdem hat der Parameter $p_{l,l}$ keinen Einfluss. Nur in einem sehr kleinen Bereich, bei dem die Peaks ihren Maximalzeitpunkt bei etwa TODO haben, tritt überhaupt Schiefe auf. Dort ist der Einfluss der Parameter TODO
+
+paa hat einen stärkeren Einfluss auf den Zeitpunkt als pll und pml. Dieser wird noch stärker, wenn pmm klein ist
+
+pmm hat einen großen Einfluss auf den Zeitpunkt und nur einen minimalen Einfluss auf die Breite.
+
+
+
