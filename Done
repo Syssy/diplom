@@ -306,11 +306,19 @@ läuft
  
 23.07.2015
  * Kurzer Blick auf die (nicht existenten) Referenzdaten sagt, dass die bisher nicht erreichbar geglaubten Peaks (zu schmal für Zeitpunkt) doch erreichbar sind, wenn man die Schiefe mit bedenkt, bzw, wenn der IQR als Maß genommen wird. Keine Ahnung, warum das vorher mit der Breite nicht ging, wahrscheinlich ist einfach das Maß blöd gewesen oder die Berechnungen falsch. So wie es aussieht, sind mit der neuen Simulation alle Peaks simulierbar
+ * Laufzeitvergleichstests laufen. mosdi braucht in den ersten beiden fällen 200 mal so lang wie mein PAA ohne cut
+ * Gucke mir die 3-feste Bilder an und versuche, herauszufinden, welche Peaks nützlich sind
+ * Gucke mir verschieden schiefe Peaks an, um herauszufinden, welche Schiefe realistisch/gut ist. Momentan scheint ein Wert von ca 0.2 - 0.4 ganz gut. Darüber hinaus sind es meist fast symmetrische Peaks plus ein ganz langer Tail, der aber so niedrig ist, dass er im Rauschen verschwinden würde.  Werte darunter wirken mehr und mehr symmetrisch (soll ja auch so)
+ * SCHEISSE! Ganz, ganz doof: Habe einen Fehler gemacht, bei der Unterklasse für mosdi. Der Wertebereich muss nicht die maxtime+2 sein, sondern die length +2. Da diese viel, viel kleiner ist, geht mosdi nun doch ganz schnell, schneller noch als meine julia-implementierung. Ich versuche jetzt einen Vergleich mit ner Länge von 10000. Ich hoffe ja noch, dass durch das Kürzen meiner Arrays sich da was tut.
+ * Bei der 2p-Sim braucht Julia gut 1s und mosdi ca 200s (pm=ps=0.999)
+ * 3s, l=9999, params[0.6 0.399 0.001 0.0004 0.9996 0.0 0.0001 0.0 0.9999 
+  Julia: elapsed time: 1769.366788192 seconds (2727995243228 bytes allocated, 62.30% gc time)
+  Java: 2822.627 sec
+  Also ist bei dieser Länge schon wieder julia etwas besser (zumindest bei diesen params)
+  3s, l=999, params gleich
+  Julia: 47.480593754
+  Java: 24.660
+ * Geschrieben: Kapitel Methoden
  
- 
- 
- 
- 
- 
- 
+  
  

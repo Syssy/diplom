@@ -3,8 +3,10 @@ Hier kommt alles an wichtigen Todos rein, die vielleicht auch über längere Zei
 Besprechung:
  * Fragen:
     ** Die Sache mit den Peaks die zu schmal für meine Sim waren fällt ja quasi weg, es gibt ohne Daten keine Hinweise darauf, dass es nötig ist, schmalere Peaks zu erzeugen. Daher einfach aufschreiben, DASS da eine Grenze ist (nach oben aber fast beliebig breit)
+    ** Lohnt es sich, noch mal an der julia 3s rumzubasteln?
  * Berichte:
-    ** 
+    ** Fehler bei der Unterklasse für mosdi entdeckt, dadurch ist das nun viel schneller. 2p ist julia besser, aber 3s ist mosdi besser. 
+    ** Parametereinflüssse untersucht
  * Geplant:
     ** 
  
@@ -27,11 +29,11 @@ Sim, allgemein:
 
 PAA:
  * PAA-Daten und Simulationen vergleichen / Unterschiede berechnen / Ab wie vielen Teilchen hinreichend genau? Existieren Differenzen?
- * Laufzeittests zwischen Julia, Mosdi und Simulationen, evtl auf dem anderen rechner. Bin jetzt grad verwundert, hab ich mosdi auch mit der momentanen länge von 1000 getestet oder nur mit den 200000 von damals? Vielleicht liefert das ja doch ergebnisse in brauchbarer zeit
+ * Laufzeittests zwischen Julia, Mosdi und Simulationen, evtl auf dem anderen rechner. Bin jetzt grad verwundert, hab ich mosdi auch mit der momentanen länge von 1000 getestet oder nur mit den 200000 von damals? Vielleicht liefert das ja doch ergebnisse in brauchbarer zeit -> nicht wirklich
  * review, umstrukturierung, aufräumen
  * Normalisierung/Compression der Daten. Will nicht nur 1 Datenpunkt pro Sekunde, wie speichere ich das sinnvoll ab? Rechne aktuell mit Zehntelsekunden, dann passt das, ist aber ungewohnt
  * Plots zur Flächenabdeckung zu Zeitpunkt
- * single peak plot mit quartilen
+ * Sinnvolle Obergrenze für Schiefe (manche der extrem schiefen Peaks sahen seltsam und unpeakig aus)
  
 Schreiben:
  * Schreiben halt
