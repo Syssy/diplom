@@ -12,7 +12,9 @@ Modsi zu allgemein und für diese Anwendung sehr langsam, daher der nötige Spez
 
 \subsection{Simulation des 2-Parameter Modells}
 \subsubsection{Step-by-Step}
-Für jedes Teilchen muss jeweils der aktuelle Zustand und Ort festgehalten werden. Da nur zwei Zustände existieren, bietet es sich an, dafür ein Array mit Boole'schen Werten zu verwenden. $0$ steht dabei für stationär und $1$ für mobil. Für jedes Teilchen wird in einem zweiten Array an gleicher Position der Ort gespeichert.
+TODO: Zustand $p \in \{0, 1\}$ Ort $o \in \{0, \ldots, l\}$ wobei $l$ die Länge der Säule ist.
+
+Für jedes Teilchen muss jeweils der aktuelle Zustand und Ort festgehalten werden. Da nur zwei Zustände existieren, bietet es sich an, dafür ein Array mit Boole'schen Werten zu verwenden. $0$ steht dabei für stationär und $1$ für mobil. Für jedes Teilchen wird in einem zweiten Array an gleicher Position der Ort gespeichert. 
 
 Die Teilchen wechseln in jedem Schritt mit einer bestimmten Wahrscheinlichkeit den Zustand, daher muss pro Schritt eine Zufallszahl gezogen werden, anhand derer sich entscheidet, wie es sich verhält. Außerdem muss in jedem Schritt für jedes mobile Teilchen der Ort um eins erhöht werden.
 
@@ -106,9 +108,27 @@ Zum Ablauf der Simulation ist entschieden, dass die Teilchen zunächst eine Phas
 \caption{Prinzip der schrittweisen Simulation bei zwei Parametern}
 \end{figure}
 
+Die neuen Zustände berechnen sich dann über folgende Formel: $(p \land pm) \lor (\lnot p \land \lnot ps)$. Für die neuen Orte kann einfach der neue Zustandsvektor auf den alten Ortsvektor addiert werden.
 
+Nach jedem solchen Simulationsschritt wird, ob Teilchen bereits den Wert von $l$ erreicht haben und damit die ganze Säule durchlaufen haben. Die entsprechende Anzahl dafür benötigter Schritte wird festgehalten, sodass als Ergebnis am Ende der Simulation eine Liste von Ankunftszeiten aller Teilchen entsteht. Teilchen, die angekommen sind, werden aus beiden Vektoren gelöscht.
+Als alternative Abbruchbedingung kann eine maximale Anzahl von Simulationsschritten gewählt werden, nach deren Ablauf die Simulation beendet ist, wenn nur Peaks von Interesse sind, die vor diesem Zeitpunkt im Chromatogramm erscheinen.
+\todo{Algo im Pseudocode?}
+TODO: Ablauf im Pseudocode (simschritt, test, evtl teilchen löschen) und den simschritt dann hier erklären, ähnlich wie in meiner programmierten Aufteilung
+
+\todo{Wo stehen Zeiteinheiten festgelegt?}
+TODO: evtl gehört das zur Implementierung: Da im Laborexperiment nur in gewissen Intervallen detektiert wird, bei der MCC-IMS-Kopplung wird beispielsweise nur zwei Mal pro Sekunde eine Messung durchgeführt, genügt es auch in der Simulation, wenn nicht nach jedem Simulationsschritt die Orte aller Teilchen getestet werden, um ein ausreichend exaktes Ergebnis zu erhalten.
+Dadurch entfallen viele Abfragen und es kann Simulationszeit eingespart werden. Eine weitere Möglichkeit hierfür ist es, erst nach $l$ Schritten mit dem Testen auf Erreichen der Säulenlänge zu beginnen, da vorher noch kein Teilchen diesen Wert erreicht haben kann.
 
 \subsubsection{By-Event}
+
+Für die By-Event Simulation muss für jeden Zeitpunkt verwaltet werden, welche Teilchen zu diesem Zeitpunkt ihren Zustand wechseln. Jedes Teilchen besteht dabei aus seinem Ort und seinem Zustand. 
+Zunächst starten alle Teilchen bei Zeitpunkt 1, Ort 0 und mobil.
+Ein Simulationsschritt behandelt dabei alle Teilchen eines Zeitpunktes. Ein solches Event beinhaltet den Wechsel des Zustands, die Bestimmung des Zeitpunkts des nächsten Zustandswechsels sowie bei mobilen Teilchen eine Änderung des Ortes. Anschließend wird das Teilchen der Zeitpunkteliste seines nächsten blubb
+Wann ein Teilchen das nächste Mal seinen Zustand wechselt, wird mit Hilfe einer geometrisch verteilten Zufallszahl bestimmt. Daher lohnt sich diese Art der Simulation insbesondere bei Parametern nahe 1. 
+TODO: Ort
+
+Allerdings gestaltet sich das Testen auf Erreichen der Säulenlänge bei dieser Methode etwas schwieriger, da $l$ nur sehr selten genau getroffen wird. In vielen Fällen wird ein Teilchen von einem Ort kleiner $l$ direkt auf einen viel größeren Ort befördert. Daher muss zwischen jedem Simulationsschritt getestet werden, ob ein Teilchen bereits $l$ überschritten hat. Wenn das der Fall ist, muss mit Hilfe der Differenz zum aktuellen Simulationszeitpunkt die korrekte Ankunftszeit des Teilchens berechet werden.
+Ob diese Berechnung nach jedem Simulationsschritt, also vor Neueintragung in die Liste geschieht, oder vor jedem Schritt, ist egal. Allerdings muss im zweiten Fall beachtet werden, dass, falls als Abbruchbedingung eine Maximalzeit gewählt wurde, sichergestellt sein muss, dass alle übrigen Teilchen noch einmal auf Erreichen von $l$ getestet werden.
 
 \subsection{Simulation des 3-Zustände Modells}
 
