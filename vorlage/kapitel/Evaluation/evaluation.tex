@@ -22,15 +22,17 @@ Sinnvolle Parameterbereiche
 \todo{Wo erwähnen, dass nach 240 sec Schluss ist?}
 In der experimentellen Phase der Arbeit wurden zunächst im gesamten Parameterraum $[0;1]^3$ einige Simulationen durchgeführt, um herauszufinden, in welchen Bereichen sich Peaks ergeben. 
 Durch die Beschränkung des Spektrums auf $240$ Sekunden scheiden schon viele Parameterkombinationen aus, welche spätere Peaks erzeugen würden. Das betrifft insbesondere diejenigen Kombinationen, die eine geringe Wahrscheinlichkeit haben, mobil zu bleiben oder zu werden, dafür aber mit einer sehr hohen Wahrscheinlichkeit stationär werden oder bleiben. 
-Für die Schiefe soll es zunächst keine Beschränkungen geben, TODO (gibt es ne sinnvolle Obergrenze, Optik mit Werten vergleichen)
+% Für die Schiefe soll es zunächst keine Beschränkungen geben, TODO (gibt es ne sinnvolle Obergrenze, Optik mit Werten vergleichen)
 Typischerweise sind Peaks zu Beginn des Spektrums eher schmal, spätere Peaks können breiter werden. Generell lässt sich sagen, dass der IQR eines Peaks geringer sein sollte, als sein Maximalzeitpunkt. Darüber hinaus wurde eine maximale Peakbreite von 10+0.2*maxzeitpunkt TODO festgelegt. Peaks mit höherem IQR sind in einem Spektrum kaum noch als Peaks zu erkennen.
-Sehr breite Peaks sind auch nur dann als Peak zu erkennen, wenn sie sehr schief sind
+Sehr breite Peaks sind auch nur dann als Peak zu erkennen, wenn sie sehr schief sind.
+Für die Schiefe gilt, dass ein Tailing ab einem IQK von 0.2 gut zu erkennen ist. Werte bis 0.4 treten meist bei schiefen Peaks auf, die auch optisch einem realistischen Peak ähneln. Darüber hinaus haben die Peaks oft ein sehr langes Tailing, welches teilweise auch über die Maximalzeit hinausragt. Dieses ist jedoch auf einem so niedrigen Niveau, dass es in einem Spektrum mit Rauschen wahrscheinlich unter gehen würde.
+\todo{bewertende aussagen weglassen, habe ja keine vergleichsdaten}
 Dadurch ergeben sich folgende Einschränkungen für die verschiedenen Parameter:
 \begin{itemize}
  \item $pmm$: keine generellen Einschränkungen, es wurden für Werte im Intervall $[0,005; 0,99]$ Peaks gefunden. Bei noch kleineren Werten TODO bei größeren Werten TODO
  \item $pml$: sinnvolle Werte liegen im Bereich $[0,00001; 0,001]$. Bei kleineren Werten ergeben sich auch Peaks, die jedoch kein oder fast kein Tailing mehr aufweisen, sodass auch auf das zwei-Parameter-Modell zurückgegriffen werden kann. Bei größeren Werten verweilen die Teilchen so lange im gelösten Zustand, dass die Peaks extrem breit werden, insbesondere, wenn der Parameter $pll$ auch sehr groß gewählt wurde.
  \item $paa$: für diesen Parameter wurde der das Intervall auf $[0.997, 0.9996]$ beschränkt. Kleinere Werte sorgen für extrem frühe Peaks. Diese könnten zwar berücksichtigt werden, unterscheiden sich jedoch kaum voneinander. Bei größeren Werten werden die Peaks meist zu breit und zu spät. 
- \item $pll$: sinnvolle Werte liegen im Bereich $[0,9999; 0,999999]$. Kleinere Werte TODO Bei größeren Werten werden die Teilchen so lange im stationären Zustand gehalten, dass die Peaks meist über das Maximum von 240 Sekunden hinausragen oder zu breit werden. Dies gilt insbesondere, wenn für $pml$ ebenfalls ein großer Wert gewählt wurde
+ \item $pll$: sinnvolle Werte liegen im Bereich $[0,9999; 0,999999]$. Kleinere Werte TODO Bei größeren Werten werden die Teilchen so lange im stationären Zustand gehalten, dass die Peaks meist über das Maximum von 240 Sekunden hinausragen oder zu breit werden. Dies gilt insbesondere, wenn für $pml$ ebenfalls ein großer Wert gewählt wurde. Im oberen Bereich des Intervalls (>0.999995 erzeugen werden hier Peaks erzeugt, die eine sehr große Schiefe aufweisen, wo der Tail jedoch (wahrscheinlich) im Rauschen verschwindet. Mit den aktuellen Maßen lässt sich das kaum zeigen, wird jedoch beim Blick auf einen geplotteten Peak sofort klar.
 \end{itemize}
 
 In allen Fällen gilt jedoch, dass auch jeweils die Kombination der Parameter berücksichtigt werden muss, insbesondere, wenn ein Parameter am Rand des jeweils angegebenen Intervalls liegt, kommt es häufig vor, dass er nur in einigen wenigen Kombinationen für realistische Peaks sorgt.
@@ -49,5 +51,14 @@ paa hat einen stärkeren Einfluss auf den Zeitpunkt als pll und pml. Dieser wird
 
 pmm hat einen großen Einfluss auf den Zeitpunkt und nur einen minimalen Einfluss auf die Breite.
 
+pml und pll haben zunächst beide einen proportionalen Einfluss auf die Schiefe. Erst, wenn beide sehr groß sind, sinkt die Schiefe wieder (und die Breite steigt extrem an) Das ist wohl dadurch zu erklären, dass sich nicht mehr genügend Teilchen im mobil-adsorbierten System befinden, wodurch ein normaler Peak entstehen kann. Statt dass die Lösung Schiefe an diesem einfachen Peak verursacht, sorgt sie nunmehr für Breite
 
+Der Einfluss von pml auf den Zeitpunkt ist minimal (die Punkte scheinen teilweise auf einer gerade nach oben zu liegen, evtl etwas schräg). Auf die Schiefe ist er sehr groß, insbesondere, wenn auch pll groß ist. Gleiches gilt für die Breite.
 
+Der Einfluss von pmm auf den Zeitpunkt ist sehr groß und steigt mit steigendem paa. Der Einfluss auf die Breite ist gering, bei größerem PAA steigt dieser Einfluss etwas, was aber wahrscheinlich auch mit dem in diesem Fall ansteigenden Zeitpunkt zu tun hat (Peaks haben dem maxzeitpunkt auf dem gesamten Spektrum und werden mit zunehmender Zeit auch breiter) TODO: Noch mal den kleinen Bereich untersuchen, wo die Schiefe negativ beeinflusst wird.
+
+Der Einfluss von paa auf den Zeitpunkt wird mit steigendem pmm immer kleiner und reicht dadurch von minimalem Einfluss und recht frühen Peaks bei jeder Wahl von paa bis zu sehr großem Einfluss und Peaks, die je nach paa über das ganze Spektrum verteilt sind. paa hat nur dann einen relevanten Einfluss auf die Schiefe, wenn pml groß ist. Der Einfluss auf die Breite ist mäßig und wird größer, wenn pml und pll klein sind.
+
+Der Einfluss von pll auf den Zeitpunkt ist minimal (Punkte liegen mehr oder weniger alle auf einer fast geraden nach oben)
+
+\section{Laufzeiten}

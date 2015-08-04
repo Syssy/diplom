@@ -1,13 +1,122 @@
 \chapter{Methoden} 
 \label{chapter:meth}
 
+In diesem Kapitel werden für die verschiedenen Modelle Möglichkeiten beschrieben, diese zu simulieren. Offensichtlich ist es möglich, tatsächlich jeden einzelnen Zeitschritt für alle Teilchen zu betrachten. Wenn Zustandswechsel jedoch nicht  
+
+Modsi zu allgemein und für diese Anwendung sehr langsam, daher der nötige Spezialfall vom PAA
+
+
+
 \section{Simulation}
 \todo{Berechnungen bei den verschiedenen Modellen, Text und Bilder}
 
 \subsection{Simulation des 2-Parameter Modells}
+\subsubsection{Step-by-Step}
+Für jedes Teilchen muss jeweils der aktuelle Zustand und Ort festgehalten werden. Da nur zwei Zustände existieren, bietet es sich an, dafür ein Array mit Boole'schen Werten zu verwenden. $0$ steht dabei für stationär und $1$ für mobil. Für jedes Teilchen wird in einem zweiten Array an gleicher Position der Ort gespeichert.
+
+Die Teilchen wechseln in jedem Schritt mit einer bestimmten Wahrscheinlichkeit den Zustand, daher muss pro Schritt eine Zufallszahl gezogen werden, anhand derer sich entscheidet, wie es sich verhält. Außerdem muss in jedem Schritt für jedes mobile Teilchen der Ort um eins erhöht werden.
+
+Zum Ablauf der Simulation ist entschieden, dass die Teilchen zunächst eine Phase wechseln bzw. in ihrer Phase bleiben und sich anschließend die Teilchen gemäß ihres neuen Zustandes bewegen. Außerdem starten alle Teilchen ganz zu Beginn in der mobilen Phase, da sie nur so in das System eintreten können.
+
+\begin{figure}
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries}]
+\tikzstyle{feld}=[draw,minimum width=1.5cm,minimum height=0.7cm,font=\sffamily\footnotesize]
+
+
+\begin{scope}[start chain =1 going right, node distance =0.0mm]
+	\node [on chain =1, feld, draw=none] {Phasen};
+	\node [on chain=1, feld, fill=blue!30!white] (p1) {0};
+	\node [on chain=1, feld] (p3) {0};
+	\node [on chain=1, feld, fill=green!30!white] (p4) {1};
+	\node [on chain=1, feld] (p5) {1};
+	\node [on chain=1, feld,fill=magenta!70!blue!20!white] (p6) {1};
+	\node [on chain=1, feld] (p7) {1};
+	\node [on chain=1, feld, fill=orange!30!white] (p8) {0};
+\end{scope}
+
+\begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -1cm)}]
+	\node [on chain =1, feld, draw=none] {Orte};
+	\node [on chain=1, feld] (o1) {0};
+	\node [on chain=1, feld] (o3) {4};
+	\node [on chain=1, feld] (o4) {4};
+	\node [on chain=1, feld] (o5) {1};
+	\node [on chain=1, feld] (o6) {6};
+	\node [on chain=1, feld] (o7) {6};
+	\node [on chain=1, feld] (o8) {3};
+\end{scope}
+
+\begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -2.5cm)}]
+	\node [on chain =1, feld, draw=none] {ZV};
+	\node [on chain=1, feld] (z1) {$0,9$};
+	\node [on chain=1, feld] (z3) {$0,6$};
+	\node [on chain=1, feld] (z4) {$0,2$};
+	\node [on chain=1, feld] (z5) {$0,9$};
+	\node [on chain=1, feld] (z6) {$0,7$};
+	\node [on chain=1, feld] (z7) {$0,2$};
+	\node [on chain=1, feld] (z8) {$0,3$};
+\end{scope}
+
+\begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -3.5cm)}]
+	\node [on chain =1, feld, draw=none] {$p_s = 0,8$};
+	\node [on chain=1, feld, fill=blue!30!white] (ps1) {0};
+	\node [on chain=1, feld] (ps3) {1};
+	\node [on chain=1, feld] (ps4) {1};
+	\node [on chain=1, feld] (ps5) {0};
+	\node [on chain=1, feld] (ps6) {1};
+	\node [on chain=1, feld] (ps7) {1};
+	\node [on chain=1, feld, fill=orange!30!white] (ps8) {1};
+\end{scope}
+
+\begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -4.5cm)}]
+	\node [on chain =1, feld, draw=none] {$p_m = 0,5$};
+	\node [on chain=1, feld] (pm1) {0};
+	\node [on chain=1, feld] (pm3) {0};
+	\node [on chain=1, feld, fill=green!30!white] (pm4) {1};
+	\node [on chain=1, feld] (pm5) {0};
+	\node [on chain=1, feld,fill=magenta!70!blue!20!white] (pm6) {0};
+	\node [on chain=1, feld] (pm7) {1};
+	\node [on chain=1, feld] (pm8) {1};
+\end{scope}
+
+\begin{scope}[start chain =1 going right, node distance =0.0mm, shift={(0cm, -6cm)}]
+	\node [on chain =1, feld, draw=none] {Phasen};
+	\node [on chain=1, feld, fill=blue!30!white] (np1) {1};
+	\node [on chain=1, feld] (np3) {0};
+	\node [on chain=1, feld, fill=green!30!white] (np4) {1};
+	\node [on chain=1, feld] (np5) {0};
+	\node [on chain=1, feld,fill=magenta!70!blue!20!white] (np6) {0};
+	\node [on chain=1, feld] (np7) {1};
+	\node [on chain=1, feld, fill=orange!30!white] (np8) {0};
+\end{scope}
+
+\begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -7cm)}]
+	\node [on chain =1, feld, draw=none] {Orte};
+	\node [on chain=1, feld] (no1) {1};
+	\node [on chain=1, feld] (no3) {4};
+	\node [on chain=1, feld] (no4) {5};
+	\node [on chain=1, feld] (no5) {1};
+	\node [on chain=1, feld] (no6) {6};
+	\node [on chain=1, feld] (no7) {7};
+	\node [on chain=1, feld] (no8) {3};
+\end{scope}
+
+\end{tikzpicture}
+\label{2p_by_step}
+\caption{Prinzip der schrittweisen Simulation bei zwei Parametern}
+\end{figure}
+
+
+
+\subsubsection{By-Event}
+
 \subsection{Simulation des 3-Zustände Modells}
 
+Analog zum 2-Parameter Modell kann auch das 3-Zustände Modell schrittweise oder ereignisbasiert umgesetzt werden.
+
 \section{PAA}
+
+Zur Nutzung des PAA könnte man einfach die bereits vorhandene mosdi-Implementierung nutzen. 
 
 Wie werden die neuen Einträge berechnet? Graphik, Text dazu
 
@@ -15,4 +124,124 @@ Wie werden die Arrays gekürzt
 
 \subsection{PAA für das 2-Parameter Modell}
 
+Ähnlich wie bei der Simulation der Teilchen 
+
+\begin{figure}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries}]
+\tikzstyle{feld}=[draw,minimum width=1.7cm,minimum height=0.75cm,font=\sffamily\tiny]
+
+\begin{scope}[start chain=1 going right,node distance=-0.0mm]
+    \node [on chain=1,feld,draw=none, font=\small] {stat};
+    \node [on chain=1,feld] (s1) {$s_1$};
+    \node [on chain=1,feld] (s2) {$s_2$};
+    \node [on chain=1,feld] {$s_3$};
+    \node [on chain=1,feld] {$s_4$};
+    \node [on chain=1,feld,draw=none] {$\ldots$};
+%     \node [on chain=1,feld,draw=none] {$\ldots$};
+%     \node [on chain=1] {\textbf{Text}};
+\end{scope}
+
+
+\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-1cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
+    \node [on chain=1,feld,draw=none, font=\small] {mob};
+    \node [on chain=1,feld] (m1) {$m_1$};
+    \node [on chain=1,feld] (m2) {$m_2$};
+    \node [on chain=1,feld] {$m_3$};
+    \node [on chain=1,feld] {$m_4$};
+    \node [on chain=1,feld,draw=none] {$\ldots$};
+%     \node [on chain=1,feld,draw=none] {$\ldots$};
+%     \node [on chain=1] {\textbf{Text}};
+\end{scope}
+
+\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-2.2cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
+    \node [on chain=1,feld,draw=none, font=\small] {s\_to\_s };
+    \node [on chain=1,feld] (ss1) {$s_1*p_s$};
+    \node [on chain=1,feld] (ss2) {$s_2*p_s$};
+    \node [on chain=1,feld] {$s_3*p_s$};
+    \node [on chain=1,feld] {$s_4*p_s$};
+    \node [on chain=1,feld,align=center] {$0$};
+%     \node [on chain=1,feld,draw=none] {$\ldots$};
+%     \node [on chain=1] {\textbf{Text}};
+\end{scope}
+\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-3.2cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
+    \node [on chain=1,feld,draw=none, font=\small] {s\_to\_m};
+    \node [on chain=1,feld,align=center](sm1) {$0$};
+    \node [on chain=1,feld] (sm1) {$s_1(1-p_s)$};
+    \node [on chain=1,feld] (sm2) {$s_2(1-p_s)$};
+    \node [on chain=1,feld] {$s_3(1-p_s)$};
+    \node [on chain=1,feld] {$s_4(1-p_s)$};
+%     \node [on chain=1,feld,draw=none] {$\ldots$};
+%     \node [on chain=1] {\textbf{Text}};
+\end{scope}
+
+\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-4.2cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
+    \node [on chain=1,feld,draw=none, font=\small] {m\_to\_m };
+    \node [on chain=1,feld,align=center] {$0$};
+    \node [on chain=1,feld] (mm1){$m_1*p_m$};
+    \node [on chain=1,feld] (mm2){$m_2*p_m$};
+    \node [on chain=1,feld] {$m_3*p_m$};
+    \node [on chain=1,feld] {$m_4*p_m$};
+%     \node [on chain=1,feld,draw=none] {$\ldots$};
+%     \node [on chain=1] {\textbf{Text}};
+\end{scope}
+
+\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-5.2cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
+    \node [on chain=1,feld,draw=none, font=\small] {m\_to\_s};
+    \node [on chain=1,feld](ms1) {$s_1(1-p_s)$};
+    \node [on chain=1,feld] (ms2){$s_2(1-p_s)$};
+    \node [on chain=1,feld] {$s_3(1-p_s)$};
+    \node [on chain=1,feld] {$s_4(1-p_s)$};
+    \node [on chain=1,feld,align=center] {$0$};
+%     \node [on chain=1,feld,draw=none] {$\ldots$};
+%     \node [on chain=1] {\textbf{Text}};
+\end{scope}
+
+\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm, -6.4cm)}]
+    \node [on chain=1,feld,draw=none, font=\small] {stat'};
+    \node [on chain=1,feld,align=center] (s'1) {$s_1*p_s +$\\$m_1(1-p_m)$};
+    \node [on chain=1,feld,align=center](s'2) {$s_2*p_s +$\\$m_2(1-p_m)$};
+    \node [on chain=1,feld,align=center] {$s_3*p_s +$\\$m_3(1-p_m)$};
+    \node (n2) [on chain=1,feld,align=center] {$s_4*p_s +$\\$m_4(1-p_m)$};
+    \node [on chain=1,feld,align=center] {$0$};
+    \node [on chain=1,feld,draw=none] {$\ldots$};
+%     \node [on chain=1,feld,draw=none] {$\ldots$};
+%     \node [on chain=1] {\textbf{Text}};
+\end{scope}
+
+
+\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-7.4cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
+    \node (n1) [on chain=1,feld,draw=none, font=\small] {mob'};
+    \node [on chain=1,feld] {$0$};
+    \node [on chain=1,feld,align=center] (m'1){$m_1*p_m$\\$s_1(1-p_s)$};
+    \node [on chain=1,feld,align=center] (m'2){$m_2*p_m$\\$s_4(1-p_s)$};
+    \node [on chain=1,feld,align=center] {$m_3*p_m$\\$s_4(1-p_s)$};
+    \node [on chain=1,feld,align=center] {$m_4*p_m$\\$s_4(1-p_s)$};
+    \node [on chain=1,feld,draw=none] {$\ldots$};
+%     \node [on chain=1,feld,draw=none] {$\ldots$};
+%     \node [on chain=1] {\textbf{Text}};
+\end{scope}%         ;
+
+\path [line width=1.4pt, line cap=rect, draw=blue!70!red, bend left=30](s1) edge (ss1) ;
+\path [line width=1.4pt, line cap=rect, draw=blue!70!red, bend left=30](ss1) edge (s'1) ;
+\path [line width=1.4pt, line cap=rect, draw=blue!50!white, bend right=30](m1) edge (ms1) ;
+\path [line width=1.4pt, line cap=rect, draw=blue!50!white, bend right=05](ms1) edge (s'1) ;
+
+\path [line width=1.4pt, line cap=rect, draw=green!70!black, bend left=70](m2) edge (mm2) ;
+\path [line width=1.4pt, line cap=rect, draw=green!70!black, bend left=40](mm2) edge (m'2) ;
+\path [line width=1.4pt, line cap=rect, draw=green!40!yellow, bend right=10](s2) edge (sm2) ;
+\path [line width=1.4pt, line cap=rect, draw=green!40!yellow, bend right=40](sm2) edge (m'2) ;
+
+\end{tikzpicture}
+
+\caption{PAA} \label{paa2p_prinzip}
+\end{figure}
+
+In \ref{paa2p_prinzip} ist exemplarisch dargestellt, wie die sich neuen Wahrscheinlichkeitsverteilungen in jedem Schritt berechnen. 
+Gegeben sind die alten Wahrscheinlichkeitsverteilungen $stat$ und $mob$.
+Um auf die neue Verteilung für den stationären Zustand zu kommen, muss für jede Position berechnet werden, welcher Anteil Teilchen stationär bleibt (s\_to\_s) und welcher Anteil bisher mobiler Teilchen in den stationären Zustand wechselt (m\_to\_s).
+Analog müssen für die mobile Verteilung oie mobil bleibenden sowie die sich aus dem Zustand lösenden Anteile berechnet werden. Da sich die Teilchen in der mobilen Phase jeweils einen Ort vorwärts bewegen, wird hier zusätzlich der ganze Vektor um ein Feld verschoben. 
+
 \subsection{PAA für das 3-Zustände Modell}
+Wie bei der Teilchensimulation tritt auch beim PAA für das 3-Zustände Modell das Problem auf, dass nicht mehr nur Boolsche Werte  ausreichen, um den Zustand zu beschreiben. 

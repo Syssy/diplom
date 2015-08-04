@@ -86,8 +86,13 @@ Als drittes können Peaks unterschiedlich breit sein. Da jedoch ein Peak mit gr�
  \todo{Zitat IQR, diesen erkären, warum dieses Mass}
 
 \section{Probabilistische Arithmetische Automaten}
-Ein Probabilistischer Arithmetischer Automat (PAA) nach \cite{MHKR} ist ein Modell, mit dem eine Folge zufälliger Operationen beschrieben werden kann. 
-Für PAA existieren Algorithmen, welche eine gemeinsame Verteilung von Zuständen und Werten oder auch die Verteilung der Wartezeit für einen Wert berechnen. Wie in Kapitel \ref{chapter:mod} beschrieben wird, kann das Modell zur Simulation einer Multikapillarsäule auch als PAA formuliert werden. Mit dieser Formulierung ist die Zeit, die zum Durchlaufen einer Säule gebraucht wird, dann die Wartezeit für den Wert, welcher der Länge der Säule entspricht. Deshalb kann ein PAA nützlich sein, um neben der eigentlichen Simulation auch noch eine erwartete Verteilung der Ankunftszeiten der Teilchen zu berechnen. 
+Um die Multikapillarsäule zu simulieren, werden verschiedene Vorgehensweisen angewendet. Am naheliegendsten erscheint es, den chromatographischen Prozess für eine gewisse Anzahl an Teilchen zu simulieren und dabei für jedes einzelne dieser Teilchen mindestens seinen Ort und seinen Zustand festzuhalten. Diese Methode hat jedoch den Nachteil, dass verschiedene Durchläufe zu unterschiedlichen Ergebnissen führen können, insbesondere, wenn zu wenige Teilchen simuliert wurden.
+TODO: sehr viele teilchen nötig um glatte peaks zu bekommen. unterschiede zwischen den durchläufen, varianzen auf grund von zufall.
+Eine andere Möglichkeit besteht darin, die Teilchen als Wahrscheinlichkeitsmasse zu modellieren und für jeden Ort und Zustand festzuhalten, welcher Teil der gesamten Wahrscheinlichkeitsmasse sich dort befindet.
+Eine Möglichkeit die Analyte als eine solche Wahrscheinlichkeitsmasse zu betrachten und dadurch eine exakte Verteilung der Teilchen auf Orte und Zustände zu erhalten, bieten Probabilistische Arithmetische Automaten (PAA).
+Ein PAA nach \cite{MHKR} ist ein Modell, mit dem eine Folge zufälliger Operationen beschrieben werden kann. 
+Für PAA existieren Algorithmen, welche eine gemeinsame Verteilung von Zuständen und Werten oder auch die Verteilung der Wartezeit für einen Wert berechnen. Wie in Kapitel \ref{chapter:mod} beschrieben wird, kann das Modell zur Simulation einer Multikapillarsäule auch als PAA formuliert werden. Mit dieser Formulierung ist die Zeit, die zum Durchlaufen einer Säule gebraucht wird, dann die Wartezeit für den Wert, welcher der Länge der Säule entspricht. %Deshalb kann ein PAA nützlich sein, um neben der eigentlichen Simulation auch noch eine erwartete Verteilung der Ankunftszeiten der Teilchen zu berechnen. 
+
 
 Zunächst sei hier eine Definition für den PAA gegeben, anschließend wird der Algorithmus zur Berechnung der Wartezeit beschrieben.
 %In diesem Fall ist die Länge der Säule der Wert, auf den gewartet wird und man ist interessiert in der Verteilung der Anzahl der Zeitschritte, die benötigt werden, um die Länge zu erreichen. 
@@ -114,6 +119,10 @@ Zunächst sei hier eine Definition für den PAA gegeben, anschließend wird der 
 \end{definition}
 Dabei entspricht $ \mathcal{P} = (\mathcal{Q}, q_0, T)$ einer Markovkette und $ \mathcal{P} = (\mathcal{Q}, q_0, T, \mathcal{E}, (e_q)_{q\in\mathcal{Q}})$ einem Hidden Markov Model. \todo{Muss ich dann Markov erklären?}
 
+Ein PAA ist zu jedem Zeitpunkt mit einer bestimmten Wahrscheinlichkeit in jedem Zustand und kann dabei mit einer bestimmten Wahrscheinlichkeit jeden Wert annehmen.
+
+
 \subsection{Algorithmus zur Berechnung der Wartezeit}
+
 
 \todo{Algos für die Verteilung und Wartezeit-Berechnung vorstellen}
