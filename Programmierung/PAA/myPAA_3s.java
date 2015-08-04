@@ -12,38 +12,78 @@ public class myPAA_3s extends PAA implements DeterministicEmitter{
          *               java -classpath .:mosdi-1.3.jar myPAA_3s
          * (mosdi muss im gleichen Verzeichnis liegen)
 	 */
-	 
-	static int MAXTIME = 24000
+	
+	static int MAXTIME = 2400000;
+	static int LENGTH = 999;
+	static double[] params = new double[9];
 	
 	public static void main(String[] args) {
-		PAA aPAA = new myPAA_3s();
 
-		Date startdate2 = new Date();
-		// maxtime, value !!!
-		double[] x = aPAA.waitingTimeForValue(MAXTIME, 100);
-		double sum = 0.0;
-                for( double num : x) {
-                    sum = sum+num;
-                } 
- 		ausgabe1(x);
-                System.out.println("Summe " + sum);
-                // Ergebnis speichern
-		try{
-                    String csv = "output3";
-                    FileWriter writer = new FileWriter(csv);
-                    for (double z : x){
-                        writer.write(Double.toString(z));
-                        writer.write("\n");
+                double[][] parameterliste = combineParams();
+                for (int i = 0; i < parameterliste.length; i++){
+                    params = parameterliste[i];
+                    PAA aPAA = new myPAA_3s();
+                    //System.out.println(params[0]);
+                    Date startdate2 = new Date();
+                    String csv = "savedata_java/l999/Sim_" + params[0] + "_"+ params[1] + "_"+ params[2] + "_"+ params[3] + "_"+ params[4] + "_"+ params[5] + "_" + params[6] + "_" + params[7] + "_" + params[8];
+                    //csv = "dingsda3s";
+                    System.out.println(csv);
+                    double sum = 0.0;
+                    int schleifen[] = {1,2,3,4,5};
+                    for (int z : schleifen){
+                        long starttime = System.currentTimeMillis();
+                        // maxtime, value !!!
+                        double[] x = aPAA.waitingTimeForValue(MAXTIME, LENGTH);
+                        long endtime = System.currentTimeMillis();
+                        System.out.println("Zeit: " + (endtime - starttime));
+                        for( double num : x) {
+                            sum = sum+num;
                         }
-                    writer.close();
-                } catch (IOException ex){
-                ex.printStackTrace();
+                    } 
+                    //ausgabe1(x);
+                    System.out.println("Summe " + sum);
+                    Date enddate2 = new Date();
+                    //System.out.println(startdate2 + " "+ enddate2);
+                // Ergebnis speichern
+                
+//                     try{
+//                         FileWriter writer = new FileWriter(csv);
+//                         for (double z : x){
+//                             writer.write(Double.toString(z));
+//                             writer.write("\n");
+//                             }  
+//                         writer.close();
+//                     } catch (IOException ex){
+//                         ex.printStackTrace();
+//                         }
                 }
-		Date enddate2 = new Date();
-		System.out.println(startdate2 + " "+ enddate2);
+                System.out.println("Fertig");
 
 	}
 
+	public static double[][] combineParams(){
+	
+            double[][] param_list = new double[15][9];
+            param_list[0] = new double[] {0.7, 0.29995, 0.00005, 0.005, 0.995, 0.0, 0.0001, 0.0, 0.9999};
+            //param_list[14] = new double[] {0.999, 0.0, 0.001, 0.001, 0.0, 0.999, 0.0, 0.0, 0.0};        
+            param_list[1] = new double[] {0.99, 0.005, 0.005, 0.0004, 0.9996, 0.0, 0.000025, 0.0, 0.999975};
+            param_list[2] = new double[] {0.99, 0.0095, 0.0005, 0.005, 0.995, 0.0, 0.000075, 0.0, 0.999925};
+            param_list[3] = new double[] {0.85, 0.1493, 0.0007, 0.003, 0.997, 0.0, 0.000003, 0.0, 0.999997};
+            param_list[4] = new double[] {0.005, 0.99499, 0.00001, 0.0009, 0.9991, 0.0, 0.0001, 0.0, 0.9999};
+            param_list[5] = new double[] {0.6, 0.399, 0.001, 0.0004, 0.9996, 0.0, 0.0001, 0.0, 0.9999};
+            param_list[6] = new double[] {0.005, 0.9947, 0.0003, 0.0009, 0.9991, 0.0, 0.000003, 0.0, 0.999997};
+            param_list[7] = new double[] {0.5, 0.499, 0.001, 0.0005, 0.9995, 0.0, 0.00001, 0.0, 0.99999};
+            param_list[8] = new double[] {0.05, 0.9495, 0.0005, 0.0009, 0.9991, 0.0, 0.000005, 0.0, 0.99995};
+            param_list[9] = new double[] {0.2, 0.7993, 0.0007, 0.0008, 0.9992, 0.0, 0.000004, 0.0, 0.999996};
+            param_list[10] = new double[] {0.005, 0.999499, 0.00001, 0.0005, 0.9995, 0.0, 0.0001, 0.0, 0.9999};
+            param_list[11] = new double[] {0.15, 0.84995, 0.00005, 0.0004, 0.9996, 0.0, 0.0001, 0.0, 0.9999};
+            param_list[12] = new double[] {0.05, 0.9493, 0.0007, 0.0005, 0.9995, 0.0, 0.000025, 0.0, 0.999975};
+            param_list[13] = new double[] {0.15, 0.845, 0.005, 0.0005, 0.9995, 0.0, 0.000025, 0.0, 0.999975};
+            param_list[14] = new double[] {0.1, 0.899, 0.001, 0.0007, 0.9993, 0.0, 0.000001, 0.0, 0.999999};
+          
+        return param_list;
+	}
+	
 	public static void ausgabe1(double[] anArray){
 	// Ausgabe eines double[]
 		for (int i = 0; i < anArray.length; i++){
@@ -98,7 +138,8 @@ public class myPAA_3s extends PAA implements DeterministicEmitter{
 	@Override
 	public int getValueCount() {
         // maxtime plus puffer gegen fehler
-		return MAXTIME + 2;
+	//	return MAXTIME + 2;
+                return LENGTH + 2;
 	}
 
 	@Override
@@ -115,29 +156,29 @@ public class myPAA_3s extends PAA implements DeterministicEmitter{
 	public double transitionProbability(int state, int targetState) {
 	// Hier koennen die Wahrscheinlichkeiten eingestellt werden
                 switch(state){
-                case 0:
+                case 0: // [0.6f0 0.399f0 0.001f0; 0.0004f0 0.9996f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
                     switch(targetState){
-                        case 0: return 0.3;
-                        case 1: return 0.69;
-                        case 2: return 0.01;
+                        case 0: return params[0];
+                        case 1: return 1 - params[0] - params[2];
+                        case 2: return params[2];
                         default: return 0.0;
                         }
                 case 1:
                     switch(targetState){
-                        case 0: return 0.001;
-                        case 1: return 0.999;
+                        case 0: return 1 - params[4];
+                        case 1: return params[4];
                         case 2: return 0.0;
                         default: return 0.0;
                         }
                 case 2:
                     switch(targetState){
-                        case 0: return 0.00005;
+                        case 0: return 1 - params[8];
                         case 1: return 0.0;
-                        case 2: return 0.99995;
+                        case 2: return params[8];
                         default: return 0.0;
                         }
                 default: return 0.0;
-                }
+                } 
 	}
 
 	@Override

@@ -15,13 +15,17 @@ public class myPAA_2p extends PAA implements DeterministicEmitter{
 	 
 	// maximale Wartezeit; wie sonst auch 2400000 (240s * 10000 Schritte/s)
 	static int MAXTIME = 2400000;
+	static int LENGTH = 999;
 	
 	public static void main(String[] args) {
 		PAA aPAA = new myPAA_2p();
 
 		Date startdate2 = new Date();
+		long starttime = System.currentTimeMillis();
 		// maxtime, value !!!
-		double[] x = aPAA.waitingTimeForValue(MAXTIME, 1000);
+		double[] x = aPAA.waitingTimeForValue(MAXTIME, LENGTH);
+                long endtime = System.currentTimeMillis();
+                System.out.println(endtime - starttime);
 		double sum = 0.0;
                 for( double num : x) {
                     sum = sum+num;
@@ -31,6 +35,7 @@ public class myPAA_2p extends PAA implements DeterministicEmitter{
                 // Ergebnisse speichern. TODO Flexibler machen
 		try{
                     String csv = "savedata_java/l1000/0.999_0.999.csv";
+                    csv = "dingsda2p";
                     FileWriter writer = new FileWriter(csv);
                     for (double z : x){
                         writer.write(Double.toString(z));
@@ -40,9 +45,9 @@ public class myPAA_2p extends PAA implements DeterministicEmitter{
                 } catch (IOException ex){
                 ex.printStackTrace();
                 }
-		Date enddate2 = new Date();
-		System.out.println(startdate2 + " "+ enddate2);
-
+                Date enddate2 = new Date();
+                System.out.println(startdate2 + " "+ enddate2);
+		System.out.println("Fertig");
 	}
 
 	public static void ausgabe1(double[] anArray){
@@ -100,7 +105,7 @@ public class myPAA_2p extends PAA implements DeterministicEmitter{
 	public int getValueCount() {
 	//Entspricht der maximalen Wartezeit, da alle ganzzahligen Werte bis dahin erreicht werden können
 	// plus zwei, da sonst bei Eintreffen am Ende Fehler auftreten
-		return MAXTIME + 2;
+		return LENGTH + 2;
 	}
 
 	@Override
@@ -116,8 +121,8 @@ public class myPAA_2p extends PAA implements DeterministicEmitter{
 	@Override
 	public double transitionProbability(int state, int targetState) {
 	// Hier werden die Wahrscheinlichkeiten eingestellt
-		double ps = 0.999;
-		double pm = 0.999;
+		double ps = 0.9;
+		double pm = 0.9995;
 		double p;
 		switch (state){
 		case 0: p = ps; break;
