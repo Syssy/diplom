@@ -486,3 +486,7 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * Markersize im plotZeitpunkt ist doof (für große zeitspannen, dafür ist es ja auch eigentich nciht gedacht)
  * Termin ausmachen
  * Testen, ob wenigstens die 2p-Julia besser ist, als mosdi
+ 
+06.08.2015
+ * die mosdi-merkwürdigkeit aufbereiten
+ * Schreiben und Methodenkapitel / Auswertung abschicken

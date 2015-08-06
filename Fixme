@@ -6,11 +6,14 @@ Besprechung:
     ** Lohnt es sich, noch mal an der julia 3s rumzubasteln?
  * Berichte:
     ** Fehler bei der Unterklasse für mosdi entdeckt, dadurch ist das nun viel schneller. 2p ist julia besser, aber 3s ist mosdi besser. 
+    ** Wenn Länge erhöht würde (10000 statt 1000) wäre auch julia in 3s besser. Ebenso gibt es Kombis, die ganz frühe, schmale Peaks erzeugen, wo julia schneller ist.
+    ** Mosdi ist für 3s viel schneller als für 2p. Echt seltsam!
     ** Parametereinflüssse untersucht
  * Geplant:
     ** 
  
-
+* Im Dekanat Deckblätter abholen
+ 
 Sim, allgemein:
  * Peakfinder: Von Dommi das Sekantenverfahren erklären lassen (das sprengt wohl den Rahmen)
  * Sinnvoller Einsatz der Invalid-Flags, bei den Sims sowie PAA
