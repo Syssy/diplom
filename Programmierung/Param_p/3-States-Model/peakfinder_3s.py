@@ -51,6 +51,7 @@ def start_simulations(length, number, mode, p_combinations, resimulate = False, 
     results = []
     # fuer alle vorhandenen Kombinationen von Parametern
     for params in p_combinations:
+            print (params)
         #if sim.check_params(params):
             #logging.log(24, "ps, pm, %(ps)f %(pm)f", locals())
             # gehe erst mal davon aus, dass Sim vorhanden ist, daher nicht speichern, sondern auf Aktualitaet ueberpruefen
@@ -101,8 +102,10 @@ def start_simulations(length, number, mode, p_combinations, resimulate = False, 
             #Neue Simulation notwendig
             if not sim_exists:
                 store = True
-                mySim = sim.Simulation(params, length, number, mode, step=1)
-                mySim.simulate()
+                for i in range(5):
+                    #print ("starte sim")
+                    mySim = sim.Simulation(params, length, number, mode, step=1)
+                    mySim.simulate()
                 mySim.calculate()
                # Jetzt noch abspeichern, entweder nach Update oder nach Neusimulation
             if store:    
@@ -261,11 +264,11 @@ def get_argument_parser():
 
 
 def main(): 
-    number = 2000
-    length = 1000
-    print ("n", number, "l", length, time.strftime("%d%b%Y_%H:%M:%S"))
     p = get_argument_parser()
     args = p.parse_args()
+    length = args.length
+    number = args.number
+    print ("n", number, "l", length, time.strftime("%d%b%Y_%H:%M:%S"))
     
     #params = [[0.5, 0.499, 0.001],[0.0005, 0.9995, 0.0],[0.000001, 0.0, 0.99999]]
     #params = [[0.7,0.0,0.3],[0.0,0.0,0.0],[0.0006, 0.0, 0.9994]]

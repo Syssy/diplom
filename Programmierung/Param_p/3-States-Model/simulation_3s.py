@@ -146,7 +146,7 @@ class Simulation():
     def simulate_each_timestep(self):
         """ Simuliere jeden Zeitschritt fuer jedes Teilchen"""
         # starttime für Laufzeitmessungen
-        starttime = time.clock()
+        starttime = time.time()
         # Wird Liste aller Ankunftstimes
         arrival_counter = []
         # Simulationszeit in Sekunden
@@ -166,7 +166,7 @@ class Simulation():
         while steps_needed < (self.length/self.step):
             locations, mobile_states = self._simulate_step(locations, mobile_states, number)
             steps_needed += time_step
-        #logging.log(20, "Teil1 vorbei, zeit:%s, simdauer:%s", steps_needed, time.clock()-starttime)
+        #logging.log(20, "Teil1 vorbei, zeit:%s, simdauer:%s", steps_needed, time.time()-starttime)
         #Teil 2: Ab jetzt koennen Teilchen fertig sein, teste erst, dann x neue Runden
         while True:
             # d ist bitmaske aller aktuell angekommenen Teilchen
@@ -182,11 +182,12 @@ class Simulation():
             # Abbruchbedingung: alle teilchen angekommen :) oder Simulation dauert schon zu lange :(
             number = len(locations)
             if number < 5:
-                logging.log(25, "fertig, simzeit: %s, realtime: %s", steps_needed, (time.clock()-starttime))
+                logging.log(25, "fertig, simzeit: %s, realtime: %s", steps_needed, (time.time()-starttime))
                 break
             #if steps_needed > 2400*(self.length/self.step):
-            if time_needed > 240*(50*self.step):
-                logging.log(25, "das bringt nix, Überschreitung der Maximalzeit, %s", (time.clock()-starttime))
+            #if steps_needed > 240*(50*self.step):
+            if steps_needed > 2400000:
+                logging.log(25, "das bringt nix, Überschreitung der Maximalzeit, teilchen ueber: %s %s", len(locations), (time.time()-starttime))
                 # alle noch nicht fertigen Teilchen bekommen 100 Sek Strafe, damit man sieht, dass Simulation nicht zu Ende durchgefuehrt wurde
                 for j in range(len(locations)):
                     arrival_counter.append(steps_needed+(self.length/self.step)*1000)
@@ -260,7 +261,7 @@ class Simulation():
         
     def simulate_by_event(self):
         """Simuliere mit Hilfe einer Liste von Events"""
-        starttime = time.clock()
+        starttime = time.time()
         logging.log(25, "Starte Sim, Event")
         length = self.length
         number = self.number
@@ -283,7 +284,7 @@ class Simulation():
         arrival_counter = []
         
         # solange noch Ereignisse ausstehen, wird simuliert
-        while len(events) >= 5 and act_time < 4800000:
+        while len(events) >= 1 and act_time < 2400000:
             #print(events[act_time])
         #while act_time < 10:
             if act_time in events:
@@ -315,10 +316,10 @@ class Simulation():
         #print (events)
         #TODO: Muss hier fuer alle, die noch in den Events stehen, testen, ob sie drueber sind und wenn ja, die passende Zeit eintragen, wenn nein, Strafzeit
         if len(events) > 5:
-            print ("Das wird nix")
+            print ("Das wird nix, uebrig:" + str(len(events)))
             for ev in events:
                 particle_list = np.array(events[ev])
-                print("particles", ev, particle_list)
+                #print("particles", ev, particle_list)
                 particle_list, times = self._test_finished(particle_list)
                 arrival_counter.extend([(act_time-(date)) for date in times])
                 
@@ -326,12 +327,12 @@ class Simulation():
                 for teilchen in particle_list:
                     arrival_counter.append(act_time+((self.length/self.step)*1000))
         if len(events) <=5:
-            logging.log(25, "Zeitpunkt, %s, uebrige Events %s", act_time, events) 
+            logging.log(25, "Zeitpunkt, %s, uebrige Events %s", act_time, len(events)) 
         #print (arrival_counter)
         #print (summe/num_ev)
         #self.times = [date/(10*self.length/self.step) for date in arrival_counter]
         self.times = [date/(50*self.step) for date in arrival_counter]
-        logging.log(25, "fertig, simschritte: %s, realtime: %s", act_time, (time.clock()-starttime))
+        logging.log(25, "fertig, simschritte: %s, realtime: %s", act_time, (time.time()-starttime))
         
         
     def set_pd(self, pd, v = version_number):

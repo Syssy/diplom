@@ -20,20 +20,21 @@ public class myPAA_3s extends PAA implements DeterministicEmitter{
 	public static void main(String[] args) {
 
                 double[][] parameterliste = combineParams();
+                double [] x = new double[1];
                 for (int i = 0; i < parameterliste.length; i++){
                     params = parameterliste[i];
                     PAA aPAA = new myPAA_3s();
                     //System.out.println(params[0]);
                     Date startdate2 = new Date();
-                    String csv = "savedata_java/l999/Sim_" + params[0] + "_"+ params[1] + "_"+ params[2] + "_"+ params[3] + "_"+ params[4] + "_"+ params[5] + "_" + params[6] + "_" + params[7] + "_" + params[8];
+                    String csv = "savedata_java/l999/3s/Sim_" + params[0] + "_"+ params[1] + "_"+ params[2] + "_"+ params[3] + "_"+ params[4] + "_"+ params[5] + "_" + params[6] + "_" + params[7] + "_" + params[8];
                     //csv = "dingsda3s";
                     System.out.println(csv);
                     double sum = 0.0;
-                    int schleifen[] = {1,2,3,4,5};
+                    int schleifen[] = {1};
                     for (int z : schleifen){
                         long starttime = System.currentTimeMillis();
                         // maxtime, value !!!
-                        double[] x = aPAA.waitingTimeForValue(MAXTIME, LENGTH);
+                        x = aPAA.waitingTimeForValue(MAXTIME, LENGTH);
                         long endtime = System.currentTimeMillis();
                         System.out.println("Zeit: " + (endtime - starttime));
                         for( double num : x) {
@@ -46,16 +47,16 @@ public class myPAA_3s extends PAA implements DeterministicEmitter{
                     //System.out.println(startdate2 + " "+ enddate2);
                 // Ergebnis speichern
                 
-//                     try{
-//                         FileWriter writer = new FileWriter(csv);
-//                         for (double z : x){
-//                             writer.write(Double.toString(z));
-//                             writer.write("\n");
-//                             }  
-//                         writer.close();
-//                     } catch (IOException ex){
-//                         ex.printStackTrace();
-//                         }
+                    try{
+                        FileWriter writer = new FileWriter(csv);
+                        for (double z : x){
+                            writer.write(Double.toString(z));
+                            writer.write("\n");
+                            }  
+                        writer.close();
+                    } catch (IOException ex){
+                        ex.printStackTrace();
+                        }
                 }
                 System.out.println("Fertig");
 
@@ -65,7 +66,7 @@ public class myPAA_3s extends PAA implements DeterministicEmitter{
 	
             double[][] param_list = new double[15][9];
             param_list[0] = new double[] {0.7, 0.29995, 0.00005, 0.005, 0.995, 0.0, 0.0001, 0.0, 0.9999};
-            //param_list[14] = new double[] {0.999, 0.0, 0.001, 0.001, 0.0, 0.999, 0.0, 0.0, 0.0};        
+            param_list[0] = new double[] {0.3, 0.7, 0.0, 0.003, 0.997, 0.0, 0.0001, 0.0, 0.9999};        
             param_list[1] = new double[] {0.99, 0.005, 0.005, 0.0004, 0.9996, 0.0, 0.000025, 0.0, 0.999975};
             param_list[2] = new double[] {0.99, 0.0095, 0.0005, 0.005, 0.995, 0.0, 0.000075, 0.0, 0.999925};
             param_list[3] = new double[] {0.85, 0.1493, 0.0007, 0.003, 0.997, 0.0, 0.000003, 0.0, 0.999997};
@@ -156,7 +157,7 @@ public class myPAA_3s extends PAA implements DeterministicEmitter{
 	public double transitionProbability(int state, int targetState) {
 	// Hier koennen die Wahrscheinlichkeiten eingestellt werden
                 switch(state){
-                case 0: // [0.6f0 0.399f0 0.001f0; 0.0004f0 0.9996f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
+                case 0: // 
                     switch(targetState){
                         case 0: return params[0];
                         case 1: return 1 - params[0] - params[2];

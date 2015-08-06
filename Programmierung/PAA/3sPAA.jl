@@ -8,7 +8,7 @@ function cut_Distributions(distributions, index)
     vorneschneiden = true
     # Vorne testen, falls ein Wert gross genug ist, wird nicht geschnitten
     for i in 1:length(distributions)
-        if distributions[i][1] >= 1.0f-17
+        if distributions[i][1] >= 1.0f-20
             vorneschneiden = false
             break
         end
@@ -25,7 +25,7 @@ function cut_Distributions(distributions, index)
     hintenschneiden = true
     # Hinten testen, wie vorne    
     for i in 1:length(distributions)
-        if distributions[i][end] >= 1.0f-17
+        if distributions[i][end] >= 1.0f-20
             hintenschneiden = false
             break
         end
@@ -76,7 +76,7 @@ function updateDistributions!(params::Array{Float32,2}, distributions, index, nu
         end
     end
     # Zu kleine Werte wegwerfen, um Groesse der Arrays zu beschraenken
-    new_dist, index = cut_Distributions(new_dist, index)
+    #new_dist, index = cut_Distributions(new_dist, index)
 
     return new_dist, index        
 end
@@ -127,13 +127,13 @@ function combineParams()
     # TODO: Aktuell nur Kombination fuer Modell 3a)
     
     #Erstelle zunaechst Listen fuer Einzelwahrscheinlichkeiten fuer mobilen Ausgangszustand...
-    #pmms = [0.1f0, 0.2f0, 0.3f0, 0.4f0, 0.5f0, 0.6f0, 0.7f0, 0.8f0, 0.9f0]
+    pmms = [0.005f0, 0.5f0, 0.99f0]
     pmms = [0.005f0, 0.01f0, 0.05f0, 0.1f0, 0.15f0, 0.2f0, 0.25f0, 0.3f0, 0.35f0, 0.4f0, 0.45f0, 0.5f0, 0.55f0, 0.6f0, 0.65f0, 0.7f0, 0.75f0, 0.8f0, 0.85f0, 0.9f0]
-    #pmms = [0.005f0, 0.007f0, 0.01f0, 0.03f0, 0.05f0,  0.1f0, 0.15f0, 0.2f0, 0.25f0, 0.3f0, 0.35f0, 0.4f0, 0.45f0, 0.5f0, 0.55f0, 0.6f0, 0.65f0, 0.7f0, 0.75f0, 0.8f0, 0.85f0, 0.9f0, 0.95f0, 0.99f0]
+    #pmms = [0.005f0, 0.007f0, 0.01f0, 0.05f0, 0.1f0, 0.15f0, 0.2f0, 0.25f0, 0.3f0, 0.35f0, 0.4f0, 0.45f0, 0.5f0, 0.55f0, 0.6f0, 0.65f0, 0.7f0, 0.75f0, 0.8f0, 0.85f0, 0.9f0, 0.95f0, 0.99f0]
     # 0.00001f0 ist zu klein, nicht ausreichend teilchen drin, daher kein schönes tailing
-    #pmls = [0.005f0, 0.001f0, 0.0005f0, 0.0001f0] 
+    pmls = [0.01f0, 0.001f0, 0.00001f0] 
     pmls = [0.005f0, 0.003f0, 0.001f0, 0.0007f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.00005f0] 
-    #pmls = [0.01f0, 0.005f0, 0.001f0, 0.0007f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.00005f0, 0.00003f0, 0.00001f0] 
+    #pmls = [0.01f0, 0.005f0, 0.003f0, 0.001f0, 0.0007f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.00005f0, 0.00003f0, 0.00001f0] 
     pms = Array(Any, 0)
     for pmm in pmms
         for pml in pmls
@@ -142,19 +142,19 @@ function combineParams()
         end 
     end
     # ... fuer adsorbierten Ausgangszustand...  
-    #paas = [0.998f0, 0.9985f0, 0.999f0, 0.9992f0, 0.9994f0, 0.9996f0]   
+    paas = [0.99f0, 0.9992f0, 0.9999f0]   
     paas = [0.997f0, 0.998f0, 0.9985f0, 0.999f0, 0.9991f0, 0.9992f0, 0.9993f0, 0.9994f0, 0.9995f0, 0.9996f0]   
-    #paas = [0.994f0, 0.995f0, 0.997f0, 0.998f0, 0.9985f0, 0.999f0, 0.9991f0, 0.9992f0, 0.9993f0, 0.9994f0, 0.9995f0, 0.9996f0, 0.9999f0]   
+    #paas = [0.99f0, 0.995f0, 0.997f0, 0.998f0, 0.9985f0, 0.999f0, 0.9991f0, 0.9992f0, 0.9993f0, 0.9994f0, 0.9995f0, 0.9996f0, 0.9999f0]   
     pas = Array(Any, 0)
     for paa in paas
         pam = 1 - paa
         push!(pas,([pam paa 0.0f0]))
     end
     # ... und fuer geloesten Ausgangszustand
-    #plls = [0.9999f0, 0.99995f0,  0.99999f0,  0.999995f0, 0.999999f0]
+    plls = [0.9999f0, 0.99999f0, 0.999999f0]
     plls = [0.9999f0, 0.999925f0, 0.99995f0, 0.999975f0, 0.99999f0, 0.999993f0, 0.999995f0, 0.999997f0, 0.999999f0]
     #0.999999f0 ist zu groß
-    #plls = [0.9999f0, 0.999925f0, 0.99995f0, 0.999975f0, 0.99999f0, 0.999993f0, 0.999995f0, 0.999996f0, 0.999997f0, 0.999999f0]
+    #plls = [0.9999f0, 0.999925f0, 0.99995f0, 0.999975f0, 0.999985f0, 0.99999f0, 0.999993f0, 0.999995f0, 0.999996f0, 0.999997f0, 0.999999f0]
     pls = Array(Any, 0)
     for pll in plls
         plm = 1 - pll
@@ -219,13 +219,13 @@ params=[0.15f0 0.845f0 0.005f0; 0.0005f0 0.9995f0 0.0f0; 0.000025f0 0.0f0 0.9999
 push!(param_list, params)
 params=[0.1f0 0.899f0 0.001f0; 0.0007f0 0.9993f0 0.0f0; 0.000001f0 0.0f0 0.999999f0]
 push!(param_list, params)
-param_list = combineParams()
+#param_list = combineParams()
 #reverse!(param_list)
 println(length(param_list))
 
 # Simulationen starten, vorher testen, ob diese schon exisitert
 for params in param_list
-    filename = "savedata_julia/l$laenge/Sim"
+    filename = "savedata_julia/l$laenge/Sim_"
     for i in 1:3
         for j in 1:3
     #        println (i, " ", params[i, j])
@@ -233,7 +233,7 @@ for params in param_list
             #println (filename)
         end
     end
-  #  if !isfile(filename)
+#    if !isfile(filename)
 #    # if isfile("savedata_julia/l$laenge/$params")
 #    #    println("Summe ", sum(res))
 #    #    if (sum(res) < 0.999 )
@@ -248,14 +248,17 @@ for params in param_list
 # #        println ("isfile, $params")
 # #     else
         println(strftime(time()), " starte: ")
-        print (params, " ")
-        res = @time(waitingTimeForValue(params, laenge, maxtime))
-        println ("offset ", res[1])
-        println("Summe ", sum(res[2:end]))
-        writecsv(filename, res)
+        println (params, " ")
+        for i in 1:5
+            res = @time(waitingTimeForValue(params, laenge, maxtime))
+            println("Summe ", sum(res))
+        end
+   #     writecsv(filename, res)
    # end
-#         if (sum(res) >= 0.9 )
-#             plt.plot(res[2:end])
+#     else
+#    #     if (sum(res) >= 0.9 )
+#             res = readcsv(filename)
+#             plt.plot(res)
 #             #plt.xticks([0, len(res)], [res[1], (len(res) + res[0]))
 #             plt.ylabel("")
 #             plt.xlabel("Zeit / Schritten")

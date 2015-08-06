@@ -16,26 +16,37 @@ public class myPAA_2p extends PAA implements DeterministicEmitter{
 	// maximale Wartezeit; wie sonst auch 2400000 (240s * 10000 Schritte/s)
 	static int MAXTIME = 2400000;
 	static int LENGTH = 999;
+        static double[] params = new double[2];
 	
 	public static void main(String[] args) {
-		PAA aPAA = new myPAA_2p();
-
-		Date startdate2 = new Date();
-		long starttime = System.currentTimeMillis();
-		// maxtime, value !!!
-		double[] x = aPAA.waitingTimeForValue(MAXTIME, LENGTH);
-                long endtime = System.currentTimeMillis();
-                System.out.println(endtime - starttime);
-		double sum = 0.0;
-                for( double num : x) {
-                    sum = sum+num;
-                } 
- 		//ausgabe1(x);
-                System.out.println("Summe " + sum);
+		
+                double[][] parameterliste = combineParams();
+                double[] x = new double[0];
+                for (int i = 0; i < parameterliste.length; i++){
+                    params = parameterliste[i];
+                    PAA aPAA = new myPAA_2p();
+                    //System.out.println(params[0]);
+                    Date startdate2 = new Date();
+                    String csv = "savedata_java/l999/2p/Sim_" + params[0] + "_"+ params[1];
+                    //csv = "dingsda3s";
+                    System.out.println(csv);
+                    double sum = 0.0;
+                    int schleifen[] = {1,2,3,4,5};
+                    for (int z : schleifen){
+                        long starttime = System.currentTimeMillis();
+                        // maxtime, value !!!
+                        x = aPAA.waitingTimeForValue(MAXTIME, LENGTH);
+                        long endtime = System.currentTimeMillis();
+                        System.out.println("Zeit: " + (endtime - starttime));
+                        for( double num : x) {
+                            sum = sum+num;
+                        }
+                    } 
+                    //ausgabe1(x);
+                    System.out.println("Summe " + sum);
+                    Date enddate2 = new Date();
                 // Ergebnisse speichern. TODO Flexibler machen
 		try{
-                    String csv = "savedata_java/l1000/0.999_0.999.csv";
-                    csv = "dingsda2p";
                     FileWriter writer = new FileWriter(csv);
                     for (double z : x){
                         writer.write(Double.toString(z));
@@ -45,10 +56,29 @@ public class myPAA_2p extends PAA implements DeterministicEmitter{
                 } catch (IOException ex){
                 ex.printStackTrace();
                 }
+                }   
                 Date enddate2 = new Date();
-                System.out.println(startdate2 + " "+ enddate2);
+              //  System.out.println(startdate2 + " "+ enddate2);
 		System.out.println("Fertig");
 	}
+	
+	
+        public static double[][] combineParams(){
+        
+            double[] ps_list = new double[] {0.997, 0.999, 0.9992, 0.9995, 0.9999};
+            double[] pm_list = new double[] {0.01, 0.3, 0.9, 0.99};
+            double[][] param_list = new double[20][2];
+            
+            for (int i = 0; i<ps_list.length; i++){
+                for (int j = 0; j<pm_list.length; j++){
+             //       System.out.println(i + " " + j + " " + (i*4+ j));
+                    param_list[i*4 + j] = new double[]{ps_list[i], pm_list[j]};
+                }
+            }
+            //ausgabe2(param_list);
+            
+        return param_list;
+        }
 
 	public static void ausgabe1(double[] anArray){
 	// Ausgabe eines double[]
@@ -121,19 +151,34 @@ public class myPAA_2p extends PAA implements DeterministicEmitter{
 	@Override
 	public double transitionProbability(int state, int targetState) {
 	// Hier werden die Wahrscheinlichkeiten eingestellt
-		double ps = 0.9;
-		double pm = 0.9995;
-		double p;
-		switch (state){
-		case 0: p = ps; break;
-		case 1: p = pm; break;
-		default: p = 0; break;	
-		}
-		if (state == targetState){
-			return p;
-		} else {
-			return 1-p;
-		}
+// 		double ps = 0.9;
+// 		double pm = 0.9995;
+// 		double p;
+// 		switch (state){
+// 		case 0: p = ps; break;
+// 		case 1: p = pm; break;
+// 		default: p = 0; break;	
+// 		}
+// 		if (state == targetState){
+// 			return p;
+// 		} else {
+// 			return 1-p;
+// 		}
+                switch(state){
+                case 0: // [0.6f0 0.399f0 0.001f0; 0.0004f0 0.9996f0 0.0f0; 0.0001f0 0.0f0 0.9999f0]
+                    switch(targetState){
+                        case 0: return params[0];
+                        case 1: return 1 - params[0];
+                        default: return 0.0;
+                        }
+                case 1:
+                    switch(targetState){
+                        case 0: return 1 - params[1];
+                        case 1: return params[1];
+                        default: return 0.0;
+                        }
+                default: return 0.0;
+                } 
 
 
 	}
