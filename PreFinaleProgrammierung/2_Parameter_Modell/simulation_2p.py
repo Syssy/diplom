@@ -10,12 +10,10 @@ import time
 import math
 
 import scipy.stats   
-#import scipy.optimize
 import numpy as np
 import matplotlib.pyplot as plt
 
 import my_plottings_2p as plotkram
-#import peak_width_2p
 
 # Speichert alle interessanten Dinge einer Simulation ab
 # Hat Methoden zur Simulation, sowie zur Berechnung von Peakdaten
@@ -63,7 +61,6 @@ class Simulation():
 
     def _simulate_step(self, locations, mobile_states, number):
         """Simuliere einen Schritt für alle Teilchen innerhalb der each_timestep-Simulation
-        
         Wahrscheinlichkeit stationaer/mobil zu bleiben, Zugriff über self.params
         (new_)locations -- np-array aller Orte vor bzw. nach diesem Aufruf
         (new_)mobile_states -- np-array aller Teilchenstates vor bzw. nach diesem Aufruf
@@ -84,7 +81,7 @@ class Simulation():
     def simulate_each_timestep(self, maxtime=240):
         """ Simuliere jeden Zeitschritt fuer jedes Teilchen"""
         # starttime für Laufzeitmessungen
-        starttime = time.clock()
+        starttime = time.time()
         # Wird Liste aller Ankunftstimes
         arrival_counter = []
         # Simulationszeit in Sekunden
@@ -103,7 +100,7 @@ class Simulation():
         while time_needed <= (self.length/self.step):
             locations, mobile_states = self._simulate_step(locations, mobile_states, number)
             time_needed += 1
-        logging.log(20, "Teil1 vorbei, zeit:%s, simdauer:%s", time_needed, time.clock()-starttime)
+        logging.log(20, "Teil1 vorbei, zeit:%s, simdauer:%s", time_needed, time.time()-starttime)
         #Teil 2: Ab jetzt koennen Teilchen fertig sein, teste erst, dann x neue Runden
         while True:
             # d ist bitmaske aller aktuell angekommenen Teilchen
@@ -119,12 +116,12 @@ class Simulation():
             # Abbruchbedingung: alle teilchen angekommen :) oder Simulation dauert schon zu lange :(
             number = len(locations)
             if number < 1:
-                logging.log(25, "fertig, simzeit: %s, realtime: %s", time_needed, (time.clock()-starttime))
+                logging.log(25, "fertig, simzeit: %s, realtime: %s", time_needed, (time.time()-starttime))
                 break
             if time_needed > 2400000:#*(self.length/self.step):
             #if time_needed > maxtime*(10*self.length/self.step):
             #if time_needed > 240*(50*self.step):#24000000: #TODO
-                logging.log(30, "Ueberschreitung der Maximalzeit von 240s, %s", (time.clock()-starttime))
+                logging.log(30, "Ueberschreitung der Maximalzeit von 240s, %s", (time.time()-starttime))
                 self.valid = False
                 # alle noch nicht fertigen Teilchen bekommen Strafe, damit man sieht, dass Simulation nicht zu Ende durchgefuehrt wurde
                 for j in range(len(locations)):
@@ -182,7 +179,7 @@ class Simulation():
         
     def simulate_by_event(self):
         """Simuliere mit Hilfe einer Liste von Events"""
-        starttime = time.clock()
+        starttime = time.time()
         logging.log(20, "simuliere %s E", self.params)
         length = self.length
         number = self.number
@@ -233,7 +230,7 @@ class Simulation():
         #self.times = arrival_counter
         self.times = [date/10000 for date in arrival_counter]
 
-        logging.log(25, "fertig, simschritte: %s, realtime: %s", act_time, (time.clock()-starttime))
+        logging.log(25, "fertig, simschritte: %s, realtime: %s", act_time, (time.time()-starttime))
         
     def set_pd(self, pd, v = version_number):
         """setzt Peakdaten und Versionsnummer neu, falls veraltet, nicht vorhanden, nicht zu gebrauchen"""
@@ -313,9 +310,13 @@ def get_argument_parser():
     p = argparse.ArgumentParser(
     description = "beschreibung")  
     p.add_argument("--inputfile", "-i", type = str,  help = "input file (pickled)")
-    p.add_argument("--moment", "-m" , help = "which moment is of interest")
     p.add_argument("--recalc", "-rc", type=str, help = "recalculate moments")
-    p.add_argument("--number", "-n", help = "how many files to recalculate")
+    p.add_argument("--length", "-l", type = int, default = "1000",
+                   help = "Laenge der Saeule")
+    p.add_argument("--number", "-n", type = int, default = "1000",
+                   help = "Anzahl zu simulierender Teilchen")
+    p.add_argument("--mode", "-m", default = "E", 
+                   help = "Art der Simulation; E = by-event, T = each_timestep")
     
     return p
 
@@ -324,14 +325,28 @@ def main():
     number = 10000
     length = 1000
     step = 1
-    print ("n", number, "l", length, "s", step, time.strftime("%d%b%Y_%H:%M:%S"))
     p = get_argument_parser()
     args = p.parse_args()
+    print ("n", args.number, "l", args.length, "m", args.mode, time.strftime("%d%b%Y_%H:%M:%S"))
+    
+    param_list = []
+    pss = [0.997, 0.999, 0.9992, 0.9995, 0.9999]
+    pms = [0.01, 0.3, 0.9, 0.999]
+    for ps in pss:
+        for pm in pms:
+            param_list.append((ps, pm))
+            
+    for ps, pm in param_list:
+        neueSim = Simulation(ps, pm, args.length, args.number, args.mode, 1)
+        print ("ps ", ps, " pm ", pm)
+        for i in range(5):
+            neueSim.simulate()
+    
     neueSim = Simulation(0.999, 0.999, length, number, None, step)
   
-    neueSim.simulate_by_event()
-    neueSim.calculate()
-    print("pd by t1", neueSim.pd, len(neueSim.times))
+    #neueSim.simulate_by_event()
+    #neueSim.calculate()
+    print("pd by t1", n5eueSim.pd, len(neueSim.times))
     n, bins, patches = plt.hist(neueSim.times, 50, alpha=0.5, normed =True)   
     plt.ylabel("")
     plt.xlabel("Zeit / s")
@@ -355,5 +370,5 @@ def main():
     plt.show()
        
 if __name__ == "__main__":
-    logging.basicConfig(level=20)
+    logging.basicConfig(level=25)
     main()
