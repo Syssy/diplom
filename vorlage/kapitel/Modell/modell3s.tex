@@ -1,5 +1,5 @@
 \section{3-Zustände Modell} 
-
+\label{chapter:mod:3s}
 \todo{Erweiterung des Modells}
 \todo{In Intro auf Gleichgewicht bei Adsoption eingehen, -> Modellerweiterung} 
 
@@ -10,7 +10,8 @@ Der letzte Absatz zu weiteren möglichen erweiterungen kann dann als kleiner abs
 Bisher fand keine Unterscheidung zwischen Adsorption und Lösung der Teilchen an bzw. in der stationären Phase statt. In der Realität können beide Wechselwirkungen parallel zueinander statt finden. Außerdem ist es möglich, dass sich die Wahrscheinlichkeiten, in einen der beiden Zustände überzugehen oder in die mobile Phase zurückzukehren, unterscheiden. Daher liegt es nahe, einen neuen Zustand einzuführen, sodass die Adsorption und die Lösung voneinander getrennt behandelt werden. Die Tatsache, dass Tailing, wie bereits anfangs erwähnt, unter anderem durch zusätzlich Adsorptionseffekte verursacht sein kann, lässt vermuten, dass durch eine Anpassung der Parameter ein Tailing in der Simulation verursacht werden kann. 
  
 \begin{figure}[h]
-\begin{subfigure}[t]{0.45\textwidth}\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
+\begin{subfigure}[t]{0.45\textwidth}
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\small\bfseries},
   knoten/.style={thick,fill=none,inner sep=0pt, minimum width=25pt, circle}]
 {
@@ -36,7 +37,8 @@ Bisher fand keine Unterscheidung zwischen Adsorption und Lösung der Teilchen an
 \caption{Getrennte Zustände}
 \label{tikz:4p_Mod_a}
 \end{subfigure}
-\begin{subfigure}[t]{0.45\textwidth}\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.2cm,
+\begin{subfigure}[t]{0.45\textwidth}
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.2cm,
   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\small\bfseries}]
 {
    \node[main node] (m)  {mob};

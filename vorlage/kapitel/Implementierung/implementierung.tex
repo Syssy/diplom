@@ -3,6 +3,7 @@
 \chapter{Implementierung}
 \label{chapter:imp}
 \todo{Kapitel Implementierung schreiben}
+\todo{Soll hier auch erwähnt werden, wie die verschiedenen Auswertungen gemacht wurden? Plots etc}
 
 \section{Simulation der Modelle}
 Zur Simulation der beiden Modelle wurde Python (Python3) verwendet.
@@ -19,8 +20,14 @@ Eine Zeiteinheit entspricht demnach ca. 0.1/200000 Sekunden 0.0000005s 0.0005ms 
 
 
 \subsection{Step-by-step}
-Es kann entweder jeder Zeitschritt der Chromatographie simuliert und dabei für jedes Teilchen entschieden werden, ob es sich bewegt. Dabei angenommen, dass die Wahrscheinlichkeit der Wechselwirkung unabhängig vom aktuellen Ort oder dem Zeitpunkt des letzten Phasenwechsels ist. Es wird für jedes Teilchen festgehalten, wo es sich befindet und ähnlich wie bei der echten Chromatographie beobachtet, wann wie viele Teilchen die Säule durchquert haben. 
-\todo{Stey by step-Simulation beschreiben -> Methoden}
+
+Im Laborexperiment wird nur in gewissen Intervallen die Ankunft von Teilchen detektiert, bei der MCC-IMS-Kopplung wird beispielsweise nur zwei Mal pro Sekunde eine Messung durchgeführt. Daher genügt es auch in der Simulation, wenn nicht nach jedem Simulationsschritt die Orte aller Teilchen getestet werden, um ein ausreichend exaktes Ergebnis zu erhalten.
+Es können also zunächst viele Simulationsschritte durchgeführt werden, bevor getestet wird, ob Teilchen die Länge $l$ erreicht haben. Nach den oben angegebenen Einheiten können so zwischen jedem Test $50$ Simulationsschritte erfolgen, was $0,5 s$ entspricht. Dadurch entfallen viele Abfragen und es kann Simulationszeit eingespart werden. 
+Da außerdem klar ist, dass frühestens nach $l$ Schritten Teilchen überhaupt die Säule durchlaufen haben können, muss vor diesem Zeitpunkt auch kein Test auf Erreichen der Länge durchgeführt werden, wodurch weitere Zeit eingespart werden kann.
+\todo{wie viel Zeit ist das jeweils? ist das interssant?}
+
+% Es kann entweder jeder Zeitschritt der Chromatographie simuliert und dabei für jedes Teilchen entschieden werden, ob es sich bewegt. Dabei angenommen, dass die Wahrscheinlichkeit der Wechselwirkung unabhängig vom aktuellen Ort oder dem Zeitpunkt des letzten Phasenwechsels ist. Es wird für jedes Teilchen festgehalten, wo es sich befindet und ähnlich wie bei der echten Chromatographie beobachtet, wann wie viele Teilchen die Säule durchquert haben. 
+% \todo{Stey by step-Simulation beschreiben -> Methoden}
 
 \subsection{By-Event}
 Bei Übergangswahrscheinlichkeiten, die sehr groß oder klein sind, kommt es selten zu Zustandsänderungen, sodass es in diesem Fall effizienter ist, eine Wartezeitmethode zu nutzen: Es wird für jedes Teilchen entschieden, wann es den Zustand wechselt und, falls es mobil ist, wie weit es bis dahin weiter wandert. Es werden also nur die tatsächlichen Ereignisse simuliert, Schritte für Zeitpunkte, zu denen nichts passiert, entfallen.
