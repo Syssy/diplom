@@ -42,11 +42,10 @@ Für das 2-Parameter Modell wurden zwei verschiedene Möglichkeiten der Simulati
 
 %TODO: Zustand $s \in \{0, 1\}$ Ort $o \in \{0, \ldots, l\}$ wobei $l$ die Länge der Säule ist. -> in text einbauen
 
-\todo{korrekte Schreibweise von Boolschen werten}
 
 Der Ablauf einer Simulation ist in Algorithmus \ref{algo_by_Step} gegeben.
 
-Für jedes Teilchen $p$ muss jeweils der aktuelle Zustand $s$ und Ort $o$ festgehalten werden, außerdem muss der aktuelle Zeitpunkt $t$ vermerkt werden. Da nur zwei Zustände existieren, bietet es sich an, dafür ein Array mit Boole'schen Werten zu verwenden. $0$ steht dabei für stationär und $1$ für mobil. Die Identifikation der Teilchen geschieht dabei über ihre Postition im Array.
+Für jedes Teilchen $p$ muss jeweils der aktuelle Zustand $s$ und Ort $o$ festgehalten werden, außerdem muss der aktuelle Zeitpunkt $t$ vermerkt werden. Da nur zwei Zustände existieren, bietet es sich an, dafür ein Array mit booleschen Werten zu verwenden. $0$ steht dabei für stationär und $1$ für mobil. Die Identifikation der Teilchen geschieht dabei über ihre Postition im Array.
 \todo{Array oder Vektor, bzw ohne Parallelisierbarkeit, da ja eigentlich nicht nötig?}
 %Für jedes Teilchen wird in einem zweiten Array an gleicher Position sein aktueller Ort gespeichert. 
 
@@ -172,9 +171,10 @@ Als alternative Abbruchbedingung kann eine maximale Anzahl von Simulationsschrit
 \STATE Berechne $t_a(p)$ 
 \STATE $r \leftarrow t_a(p)$
 \STATE Lösche $(s_p, o_p)$
-\ENDIF
+\ELSE
 \STATE Simuliere $(s_p, o_p)$
 \STATE Aktualisiere $e$
+\ENDIF
 \ENDFOR
 \STATE $t+=1$
 \ENDWHILE
@@ -189,18 +189,18 @@ Zunächst starten alle Teilchen wie bei der schrittweisen Simulation bei Zeitpun
 Ein Simulationsschritt behandelt dann alle Teilchen eines Zeitpunktes. Ein solches Event beinhaltet den Wechsel des Zustands, die Bestimmung des Zeitpunkts des nächsten Zustandswechsels sowie bei mobilen Teilchen eine Änderung des Ortes. Anschließend wird das Teilchen der Zeitpunkteliste seines nächsten Aktionszeitpunktes hinzugefügt. Sind alle Teilchen abgearbeitet, wird der Zeitpunkt gelöscht und der nächste Zeitpunkt, an dem etwas passieren soll, bearbeitet.
 
 \begin{figure}
-\begin{subfigure}[t]{0.45\textwidth}
+\begin{subfigure}[t]{\textwidth}
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries}]
 \tikzstyle{feld}=[draw,minimum width=1.5cm,minimum height=0.7cm,font=\sffamily\footnotesize]
 
 \begin{scope}[start chain =1 going right, node distance =-0.3mm]
 	\node [on chain =1, feld, draw=none,minimum width=2cm] {Events $e$};
-	\node [on chain=1, feld,minimum width=2cm] (p1) {$e_1$};
 	\node [on chain=1, feld,minimum width=2cm] (p2) {$e_2$};
-	\node [on chain=1, feld,minimum width=2cm] (p3) {$e_5$};
-	\node [on chain=1, feld,minimum width=2cm] (p4) {$e_7$};
-	\node [on chain=1, feld,minimum width=2cm] (p5) {$e_{12}$};
+	\node [on chain=1, feld,minimum width=2cm] (p3) {$e_3$};
+	\node [on chain=1, feld,minimum width=2cm] (p5) {$e_5$};
+	\node [on chain=1, feld,minimum width=2cm] (p7) {$e_7$};
+	\node [on chain=1, feld,minimum width=2cm] (p12) {$e_{12}$};
 \end{scope}
 
 \begin{scope}[start chain = 1 going below,shift={(2cm, -2cm)}, node distance=0.5cm]
@@ -228,26 +228,95 @@ Ein Simulationsschritt behandelt dann alle Teilchen eines Zeitpunktes. Ein solch
 	\node[on chain = 1, feld] (5x1) {($s_5, o_5$)};
 \end{scope}
 
-\path [line width=1.4pt, line cap=rect, draw](p1) edge (1x1) ;
+\path [line width=1.4pt, line cap=rect, draw](p2) edge (1x1) ;
 \path [line width=1.4pt, line cap=rect, draw](1x1) edge (1x2) ;
 \path [line width=1.4pt, line cap=rect, draw](1x2) edge (1x3) ;
+
+\path [line width=1.4pt, line cap=rect, draw](p3) edge (2x1) ;
+\path [line width=1.4pt, line cap=rect, draw](2x1) edge (2x2) ;
+
+\path [line width=1.4pt, line cap=rect, draw](p5) edge (3x1) ;
+
+\path [line width=1.4pt, line cap=rect, draw](p7) edge (4x1) ;
+\path [line width=1.4pt, line cap=rect, draw](4x1) edge (4x2) ;
+\path [line width=1.4pt, line cap=rect, draw](4x2) edge (4x3) ;
+
+\path [line width=1.4pt, line cap=rect, draw](p12) edge (5x1) ;
+
+\end{tikzpicture}
+\label{2p_by_event_a}
+\caption{Vor der Simulation des Events $e_1$}
+\vspace*{5mm}
+\end{subfigure}
+\begin{subfigure}[b]{\textwidth}
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries}]
+\tikzstyle{feld}=[draw,minimum width=1.5cm,minimum height=0.7cm,font=\sffamily\footnotesize]
+
+\begin{scope}[start chain =1 going right, node distance =-0.3mm]
+	\node [on chain =1, feld, draw=none,minimum width=2cm] {Events $e$};
+	\node [on chain=1, feld,minimum width=2cm] (p2) {$e_2$};
+	\node [on chain=1, feld,minimum width=2cm] (p5) {$e_5$};
+	\node [on chain=1, feld,minimum width=2cm] (p7) {$e_7$};
+	\node [on chain=1, feld,minimum width=2cm] (p9) {$e_9$};
+	\node [on chain=1, feld,minimum width=2cm] (p12) {$e_{12}$};
+	\node [on chain=1, feld,minimum width=2cm] (p16) {$e_{16}$};
+\end{scope}
+
+
+\begin{scope}[start chain = 1 going below,shift={(2cm, -2cm)}, node distance=0.5cm]
+	\node[on chain = 1, feld] (2x1) {($s_0, o_0$)};
+	\node[on chain = 1, feld] (2x2) {($s_8, o_8$)};
+\end{scope}
+
+\begin{scope}[start chain = 1 going below,shift={(4cm, -2cm)}, node distance=0.5cm]
+	\node[on chain = 1, feld] (5x1) {($s_{10}, o_{10}$)};
+	\node[on chain = 1, feld, fill=green!50!white] (5x2) {($s_1, o_1$)};
+\end{scope}
+
+\begin{scope}[start chain = 1 going below,shift={(6cm, -2cm)}, node distance=0.5cm]
+	\node[on chain = 1, feld] (7x1) {($s_2, o_2$)};
+	\node[on chain = 1, feld] (7x2) {($s_3, o_3$)};
+	\node[on chain = 1, feld] (7x3) {($s_9, o_9$)};
+\end{scope}
+
+\begin{scope}[start chain = 1 going below,shift={(8cm, -2cm)}, node distance=0.5cm]
+	\node[on chain = 1, feld, fill=orange!50!white] (9x1) {($s_7, o_7$)};
+\end{scope}
+
+\begin{scope}[start chain = 1 going below,shift={(10cm, -2cm)}, node distance=0.5cm]
+	\node[on chain = 1, feld] (12x1) {($s_5, o_5$)};
+\end{scope}
+
+\begin{scope}[start chain = 1 going below,shift={(12cm, -2cm)}, node distance=0.5cm]
+	\node[on chain = 1, feld, fill=blue!40!white] (16x1) {($s_4, o_4$)};
+\end{scope}
+
+%\path [line width=1.4pt, line cap=rect, draw](1x2) edge (1x3) ;
 
 \path [line width=1.4pt, line cap=rect, draw](p2) edge (2x1) ;
 \path [line width=1.4pt, line cap=rect, draw](2x1) edge (2x2) ;
 
-\path [line width=1.4pt, line cap=rect, draw](p3) edge (3x1) ;
-
-\path [line width=1.4pt, line cap=rect, draw](p4) edge (4x1) ;
-\path [line width=1.4pt, line cap=rect, draw](4x1) edge (4x2) ;
-\path [line width=1.4pt, line cap=rect, draw](4x2) edge (4x3) ;
-
 \path [line width=1.4pt, line cap=rect, draw](p5) edge (5x1) ;
+\path [line width=1.4pt, line cap=rect, draw](5x1) edge (5x2) ;
+
+\path [line width=1.4pt, line cap=rect, draw](p7) edge (7x1) ;
+\path [line width=1.4pt, line cap=rect, draw](7x1) edge (7x2) ;
+\path [line width=1.4pt, line cap=rect, draw](7x2) edge (7x3) ;
+
+\path [line width=1.4pt, line cap=rect, draw](p9) edge (9x1) ;
+
+\path [line width=1.4pt, line cap=rect, draw](p12) edge (12x1) ;
+
+\path [line width=1.4pt, line cap=rect, draw](p16) edge (16x1) ;
 
 \end{tikzpicture}
 
-\label{2p_by_event}
-\caption{Prinzip der ergeignisbasierten Simulation bei zwei Parametern} 
+\label{2p_by_event_b}
+\caption{Nach der Simulation}
 \end{subfigure}
+
+\caption{Prinzip der ergeignisbasierten Simulation bei zwei Parametern} 
 \end{figure}
 Wann ein Teilchen das nächste Mal seinen Zustand wechselt, wird mit Hilfe einer geometrisch verteilten Zufallszahl bestimmt. Daher lohnt sich diese Art der Simulation insbesondere bei Parametern nahe 1. 
 Wenn ein Teilchen im aktuellen Schritt in den mobilen Zustand gewechsel hat, muss auch sein Ort angepasst werden. Da sich Teilchen eine Raumeinheit pro Zeitschritt bewegen, wird der Ort entsprechend der Zufallszahl erhöht.
@@ -263,19 +332,28 @@ Ob diese Berechnung nach jedem Simulationsschritt, also vor Neueintragung in die
 Analog zum 2-Parameter Modell kann auch das 3-Zustände Modell schrittweise oder ereignisbasiert umgesetzt werden. Die Algorithmen \ref{algo_by_Step} und \ref{algo_by_event} bleiben jeweils unverändert, lediglich die Umsetzung der Simulation eines Schrittes bzw. einer Ereignisliste muss angepasst werden.
 
 \subsubsection{Step-by-Step}
-
+Weiterhin die neue Zustandsberechnung als logische Verknüpfung
+Um aus Zufallszahlen die passenden Arrays mit größer/kleiner-Abfrage zu machen, erstelle kumulierte Wahrscheinlichkeiten (ein mal zu beginn)
+Viele Hilfsarrays nötig, die entsprechend viel überflüssige Information enthalten
+Erweiterung auf mehr Zustände mit exakt diesem Vorgehen wohl kaum sinnvoll, da zu zeitaufwändig. (TODO: Diskussionskapitel?)
 
 \subsubsection{By-Event}
-
+Bei dieser Simulationsart sind nur minimale Anpassungen notwendig. Es wird ein weiterer Zustand eingeführt und die Wahrscheinlichkeiten angepasst.
+Da pro Schritt immer Zustandswechsel hier hilfsmatrix mit angepassten übergangswahrscheinlichkeiten, bei der die Wechselwahrscheinlichkeiten normiert 
+werden
 
 
 \section{PAA}
 
-Zur Nutzung des PAA könnte man einfach die bereits vorhandene mosdi-Implementierung nutzen. 
+Zur Nutzung des PAA könnte man einfach die bereits vorhandene mosdi-Implementierung nutzen. Da diese jedoch mit steigender Säulenlänge deutlich langsamer wird \todo{Laufzeitverweis mosdi} wurde eine neue Herangehensweise gewählt. Diese zeichnet sich vor allem dadurch aus, dass einige nicht benötigte Funktionalitäten eines PAA nicht umgesetzt werden. 
+Dies betrifft die Möglichkeit je Zustand mehrere verschiedene Emissionen mit einer jeweiligen Wahrsscheinlichkeit zuzulassen. Es wird, wie in \ref{PAA_2P} und TODO paa3s zu sehen ist, nur jeweils eine Wert mit der Wahrscheinlichkeit $1$ emittiert. Außerdem wird keine Möglichkeit weitere Operationen zuzulassen benötigt, Addition genügt. Da darüber hinaus nur im mobilen Zustand überhaupt eine Veränderung des Wertes erfolgt, wird der PAA auf diese Möglichkeit beschränkt.
+Außerdem wird nicht jeweils die vollständige Zustands-Werte-Verteilung betrachtet, sondern nur der tatsächlich relevante Bereich. Dieser Bereich umfass zu Beginn einer Simulation lediglich die bereits erreichbaren Werte.
+Für alle n<l ist n der maximal erreichbare Wert in schritt n
+Außerdem werden Werte sehr nah bei 0 (<10hoch-17) ignoriert. Solche Werte werden aus der Verteilung gelöscht und die dadurch benötigten Arrays verkürzt, wodurch wiederum Simulationszeit eingespart wird.
 
-Wie werden die neuen Einträge berechnet? Graphik, Text dazu
+%todo Wie werden die neuen Einträge berechnet? Graphik, Text dazu
 
-Wie werden die Arrays gekürzt
+% todo Wie werden die Arrays gekürzt
 
 \subsection{PAA für das 2-Parameter Modell}
 
@@ -285,10 +363,10 @@ Wie werden die Arrays gekürzt
 
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries}]
-\tikzstyle{feld}=[draw,minimum width=1.7cm,minimum height=0.75cm,font=\sffamily\tiny]
+\tikzstyle{feld}=[draw,minimum width=2cm,minimum height=1cm,font=\sffamily\scriptsize]
 
 \begin{scope}[start chain=1 going right,node distance=-0.0mm]
-    \node [on chain=1,feld,draw=none, font=\small] {stat};
+    \node [on chain=1,feld,draw=none, font=\small] {stat.};
     \node [on chain=1,feld] (s1) {$s_1$};
     \node [on chain=1,feld] (s2) {$s_2$};
     \node [on chain=1,feld] {$s_3$};
@@ -299,8 +377,8 @@ Wie werden die Arrays gekürzt
 \end{scope}
 
 
-\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-1cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
-    \node [on chain=1,feld,draw=none, font=\small] {mob};
+\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-1.2cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
+    \node [on chain=1,feld,draw=none, font=\small] {mob.};
     \node [on chain=1,feld] (m1) {$m_1$};
     \node [on chain=1,feld] (m2) {$m_2$};
     \node [on chain=1,feld] {$m_3$};
@@ -310,7 +388,7 @@ Wie werden die Arrays gekürzt
 %     \node [on chain=1] {\textbf{Text}};
 \end{scope}
 
-\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-2.2cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
+\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-2.6cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
     \node [on chain=1,feld,draw=none, font=\small] {s\_to\_s };
     \node [on chain=1,feld] (ss1) {$s_1*p_s$};
     \node [on chain=1,feld] (ss2) {$s_2*p_s$};
@@ -320,7 +398,7 @@ Wie werden die Arrays gekürzt
 %     \node [on chain=1,feld,draw=none] {$\ldots$};
 %     \node [on chain=1] {\textbf{Text}};
 \end{scope}
-\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-3.2cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
+\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-3.8cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
     \node [on chain=1,feld,draw=none, font=\small] {s\_to\_m};
     \node [on chain=1,feld,align=center](sm1) {$0$};
     \node [on chain=1,feld] (sm1) {$s_1(1-p_s)$};
@@ -331,7 +409,7 @@ Wie werden die Arrays gekürzt
 %     \node [on chain=1] {\textbf{Text}};
 \end{scope}
 
-\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-4.2cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
+\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-5cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
     \node [on chain=1,feld,draw=none, font=\small] {m\_to\_m };
     \node [on chain=1,feld,align=center] {$0$};
     \node [on chain=1,feld] (mm1){$m_1*p_m$};
@@ -342,7 +420,7 @@ Wie werden die Arrays gekürzt
 %     \node [on chain=1] {\textbf{Text}};
 \end{scope}
 
-\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-5.2cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
+\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-6.2cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
     \node [on chain=1,feld,draw=none, font=\small] {m\_to\_s};
     \node [on chain=1,feld](ms1) {$s_1(1-p_s)$};
     \node [on chain=1,feld] (ms2){$s_2(1-p_s)$};
@@ -353,8 +431,8 @@ Wie werden die Arrays gekürzt
 %     \node [on chain=1] {\textbf{Text}};
 \end{scope}
 
-\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm, -6.4cm)}]
-    \node [on chain=1,feld,draw=none, font=\small] {stat'};
+\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm, -7.6cm)}]
+    \node [on chain=1,feld,draw=none, font=\small] {stat};
     \node [on chain=1,feld,align=center] (s'1) {$s_1*p_s +$\\$m_1(1-p_m)$};
     \node [on chain=1,feld,align=center](s'2) {$s_2*p_s +$\\$m_2(1-p_m)$};
     \node [on chain=1,feld,align=center] {$s_3*p_s +$\\$m_3(1-p_m)$};
@@ -366,8 +444,8 @@ Wie werden die Arrays gekürzt
 \end{scope}
 
 
-\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-7.4cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
-    \node (n1) [on chain=1,feld,draw=none, font=\small] {mob'};
+\begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-8.8cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
+    \node (n1) [on chain=1,feld,draw=none, font=\small] {mob};
     \node [on chain=1,feld] {$0$};
     \node [on chain=1,feld,align=center] (m'1){$m_1*p_m$\\$s_1(1-p_s)$};
     \node [on chain=1,feld,align=center] (m'2){$m_2*p_m$\\$s_4(1-p_s)$};
@@ -390,13 +468,30 @@ Wie werden die Arrays gekürzt
 
 \end{tikzpicture}
 
+
 \caption{PAA} \label{paa2p_prinzip}
 \end{figure}
 
 In \ref{paa2p_prinzip} ist exemplarisch dargestellt, wie die sich neuen Wahrscheinlichkeitsverteilungen in jedem Schritt berechnen. 
 Gegeben sind die alten Wahrscheinlichkeitsverteilungen $stat$ und $mob$.
 Um auf die neue Verteilung für den stationären Zustand zu kommen, muss für jede Position berechnet werden, welcher Anteil Teilchen stationär bleibt (s\_to\_s) und welcher Anteil bisher mobiler Teilchen in den stationären Zustand wechselt (m\_to\_s).
-Analog müssen für die mobile Verteilung oie mobil bleibenden sowie die sich aus dem Zustand lösenden Anteile berechnet werden. Da sich die Teilchen in der mobilen Phase jeweils einen Ort vorwärts bewegen, wird hier zusätzlich der ganze Vektor um ein Feld verschoben. 
+Analog müssen für die mobile Verteilung die mobil bleibenden sowie die sich aus dem Zustand lösenden Anteile berechnet werden. Da sich die Teilchen in der mobilen Phase jeweils einen Ort vorwärts bewegen, wird hier zusätzlich der ganze Vektor um ein Feld verschoben. Um eine anschließenden parallelen Berechnung der Wahrscheinlichkeiten der beiden Phasen durchführen zu können, wird zum Ausgleich den neu stationären Teilchenmassen ein neues Feld mit der Wahrscheinlichkeit von $0$ angehängt werden
+
 
 \subsection{PAA für das 3-Zustände Modell}
-Wie bei der schrittweisen Teilchensimulation tritt auch beim PAA für das 3-Zustände Modell das Problem auf, dass nicht mehr nur Boolsche Werte  ausreichen, um den Zustand zu beschreiben. 
+Wie bei der schrittweisen Teilchensimulation tritt auch beim PAA für das 3-Zustände Modell das Problem auf, dass nicht mehr nur boolesche Werte  ausreichen, um den Zustand zu beschreiben. 
+
+Erklaerung anschaulich auf dem Zettel vom 10.6.15
+
+
+\section{Berechnung der Peakdaten}
+Sowohl für die Simulation vieler Teilchen als auch bei der Verwendung eines PAA müssen nach der Simulation noch die Peakdaten berechnet werden. 
+
+Bei den Teilchensimulationen liegen die Peaks als Liste von Ankuftszeiten vor, beim PAA hingegen als Anteil der Gesamtwahrscheinlichkeit zu jedem Zeitpunkt. 
+
+Besonders bei den Teilchensimulationen ist es vorteilhaft, jeweils mehrere Zeitpunkte zusammen zu fassen, um die Peaks zu glätten.
+\todo{Bild unzusammengefasster Daten zur Verdeutlichung?}
+
+Maximalstelle: Am häufigsten vorkommende Ankunftszeit bzw. argmax der Wahrscheinlichkeiten
+
+Breite und Schiefe: Jeweils Quartile berechnen und daraus IQR und IQK

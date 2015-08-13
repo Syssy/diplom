@@ -5,18 +5,19 @@
 \todo{Kapitel Implementierung schreiben}
 \todo{Soll hier auch erwähnt werden, wie die verschiedenen Auswertungen gemacht wurden? Plots etc}
 
+\section{Festlegung der Einheiten}
+$20$ cm entspricht 200000 Schritten, in die MCC unterteilt wird.
+1 Schritt ist damit $1$\,\textmu m
+Trägergas hat nach etwa $0,1$ Sekunden die Säule durchlaufen.
+Eine Zeiteinheit entspricht demnach ca. 0.1/200000 Sekunden 0.0000005s 0.0005ms $0,5$\,\textmu s
+
+
 \section{Simulation der Modelle}
 Zur Simulation der beiden Modelle wurde Python (Python3) verwendet.
 
 Abhängigkeiten von Numpy(Arrays zur schnelleren Verarbeitung), Scipy (Berechnung von Peakdaten) und PyPlot (graphische Darstellung) sowie statsmodels (für die qq-Plots)
 
 Mit der 3-s kann auch 2p simuliert werden, indem nicht benötigte Übergangswahrscheinlichkeiten auf 0 gesetzt werden. Die reine 2p-Simulation ist aber deutlich schneller, da nur auf boolschen Werten gearbeitet werden muss.
-
-\subsection{Festlegung der Einheiten}
-$20$ cm entspricht 200000 Schritten, in die MCC unterteilt wird.
-1 Schritt ist damit $1$\,\textmu m
-Trägergas hat nach etwa $0,1$ Sekunden die Säule durchlaufen.
-Eine Zeiteinheit entspricht demnach ca. 0.1/200000 Sekunden 0.0000005s 0.0005ms $0,5$\,\textmu s
 
 
 \subsection{Step-by-step}
