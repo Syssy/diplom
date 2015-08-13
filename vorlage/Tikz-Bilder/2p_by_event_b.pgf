@@ -1,0 +1,68 @@
+
+\usetikzlibrary{arrows,%
+				chains, %
+                topaths}%
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries}]
+\tikzstyle{feld}=[draw,minimum width=1.5cm,minimum height=0.7cm,font=\sffamily\footnotesize]
+
+\begin{scope}[start chain =1 going right, node distance =-0.3mm]
+	\node [on chain =1, feld, draw=none,minimum width=2cm] {Events $e$};
+	\node [on chain=1, feld,minimum width=2cm] (p2) {$e_2$};
+	\node [on chain=1, feld,minimum width=2cm] (p5) {$e_5$};
+	\node [on chain=1, feld,minimum width=2cm] (p7) {$e_7$};
+	\node [on chain=1, feld,minimum width=2cm] (p9) {$e_9$};
+	\node [on chain=1, feld,minimum width=2cm] (p12) {$e_{12}$};
+	\node [on chain=1, feld,minimum width=2cm] (p16) {$e_{16}$};
+\end{scope}
+
+
+\begin{scope}[start chain = 1 going below,shift={(2cm, -2cm)}, node distance=0.5cm]
+	\node[on chain = 1, feld] (2x1) {($s_0, o_0$)};
+	\node[on chain = 1, feld] (2x2) {($s_8, o_8$)};
+\end{scope}
+
+\begin{scope}[start chain = 1 going below,shift={(4cm, -2cm)}, node distance=0.5cm]
+	\node[on chain = 1, feld] (5x1) {($s_{10}, o_{10}$)};
+	\node[on chain = 1, feld, fill=green!50!white] (5x2) {($s_1, o_1$)};
+\end{scope}
+
+\begin{scope}[start chain = 1 going below,shift={(6cm, -2cm)}, node distance=0.5cm]
+	\node[on chain = 1, feld] (7x1) {($s_2, o_2$)};
+	\node[on chain = 1, feld] (7x2) {($s_3, o_3$)};
+	\node[on chain = 1, feld] (7x3) {($s_9, o_9$)};
+\end{scope}
+
+\begin{scope}[start chain = 1 going below,shift={(8cm, -2cm)}, node distance=0.5cm]
+	\node[on chain = 1, feld, fill=orange!50!white] (9x1) {($s_7, o_7$)};
+\end{scope}
+
+\begin{scope}[start chain = 1 going below,shift={(10cm, -2cm)}, node distance=0.5cm]
+	\node[on chain = 1, feld] (12x1) {($s_5, o_5$)};
+\end{scope}
+
+\begin{scope}[start chain = 1 going below,shift={(12cm, -2cm)}, node distance=0.5cm]
+	\node[on chain = 1, feld, fill=blue!40!white] (16x1) {($s_4, o_4$)};
+\end{scope}
+
+%\path [line width=1.4pt, line cap=rect, draw](1x2) edge (1x3) ;
+
+\path [line width=1.4pt, line cap=rect, draw](p2) edge (2x1) ;
+\path [line width=1.4pt, line cap=rect, draw](2x1) edge (2x2) ;
+
+\path [line width=1.4pt, line cap=rect, draw](p5) edge (5x1) ;
+\path [line width=1.4pt, line cap=rect, draw](5x1) edge (5x2) ;
+
+\path [line width=1.4pt, line cap=rect, draw](p7) edge (7x1) ;
+\path [line width=1.4pt, line cap=rect, draw](7x1) edge (7x2) ;
+\path [line width=1.4pt, line cap=rect, draw](7x2) edge (7x3) ;
+
+\path [line width=1.4pt, line cap=rect, draw](p9) edge (9x1) ;
+
+\path [line width=1.4pt, line cap=rect, draw](p12) edge (12x1) ;
+
+\path [line width=1.4pt, line cap=rect, draw](p16) edge (16x1) ;
+
+\end{tikzpicture}

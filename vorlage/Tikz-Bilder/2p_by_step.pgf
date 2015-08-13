@@ -1,0 +1,89 @@
+
+\usetikzlibrary{arrows,%
+				chains, %
+                topaths}%
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries}]
+\tikzstyle{feld}=[draw,minimum width=1.5cm,minimum height=0.7cm,font=\sffamily\footnotesize]
+
+
+\begin{scope}[start chain =1 going right, node distance =0.0mm]
+	\node [on chain =1, feld, draw=none] {Phasen};
+	\node [on chain=1, feld, fill=blue!30!white] (p1) {0};
+	\node [on chain=1, feld] (p3) {0};
+	\node [on chain=1, feld, fill=green!30!white] (p4) {1};
+	\node [on chain=1, feld] (p5) {1};
+	\node [on chain=1, feld,fill=magenta!70!blue!20!white] (p6) {1};
+	\node [on chain=1, feld] (p7) {1};
+	\node [on chain=1, feld, fill=orange!30!white] (p8) {0};
+\end{scope}
+
+\begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -1cm)}]
+	\node [on chain =1, feld, draw=none] {Orte};
+	\node [on chain=1, feld] (o1) {0};
+	\node [on chain=1, feld] (o3) {4};
+	\node [on chain=1, feld] (o4) {4};
+	\node [on chain=1, feld] (o5) {1};
+	\node [on chain=1, feld] (o6) {6};
+	\node [on chain=1, feld] (o7) {6};
+	\node [on chain=1, feld] (o8) {3};
+\end{scope}
+
+\begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -2.5cm)}]
+	\node [on chain =1, feld, draw=none] {ZV};
+	\node [on chain=1, feld] (z1) {$0,9$};
+	\node [on chain=1, feld] (z3) {$0,6$};
+	\node [on chain=1, feld] (z4) {$0,2$};
+	\node [on chain=1, feld] (z5) {$0,9$};
+	\node [on chain=1, feld] (z6) {$0,7$};
+	\node [on chain=1, feld] (z7) {$0,2$};
+	\node [on chain=1, feld] (z8) {$0,3$};
+\end{scope}
+
+\begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -3.5cm)}]
+	\node [on chain =1, feld, draw=none] {$p_s = 0,8$};
+	\node [on chain=1, feld, fill=blue!30!white] (ps1) {0};
+	\node [on chain=1, feld] (ps3) {1};
+	\node [on chain=1, feld] (ps4) {1};
+	\node [on chain=1, feld] (ps5) {0};
+	\node [on chain=1, feld] (ps6) {1};
+	\node [on chain=1, feld] (ps7) {1};
+	\node [on chain=1, feld, fill=orange!30!white] (ps8) {1};
+\end{scope}
+
+\begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -4.5cm)}]
+	\node [on chain =1, feld, draw=none] {$p_m = 0,5$};
+	\node [on chain=1, feld] (pm1) {0};
+	\node [on chain=1, feld] (pm3) {0};
+	\node [on chain=1, feld, fill=green!30!white] (pm4) {1};
+	\node [on chain=1, feld] (pm5) {0};
+	\node [on chain=1, feld,fill=magenta!70!blue!20!white] (pm6) {0};
+	\node [on chain=1, feld] (pm7) {1};
+	\node [on chain=1, feld] (pm8) {1};
+\end{scope}
+
+\begin{scope}[start chain =1 going right, node distance =0.0mm, shift={(0cm, -6cm)}]
+	\node [on chain =1, feld, draw=none] {Phasen};
+	\node [on chain=1, feld, fill=blue!30!white] (np1) {1};
+	\node [on chain=1, feld] (np3) {0};
+	\node [on chain=1, feld, fill=green!30!white] (np4) {1};
+	\node [on chain=1, feld] (np5) {0};
+	\node [on chain=1, feld,fill=magenta!70!blue!20!white] (np6) {0};
+	\node [on chain=1, feld] (np7) {1};
+	\node [on chain=1, feld, fill=orange!30!white] (np8) {0};
+\end{scope}
+
+\begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -7cm)}]
+	\node [on chain =1, feld, draw=none] {Orte};
+	\node [on chain=1, feld] (no1) {1};
+	\node [on chain=1, feld] (no3) {4};
+	\node [on chain=1, feld] (no4) {5};
+	\node [on chain=1, feld] (no5) {1};
+	\node [on chain=1, feld] (no6) {6};
+	\node [on chain=1, feld] (no7) {7};
+	\node [on chain=1, feld] (no8) {3};
+\end{scope}
+
+\end{tikzpicture}
