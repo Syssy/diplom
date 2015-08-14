@@ -490,3 +490,9 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
 06.08.2015
  * die mosdi-merkwürdigkeit aufbereiten
  * Schreiben und Methodenkapitel / Auswertung abschicken
+ * Es wäre schön, wenn man die 2p und 3s jeweils wirklich mit der gleichen Umgebung aufrufen könnte. Also einfach zwei Funktionen innerhalb einer Datei. Das "Rahmenprogramm" ist ja das gleiche... Dazu könnte man auch immer die 9Params angeben und vor simulation testen, ob welche überflüssig sind.
+ * Berechnung des IQK für die 3s-Simulation fehlt?
+ * Meine julia 3s laufzeiten aufbessern, indem nur die relevanten hilfsdingse berechnet werden (momentan neun, von denen aber nur 7 nötig)
+ * Bin mit meinen Plots nicht ganz glücklich. Eigentlich ist die Beschriftung im Bild doof, aber die Farben sind teilweise halt schlecht erkennbar/zuzuordnen. Evtl noch mal mit versch. Symbolen probieren?
+ * In den Plots: Überschrift, immer gleiche reihenfolge der params!
+ 
