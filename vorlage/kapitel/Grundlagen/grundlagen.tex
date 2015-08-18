@@ -23,32 +23,32 @@ bei der die mobile Phase eine Flüssigkeit ist und die stationäre Phase ein Fes
 % Verwandte Arbeiten?
 % Wo kommt das mit den Referenzdatensätzen rein?
 
-Beispielsweise kann die GC in einer Multikapillarsäule (MCC, engl. Multi Capillary Colum) stattfinden. Sie besteht aus ca. 1000 \todo{Quelle Anzahl Kapillaren einer MCC} einzelnen Kapillaren. Jede davon ist innen mit der sog. stationären Phase beschichtet. Außerdem kommt ein Trägergas, die sog. mobile Phase, zum Einsatz, welches die Analyte durch die Säule transportiert. 
+Beispielsweise kann die GC in einer Multikapillarsäule (MCC, engl. Multi Capillary Colum) stattfinden. Sie besteht aus ca. 1000 \todo{Quelle Anzahl Kapillaren einer MCC} einzelnen Kapillaren. Jede davon ist innen mit der stationären Phase beschichtet. Außerdem kommt ein Trägergas, die mobile Phase, zum Einsatz, welches die Analyte durch die Säule transportiert. Dieses kann beispielsweise Luft oder Stickstoff sein TODO Quelle
 
 \subsection{Der chromatograpische Prozess}
 Die Substanzen unterscheiden sich vor allem durch ihre Wechselwirkungen mit der stationären Phase. Während dieser Wechselwirkungen haften die Teilchen an der stationären Phase, bewegen sich also nicht fort. Finden wenig Wechselwirkungen statt, passieren die Teilchen die Säule schneller, als wenn viele Wechselwirkungen stattfinden. Dies beeinflusst die Retentionszeit, also die Zeit, die zum Durchlaufen der Säule gebraucht wird.
+
+Dabei existieren verschiedene Arten von Wechselwirkungen zwischen den Analytteilchen und der stationären Phase. Zum Einen die Adsorption, bei der die Teilchen mit der Oberfläche der stationären Phase in Kontakt kommen und sich dort anreichern. Die Adsorption findet dabei auf Grund von physikalischen Kräften wie der Van-Der-Waals-Kräften statt. Dadurch ist die Bindung der Stoffe an die stationäre Phase nicht sehr fest und die Teilchen können sich leicht wieder daraus lösen.
+
+Zum Anderen können sich die Analyte aber auch in der stationären Phase lösen. Da sie dabei eine chemische Bindung eingehen, sind sie schwerer als bei der Adsorption wieder voneinander zu trennen. Die Stoffe verweilen dadurch durchschnittlich länger in der stationären Phase und ihre Durchschnittsgewschindigkeit sinkt.
+
 \todo{Beide Möglichkeiten der Wechselwirkungen beschreiben}
 \todo{Ausführlich den chroma Proz beschreiben}
 \todo{Inklusive Gleichgewicht der Phasen im Inneren des Pulks}
 
 %\todo{Wegen Datensätzen muss das doch rein
 \subsection{Detektion}
-Nach Durchlaufen der Säule wird detektiert, welche Menge an Substanzen austreten. Dabei wird nicht die Art des Analyts festgestellt, sondern nur die Menge der zum jeweiligen Zeitpunkt austretenden Stoffe. Dabei zeichnet der Detektor ein Chromatogramm auf, welches beispielhaft in \todo{Bild Chromatogramm} zu sehen ist
+Nach Durchlaufen der Säule wird detektiert, welche Menge an Substanzen austreten. Dabei wird nicht die Art des Analyts festgestellt, sondern nur die Menge der zum jeweiligen Zeitpunkt austretenden Stoffe. Während sich die meisten Stoffe ausreichend in ihrem Verhalten zur stationären Phase unterscheiden und dadurch aufgetrennt die Säule verlassen, kann es aber durchaus vorkommen, dass sich zwei Stoffe hinreichend ähnlich sind und  zumindest teilweise überlappend austreten.
 
-Alternativ kann die Gaschromatographie auch als Vorverarbeitung für Verfahren wie Massenspektrometrie (MS) oder Ionen-Mobilitäts-Spektrometrie (IMS) dienen. In diesen Fällen werden die aus der MCC austretenden Moleküle direkt ionisiert und in den entsprechenden Geräten weiter analysiert.
+Zur Detektion existieren mehrere Möglichkeiten. Zum Einen kann ein Detektor wie beispielsweise TODO ein Chomatogramm aufzeichen. Dabei wird in bestimmten Zeitintervallen die austretende Menge Analyte festgestellt. Beispielhaft ist ein Chromatogramm in TODO zu sehen. 
+\todo{Bild Chromatogramm (zb ein verrauschter plot 2-3 stoffe, dabei unterschiedlichen pd)}
 
-\todo{MS und IMS näher beleuchten}
-% Die für diese Arbeit vorliegenden Referenzdatensätze stammen aus einer solchen MCC-IMS-Kopplung. Ein Beispiel dafür ist in \ref{picture:Spektrum1} zu sehen. \todo{Spektrum erklären}
-% \begin{figure}
-%  \includegraphics[width = 0.9\textwidth]{bilder/BD15_1304101102_ims}
-%  \caption{Spektrum einer MCC-IMS-Messung}
-%  \label{picture:Spektrum1}
-% \end{figure}
-%
+Alternativ kann die Gaschromatographie auch als Vorverarbeitung für Verfahren wie Massenspektrometrie (MS) oder Ionen-Mobilitäts-Spektrometrie (IMS) dienen. Auch bei diesen Technologien können nicht in jedem Fall alle Stoffe unterschieden werden, bei beispielsweise gleicher Masse aber unterschiedlicher Molekülstruktur bei der MS ist das der Fall. Durch zuvor statt findende GC jedoch wird nach einer weiteren Stoffeigenschaft unterschieden, sodass diese ähnlichen Stoffe durch die Vortrennung zu verschiedenen Zeitpunkten mit dem zweiten Analyseverfahren beginnen und so doch getrennt im resultierenden Spektrum erscheinen. Wenn eine solche Weiterverarbeitung statt finden soll, werden die aus der MCC austretenden Moleküle direkt ionisiert und in den entsprechenden Geräten weiter analysiert.
+
+\todo{MS und IMS näher beleuchten? Oder reicht Referenz auf Verfahren?}
 
 \todo{Wo kann ich sonst Peaks beobachten?}
 Zu beobachten ist, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden. Ideale Peaks haben die Form einer Gaußkurve.
-
 
 \subsection{Technische Daten}
 Eine MCC besteht aus ca. $1000$ Kapillaren mit je
@@ -68,23 +68,30 @@ $\rightarrow$ MCC etwa $2\,-6$\,mm dick und $20$\,cm lang
 \footnotetext{http://yas.yanaco.co.jp/products/import-gc-ims.html}
 
 \section{Peakcharakteristika}
-Um später die simulierten Peaks mit denen aus den Referenzdatensätzen gut vergleichen zu können, sollen nun einige Eigenschaften aufgeführt werden, die einen Peak beschreiben.
+Die im gaschromatographischen Experiment gewonnenen, sowie später auch die simulierten Peaks müssen durch einige Eigenschaften beschrieben werden, um sie vergleichbar zu machen. Dafür seien hier drei solcher Eigenschaften beschrieben, die Lage, Breite und Form eines Peaks.
+
+%Um später die simulierten Peaks mit denen aus den Referenzdatensätzen gut vergleichen zu können, sollen nun einige Eigenschaften aufgeführt werden, die einen Peak beschreiben.
 
 \subsection{Lage}
-Die offensichtlichste Eigenschaft ist die Lage des Peaks, genauer gesagt, die Lage des Maximums des Peaks. 
-\todo{Minimalzeitpunkt angeben, sowie Ende der Simulation}
+Die offensichtlichste Eigenschaft eines Peaks ist seine Lage, genauer gesagt, die Lage seines Maximums. Je nach verwendeter Technologie unterscheiden sich die Messzeiträume für einen chomatographischen Durchlauf gewaltig. \todo{Beispielintervalle}
+Allerdings gibt es immer einen minimalen Zeitraum der nach Start der Chomatographie vergangen sein muss, bis ein Peak überhaupt auftreten kann. Dieser hängt von der Geschwindigkeit der mobilen Phase ab, da sich die Analyte nicht schneller als die mobile Phase fortbewegen können und daher mindestens dieselbe Zeit benötigen. Außerdem kann für jede einzelne Messung ein Maximalzeitpunkt gewählt werden, nach dem das Experiment beendet wird. 
+\todo{Ende der Simulation hier festlegen?}
 %Referenzdaten: Manchmal schwierig, wenn die Peaks keine glatte Kurve ergeben, sondern oben zackig sind. 
 
 \subsection{Form}
-Außerdem können die Peaks verschiedene Formen haben. Im theoretischen Idealfall haben sie die Form einer Gaußkurve, jedoch tritt oft ein Tailing auf, welches verschiedene Ursachen haben kann. Unter Anderen seien hier genannt: zusätzliche Adsorptionseffekte, die beim Altern einer Säule auftreten \cite{kolb2003}, technische Ursachen wie kleinste Hohlräume zwischen der Säule und dem Gaseinlass bzw. -Austritt, sowie einige Stoffe, die generell zu Tailing neigen \todo{Zitat, dass einige Stoffe gererell tailen}. 
-Beim Tailing steigt die Kurve zunächst stark an, sinkt jedoch nach Erreichen des Maximalwerts deutlich langsamer ab, es entsteht ein Schwanz (engl. Tail). Auch der umgekehrte Fall, Fronting genannt, kann auftreten, ist jedoch in den vorliegenden Datensätzen nicht zu beobachten.
-Yule-Bowley-Koeffizient
+Außerdem können die Peaks verschiedene Formen haben. Im theoretischen Idealfall haben sie die Form einer Gaußkurve. \todo{Quelle}
+Abweichend davon treten in echten Messungen häufig asymmetrische Peaks auf, die dann ein Tailing aufweisen, auch rechtsschiefe genannt. Dabei steigt die Kurve zunächst stark an, sinkt jedoch nach Erreichen des Maximalwerts deutlich langsamer ab, es entsteht ein Schwanz (engl. Tail).
+Ursachen für solche schiefen Peaks gibt es viele, einige Beispiele dafür sind zusätzliche Adsorptionseffekte, die beim Altern einer Säule auftreten \cite{kolb2003}, technische Ursachen wie kleinste Hohlräume zwischen der Säule und dem Gaseinlass bzw. -austritt, sowie einige Stoffe, die generell zu Tailing neigen. \todo{Zitat, dass einige Stoffe gererell tailen}. 
+
+Als Maß für die Schiefe bietet sich der Yule-Bowley-Koeffizient an. TODO Formel
 \todo{Interquantilskoeffizient, Quelle, Erklären, warum}
 
 \subsection{Breite}
-Als drittes können Peaks unterschiedlich breit sein. Da jedoch ein Peak mit größerer Intensität, also möglicherweise größerer Stoffmenge, automatisch auch einen breiteren Peak erzeugt, kann die Halbwertsbreite als Maß für die Peakbreite herangezogen werden. Die Halbwertsbreite wird auf halber Maximalhöhe des Peaks gemessen. Im Fall von auftretendem Tailing oder Fronting ist es sinnvoll, je einen Wert für rechts und links des Maximalwerts zu berechnen.
+Als drittes können Peaks unterschiedlich breit sein. Da jedoch ein Peak mit größerer Intensität, also möglicherweise größerer Stoffmenge, automatisch auch einen höheren und damit breiteren Peak erzeugt, kann die Halbwertsbreite als Maß für die Peakbreite herangezogen werden. Die Halbwertsbreite wird auf halber Maximalhöhe des Peaks gemessen. Im Fall von auftretendem Tailing ist dieser Wert jedoch wahrscheinlich nicht mehr aussagekräftig. Außerdem ist die Halbwertsbreite kein robustes Maß für die Breite, sodass statt dessen der Interquartilsabstand (IQR) als Maß für die Breite verwendet werden kann. Auch dieses Maß ist unabhängig von der Stoffmenge, die den Peak verursacht hat. 
+
  Interquartilsabstand 
  \todo{Zitat IQR, diesen erkären, warum dieses Mass}
+
 
 \section{Probabilistische Arithmetische Automaten}
 Um die Multikapillarsäule zu simulieren, werden verschiedene Vorgehensweisen angewendet. Am naheliegendsten erscheint es, den chromatographischen Prozess für eine gewisse Anzahl an Teilchen zu simulieren und dabei für jedes einzelne dieser Teilchen mindestens seinen Ort und seinen Zustand festzuhalten. Diese Methode hat jedoch den Nachteil, dass verschiedene Durchläufe zu unterschiedlichen Ergebnissen führen können, insbesondere, wenn zu wenige Teilchen simuliert wurden.

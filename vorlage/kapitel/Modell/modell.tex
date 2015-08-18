@@ -1,17 +1,20 @@
 \chapter{Modell} %Modell/Modelle?
 \label{chapter:mod}
 \todo{die beiden unterkapitel modell und modell3s ganz am ende wieder in eine datei packen, wegen seitenumbruch}
+Kapitelübersicht: Man kann unterscheiden zwischen verschiedenen Modellen (2p/3s) und den Arten, wie diese umgesetzt werden (Teilchensim oder PAA)
 
 \section{2-Parameter Modell}
 \label{chapter:mod:2p}
 
+Als Grundlage für die Entwicklung eines Simulationsmodells dient die Beobachtung des chromatographischen Prozesses. Dieser ist wie in Kapitel \ref{chapter:gru} beschrieben gekennzeichnet durch viele Teilchen, welche häufig zwischen der stationären und mobilen Phase wechslen. Es liegt also nahe, dass im Modell ebenfalls Teilchen simuliert werden, die zwischen zwei Zuständen, welche die beiden Phasen repräsentieren, wechseln. Der Phasenwechsel geschieht jeweils mit einer bestimmten Wahrscheinlichkeit. Dabei kann es möglich sein, dass die Wahrscheinlichkeiten für den Wechsel in die eine oder andere Richtung voneinander abhängig sind. Da dies jedoch nicht sein muss, wird für das Modell zunächst der Fall von unabhängigen Wechselwahrscheinlichkeiten angenommen. Es sei also $p_s$ die Wahrscheinlichkeit, dass ein Teilchen, welches sich bereits in der stationären Phase befindet, auch stationär bleibt und $1-p_s$ die Wahrscheinlichkeit, dass es in die mobile Phase übergeht. Analog seien $p_m$ und $1-p_m$ die Wahrscheinlichkeiten, dass ein mobiles Teilchen in der mobilen Phase bleibt bzw. zur stationären Phase wechselt. 
 
-Kapitelübersicht: Man kann unterscheiden zwischen verschiedenen Modellen (2p/3s) und den Arten, wie diese umgesetzt werden (Teilchensim oder PAA)
-
-Als Grundlage für die Entwicklung eines Simulationsmodells dient die Beobachtung des chromatographischen Prozesses. Dieser ist wie in Kapitel \ref{chapter:gru} beschrieben gekennzeichnet durch viele Teilchen, welche häufig zwischen der stationären und mobilen Phase wechslen. Es liegt also nahe, dass im Modell ebenfalls Teilchen simuliert werden, die zwischen zwei Zuständen, welche die beiden Phasen repräsentieren, wechseln. Der Phasenwechsel geschieht jeweils mit einer bestimmten Wahrscheinlichkeit. Dabei kann es möglich sein, dass die Wahrscheinlichkeiten für den Wechsel in die eine oder andere Richtung voneinander abhängig sind. Da dies jedoch nicht sein muss, wird für das Modell der allgemeinere Fall von unabhängigen Wahrscheinlichkeiten angenommen. Es sei also $p_s$ die Wahrscheinlichkeit, dass ein Teilchen, welches sich bereits in der stationären Phase befindet, auch stationär bleibt und $1-p_s$ die Wahrscheinlichkeit, dass es in die mobile Phase übergeht. Analog seien $p_m$ und $1-p_m$ die Wahrscheinlichkeiten, dass ein mobiles Teilchen in der mobilen Phase bleibt bzw. zur stationären Phase wechselt. 
-
-
-Damit ergibt sich als Modell ein einfacher Automat mit zwei Zuständen $\mathcal{Q} = \{s, m\}$ und den oben beschriebenen Transitionen. Eine graphische Darstellung des Modells zeigt \ref{tikz:2p_Mod} \todo{Formale Beschreibung meines Modells}
+Damit ergibt sich als erstes Modell ein einfacher Automat mit zwei Zuständen $\mathcal{Q} = \{s, m\}$. $m$ ist Startzustand, da die Teilchen stets nur in der mobilen Phase in die Säule eintreten können. Dazu kommen die oben beschriebenen Transitionen $T= 
+\begin{pmatrix}
+p_s & 1-p_s \\
+1-p_m & p_m 
+\end{pmatrix}
+$ 
+Eine graphische Darstellung des Modells zeigt \ref{tikz:2p_Mod} \todo{Startzustand in Graphik kennzeichnen} \todo{Formale Beschreibung meines Modells}
 
 \begin{figure}[ht]
  \centering
@@ -42,11 +45,16 @@ Damit ergibt sich als Modell ein einfacher Automat mit zwei Zuständen $\mathcal
 \label{tikz:2p_Mod}
 \end{figure}
 
-Für die Simulation müssen viele Teilchen, ausgehend vom mobilen Zustand, den Automaten durchlaufen. Dabei wird zusätzlich zum Zustand der Teilchen auch der Ort, an dem sie sich befinden, verwaltet. Wenn sich ein Teilchen im mobilen Zustand befindet, wird dieser Ortszähler erhöht. Außerdem werden die insgesamt benötigten Schritte gezählt. Dadurch leiten sich dann die Ankunftszeiten der Teilchen bei Erreichen eines bestimmten Wertes des Ortszählers ab.
+Für die Simulation müssen viele Teilchen, ausgehend vom mobilen Zustand, den Automaten durchlaufen. Dabei wird zusätzlich zum Zustand der Teilchen auch der Ort, an dem sie sich befinden, verwaltet. Wenn sich ein Teilchen im mobilen Zustand befindet, wird dieser Ortszähler erhöht. Die Simulation eines Teilchens ist beendet, wenn der Ortszähler den gewünschten Wert, der der Länge der Trennsäule entspricht, erreicht hat.
+Außerdem werden die dafür benötigten Schritte gezählt, wodurch sich dann die Ankunftszeit des Teilchens am Ende der Säule ableitet.
+Diese Simulation muss für sehr viele Teilchen wiederholt werden, sodass alle Ankunftszeiten zusammen als ein Peak dargestellt werden können.
+
+%leiten sich dann die Ankunftszeiten der Teilchen bei Erreichen eines bestimmten Wertes des Ortszählers ab.
 
 % für abbruchbedingung und zeit für peak
 % Das ganze 1000 mal wiederholen da je nur eine kapillare simuliert wurde
-Der genaue Ablauf der Simulation wird in Kapitel \ref{chapter:meth} beschrieben.
+In Kapitel \ref{chapter:meth} werden verschiedene Arten der Simulation und der genaue Ablauf beschrieben.
+%Der genaue Ablauf der Simulation wird in Kapitel \ref{chapter:meth} beschrieben.
 
 % Grundlage: Phasenwechsel
 % Das eigentliche Modell
@@ -102,13 +110,18 @@ Und noch mehr Text, der sich auf \ref{PAA_2P} bezieht
 \subsection{Grenzen des Modells}
 Eine genaue Analyse der Peaks, die mit dem 2-Parameter Modell erzeugt werden können, findet sich in Kapitel \ref{chapter:eva}. An dieser Stelle sei nur vorweg genommen, dass es zwei Hauptprobleme mit dem Modell zu geben scheint. 
 
+Das erste mögliche Problem ist, dass die Peaks eine Minimalbreite an einem gegebenen Zeitpunkt $t_x$ haben. Das heißt, dass mit dem Modell keine Peaks simuliert werden können, die ihrem Maximalzeitpunkt an $t_x$ haben, jedoch schmaler sind, als Breite $b$. Ob dieser Umstand ein Problem darstellt, muss anhand realer Messdaten herausgefunden werden.
+
+Das andere Problem ist, dass fast keine der simulierten Peaks ein Tailing aufweisen. Lediglich ein sehr stark eingeschränkter Parameterbereich erzeugt ein Tailing. Leider sind die Maximalzeitpunkte der so erzeugten Peaks alle sehr klein, sodass nicht über die gesamte simulierte Zeit Peaks mit Tailing erzeugbar sind. Darüber hinaus ist Tailing in echten Messungen eher bei späten Peaks zu beobachten.
+% Leider liegen die Maximalzeitpunkte der so ezeugten Peaks auch nur in einem sehr kleinen Bereich
+% Das führt dazu, dass Tailing nur in einem sehr kleinen Retentionszeitbereich auftritt, allerdings nicht, wie es in tatsächlichen Daten zu beobachten ist, zu den eher späten Zeiten.
+
 \todo{Umformulierung auf hypothetische Peaks}
-Einfach darstellen, wie es ist (Zu jedem Zeitpunkt scheint es eine Minimalbreite zu geben, die mit diesem Modell nicht unterschritten werden kann)
-, und dass es evtl wünschenswert wäre, schmalere Peaks zu manchen Zeitpunkten zu haben
-
-** Die Sache mit den Peaks die zu schmal für meine Sim waren fällt ja quasi weg, es gibt ohne Daten keine Hinweise darauf, dass es nötig ist, schmalere Peaks zu erzeugen. Daher einfach aufschreiben, DASS da eine Grenze ist (nach oben aber fast beliebig breit)
-% Zum Einen scheint es in den vorliegenden Datensätzen einige Peaks zu geben, deren kombinierte Lage und Breite nicht mit dem Modell simulierbar sind. Es ist zwar sowohl in den echten wie auch in den simulierten Daten die klare Tendenz zu erkennen, dass Peaks, die zu einer höheren Retentionszeit auftreten, auch breiter sind, als frühe Peaks. Es gibt also keine sehr schmalen Peaks am Ende des Spektrums. Allerdings existieren einige Peaks, deren Breite geringer ist, als alle mit dem Modell simulierbaren Peaks zu dieser Retentionszeit.
-%Alle Simulationen ergeben zumindest geringfügig breitere Peaks. 
-
-Zum Anderen weisen fast keine der simulierten Peaks ein Tailing auf. Lediglich ein sehr stark eingeschränkter Parameterbereich erzeugt ein Tailing. Das führt dazu, dass Tailing nur in einem sehr kleinen Retentionszeitbereich auftritt, allerdings nicht, wie es in tatsächlichen Daten zu beobachten ist, zu den eher späten Zeiten.
-
+ % , und dass es evtl wünschenswert wäre, schmalere Peaks zu manchen Zeitpunkten zu haben
+% 
+% ** Die Sache mit den Peaks die zu schmal für meine Sim waren fällt ja quasi weg, es gibt ohne Daten keine Hinweise darauf, dass es nötig ist, schmalere Peaks zu erzeugen. Daher einfach aufschreiben, DASS da eine Grenze ist (nach oben aber fast beliebig breit)
+% % Zum Einen scheint es in den vorliegenden Datensätzen einige Peaks zu geben, deren kombinierte Lage und Breite nicht mit dem Modell simulierbar sind. Es ist zwar sowohl in den echten wie auch in den simulierten Daten die klare Tendenz zu erkennen, dass Peaks, die zu einer höheren Retentionszeit auftreten, auch breiter sind, als frühe Peaks. Es gibt also keine sehr schmalen Peaks am Ende des Spektrums. Allerdings existieren einige Peaks, deren Breite geringer ist, als alle mit dem Modell simulierbaren Peaks zu dieser Retentionszeit.
+% %Alle Simulationen ergeben zumindest geringfügig breitere Peaks. 
+% 
+% Zum Anderen weisen 
+% 
