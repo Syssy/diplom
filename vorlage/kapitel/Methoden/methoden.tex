@@ -350,10 +350,48 @@ In Abbildung \ref{2p_by_event} ist beispielhaft die Simulation eines Events geze
 Analog zum 2-Parameter Modell kann auch das 3-Zustände Modell entweder schrittweise oder ereignisbasiert umgesetzt werden. Dafür bleiben die Algorithmen \ref{algo_by_Step} und \ref{algo_by_event} jeweils unverändert, lediglich die Umsetzung der Simulation eines Schrittes bzw. eines Zeitpunktes muss angepasst werden.
 
 \subsubsection{Step-by-Step}
+
 Weiterhin die neue Zustandsberechnung als logische Verknüpfung
 Um aus Zufallszahlen die passenden Arrays mit größer/kleiner-Abfrage zu machen, erstelle kumulierte Wahrscheinlichkeiten (ein mal zu beginn)
 Viele Hilfsarrays nötig, die entsprechend viel überflüssige Information enthalten
 
+Beispiel:
+$T= 
+\begin{pmatrix}
+0,5 & 0,3 & 0,2 \\
+0,2 & 0,2 & 0,6 \\
+0,15 & 0,15 & 0,7 
+\end{pmatrix}
+$  wird zu 
+$K= 
+\begin{pmatrix}
+0,5 & 0,8 & 1 \\
+0,2 & 0,4 & 1 \\
+0,15 & 0,3 & 1 
+\end{pmatrix}
+$ 
+
+
+\begin{tabular}{ l || l | l | l | l | l | l | l | l | l }
+  \hline
+  Start & 0 & 1 & 0 & 2 & 2 & 1 & 0 & 2 & 1 \\ \hline 
+  ZV & 0,3 & 0,9 & 0,7 & 0,8 & 0,2 & 0,1 & 0,9 & 0,1 & 0,3 \\ \hline
+  Maske0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 \\ 
+  Maske1 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 1 \\
+  Maske2 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 1 & 0 \\ \hline
+  Ü00 & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\ 
+  Ü01 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ \hline
+  M0*Ü0 & 0 & 0 & 1 & 0 & 0 & 0 & 2 & 0 & 0 \\ \hline
+  Ü10 & 1 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 1 \\ 
+  Ü11 & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\ \hline
+  M1*Ü1 & 0 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\ \hline
+  Ü20 & 1 & 1 & 1 & 1 & 1 & 0 & 1 & 0 & 1 \\ 
+  Ü21 & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\ \hline
+  M2*Ü2 & 0 & 0 & 0 & 2 & 1 & 0 & 0 & 0 & 0 \\ \hline
+  Resultat & 0 & 2 & 1 & 2 & 1 & 0 & 2 & 0 & 1 \\ \hline
+  \hline
+\end{tabular}
+  
 \todo{Erweiterung auf mehr Zustände mit exakt diesem Vorgehen wohl kaum sinnvoll, da zu zeitaufwändig -> Diskussionskapitel?}
 
 \subsubsection{By-Event}
