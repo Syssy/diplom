@@ -5,7 +5,6 @@
 
 \section{Chromatographie}
 
-\todo{Referenzdaten raus, Hintergründe an anderer Stelle geeignet erklären}
 Die Chromatographie ist ein Verfahren zur Auftrennung von Stoffgemischen. 
 Die Auftrennung erfolgt dabei zwischen zwei sogenannten Phasen, der stationären und der mobilen Phase, welche sich in unterschiedlichen Aggregatzuständen befinden und untereinander nicht mischen. 
 
@@ -23,32 +22,36 @@ bei der die mobile Phase eine Flüssigkeit ist und die stationäre Phase ein Fes
 % Verwandte Arbeiten?
 % Wo kommt das mit den Referenzdatensätzen rein?
 
-Beispielsweise kann die GC in einer Multikapillarsäule (MCC, engl. Multi Capillary Colum) stattfinden. Sie besteht aus ca. 1000 \todo{Quelle Anzahl Kapillaren einer MCC} einzelnen Kapillaren. Jede davon ist innen mit der stationären Phase beschichtet. Außerdem kommt ein Trägergas, die mobile Phase, zum Einsatz, welches die Analyte durch die Säule transportiert. Dieses kann beispielsweise Luft oder Stickstoff sein TODO Quelle
+Beispielsweise kann die GC in einer Multikapillarsäule (MCC, engl. Multi Capillary Colum) stattfinden. Sie besteht aus ca. 1000 bis 2000 einzelnen Kapillaren \cite{obinski1999} \cite{Baumbach2009}. Jede davon ist innen mit der stationären Phase beschichtet. Außerdem kommt ein Trägergas, die mobile Phase, zum Einsatz, welches die Analyte durch die Säule transportiert. Dieses kann beispielsweise Stickstoff, Helium \cite{obinski1999} oder Luft sein \cite{Baumbach2009}
 
 \subsection{Der chromatograpische Prozess}
+Ausführlich beschrieben ist der chromatograpische Prozess beispielsweise in \cite{kolb2003}.
+Die für diese Arbeit wesentlichen Punkte seien hier kurz zusammengefasst:
+
 Die Substanzen unterscheiden sich vor allem durch ihre Wechselwirkungen mit der stationären Phase. Während dieser Wechselwirkungen haften die Teilchen an der stationären Phase, bewegen sich also nicht fort. Finden wenig Wechselwirkungen statt, passieren die Teilchen die Säule schneller, als wenn viele Wechselwirkungen stattfinden. Dies beeinflusst die Retentionszeit, also die Zeit, die zum Durchlaufen der Säule gebraucht wird.
 
 Dabei existieren verschiedene Arten von Wechselwirkungen zwischen den Analytteilchen und der stationären Phase. Zum Einen die Adsorption, bei der die Teilchen mit der Oberfläche der stationären Phase in Kontakt kommen und sich dort anreichern. Die Adsorption findet dabei auf Grund von physikalischen Kräften wie der Van-Der-Waals-Kräften statt. Dadurch ist die Bindung der Stoffe an die stationäre Phase nicht sehr fest und die Teilchen können sich leicht wieder daraus lösen.
 
+\todo{Sättigung}
+
 Zum Anderen können sich die Analyte aber auch in der stationären Phase lösen. Da sie dabei eine chemische Bindung eingehen, sind sie schwerer als bei der Adsorption wieder voneinander zu trennen. Die Stoffe verweilen dadurch durchschnittlich länger in der stationären Phase und ihre Durchschnittsgewschindigkeit sinkt.
 
-\todo{Beide Möglichkeiten der Wechselwirkungen beschreiben}
-\todo{Ausführlich den chroma Proz beschreiben}
-\todo{Inklusive Gleichgewicht der Phasen im Inneren des Pulks}
+\todo{Gleichgewicht der Phasen im Inneren des Pulks}
+
+\todo{Quelle zum ausführlichen Nachlesen}
 
 %\todo{Wegen Datensätzen muss das doch rein
 \subsection{Detektion}
 Nach Durchlaufen der Säule wird detektiert, welche Menge an Substanzen austreten. Dabei wird nicht die Art des Analyts festgestellt, sondern nur die Menge der zum jeweiligen Zeitpunkt austretenden Stoffe. Während sich die meisten Stoffe ausreichend in ihrem Verhalten zur stationären Phase unterscheiden und dadurch aufgetrennt die Säule verlassen, kann es aber durchaus vorkommen, dass sich zwei Stoffe hinreichend ähnlich sind und  zumindest teilweise überlappend austreten.
 
-Zur Detektion existieren mehrere Möglichkeiten. Zum Einen kann ein Detektor wie beispielsweise TODO ein Chomatogramm aufzeichen. Dabei wird in bestimmten Zeitintervallen die austretende Menge Analyte festgestellt. Beispielhaft ist ein Chromatogramm in TODO zu sehen. 
+Zur Detektion existieren mehrere Möglichkeiten. Zum Einen kann ein Detektor wie beispielsweise ein Wärmeleitfähigkeitsdetektor oder Flammenionisationsdetektor ein Chomatogramm aufzeichen. Dabei wird in bestimmten Zeitintervallen die austretende Menge Analyte festgestellt. Beispielhaft ist ein Chromatogramm in TODO zu sehen. 
 \todo{Bild Chromatogramm (zb ein verrauschter plot 2-3 stoffe, dabei unterschiedlichen pd)}
 
 Alternativ kann die Gaschromatographie auch als Vorverarbeitung für Verfahren wie Massenspektrometrie (MS) oder Ionen-Mobilitäts-Spektrometrie (IMS) dienen. Auch bei diesen Technologien können nicht in jedem Fall alle Stoffe unterschieden werden, bei beispielsweise gleicher Masse aber unterschiedlicher Molekülstruktur bei der MS ist das der Fall. Durch zuvor statt findende GC jedoch wird nach einer weiteren Stoffeigenschaft unterschieden, sodass diese ähnlichen Stoffe durch die Vortrennung zu verschiedenen Zeitpunkten mit dem zweiten Analyseverfahren beginnen und so doch getrennt im resultierenden Spektrum erscheinen. Wenn eine solche Weiterverarbeitung statt finden soll, werden die aus der MCC austretenden Moleküle direkt ionisiert und in den entsprechenden Geräten weiter analysiert.
 
 \todo{MS und IMS näher beleuchten? Oder reicht Referenz auf Verfahren?}
 
-\todo{Wo kann ich sonst Peaks beobachten?}
-Zu beobachten ist, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden. Ideale Peaks haben die Form einer Gaußkurve.
+%\todo{Wo kann ich sonst Peaks beobachten?}
 
 \subsection{Technische Daten}
 Eine MCC besteht aus ca. $1000$ Kapillaren mit je
@@ -92,19 +95,20 @@ Als drittes können Peaks unterschiedlich breit sein. Da jedoch ein Peak mit gr�
  Interquartilsabstand 
  \todo{Zitat IQR, diesen erkären, warum dieses Mass}
 
+ 
+Allgemein ist zu beobachten, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden. Ideale Peaks haben die Form einer Gaußkurve. \todo{Quelle Ideal}
 
 \section{Probabilistische Arithmetische Automaten}
-Um die Multikapillarsäule zu simulieren, werden verschiedene Vorgehensweisen angewendet. Am naheliegendsten erscheint es, den chromatographischen Prozess für eine gewisse Anzahl an Teilchen zu simulieren und dabei für jedes einzelne dieser Teilchen mindestens seinen Ort und seinen Zustand festzuhalten. Diese Methode hat jedoch den Nachteil, dass verschiedene Durchläufe zu unterschiedlichen Ergebnissen führen können, insbesondere, wenn zu wenige Teilchen simuliert wurden.
-TODO: sehr viele teilchen nötig um glatte peaks zu bekommen. unterschiede zwischen den durchläufen, varianzen auf grund von zufall.
+Um die Multikapillarsäule zu simulieren, werden verschiedene Vorgehensweisen angewendet. Am naheliegendsten erscheint es, den chromatographischen Prozess für eine gewisse Anzahl an Teilchen zu simulieren und dabei für jedes einzelne dieser Teilchen mindestens seinen Ort und seinen Zustand festzuhalten. Diese zufallsbasierte Methode hat jedoch den Nachteil, dass verschiedene Durchläufe zu leicht unterschiedlichen Ergebnissen führen können, insbesondere, wenn zu wenige Teilchen simuliert wurden.
+Außerdem sind sehr viele teilchen nötig, um glatte Peaks zu bekommen.
+
 Eine andere Möglichkeit besteht darin, die Teilchen als Wahrscheinlichkeitsmasse zu modellieren und für jeden Ort und Zustand festzuhalten, welcher Teil der gesamten Wahrscheinlichkeitsmasse sich dort befindet.
 Eine Möglichkeit die Analyte als eine solche Wahrscheinlichkeitsmasse zu betrachten und dadurch eine exakte Verteilung der Teilchen auf Orte und Zustände zu erhalten, bieten Probabilistische Arithmetische Automaten (PAA).
 Ein PAA nach \cite{MHKR} ist ein Modell, mit dem eine Folge zufälliger Operationen beschrieben werden kann. 
 Für PAA existieren Algorithmen, welche eine gemeinsame Verteilung von Zuständen und Werten oder auch die Verteilung der Wartezeit für einen Wert berechnen. Wie in Kapitel \ref{chapter:mod} beschrieben wird, kann das Modell zur Simulation einer Multikapillarsäule auch als PAA formuliert werden. Mit dieser Formulierung ist die Zeit, die zum Durchlaufen einer Säule gebraucht wird, dann die Wartezeit für den Wert, welcher der Länge der Säule entspricht. %Deshalb kann ein PAA nützlich sein, um neben der eigentlichen Simulation auch noch eine erwartete Verteilung der Ankunftszeiten der Teilchen zu berechnen. 
 
-
 Zunächst sei hier eine Definition für den PAA gegeben, anschließend wird der Algorithmus zur Berechnung der Wartezeit beschrieben.
 %In diesem Fall ist die Länge der Säule der Wert, auf den gewartet wird und man ist interessiert in der Verteilung der Anzahl der Zeitschritte, die benötigt werden, um die Länge zu erreichen. 
-
 %TODO: Wo soll das rein? Sinnvoll, wenn das zu Beginn erklärt
 % Was tut ein PAA
 
@@ -127,10 +131,14 @@ Zunächst sei hier eine Definition für den PAA gegeben, anschließend wird der 
 \end{definition}
 Dabei entspricht $ \mathcal{P} = (\mathcal{Q}, q_0, T)$ einer Markovkette und $ \mathcal{P} = (\mathcal{Q}, q_0, T, \mathcal{E}, (e_q)_{q\in\mathcal{Q}})$ einem Hidden Markov Model. \todo{Muss ich dann Markov erklären?}
 
-Ein PAA ist zu jedem Zeitpunkt mit einer bestimmten Wahrscheinlichkeit in jedem Zustand und kann dabei mit einer bestimmten Wahrscheinlichkeit jeden Wert annehmen.
-
+Ein PAA ist zu jedem Zeitpunkt mit einer bestimmten Wahrscheinlichkeit in jedem Zustand und kann dabei mit einer bestimmten Wahrscheinlichkeit jeden Wert annehmen. Es existiert also zu jedem Zeitpunkt eine Zustands-Werte-Verteilung. Ausgehend von einer gegebenen Startverteilung, bei dem sich die gesamte Wahrscheinlichkeitsmasse in Zustand $q_0$ befindet und den Wert $v_0$ hat, wird diese Verteilung schrittweise aktualisiert. Dabei findet jeder Übergang gemäß der Wahrscheinlichkeit aus $T$ statt. Wenn sich der Automat mit der Wahrscheinlichkeit $p$ in Zustand $q$ befindet, 
+% 
+% wahrscheinlichkeit für neuen Zustand $q'$ ausgehend von allen Zuständen $q$
+% 
+% $ P(q_n'| q_{n-1} ) = (T_{q, q'} \cdot  P(q_{n-1}))$
+% 
+% $ P(q_n' ) = \sum_q (T_{q, q'} \cdot  P(q_{n-1})$
+% Gebe eher p(Q) an
 
 \subsection{Algorithmus zur Berechnung der Wartezeit}
-
-
 \todo{Algos für die Verteilung und Wartezeit-Berechnung vorstellen}

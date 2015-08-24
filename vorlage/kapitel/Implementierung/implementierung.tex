@@ -46,7 +46,7 @@ Zumindest bei Parametern extrem nah bei 1 kann sich die Laufzeit der By-Event st
 
 \section{Simulation des PAA}
 Die Berechnung des PAA existiert in Java, dabei Referenz auf mosdi (Zitiere Paper, in dem das vorgestellt wird und sage, dass ich das verwende)
-\todo{Implementierung des PAA beschreiben; erst wenn evtl nachprogrammierung fertig}
+
 da allerdings zu langsam: abgespeckte version nachprogrammiert in julia
 Größte Unterschiede dabei: start eingeschränkte funktionalität, da addition (von 1) unterstützt, das macht teilweise das arbeiten auf true/false möglich, außerdem auch nur jeweils feste ausgabe von 0 oder 1, festgelegt nach zustand etc.
 außerdem arbeiten mit arrays variabler länge, nur der relevante bereich (wkeiten != 0) wird betrachtet und zusätzlich zu kleine Werte zu beginn und ende der teilchenmasse abgeschnitten, um die länge weiter zu beschränken und dadurch zeit zu sparen (laufzeit linear/quadratisch oder so in irgendwas? noch mal bei mosdi nachgucken) länge sowieso beschränkt durch länge der säule (?????) und nicht durch maximale wartezeit

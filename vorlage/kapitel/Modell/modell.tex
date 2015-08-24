@@ -1,20 +1,21 @@
 \chapter{Modell} %Modell/Modelle?
 \label{chapter:mod}
-\todo{die beiden unterkapitel modell und modell3s ganz am ende wieder in eine datei packen, wegen seitenumbruch}
-Kapitelübersicht: Man kann unterscheiden zwischen verschiedenen Modellen (2p/3s) und den Arten, wie diese umgesetzt werden (Teilchensim oder PAA)
+Im Folgenden werden die Simulationsmodelle für die Chomatographie vorgestellt. Basis für die Modelle ist der im letzten Kapitel beschriebene Phasenwechsel der Teilchen im Verlauf der Chomatographie. Zusätzlich zur Simulation vieler Teilchen wird auch jeweils eine Modellierung als PAA vorgestellt.
 
-\section{2-Parameter Modell}
+%Kapitelübersicht: Man kann unterscheiden zwischen verschiedenen Modellen (2p/3s) und den Arten, wie diese umgesetzt werden (Teilchensim oder PAA)
+
+\section{2-Zustände Modell}
 \label{chapter:mod:2p}
 
-Als Grundlage für die Entwicklung eines Simulationsmodells dient die Beobachtung des chromatographischen Prozesses. Dieser ist wie in Kapitel \ref{chapter:gru} beschrieben gekennzeichnet durch viele Teilchen, welche häufig zwischen der stationären und mobilen Phase wechslen. Es liegt also nahe, dass im Modell ebenfalls Teilchen simuliert werden, die zwischen zwei Zuständen, welche die beiden Phasen repräsentieren, wechseln. Der Phasenwechsel geschieht jeweils mit einer bestimmten Wahrscheinlichkeit. Dabei kann es möglich sein, dass die Wahrscheinlichkeiten für den Wechsel in die eine oder andere Richtung voneinander abhängig sind. Da dies jedoch nicht sein muss, wird für das Modell zunächst der Fall von unabhängigen Wechselwahrscheinlichkeiten angenommen. Es sei also $p_s$ die Wahrscheinlichkeit, dass ein Teilchen, welches sich bereits in der stationären Phase befindet, auch stationär bleibt und $1-p_s$ die Wahrscheinlichkeit, dass es in die mobile Phase übergeht. Analog seien $p_m$ und $1-p_m$ die Wahrscheinlichkeiten, dass ein mobiles Teilchen in der mobilen Phase bleibt bzw. zur stationären Phase wechselt. 
+Als Grundlage für die Entwicklung eines Simulationsmodells dient die Beobachtung des chromatographischen Prozesses. Dieser ist wie in Kapitel \ref{chapter:gru} beschrieben gekennzeichnet durch viele Teilchen, welche häufig zwischen der stationären und mobilen Phase wechslen. Es liegt also nahe, dass im Modell ebenfalls Teilchen simuliert werden, die zwischen zwei Zuständen, welche die beiden Phasen repräsentieren, wechseln. Im Folgenden bezeichnet m die mobile und s die stationäre Phase. Der Phasenwechsel geschieht jeweils mit einer bestimmten Wahrscheinlichkeit. Dabei kann es möglich sein, dass die Wahrscheinlichkeiten für den Wechsel in die eine oder andere Richtung voneinander abhängig sind. Da dies jedoch nicht sein muss, wird für das Modell zunächst der Fall von unabhängigen Wechselwahrscheinlichkeiten angenommen. Es sei also $p_{\text {s}}$ die Wahrscheinlichkeit, dass ein Teilchen, welches sich bereits in der stationären Phase befindet, auch stationär bleibt und $1-p_{\text {s}}$ die Wahrscheinlichkeit, dass es in die mobile Phase übergeht. Analog seien $p_{\text {m}}$ und $1-p_{\text {m}}$ die Wahrscheinlichkeiten, dass ein mobiles Teilchen in der mobilen Phase bleibt bzw. zur stationären Phase wechselt. 
 
-Damit ergibt sich als erstes Modell ein einfacher Automat mit zwei Zuständen $\mathcal{Q} = \{s, m\}$. $m$ ist Startzustand, da die Teilchen stets nur in der mobilen Phase in die Säule eintreten können. Dazu kommen die oben beschriebenen Transitionen $T= 
+Damit ergibt sich als erstes Modell ein einfacher Automat mit zwei Zuständen $\mathcal{Q} = \{\text{s, m}\}$. m ist Startzustand, da die Teilchen stets nur in der mobilen Phase in die Säule eintreten können. Dazu kommen die oben beschriebenen Transitionen $T= 
 \begin{pmatrix}
-p_s & 1-p_s \\
-1-p_m & p_m 
+p_{\text {s}} & 1-p_{\text {s}} \\
+1-p_{\text {m}} & p_{\text {m}} 
 \end{pmatrix}
 $ 
-Eine graphische Darstellung des Modells zeigt \ref{tikz:2p_Mod} \todo{Startzustand in Graphik kennzeichnen} \todo{Formale Beschreibung meines Modells}
+Eine graphische Darstellung des Modells zeigt \ref{tikz:2p_Mod} \todo{Formale Beschreibung meines Modells}
 
 \begin{figure}[ht]
  \centering
@@ -26,22 +27,22 @@ Eine graphische Darstellung des Modells zeigt \ref{tikz:2p_Mod} \todo{Startzusta
 \usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit}
 
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
-  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries,text width = 1cm}]
+  thick,main node/.style={circle,draw,font=\sffamily\large\bfseries,text width = 1cm}]
 
-  \node[main node] (s)  {\,\,\,\,\,$s$};
-  \node[main node] (m) [left of=s] {\,\,\,\,$m$};
+  \node[main node] (s)  {\,\,\,\,\,s};
+  \node[main node, minimum width=1.5cm] (m2) [left of=s] {};
+  \node[main node] (m) [left of=s] {\,\,\,\,m};
 
   \path[every node/.style={font=\sffamily\small}]
 
-    (s)   edge [bend left] node [below] {$1-p_s$} (m)
-            edge [loop right] node {$p_s$} (s)
+    (s)   edge [bend left] node [below] {$1-p_{\text {s}}$} (m2)
+            edge [loop right] node {$p_{\text {s}}$} (s)
         
-    (m)  edge [bend left] node[above]{$1-p_m$} (s)
-             edge [loop left] node {$p_m$} (m)
+    (m2)  edge [bend left] node[above]{$1-p_{\text {m}}$} (s)
+             edge [loop left] node {$p_{\text {m}}$} (m2)
         ;
 \end{tikzpicture}
-
-\caption{Graphische Darstellung des 2-Parameter Modells}
+\caption{Graphische Darstellung des 2-Zustände Modells}
 \label{tikz:2p_Mod}
 \end{figure}
 
@@ -62,15 +63,15 @@ In Kapitel \ref{chapter:meth} werden verschiedene Arten der Simulation und der g
 
 \subsection{PAA zu diesem Modell}
 % Modell als PAA
-Blabla...
+\todo{Was zum PAA schreiben}
 
-Der PAA ist formal definiert durch: $\mathcal{Q} = \{s, m\}$, $q_0 = m$, $T =
+Der PAA für das 2-Zustände Modell ist definiert durch: 
+$ \mathcal{Q} = \{\text{s, m}\} , q_0 = \text{m}, T =
  \begin{pmatrix}
-  p_{m} & 1-p_{m}  \\
-  1-p_{s} & p_{s} \\
- \end{pmatrix}$, $\mathcal{E} = \{0, 1\}$, $e_s(0) = 1, e_s(1)=0, e_m(0) = 0, e_m(1)=1$,
- $\mathcal{V} = [0, \ldots, l]$ , $v_0 = 0$, $\theta_s = \theta_m = + $
- \todo{PAA für das Modell}
+  p_{\text{m}} & 1-p_{\text{m}}  \\
+  1-p_{\text{s}} & p_{\text{s}} \\
+ \end{pmatrix}, \mathcal{E} = \{0, 1\}, e_{\text{s}}(0) = 1, e_{\text{s}}(1)=0, e_{\text{m}}(0) = 0, e_{\text{m}}(1)=1, 
+ \mathcal{V} = [0, \ldots, l], v_0 = 0, \theta_{\text{s}} = \theta_{\text{m}} = + $
 
 \begin{figure}[h]
  \centering
@@ -88,40 +89,190 @@ Der PAA ist formal definiert durch: $\mathcal{Q} = \{s, m\}$, $q_0 = m$, $T =
 
    \path[every node/.style={font=\sffamily\large}]
 
-    (s)   edge [bend right] node [below] {$1-p_s$} (m)
-            edge [loop left] node {$p_s$} (s)
+    (s)   edge [bend right] node [below] {$1-p_{\text {s}}$} (m)
+            edge [loop left] node {$p_{\text {s}}$} (s)
         
-    (m)  edge [bend right] node[above]{$1-p_m$} (s)
-             edge [loop right] node {$p_m$} (m)
+    (m)  edge [bend right] node[above]{$1-p_{\text {m}}$} (s)
+             edge [loop right] node {$p_{\text {m}}$} (m)
         ;
 
    \fill[color=lightgray!40] (1.1, 3.5) --(2,1.5) -- (2.9,3.5) -- cycle ;
    \fill[color=lightgray!40] (6.05, 3.5) -- (6.95,1.5) -- (7.85,3.5) -- cycle ;
 
-   \node[emission node, align = center] (em) [above of = m] {$e_m(0) = 0$\\$e_m(1)=1$};
-   \node[emission node, align = center] (es) [above of = s] {$e_s(0) = 1$\\$e_s(1)=0$};
+   \node[emission node, align = center] (em) [above of = m] {$e_{\text {m}}(0) = 0$\\$e_{\text {m}}(1)=1$};
+   \node[emission node, align = center] (es) [above of = s] {$e_{\text {s}}(0) = 1$\\$e_{\text {s}}(1)=0$};
   
   \end{tikzpicture}
-  \caption{PAA für das 2-Parameter Modell} \label{PAA_2P}
+  \caption{PAA für das 2-Zustände Modell} \label{PAA_2P}
 \end{figure}
 
-Und noch mehr Text, der sich auf \ref{PAA_2P} bezieht
+TODO: Noch etwas Text, der sich auf \ref{PAA_2P} bezieht
 
 \subsection{Grenzen des Modells}
-Eine genaue Analyse der Peaks, die mit dem 2-Parameter Modell erzeugt werden können, findet sich in Kapitel \ref{chapter:eva}. An dieser Stelle sei nur vorweg genommen, dass es zwei Hauptprobleme mit dem Modell zu geben scheint. 
+Eine genaue Analyse der Peaks, die mit dem 2-Zustände Modell erzeugt werden können, findet sich in Kapitel \ref{chapter:eva}. An dieser Stelle sei nur vorweg genommen, dass es zwei Hauptprobleme mit dem Modell zu geben scheint. 
 
-Das erste mögliche Problem ist, dass die Peaks eine Minimalbreite an einem gegebenen Zeitpunkt $t_x$ haben. Das heißt, dass mit dem Modell keine Peaks simuliert werden können, die ihrem Maximalzeitpunkt an $t_x$ haben, jedoch schmaler sind, als Breite $b$. Ob dieser Umstand ein Problem darstellt, muss anhand realer Messdaten herausgefunden werden.
+Das erste mögliche Problem ist, dass die Peaks eine Minimalbreite an einem gegebenen Zeitpunkt $t$ haben. Das heißt, dass mit dem Modell keine Peaks simuliert werden können, die ihrem Maximalzeitpunkt an $t$ haben, jedoch schmaler sind, als Breite $b$. Ob dieser Umstand ein Problem darstellt, muss anhand realer Messdaten herausgefunden werden.
 
 Das andere Problem ist, dass fast keine der simulierten Peaks ein Tailing aufweisen. Lediglich ein sehr stark eingeschränkter Parameterbereich erzeugt ein Tailing. Leider sind die Maximalzeitpunkte der so erzeugten Peaks alle sehr klein, sodass nicht über die gesamte simulierte Zeit Peaks mit Tailing erzeugbar sind. Darüber hinaus ist Tailing in echten Messungen eher bei späten Peaks zu beobachten.
-% Leider liegen die Maximalzeitpunkte der so ezeugten Peaks auch nur in einem sehr kleinen Bereich
-% Das führt dazu, dass Tailing nur in einem sehr kleinen Retentionszeitbereich auftritt, allerdings nicht, wie es in tatsächlichen Daten zu beobachten ist, zu den eher späten Zeiten.
 
-\todo{Umformulierung auf hypothetische Peaks}
- % , und dass es evtl wünschenswert wäre, schmalere Peaks zu manchen Zeitpunkten zu haben
+Um dieses Problem zu lösen, wird im Folgenden ein erweitertes Modell mit 3 Zuständen eingeführt, welches es ermöglicht, tailende Peaks zu erzeugen.
+
+
+\section{3-Zustände Modell} 
+\label{chapter:mod:3s}
+
+%TODO Der letzte Absatz zu weiteren möglichen Erweiterungen kann dann als kleiner absatz ganz ans ende des modellkapitels und wird im ausblick noch mal aufgegriffen
+
+Bisher fand keine Unterscheidung zwischen Adsorption und Lösung der Teilchen an bzw. in der stationären Phase statt, sodass zwei Zustände und Transitionen zwischen diesen beiden Zuständen als Modell ausreichten. In der Realität können beide Wechselwirkungen parallel zueinander statt finden: Wenn ein Teilchen in den stationären Zustand wechselt, wird jeweils entschieden, ob es adsorbiert wird oder sich löst.
+
+Außerdem ist es realistisch, dass sich die Wahrscheinlichkeiten, in einen der beiden Zustände überzugehen oder in die mobile Phase zurückzukehren, unterscheiden. Die Wahrscheinlichkeit, dass ein Teilchen adsorbiert wird, kann viel höher oder niedriger sein als die, dass es zur Lösung übergeht. Umgekehrt kann ein Teilchen viel leichter oder schwerer aus der Adsorption in die mobile Phase zurückkehren, als dies beim gelösten Zustand der Fall ist. Daher liegt es nahe, einen neuen Zustand einzuführen, sodass die Adsorption und die Lösung voneinander getrennt behandelt werden. Die Tatsache, dass Tailing, wie bereits anfangs erwähnt, unter anderem durch zusätzlich Adsorptionseffekte verursacht sein kann, lässt vermuten, dass durch diesen dritten Zustand ein Tailing in der Simulation verursacht werden kann. 
+ 
+\begin{figure}[h]
+\begin{subfigure}[t]{0.9\textwidth}
+\centering
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries, minimum width = 25pt},
+   knoten/.style={thick,fill=none,inner sep=0pt, minimum width=25pt, circle}]
+{
+  \node[main node] (m) at (0, 0) {m};
+  \node[main node] (s1) at (5, 1.5) {a}; 
+  \node[main node] (s2) at (5, -1.5) {l};
+
+  \path[every node/.style={font=\sffamily}]
+        
+    (m)  edge [bend left] node[above left]{$p_{\text{ma}}$} (s1) 
+            edge [bend right] node[below left]{$p_{\text{ml}}$} (s2)
+             edge [loop left] node {$p_{\text{mm}}$} (m)
+
+    (s2)   edge node [right] {$p_{\text{lm}}$} (m)
+            edge [loop right] node {$p_{\text{ll}}$} (s1)
+        
+    (s1)  edge node [right] {$p_{\text{am}}$} (m)
+	  edge [loop right] node {$p_{\text{aa}}$} (s1)
+
+        ;}
+\end{tikzpicture}
+\hfill
+\caption{Getrennte Zustände}
+\label{tikz:4p_Mod_a}
+\end{subfigure}
+
+\begin{subfigure}[t]{0.9\textwidth}
+\centering
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries, minimum width = 25pt}]
+{
+   \node[main node] (m) at (0,0) {m}; 
+  \node[main node] (s1) at (4,0) {a};
+  \node[main node] (s2) at (8,0) {l};
+
+  \path[every node/.style={font=\sffamily}]
+
+    (s2)   edge [bend left] node [below] {$p_{\text{la}}$} (s1)
+            edge [loop right] node {$p_{\text{ll}}$} (s1)
+        
+    (s1)   edge [bend left] node [above] {$p_{\text{al}}$} (s2)
+            edge [bend left] node[below] {$p_{\text{am}}$} (m)
+			edge [loop above] node {$p_{\text{aa}}$} (s1)
+        
+    (m)  edge [bend left] node[above]{$p_{\text{ma}}$} (s1)
+             edge [loop left] node {$p_{\text{mm}}$} (m)
+        ;}
+\end{tikzpicture}
+
+\caption{Zwischenzustand}
+\label{tikz:4p_Mod_b}
+\end{subfigure}
+\caption{Mögliche weitere Modelle}
+\label{tikz:4p_Mod}
+\end{figure}
+ 
+In Abbildung \ref{tikz:4p_Mod} sind zwei Möglichkeiten gezeigt, dem bisherigen Modell einen neuen Zustand hinzuzufügen.
+Neben dem mobilen Zustand (m) gibt es in beiden Fällen je zwei stationäre Zustände, einen für die Adsorption (a) und einen für die Lösung (l). Die Übergangswahrscheinlichkeiten zwischen dem alten Zustand $i$ und dem neuen Zustand $j$ sind jeweils $p_{ij}$. 
+
+In Abbildung \ref{tikz:4p_Mod_a} sind die beiden stationären Zustände getrennt voneinander, dazwischen finden keine direkten Übergänge statt. 
+Anschaulich kann man sich vorstellen, dass bei Übertritt in die stationäre Phase schon festgelegt wird, welcher Art der Übergang sein wird. Es scheint intuitiv sinnvoll zu sein, die Übergangswahrscheinlichkeiten zu den beiden Zuständen sowie die beiden Wahrscheinlichkeiten, wieder in die mobile Phase einzutreten, sehr unterschiedlich zu wählen. Damit wird bezweckt, dass sie sich nicht einfach wieder zu einer Gesamtwahrscheinlichkeit aufaddieren, die man auch mit dem 2-Zustände Modell hätte erreichen können. In einen der Zustände sollen die Teilchen also nur seltener kommen, dafür dort sehr lange verweilen,  in den anderen Zustand wechseln die Teilchen häufiger, bleiben aber auch nicht so lange. Außerdem spiegelt dies die in Kapitel \ref{chapter:gru} erwähnte Tatsache wieder, dass adsorpierte Teilchen sich leichter wieder in die mobie Phase begeben können, als dies bei gelösten Teilchen der Fall ist.
+
+In Abbildung \ref{tikz:4p_Mod_b} dient der erste stationäre Zustand als Übergangszustand zum zweiten stationären Zustand. Dabei ist der Übergangszustand die Adsorption als Hinweis darauf, dass die Teilchen, die sich in der stationären Phase lösen, zunächst mit deren Oberfläche in Kontakt treten und zumindest kurzzeitig adsorbiert sind, gleiches gilt für die andere Richtung. Nachdem ein Teilchen adsorbiert wurde, besteht die Möglichkeit, dass es sich noch in der stationären Phase löst oder auch adsorbiert bleibt. Auch hier liegt es nahe, die Wahrscheinlichkeiten für die verschiedenen Übergänge so zu gestalten, dass die Teilchen in einem der stationären Zustände seltener aber länger bleiben.
+
+Beide Fälle können zu einem Gesamtmodell mit drei Zuständen zusammengefasst werden. Das Modell hat die Zustände $\mathcal{Q} = \{\text{m, a, l}\}$. m ist wie auch im 2-Zustände Modell der Startzustand. Aus den oben angegebenen Übergangswahrscheinlichkeiten ergibt sich dann die Transitionsmatrix 
+\begin{equation}
+T= 
+\begin{pmatrix}
+p_{\text{mm}} &  p_{\text{ma}} & p_{\text{ml}} \\
+p_{\text{am}} &  p_{\text{aa}} & p_{\text{al}} \\
+p_{\text{lm}} &  p_{\text{la}} & p_{\text{ll}} 
+\end{pmatrix}
+\label{3s_Transit}
+\end{equation}
+  
+In Modell 3a sind die Wahrscheinlichkeiten für $p_{\text{al}}$ und $p_{\text{la}}$ immer $0$ und in 3b gilt dies entsprechend für $p_{\text{ml}}$ und $p_{\text{lm}}$.
+
+\subsection{PAA}
+
+Analog zum PAA für nur zwei Zustände kann für drei Zustände ein PAA definiert werden. 
+\todo{3sPAA aufschreiben}
+\begin{figure}
+ \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm, thick,
+  state node/.style={circle,fill=white,draw,font=\sffamily\bfseries, minimum height=30pt, text width = 1cm, align = center},
+  operation node/.style= {regular polygon, regular polygon sides=3,  fill = white, draw, inner sep=  0pt},
+  emission node/.style={rectangle, fill = lightgray!50, draw, text width = 1.2cm}]
+ 
+  \node[state node] (m) at (2, 0) {mob};
+  \node[state node] (s1) at (6, 2) {ads}; 
+  \node[state node] (s2) at (6, -2) {lsg};
+
+  \node[operation node, align = center] (om)  at (2.5,-1) {$+$};
+  \node[operation node, align = center] (os1)  at (7, 2) {$+$};
+  \node[operation node, align = center] (os2)  at (7,-3) {$+$};
+
+  \path[every node/.style={font=\sffamily\large}]
+
+    (m) edge [loop left] node {$p_{mm}$} (m)
+			edge [bend left] node [above] {$p_{ma}$} (s1)
+            edge [bend left] node [below]{$p_{ml}$} (s2)
+        
+    (s1)  edge [bend left] node[above]{$p_{am}$} (m) 
+             edge [loop above] node {$p_{aa}$} (s1)
+ 			edge [bend left] node[right]{$p_{al}$} (s2)
+    
+    (s2)  edge [bend left] node[below]{$p_{lm}$} (m)
+ 			 edge [bend left] node[right]{$p_{la}$} (s1)	
+             edge [loop below] node {$p_{ll}$} (s2)
+        ;
+
+%   \fill[color=lightgray!40] (1.1, 3.5) --(2,1.5) -- (2.9,3.5) -- cycle ;
+%   \fill[color=lightgray!40] (6.05, 3.5) -- (6.95,1.5) -- (7.85,3.5) -- cycle ;
 % 
-% ** Die Sache mit den Peaks die zu schmal für meine Sim waren fällt ja quasi weg, es gibt ohne Daten keine Hinweise darauf, dass es nötig ist, schmalere Peaks zu erzeugen. Daher einfach aufschreiben, DASS da eine Grenze ist (nach oben aber fast beliebig breit)
-% % Zum Einen scheint es in den vorliegenden Datensätzen einige Peaks zu geben, deren kombinierte Lage und Breite nicht mit dem Modell simulierbar sind. Es ist zwar sowohl in den echten wie auch in den simulierten Daten die klare Tendenz zu erkennen, dass Peaks, die zu einer höheren Retentionszeit auftreten, auch breiter sind, als frühe Peaks. Es gibt also keine sehr schmalen Peaks am Ende des Spektrums. Allerdings existieren einige Peaks, deren Breite geringer ist, als alle mit dem Modell simulierbaren Peaks zu dieser Retentionszeit.
-% %Alle Simulationen ergeben zumindest geringfügig breitere Peaks. 
-% 
-% Zum Anderen weisen 
-% 
+%   \node[emission node, align = center] (em) [above of = s] {$e_m(0) = 1$\\$e_m(1)=0$};
+%   \node[emission node, align = center] (es) [above of = m] {$e_s(0) = 0$\\$e_s(1)=1$};
+  
+\end{tikzpicture}
+\caption{PAA für das allgemeine 3-Zustände Modell}
+\label{3sPAA}
+\end{figure}
+
+Eine graphische Darstellung des PAA für drei Zustände ist in Abbildung \ref{3sPAA} gegeben. Der stationäre Zustand wurde in zwei Zustände aufgeteilt und mit passenden Übergängen versehen. Startzustand ist weiterhin m. An den Werten ändert sich im Vergleich zum 2-Zustände PAA nichts, ebenso bleibt die Operation für alle Zustände bestehen. Bezüglich der Emissionen ändert sich am mobilen Zustand nichts und die beiden stationären Zustände übernehmen das gleiche Verhalten des bisherigen stationären Zustandes.
+
+\todo{Bild 3sPAA?}
+
+$ \mathcal{Q} = \{\text{m, a, l}\} , q_0 = \text{m}, T =
+ \begin{pmatrix}
+  p_{\text{mm}} & p_{\text{ma}} & p_{\text{ml}} \\
+  p_{\text{am}} & p_{\text{aa}} & p_{\text{ll}} \\
+  p_{\text{lm}} & p_{\text{la}} & p_{\text{ml}} \\
+ \end{pmatrix}, \mathcal{E} = \{0, 1\}, e_{\text{m}}(1) = e_{\text{a}}(0) = e_{\text{l}}(0) = 1, e_{\text{m}}(0) = e_{\text{a}}(1) = e_{\text{l}}(1) = 0,
+ \mathcal{V} = [0, \ldots, l], v_0 = 0, \theta_{\text{m}} = \theta_{\text{a}} = \theta_{\text{l}} = + $
+
+ Für die Modelle 3a und 3b müssen auch hier nur die entsprechenden Wahrscheinlichkeiten angepasst werden.
+
+\section{Weitere Modelle}
+
+Eine weitere Möglichkeit, das Modell zu verändern, besteht darin, das Gleichgewicht, welches sich zwischen den beiden Phasen aufbaut, zu berücksichtigen. Damit müssten die Wahrscheinlichkeiten, den Zustand zu wechseln, nicht mehr fest vorgegeben sein, sondern sich dynamisch während der Simulation aus der aktuellen Verteilung der Teilchen an einem bestimmten Ort auf die Zustände berechnen. Das würde dazu führen, dass Teilchen, die sich zu Beginn des Pulks befinden, mit einer höheren Wahrscheinlichkeit in die stationäre Phase oder eine der stationären Phasen übergehen, Teilchen in der Mitte haben eine demgegenüber eine deutlich geringere Wahrscheinlichkeit, stationär zu werden, da nun das Gleichgewicht gehalten werden muss. Die Veränderung der Übergangswahrscheinlichkeiten hinge demnach auch von der Quote der Teilchen ab, die dann schon wieder mobil geworden sind. Teilchen am Ende des Pulks sollten demnach nur sehr selten noch in eine stationäre Phase wechseln können. Genau diese Teilchen würden jedoch einen Tail verursachen, da sie sich nach dem Übergang in die mobile Phase, hinter dem Pulk befinden würden.
+
+Eine sehr ähnliche Idee ist es, noch eine Sättigung der freien Plätze zur Adsorption einzubauen. Unabhängig vom Gleichgewicht zwischen den Phasen, kann es möglich sein, dass sehr viele Teilchen bereits mit der Oberfläche interagieren. Weitere Teilchen, die sich an den Rand der Säule begeben haben dann möglicherweise kaum noch Kontaktmöglichkeiten mit der stationären Phase, sodass sich ihre Wahrscheinlichkeit, mobil zu bleiben, erhöht.
+
+\todo{In Grundlagen auf Gleichgewicht der Phasen u Adsoption eingehen!} 
+
+% Erweiterung um weiteren (stat) Zustand um Unterschied zwischen Lösung und Adsorption zu haben
+% Ideen zur Geschwindigkeit und warum das Quatsch ist. ?
