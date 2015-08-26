@@ -55,6 +55,7 @@ class Simulation():
         self.version = version
 
     def erstelle_zielmatrix(self, params, num_states):
+        '''Matrix mit Wahrscheinlichkeiten für Event basierte Sim'''
         if num_states == 3:
             zielmatrix = [0,0,0]
             for i in range(num_states):
@@ -64,11 +65,12 @@ class Simulation():
                 #print("z ", zaehler, " n ", nenner)
                 zielmatrix[i] = zaehler/nenner
         else:
-            print("kann nur drei Zustände")
+            print("NOT YET IMPLEMENTED: nur Zielmatrix für drei Zustände erstellen")
         #print ("zielmatrix", zielmatrix)
         return zielmatrix
 
     def kumulate_params(self, params):
+        '''Vorberechnung für Übergangswahrscheinlichkeiten für by-step Simulation'''
         result = []
         for p in params:
             r = []
@@ -100,28 +102,27 @@ class Simulation():
         
         new_locations = locations + (maske_0 *self.step)
         
-               
+        # TODO uebergang_x2 kann jeweils wegfallen, da immer 0. kum_params[x][2] ist nämlich immer 1       
         uebergang_00 = zzv > self.kum_params[0][0]
         uebergang_01 = zzv > self.kum_params[0][1]
-        uebergang_02 = zzv > self.kum_params[0][2]
+        #uebergang_02 = zzv > self.kum_params[0][2]
         #print ("uebergang_0", ((0) + uebergang_00 + uebergang_01 + uebergang_02))
-        uebergang_0 = ((0) + uebergang_00 + uebergang_01 + uebergang_02) * maske_0
+        uebergang_0 = ((0) + uebergang_00 + uebergang_01 ) * maske_0
         
         
         uebergang_10 = zzv > self.kum_params[1][0]
         uebergang_11 = zzv > self.kum_params[1][1]
-        uebergang_12 = zzv > self.kum_params[1][2]
-        uebergang_1 = ((0) + uebergang_10 + uebergang_11 + uebergang_12) * maske_1
+        #uebergang_12 = zzv > self.kum_params[1][2]
+        uebergang_1 = ((0) + uebergang_10 + uebergang_11) * maske_1
         
         #print ("uebergang_1", ((0) + uebergang_10 + uebergang_11 + uebergang_12))
         
         uebergang_20 = zzv > self.kum_params[2][0]
         uebergang_21 = zzv > self.kum_params[2][1]
-        uebergang_22 = zzv > self.kum_params[2][2]
-        uebergang_2 = ((0) + uebergang_20 + uebergang_21 + uebergang_22) * maske_2
+        #uebergang_22 = zzv > self.kum_params[2][2]
+        uebergang_2 = ((0) + uebergang_20 + uebergang_21 ) * maske_2
         
         #print ("uebergang_2", ((0) + uebergang_20 + uebergang_21 + uebergang_22))
-        
         #print (uebergang_0)
         #print (uebergang_1)
         #print (uebergang_2)
@@ -215,43 +216,29 @@ class Simulation():
         
     def _simulate_event(self, particle_list):
         """Simuliere ein zeitliches Event, gebe neue Ereignisliste zurueck, Aufruf durch simulate_by_event"""
-        
-        periods, n_states, n_locations = [], [], []
-        #TODO: Versuche, das noch zu parallelisieren
-        # Dazu: ziehe je 3 geom zz listen und 3 zz listen
-        # das gibt dann wohl 9 Listen ? die korrekt gezippt werden müssen... 
-        # Ob das den Aufwand wert ist?
-        
-        
+        periods, n_states, n_locations = [], [], []      
         # extrahiere je eine liste von Zustaenden und Orten
         states, locations = zip(*particle_list)
         #print("sl ", states, locations)
         global summe
         summe += len(particle_list)
         for s, l in particle_list:
-            
-            #Zufallszahlen ziehen: Geom fuer zeitpunkt des naechsten events, zz fuer naechsten zustand
+            #Zufallszahlen ziehen: Geom fuer Zeitpunkt des naechsten Events, entspricht Zeitpunkt des Misserfolgs (also nicht-Verweilen)
             period = scipy.stats.geom.rvs(1-self.params[s][s])
+            # zz fuer Bestimmung des naechsten Zustands
             zz = random.random()
-            
             #print("period ", period, " zz ", zz)
-           
             # Berechne neuen Zustand (gehe 1 weiter und evtl noch einen, falls Zufall das sagt, mod 3)
             n_zustand = (s + 1 + ( zz > self.zielmatrix[s])) % 3
             #print ("rechnung ", (s+1+(zz > self.zielmatrix[s]))%3, "bool ",zz > self.zielmatrix[s]  )
-            
             #print("zustand, alt ", s, " neu ", n_zustand)
-            
             #n_locations.append(!n_zustand*period +l)
-            
             #loc = l + period*100 if s== 0 else l
-            
             #Wenn alter Zustand mobil war, gehe vor, sonst nicht
             if s == 0:
                 n_locations.append(l+period*self.step)
             else:
                 n_locations.append(l)
- 
             #n_locations.append(loc)
             #Entsprechende neue Zustaende und Zeitpunkte anhaengen
             n_states.append(n_zustand)
@@ -333,8 +320,7 @@ class Simulation():
         #self.times = [date/(10*self.length/self.step) for date in arrival_counter]
         self.times = [date/(50*self.step) for date in arrival_counter]
         logging.log(25, "fertig, simschritte: %s, realtime: %s", act_time, (time.time()-starttime))
-        
-        
+               
     def set_pd(self, pd, v = version_number):
         """setzt Peakdaten und Versionsnummer neu, falls veraltet, nicht vorhanden, nicht zu gebrauchen"""
         self.pd = pd
@@ -377,14 +363,12 @@ class Simulation():
         '''finde Schnittpunkt zweier Funktionen (fun1, fun2) ausgehend von geschätzten Wert(en) x0'''
         return scipy.optimize.fsolve(lambda x : fun1(x) - fun2(x), x0)      
     
-    
     def ig_function(self, mu_i, loc_i, scale_i, x):
         if x <= 0:
             return 0
         else:
             return np.exp(-(scale_i*((x-loc_i) - mu_i)**2) /(2* (x-loc_i) * mu_i**2)) * math.sqrt(2*math.pi*(x-loc_i)**3)
-     
-    
+        
     def calculate(self): #TODO: Peakdata anpassen
         """Berechne Momente, Breite und Hoehe bei halber Peakhoehe, sowie Loc und Scale, ausgehend von Gaussverteilung"""
         """Neu: Berechne Momente und Interquartilsabstand"""
@@ -397,53 +381,8 @@ class Simulation():
         #Interquartilsabstand als Mass fuer die Breite
         self.iqr = np.percentile(self.times, 75) - np.percentile(self.times, 25)
         
-        ## Peakdaten berechnen
-        ## Finde Parameter fuer passende Gausskurve zum Schneiden
-        #loc_n, scale_n = scipy.stats.norm.fit(self.times)
-        #mu_i, loc_i, scale_i= scipy.stats.invgauss.fit(self.times)
-        #print ("igparams: ", mu_i, loc_i, scale_i)
-        #hist, bins = np.histogram(self.times, bins=50, normed = True)
-        #offset = bins[1:]-bins[:-1]
-        #print ("hist", hist, "\nmax", max(hist), "argmax", np.argmax(hist), "len", len(hist))
-        #print ("bins", bins, "maxdings", bins[np.argmax(hist)+1], "len", len(bins))
-        ##plt.plot([bins[np.argmax(hist)+1],bins[np.argmax(hist)+1]] , [0, max(hist)])
-        ##plt.show()
-        #x = np.linspace(min(self.times)-50, max(self.times)+50, 1000000)
-        #plt.plot(bins[:-1]+offset, hist, x, scipy.stats.invgauss.pdf(x, mu_i, loc_i, scale_i), x, scipy.stats.norm.pdf(x, loc_n, scale_n), [bins[np.argmax(hist)+1], bins[np.argmax(hist)+1], bins[np.argmax(hist)+1]] , [0, max(hist)/2, max(hist)])
-        ##plt.show()
-        ## halben Maximalwert berechnen
-        #halfmax = max(hist) / 2
-        ##halfmax = 1/(math.sqrt(2*math.pi)*scale_n *2)
-        ##print ("halfmax", halfmax)
-            
-        ## Funktionen erstellen, die dann für die find intersections genutzt werden. TODO: Hier noch andere verteilungen ermöglichen
-        ## Funktion der Normalverteilung
-        #norm = lambda x: np.exp(-(x-loc_n)**2 /(2*scale_n**2)) / math.sqrt(2*math.pi * scale_n**2)
-        ## Funktion einer Linie
-        #linie = lambda x: halfmax + 0*x
-        ## Funktion der IG
-        #ig_funct = lambda x: np.exp(-(scale_i*((x-loc_i) - mu_i)**2) /(2* (x-loc_i) * mu_i**2)) * math.sqrt(2*math.pi*(x-loc_i)**3)
-        #print (norm(5))
-        #print(ig_funct(70))
+        #TODO Berechnung der Schiefe!!! TODO
         
-        ##print ("test", self._find_intersection(linie, self.testfunction, [loc_i+scale_i]))
-        #intersections = self._find_intersection(linie, norm, [loc_n+scale_n, loc_n-scale_n])
-        #print (intersections)
-        #sects = self._find_intersection(linie, ig_funct, [loc_n-scale_n])
-        #print (sects)
-        #time.sleep(1)
-        ## print ("max bei", norm(loc), "starte test bei:", loc-scale, loc+scale)
-        ## finde Schnittpunkte zwischen Linie auf halber Hoehe und Gausskurve, Startwerte sind median +- standardabweichung
-        #logging.log(15, "Intersections %s", intersections)
-        
-        ##width ist Abstand zwischen den Schnittpunkten
-        #l_w = loc_n - min(intersections)
-        #r_w = max(intersections) - loc_n
-        #width = abs(max(intersections) - min(intersections))
-        #ls =  (loc_n, scale_n)
-        #pd = (self.mean, (width, l_w, r_w), halfmax)
-        #self.set_pd(pd)
-
 def check_params(params):
     for p in params:
         if sum(p) != 1:
@@ -481,7 +420,7 @@ def main():
     
     params =[[0.5, 0.499, 0.001], [9.999999999998899e-05, 0.9999, 0.0], [9.99999999995449e-06, 0.0, 0.99999]]
     #[[0.5, 0.5, 0.000],[0.0007, 0.9993, 0.0],[0.000001, 0.0, 0.99999]]
-    neueSim = Simulation(params, length, number, "E")
+    neueSim = Simulation(params, length, number, "T")
     print ("params", params)
     neueSim.simulate()
     neueSim.calculate()
@@ -492,57 +431,57 @@ def main():
     plt.title("params: "+ str(neueSim.params[0])+" "+ str(neueSim.params[1])+" "+ str(neueSim.params[2]) + " by event")
     plt.show()       
            
-    pmms = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-    pmls = [0.01, 0.001, 0.0005, 0.0001] 
-    pms = []
-    for pmm in pmms:
-        for pml in pmls:
-            pma = 1 - pmm - pml
-            pms.append([pmm, pms, pml])
+    #pmms = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    #pmls = [0.01, 0.001, 0.0005, 0.0001] 
+    #pms = []
+    #for pmm in pmms:
+        #for pml in pmls:
+            #pma = 1 - pmm - pml
+            #pms.append([pmm, pms, pml])
             
-    paas = [0.999, 0.9993, 0.9996, 0.9999, 0.99992, 0.99994]   
-    pas = []
-    for paa in paas:
-        pam = 1 - paa
-        pas.append([pam, paa, 0.0])
+    #paas = [0.999, 0.9993, 0.9996, 0.9999, 0.99992, 0.99994]   
+    #pas = []
+    #for paa in paas:
+        #pam = 1 - paa
+        #pas.append([pam, paa, 0.0])
         
-    plls = [0.99999, 0.999995, 0.999999]    
+    #plls = [0.99999, 0.999995, 0.999999]    
     
-    pms = [[0.8, 0.199, 0.001],[0.5, 0.499, 0.001],[0.5, 0.4999, 0.0001]]
-    pas = [[0.0008, 0.9992, 0.0],[0.0005, 0.9995, 0.0],[0.0001, 0.9999, 0.0]]
-    pls = [[0.00005, 0.0, 0.99995],[0.00001, 0.0, 0.99999],[0.000005, 0.0, 0.999995]]
+    #pms = [[0.8, 0.199, 0.001],[0.5, 0.499, 0.001],[0.5, 0.4999, 0.0001]]
+    #pas = [[0.0008, 0.9992, 0.0],[0.0005, 0.9995, 0.0],[0.0001, 0.9999, 0.0]]
+    #pls = [[0.00005, 0.0, 0.99995],[0.00001, 0.0, 0.99999],[0.000005, 0.0, 0.999995]]
     
-    for pm in pms:
-        for pa in pas:
-            for pl in pls:
-                params = [pm, pa, pl]                
-                neueSim = Simulation(params, length, number, "E", [])
+    #for pm in pms:
+        #for pa in pas:
+            #for pl in pls:
+                #params = [pm, pa, pl]                
+                #neueSim = Simulation(params, length, number, "E", [])
     
-                if check_params(params):
-                    #print ("params", params)
-                    #neueSim.simulate_by_event()
+                #if check_params(params):
+                    ##print ("params", params)
+                    ##neueSim.simulate_by_event()
+                    ##neueSim.calculate()
+                    ##print("pd by EVENT", neueSim.pd, len(neueSim.times))
+                    ##n, bins, patches = plt.hist(neueSim.times, 50, normed=1, alpha=0.5)   
+                    ##plt.ylabel("")
+                    ##plt.xlabel("Zeit / s")
+                    ##plt.title("params: "+ str(neueSim.params[0])+" "+ str(neueSim.params[1])+" "+ str(neueSim.params[2]) + " by event")
+                    ##plt.savefig("p"+ str(neueSim.params[0])+"_"+ str(neueSim.params[1])+"_"+ str(neueSim.params[2]) + "_event_n" + str(number) + ".png")
+                    ##plt.hold(False)
+        ##plt.show()
+
+                    #neueSim.simulate_each_timestep()
                     #neueSim.calculate()
-                    #print("pd by EVENT", neueSim.pd, len(neueSim.times))
-                    #n, bins, patches = plt.hist(neueSim.times, 50, normed=1, alpha=0.5)   
+                    ##print ("times by step", neueSim, neueSim.times)
+                    #print ("pd by TIMESTEP", neueSim.pd, neueSim.get_moment("skewness"), len(neueSim.times))
+                    #n, bins, patches = plt.hist(neueSim.times, 50, normed=1, alpha=0.5)
                     #plt.ylabel("")
                     #plt.xlabel("Zeit / s")
-                    #plt.title("params: "+ str(neueSim.params[0])+" "+ str(neueSim.params[1])+" "+ str(neueSim.params[2]) + " by event")
-                    #plt.savefig("p"+ str(neueSim.params[0])+"_"+ str(neueSim.params[1])+"_"+ str(neueSim.params[2]) + "_event_n" + str(number) + ".png")
+                    #plt.title("params: "+ str(neueSim.params[0])+" "+ str(neueSim.params[1])+" "+ str(neueSim.params[2]) + " timestep")
+                    ##print (neueSim.params, neueSim.mean, neueSim.pd, neueSim.pd[0])
+                    #plt.savefig("p"+ str(neueSim.params[0])+"_"+ str(neueSim.params[1])+"_"+ str(neueSim.params[2]) + "_timestep_n" + str(number) + ".png")
                     #plt.hold(False)
-        #plt.show()
-
-                    neueSim.simulate_each_timestep()
-                    neueSim.calculate()
-                    #print ("times by step", neueSim, neueSim.times)
-                    print ("pd by TIMESTEP", neueSim.pd, neueSim.get_moment("skewness"), len(neueSim.times))
-                    n, bins, patches = plt.hist(neueSim.times, 50, normed=1, alpha=0.5)
-                    plt.ylabel("")
-                    plt.xlabel("Zeit / s")
-                    plt.title("params: "+ str(neueSim.params[0])+" "+ str(neueSim.params[1])+" "+ str(neueSim.params[2]) + " timestep")
-                    #print (neueSim.params, neueSim.mean, neueSim.pd, neueSim.pd[0])
-                    plt.savefig("p"+ str(neueSim.params[0])+"_"+ str(neueSim.params[1])+"_"+ str(neueSim.params[2]) + "_timestep_n" + str(number) + ".png")
-                    plt.hold(False)
-                    #plt.show()
+                    ##plt.show()
              
 if __name__ == "__main__":
     logging.basicConfig(level=20)

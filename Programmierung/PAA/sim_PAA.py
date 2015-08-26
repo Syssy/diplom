@@ -83,8 +83,7 @@ class PAA():
         #plt.show()
         #print ("peakdata", peakdata)
         return peakdata
-    
-    
+       
 def erzeuge_Tabelle(directory, csv_name, time_range = [0,240], iqr_range = [0,150], iqk_range = [0,1]):
     '''Tabelle anlegen mit allen Peaks (Sim-Parameter) die die gegebenen Vorgaben (range) erfuellen'''
     filenames = [name for name in os.listdir(directory) if name.startswith("Sim_")]
@@ -110,9 +109,9 @@ def erzeuge_Tabelle(directory, csv_name, time_range = [0,240], iqr_range = [0,15
                 params.extend([myPAA.pd[0], myPAA.pd[2], myPAA.pd[3]]) 
                 # params.extend(myPAA.pd)
                 peaks_found.append(params)
-                plot_single_peak(directory+filename)
+                #plot_single_peak(directory+filename)
                 #plt.show()
-                time.sleep(1)
+                #time.sleep(1)
     print ("zeit", time.clock() - starttime)       
     # Abspeichern der Tabelle als csv Datei
     with open(csv_name, 'w', newline='') as csvfile:
@@ -144,6 +143,12 @@ def plotte_Zeitpunkt(directory, time_range = [1,240], iqr_range = [0,100], iqk_r
         peaks_found = erzeuge_Tabelle(directory, tabellenname, time_range, iqr_range, iqk_range)
     
     starttime = time.clock()
+    plt.suptitle("Retentionszeiten von: " + str(time_range[0]) + " bis: " + str(time_range[1]))
+    plt.xlabel("Breite (IQR)")
+    plt.ylabel("Schiefe (QK)")
+    for peak in peaks_found:
+        plt.plot([peak[10]], [peak[11]], "go")
+    plt.show()    
     fig = plt.figure()
     plt.suptitle("Zeit: " + str(time_range) + " IQR: " + str(iqr_range) + " IQK: " + str(iqk_range))
     # der Übersicht halber für alle vier relevanten Parameter ein Plot, jeden Plot anlegen
@@ -165,7 +170,7 @@ def plotte_Zeitpunkt(directory, time_range = [1,240], iqr_range = [0,100], iqk_r
         #TODO: Die markersize sinnvoll nutzen
         # TODO: Sinnvolle Kennzeichung über formen und farben der punkte
         for i, j in enumerate([0, 2, 4, 8]):
-            ax[i].plot([peak[10]], [peak[11]], "go", markersize = 2*abs(np.median([time_range[1], time_range[0]])-peak[9]))
+            ax[i].plot([peak[10]], [peak[11]], "go")#, markersize = 2*abs(np.median([time_range[1], time_range[0]])-peak[9]))
             t = ax[i].text(peak[10], peak[11], str(peak[j]), size= "small")
     plt.show()
 
@@ -213,13 +218,13 @@ def plot_3feste_Params(directory, pmm = [], pml = [], paa =[], pll=[], variabel 
         #TODO TODO
     mydict = {"pmm": pmm, "pml": pml, "paa": paa, "pll": pll}
     dict2 =  {"pmm": 0, "pml": 2, "paa": 4, "pll": 8}
-    print (mydict)
+    print ("mydict", mydict)
     myPAA_list, todolist = [], []
     #Zugriffsnummer des variablen Parameters
     vp = dict2[variabel]
     #print ("nummer", vp)
     
-    print (mydict[variabel])
+    #print (mydict[variabel])
     
     for p1 in pmm:
         for p2 in pml:
@@ -255,14 +260,18 @@ def plot_3feste_Params(directory, pmm = [], pml = [], paa =[], pll=[], variabel 
     print ("todolist", todolist)   
     mydict[variabel] = variabel
     print (mydict)
+    figname = "3fest_" +  str(mydict["pmm"][0])+"_" +  str(mydict["pml"][0])+"_" +  str(mydict["paa"][0])+"_" +  str(mydict["pll"][0]) + ".png"
+    figname.strip(".")
+    print (figname)
+    del mydict[variabel]
     plt.suptitle("fest:" + str(mydict) + "\n variabel: " + variabel)
     plt.legend(title= variabel+ ",  breite", numpoints = 1, loc = 1)
-    print ("3fest_" +  str(mydict["pmm"][0])+"_" +  str(mydict["pml"][0])+"_" +  str(mydict["paa"][0])+"_" +  str(mydict["pll"][0]))# + mydict[pml] + mydict[paa] + mydic[pll])
-    plt.savefig("3fest_" +  str(mydict["pmm"][0])+"_" +  str(mydict["pml"][0])+"_" +  str(mydict["paa"][0])+"_" +  str(mydict["pll"][0]) + ".png")
+   # print ("3fest_" +  str(mydict["pmm"][0])+"_" +  str(mydict["pml"][0])+"_" +  str(mydict["paa"][0])+"_" +  str(mydict["pll"][0]))# + mydict[pml] + mydict[paa] + mydic[pll])
+    plt.savefig(figname)
     plt.show()    
     return
 
-def plot_3feste_Params_alle(directory, pmm = [], pml = [], paa =[], pll=[], variabel = "pll"):
+def plot_3feste_Params_alle(directory, pmm = [], pml = [], paa =[], pll=[], variabel = "pmm", show=False):
     '''drei Parameter bleiben fest, einer wird verändert (im sinnvollen bereich), alle Params werden als Liste übergeben, die festen halt mit nur einem Element, der veränderliche mit mehreren
     evtl: erzeuge Liste mit noch nicht für diesen Plot vorhandenen Simulationen'''
     dict2 =  {"pmm": 0, "pml": 2, "paa": 4, "pll": 8}
@@ -273,14 +282,14 @@ def plot_3feste_Params_alle(directory, pmm = [], pml = [], paa =[], pll=[], vari
     print (variabel)
     time.sleep(1)
     
-    for p1 in pmm:
-        for p2 in pml:
-            for p3 in paa:
-    #            for p4 in pll:
-                    adict = {"pmm": [p1], "pml": [p2], "paa": [p3], "pll": pll}
+   # for p1 in pmm:
+    for p2 in pml:
+           for p3 in paa:
+                for p4 in pll:
+                    adict = {"pmm": pmm, "pml": [p2], "paa": [p3], "pll": [p4]}
                     mydictlist.append(adict)
     print (mydictlist)
-    _plot_dictlist(directory, mydictlist, variabel, vp, show = False)
+    _plot_dictlist(directory, mydictlist, variabel, vp, show)
     return
     
     
@@ -298,31 +307,38 @@ def _plot_dictlist(directory, mydictlist, variabel, vp, show = True):
         failcounter = 0
         for filename in myPAA_list:
             if os.path.exists(directory + filename):
-                print (filename)
+                print (filename, " exists")
                 with open (directory + filename , "rb" ) as data:
                     myPAA = pickle.load(data)
                     if myPAA.pd[2] == myPAA.pd[2] and myPAA.pd[2] < (10+0.2*myPAA.pd[0]):
+                       # print(myPAA.pd[2], " ", 11+0.2*myPAA.pd[0])
                         plt.plot([myPAA.pd[1][1]],[myPAA.pd[3]], "o", markersize = (myPAA.pd[2]), label=str(myPAA.params[vp]) +"  "+ str(round(myPAA.pd[2],2)) )
                         plt.text(myPAA.pd[1][1], myPAA.pd[3], str(myPAA.params[vp]))
                     else:
                         failcounter += 1
                         print ("fail")
         # wenn zu viele sims nicht existieren, nicht plotten
-        if failcounter < 5 and not show:
+        if failcounter < 5:
+            plt.tight_layout()
             plt.xlabel("Zeitpunkt")
             plt.ylabel("Schiefe (IQK)")  
             plt.xlim([0, 200])
             plt.ylim([0, 0.9])
             mydict[variabel] = variabel
-            plt.suptitle("fest:" + str(mydict) + "\n variabel: " + variabel)
+            figname = "Abgespeichertes/" + variabel + "/3fest_" +  str(mydict["pmm"][0])+"_" +  str(mydict["pml"][0])+"_" +  str(mydict["paa"][0])+"_" +  str(mydict["pll"][0])
+            figname = figname.replace(".","") + ".png"
+            print (figname)
+            del mydict[variabel]
+            plt.suptitle("fest:" + str(mydict))# + "\n variabel: " + variabel)
             #plt.legend(bbox_to_anchor=(1, 1), bbox_transform=plt.gcf().transFigure)
-            plt.legend(title= variabel+ ",  breite", numpoints = 1)
-            plt.savefig("Abgespeichertes/" + variabel + "/3fest_" +  str(mydict["pmm"][0])+"_" +  str(mydict["pml"][0])+"_" +  str(mydict["paa"][0])+"_" +  str(mydict["pll"][0]) + ".png")
+            plt.legend(title= "      " + variabel+ ",    Breite", numpoints = 1)
+            plt.savefig(figname, bbox_inches = 'tight')
+            if show:
+                plt.show()  
+                time.sleep(2)
         else:
             print ("complete fail")
         plt.clf()
-        if show:
-            plt.show()    
     return
 
 def umbenennen(directory):
@@ -342,40 +358,43 @@ def main():
     source_directory = "savedata_julia/l1000/"
     dest_directory = "savedata_python/l1000/"
     
-    source_directory = "savedata_java/l999/3s/"
-    dest_directory = "savedata_python/l999/3s/"
+    #source_directory = "savedata_java/l999/3s/"
+    #dest_directory = "savedata_python/l999/3s/"
     fig_dir = "savefigs_python/l1000"
     #filenames.reverse()
     #umbenennen(dest_directory)
     
-    #pmm = [0.1]
+   # pmm = [0.7]
     #pmm = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95]
-    pmm = [0.1, 0.3, 0.5, 0.7, 0.9]
-    #pmm = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    #pmm = [0.1, 0.3, 0.5, 0.7, 0.9]
+    #pmm = [0.1, 0.4, 0.6, 0.9]
+    pmm = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
     #pml = [0.005]
     #pml = [0.00005, 0.0001, 0.0003, 0.0005, 0.0007, 0.001, 0.003, 0.005]
     pml = [0.00005, 0.0001, 0.0005, 0.001, 0.005]
-    #pml = [0.005, 0.0005]
-    #paa = [0.9994]
+    #pml = [0.0003, 0.0005, 0.0007, 0.001, 0.005]
+    #pml = [0.001, 0.0001]
+    #paa = [0.9992]
     #paa = [0.997, 0.998, 0.9985, 0.999, 0.9992, 0.9993, 0.9994, 0.9995, 0.9996]
     paa = [0.997, 0.998, 0.999, 0.9992, 0.9994, 0.9996]
-    #paa = [0.999, 0.9994]
+    #paa = [0.997, 0.998, 0.999, 0.9993, 0.9996]
+    #paa = [0.997, 0.9996]
     #pll = [0.99999]
-    pll = [0.9999, 0.999925, 0.99995, 0.999975, 0.99999, 0.999993, 0.999995, 0.999997, 0.999999]
-    #pll = [0.9999, 0.99995, 0.99999, 0.999995, 0.999999]
-    #pll = [0.9999, 0.99999]
+    #pll = [0.9999, 0.999925, 0.99995, 0.999975, 0.99999]#, 0.999993, 0.999995, 0.999997, 0.999999]
+    pll = [0.9999, 0.99995, 0.99999, 0.999995, 0.999999]
+   # pll = [0.9999, 0.99999]
     
-  #  plot_3feste_Params(dest_directory, pmm, pml, paa, pll, "pml")
-   # plot_3feste_Params_alle(dest_directory, pmm, pml, paa, pll)
+    #plot_3feste_Params(dest_directory, pmm, pml, paa, pll, "pmm")
+    #plot_3feste_Params_alle(dest_directory, pmm, pml, paa, pll, show=False)
     
    # param = [0.4, 0.0001, 0.999, 0.99995]
    # filename = dest_directory + "Sim_" + str(pmm[0]) + "_" + str(pml[0]) + "_" + str(paa[0]) + "_" + str(pll[4]) + ".p"
-    filename = dest_directory + "Sim_0.3_1e-07_0.997_0.9999.p"
+    filename = dest_directory + "Sim_0.5_0.0007_0.9994_0.999995.p"
    
   #  filename2 = source_directory+ "Sim_0.4_0.59995_5.0e-5_0.0019999743_0.998_0.0_5.0008297e-5_0.0_0.99995"
-    plot_single_peak(filename)
+   # plot_single_peak(filename)
     #plot_peak_from_uncompressed(filename2)
-   # plotte_Zeitpunkt(dest_directory, [1,240], [5,30], [0.2,0.4])  
+    plotte_Zeitpunkt(dest_directory, [99,101])  
     
     filenames = [name for name in os.listdir(source_directory) if name.startswith("Sim_")]
     print (len(filenames))
