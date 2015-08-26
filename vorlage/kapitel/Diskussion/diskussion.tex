@@ -11,10 +11,11 @@ Es wurde ein Zusammenhang zwischen den Simulationsparametern und Peakdaten gefun
 
 % Bessere bzw. genauere Aufarbeitung der Referenzdaten: Methoden, die ztatsächlichen Peaks gut zu isolieren (\todo{kann man hier auf bestehende Arbeiten zur peakfindung verweisen?}) evtl. feinere Daten durch schätzen weiterer zwischenmessungen, um glattere Daten zu erhalten? Verfahren umd zu erkennen, ob Peaks gut sind für den Vergleich
 Das ganze mit existierenden Daten vergleichen, um zu gucken, ob schmalere Peaks notwendig sind und alle realen Peakdatenkombinationen erreicht werden können, dann eventuell noch mal das Modell anpassen:
+Tailform richtig?
+
+Je nachdem, ob die bisherigen Ergebnisse ausreichen, um eine größere Anzahl im Experiment gefundener Peaks zu simulieren, können die am Ende von Kapitel \ref{chapter:mod} erwähnten Ideen für weitere Modellveränderungen ausprobiert werden. Sowohl die Berücksichtigung des Gleichgewichts der Phasen als auch eine maximale Kapazität für die Adsorption können für weiteres Tailing sorgen. Außerdem ist es auch gut vorstellbar, dass so schmalere Peaks zum gleichen Zeitpunkt entstehen, da sich für einige Teilchen die Wahrscheinlichkeit, mobil zu bleiben erhöht und ein Teilchenpulk enger beieinander bleibt.
 
 Aufgreifen der nicht umgesetzten Modellerweiterungen: Berücksichtigung des Gleichgewichts der Phasen und beschränkte Anzahl freier Plätze bei der Adsorption.
-
-Modellideen aus \ref{chapter:mod}
 
 Eine weitere Möglichkeit, das Modell zu verändern, besteht darin, das Gleichgewicht, welches sich zwischen den beiden Phasen aufbaut, zu berücksichtigen. Damit müssten die Wahrscheinlichkeiten, den Zustand zu wechseln, nicht mehr fest vorgegeben sein, sondern sich dynamisch während der Simulation aus der aktuellen Verteilung der Teilchen an einem bestimmten Ort auf die Zustände berechnen.
 
@@ -25,3 +26,4 @@ Das ganze auch für spätere Zeitpunkte überprüfen (echte Messlänge, dauert n
 
 Falls Formel für entsprecung nicht gefunden: Das Sekantenverfahren erwähnen?
 
+Umsetzung von Modellen mit mehr Zuständen: Simulation als event nicht schwer (und von den Laufzeiten her wohl auch ganz gut) die by-step müsste aber angepasst werden (Schleifen) da sonst wohl zu aufwändig und zu langsam. gleiches gilt für paa, da wäre auch eine neue umsetzung nötig

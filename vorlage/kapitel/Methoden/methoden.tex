@@ -1,25 +1,30 @@
 \chapter{Methoden} 
 \label{chapter:meth}
 
-In diesem Kapitel werden für die verschiedenen Modelle Möglichkeiten beschrieben, diese zu simulieren. Offensichtlich ist es möglich, tatsächlich jeden einzelnen Zeitschritt für alle Teilchen zu betrachten. Wenn Zustandswechsel jedoch nicht sehr häufig vorkommen, kann es viel Zeit einsparen, nur zu relevanten Zeitpunkten, also für jeden Zustandswechsel, zu simulieren und dabei den Zeitpunkt des nächsten Wechsels zu notieren.
+In diesem Kapitel werden für die in Kapitel \ref{chapter:mod} vorgestellten Modelle Möglichkeiten beschrieben, diese zu simulieren. 
+Zunächst werden zwei Herangehensweisen erläutert, das 2-Zustände und das 3-Zustände Modell als Simulation vieler Einzelteilchen umzusetzen.
 
-Im zweiten Abschitt des Kapitels wird beschieben, wie der PAA umgesetzt werden kann. Dabei liegt der Fokus auf einer eingeschränkten Variante des PAA, bei dem einige nicht benötigte Funktionalitäten, wie beispielsweise je Zustand verschiedene Operationen oder mehrere mögliche Emissionen, nicht berücksichtigt werden.
+Im zweiten Abschnitt des Kapitels wird beschieben, wie der PAA umgesetzt werden kann. Dabei liegt der Fokus auf einer eingeschränkten Variante des PAA, bei dem einige nicht benötigte Funktionalitäten, wie beispielsweise je Zustand verschiedene Operationen oder mehrere mögliche Emissionen, nicht berücksichtigt werden.
+
+Die Ankunftszeiten der simulierten Teilchen bzw. die Verteilung der Wartezeiten auf das Erreichen der Säulenlänge, können dann als Peak aufgefasst und dargestellt werden. Wie aus diesen Daten außerdem werden die resultierenden Peakdaten berechnet werden können, steht im letzten Abschnitt beschrieben.
 
 \section{Simulation}
-Zunächst betrachten wir das in \ref{chapter:mod:2p} vorgestellte Modell mit nur zwei Zuständen und zwei Parametern, anschließend auch die in \ref{chapter:mod:3s} beschriebene Erweiterung auf 3 Zustände und damit bis zu 6 Parameter. Eine Unterscheidung zwischen Modell 3a und 3b findet hier nicht statt, sondern es werden beide zu einem allgemeinen Modell zusammen gefasst. Für die jeweilige Umsetzung müssen dann einfach die zwei nicht benötigten Übergangswahrscheinlichkeiten auf $0$ gesetzt werden.
+Offensichtlich ist es möglich, tatsächlich jeden einzelnen Zeitschritt für alle Teilchen zu betrachten. Jedes Teilchen durchläuft also den Automaten aus \ref{tikz:2p_Mod} und es wird in jedem Schritt entschieden, ob es sich fortbewegt. Diese schrittweise Art der Simulation wird im Folgenden als ``Step-by-Step'' bezeichnet.
 
-Die Ankunftszeiten der simulierten Teilchen können dann als Peak aufgefasst und dargestellt werden. Außerdem werden daraus die resultierenden Peakdaten berechnet.
+Wenn Zustandswechsel jedoch nicht sehr häufig vorkommen, kann es viel Zeit einsparen, nur zu relevanten Zeitpunkten, also für jeden Zustandswechsel, zu simulieren und dabei den Zeitpunkt des nächsten Wechsels zu notieren. Diese Zeitpunkte werden als Ereignisse verwaltet, daher wird diese Art der Simulation im Folgenden auch ``By-Event'' genannt.
+
+%Zunächst betrachten wir das in \ref{chapter:mod:2p} vorgestellte Modell mit nur zwei Zuständen und zwei Parametern, anschließend auch die in \ref{chapter:mod:3s} beschriebene Erweiterung auf 3 Zustände und damit bis zu 6 Parameter. Eine Unterscheidung zwischen Modell 3a und 3b findet hier nicht statt, sondern es werden beide zu einem allgemeinen Modell zusammen gefasst. Für die jeweilige Umsetzung müssen dann einfach die zwei nicht benötigten Übergangswahrscheinlichkeiten auf $0$ gesetzt werden.
+
 %Nach erfolgter Simulation können aus den Ankunftszeiten der Teilchen die Peakdaten der resultierenden Peaks berechnet werden.
 
-\subsection{Simulation des 2-Zustände Modells}
-Für das 2-Zustände Modell wurden zwei verschiedene Möglichkeiten der Simulation entworfen. Die erste, ``Step-by-Step'', simuliert schrittweise alle Zeitpunkte eines Säulendurchlaufs. Die zweite, ``By-Event'' verwaltet eine Liste relevanter Zeitpunkte, an denen Ereignisse - im konkreten Fall: Zustandswechsel - statt finden.
+%Für das 2-Zustände Modell wurden zwei verschiedene Möglichkeiten der Simulation entworfen. Die erste, ``Step-by-Step'', simuliert schrittweise alle Zeitpunkte eines Säulendurchlaufs. Die zweite, ``By-Event'' verwaltet eine Liste relevanter Zeitpunkte, an denen Ereignisse - im konkreten Fall: Zustandswechsel - statt finden.
+\subsection{Step-by-Step}
 
-\subsubsection{Step-by-Step}
 \begin{algorithm}
 \caption{Ablauf der Step-by-Step Simulation}
 \label{algo_by_Step}
 \begin{algorithmic}
-\REQUIRE Zustandsliste $z= [z_1 = 1, \ldots, z_n=1]$, Ortsliste $o=[o_1=1, \ldots , o_n=1]$, Zeit $t=0$, Maximalzeit $t_{max}$, Parameter $p_{\text{s}}$ und $p_{\text{m}}$
+\REQUIRE Zustandsliste $z= [z_1 , \ldots, z_n]$, Ortsliste $o=[o_1, \ldots , o_n]$, Zeit $t=0$, Maximalzeit $t_{max}$, Parameter $p_{\text{s}}$ und $p_{\text{m}}$
 \ENSURE Ankuftszeiten $r$ oder FAIL
 \WHILE{$t < t_{max}$ \AND $len(z) > 0$}
 \FORALL {$p$}
@@ -41,9 +46,10 @@ Für das 2-Zustände Modell wurden zwei verschiedene Möglichkeiten der Simulati
 
 %\todo{Hinweis auf Parallelisierbarkeit und andere Zeitverbesserungen hier oder in Implementierung}
 
-Der Ablauf einer schrittweisen Simulation ist in Algorithmus \ref{algo_by_Step} gegeben.
+Der Ablauf einer schrittweisen Simulation ist in Algorithmus \ref{algo_by_Step} gegeben und unterscheidet sich zunächst nicht für das 2-Zustände und 3-Zustände Modell.
 
-Simuliert werden $n$ Teilchen. Für jedes Teilchen $p$ muss jeweils der aktuelle Zustand $z_p$ und Ort $o_p$ festgehalten werden, außerdem muss in jedem Schritt der aktuelle Zeitpunkt $t$ vermerkt werden. Da nur zwei Zustände existieren und für alle p gilt $z_p \in \{0,1\}$ , bietet es sich an, dafür ein Array mit booleschen Werten zu verwenden. $0$ steht dabei für stationär und $1$ für mobil. Die Orte der Teilchen $o_p\in \{0, \ldots, l\}$ werden in einem weiteren Array festgehalten. Die Identifikation der Teilchen geschieht dabei über ihre Postition, die in beiden Arrays identisch ist.
+Simuliert werden $n$ Teilchen. Für jedes Teilchen $p$ muss jeweils der aktuelle Zustand $z_p$ und Ort $o_p$ festgehalten werden, außerdem muss in jedem Schritt der aktuelle Zeitpunkt $t$ vermerkt werden. Die Zustände $z_p$ und Orte der Teilchen $o_p$ %\in \{0, \ldots, l\}$ 
+werden jeweils in einem Array festgehalten. Die Identifikation der Teilchen geschieht dabei über ihre Postition, die in beiden Arrays identisch ist.
 %\todo{Array oder Vektor, bzw ohne Parallelisierbarkeit, da ja eigentlich nicht nötig?}
 %Für jedes Teilchen wird in einem zweiten Array an gleicher Position sein aktueller Ort gespeichert. 
 
@@ -54,9 +60,13 @@ Es wird nun jeweils ein Zeitschritt für alle Teilchen simuliert. Nach jedem sol
 
 Wenn die Simulation für alle Teilchen zu Ende geführt wurde, ist die Rückgabe die Liste der Ankunftszeiten aller Teilchen. Ansonsten gilt die Simulation als gescheitert, die Parameter $p_{\text{s}}$ und $p_{\text{m}}$ sorgen offenbar nicht für einen vollständigen Peak innerhalb des simulierten Zeitraumes.
 
+\subsubsection{Simulation des 2-Zustände Modells}
+
+Da nur zwei Zustände existieren und für alle p gilt $z_p \in \{0,1\}$, bietet es sich an, als Zustandsvektor ein Array mit booleschen Werten zu verwenden. $0$ steht dabei für stationär und $1$ für mobil.
+
 Die Berechnung eines Simulationsschrittes läuft wie folgt: Die Teilchen wechseln in jedem Schritt mit einer bestimmten Wahrscheinlichkeit den Zustand. Diese sei wie in Kapitel \ref{chapter:mod} erwähnt, $p_{\text{m}}$ für das Verweilen in der mobilen Phase, $p_{\text{s}}$ für das Verweilen in der stationären Phase und $1-p_{\text{m}}$ bzw. $1-p_{\text{s}}$ für die beiden Möglichkeiten des Phasenwechsels. Daher muss pro Schritt und Teilchen eine Zufallszahl gezogen werden, anhand derer sich entscheidet, wie es sich verhält. Außerdem muss in jedem Schritt der Ort für jedes mobile Teilchen um eins erhöht werden.
 
-Zum Ablauf der Simulation wurde entschieden, dass zunächst die Entscheidung über die Phase gefällt wird und sich die Teilchen anschließend gemäß ihres neuen Zustandes bewegen. Außerdem starten alle Teilchen ganz zu Beginn in der mobilen Phase, da sie nur so in das System eintreten können.
+Zum Ablauf der Simulation wurde entschieden, dass zunächst die Entscheidung über die Phase gefällt wird und sich die Teilchen anschließend gemäß ihres neuen Zustandes bewegen. Alle Teilchen starten ganz zu Beginn in der mobilen Phase, da sie nur so in das System eintreten können. Außerdem beginnen sie an Ort $1$, da sie bereits als in der Säule befindlich angenommen werden. Das heißt, die Eingaben für Algorithmus \ref{algo_by_Step} sind $z= [z_1 = 1, \ldots, z_n=1]$ für die Zustände und $o= [o_1 = 1, \ldots, o_n=1]$ für die Orte.
 
 \begin{figure}
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
@@ -151,15 +161,74 @@ Dadurch, dass alle Übergänge vorberechnet wurden, werden die neuen Zustände �
 
 Für die neuen Orte kann einfach der neue Zustandsvektor auf den alten Ortsvektor addiert werden.
 
+
+\subsubsection{Simulation des 3-Zustände Modells}
+
+Durch die Hinzunahme eines weiteren Zustandes können nun nicht mehr boolesche Werte zur Zustandsbeschreibung herangezogen werden. Nun gilt Zustand $z \in \{0, 1, 2\}$  wobei $0$ für den mobilen Zustand steht, $1$ für die Adsorption und $2$ für die Lösung. Außerdem werden die Wahrscheinlichkeiten entsprechend auf eine Transitionsmatrix wie in \ref{3s_Transit} angepasst.
+
+Damit weiterhin eine logische Formel für die Zustandsberechnung genutzt werden kann und so die neuen Zustände parallel berechnen zu können, sind einige Hilfsarrays nötig.%, die entsprechend viel überflüssige Information enthalten.
+Um aus den gezogenen Zufallszahlen die passenden Arrays zu erstellen, aus denen die neuen Zustände berechnet werden können, wird zunächst eine Hilfstabelle mit den kumulierten Wahrscheinlichkeiten erstellt. %erstelle kumulierte Wahrscheinlichkeiten (ein mal zu beginn)
+
+Beispiel:
+$T= 
+\begin{pmatrix}
+0,5 & 0,3 & 0,2 \\
+0,2 & 0,2 & 0,6 \\
+0,15 & 0,15 & 0,7 
+\end{pmatrix}
+$  wird zu 
+$K= 
+\begin{pmatrix}
+0,5 & 0,8 & 1 \\
+0,2 & 0,4 & 1 \\
+0,15 & 0,3 & 1 
+\end{pmatrix}
+$ 
+
+In Abbildung \ref{3s_by_step_tabelle} ist der Ablauf der Simulation eines Zustandswechels für mehrere Teilchen exemplarisch zu sehen. Farblich markiert sind jeweils für einen gleichen Startzustand die relevanten Berechnungsschritte. Die Übergangswahrscheinlichkeiten entsprechen denen im obigen Beispiel.
+Zunächst wird pro Zustand $z$ eine Maske $M_z$ erstellt, die eine $1$ an den Positionen enthält, an denen sich ein Teilchen in $z$ befindet. 
+
+Außerdem werden analog zum 2-Zustände Modell jeweils aus den Zufallszahlen alle möglichen Übergänge berechnet. $U_{xy}$ steht dabei für den Übergang von Zustand $x$ nach Zustand $y$. Die Übergänge für $U_{x2}$ würden für alle $x$ auf Grund der kumulierten Wahrscheinlichkeiten nur Nulleinträge enthalten, daher können sie ausgelassen werden. 
+
+Der neue Zustand eines Teilchens, das sich in Startzustand $x$ befindet, ergibt sich dann aus der Summe der beiden Arrays $U_{x0}$ und $U_{x1}$. Über diese Summe wird nun noch die passende Maske $M_x$ gelegt, damit jeweils nur der richtige Zielzustand für den Startzustand ausgewählt wird.
+Dadurch entsteht pro Zustand ein Array, welches für jedes in diesem Zustand befindliche Teilchen den neuen Zustand nach dem Schritt beinhaltet. Diese Arrays brauchen nun nur noch kombiniert zu werden, um die Endzustände für alle Teilchen zu erhalten.
+%\todo{Formulierung}
+
+\begin{figure}
+ \begin{tabular}{ l || l | l | l | l | l | l | l | l | l }
+  \hline
+  Startzustände & \cellcolor{orange!25}0 & \cellcolor{blue!25} 1 & \cellcolor{orange!25}0 & \cellcolor{green!25}2 & \cellcolor{green!25}2 & \cellcolor{blue!25} 1 & \cellcolor{orange!25}0 & \cellcolor{green!25}2 & \cellcolor{blue!25} 1 \\ \hline \hline 
+  ZV & 0,3 & 0,9 & 0,7 & 0,8 & 0,2 & 0,1 & 0,9 & 0,1 & 0,3 \\ \hline \hline
+  $M_0$ & \cellcolor{orange!25}1 & 0 & \cellcolor{orange!25}1 & 0 & 0 & 0 & \cellcolor{orange!25}1 & 0 & 0 \\ 
+  $M_1$ & 0 & \cellcolor{blue!25}1 & 0 & 0 & 0 & \cellcolor{blue!25}1 & 0 & 0 & \cellcolor{blue!25}1 \\
+  $M_2$ & 0 & 0 & 0 & \cellcolor{green!25}1 & \cellcolor{green!25}1 & 0 & 0 & \cellcolor{green!25}1 & 0 \\ \hline \hline
+  $U_{00}$ & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\ 
+  $U_{01}$ & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ \hline
+  $M_0\cdot (U_{00} + U_{01}$) & \cellcolor{orange!25}0 & 0 & \cellcolor{orange!25}1 & 0 & 0 & 0 & \cellcolor{orange!25}2 & 0 & 0 \\ \hline \hline
+  $U_{10}$ & 1 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 1 \\ 
+  $U_{11}$ & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\ \hline
+  $M_1 \cdot (U_{10}+U_{11}$) & 0 & \cellcolor{blue!25}2 & 0 & 0 & 0 & \cellcolor{blue!25}0 & 0 & 0 & \cellcolor{blue!25}1 \\ \hline \hline
+  $U_{20}$ & 1 & 1 & 1 & 1 & 1 & 0 & 1 & 0 & 1 \\ 
+  $U_{21}$ & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\ \hline
+  $M_2\cdot (U_{20}+U_{21}$) & 0 & 0 & 0 & \cellcolor{green!25}2 & \cellcolor{green!25}1 & 0 & 0 & \cellcolor{green!25}0 & 0 \\ \hline \hline
+  Endzustände & \cellcolor{orange!25}0 & \cellcolor{blue!25}2 & \cellcolor{orange!25}1 & \cellcolor{green!25}2 & \cellcolor{green!25}1 & \cellcolor{blue!25}0 & \cellcolor{orange!25}2 & \cellcolor{green!25}0 & \cellcolor{blue!25}1 \\ \hline
+ \end{tabular}
+\caption{Berechnung eines Zustandswechsels bei der schrittweisen Simulation im 3-Zustände Modell}
+\label{3s_by_step_tabelle}
+\end{figure}
+
+Die Berechnung der neuen Orte der Teilchen ist dann wiederum einfach. Da die Maske für den mobilen Zustand bereits alle mobilen Teilchen markiert, kann diese auf den Ortsvektor addiert werden. Um $M_0$ nicht nach den Zustandswechseln neu berechnen zu müssen, findet das Fortbewegen im Simulationschritt vor dem Zustandswechsel statt und die Teilchen starten dafür an Position $0$ statt an $1$ wie es bei der 2-Zustände Simulation der Fall war. Die Eingabe der Orte für Algorithmus \ref{algo_by_Step} ist also $o= [o_1 = 0, \ldots, o_n=0]$.
+
+\todo{Erweiterung auf mehr Zustände mit exakt diesem Vorgehen wohl kaum sinnvoll, da zu laufzeit intensiv-> Diskussionskapitel?}
+
 % Hier werden die Teilchen alle parallel bearbeitet 
 % \todo{müsste hier nicht schon ein verweis auf numpy hin?}
 % Um eine Abfrage des aktuellen Zustand zu sparen, wird einfach für beide Möglichkeiten berechnet. \todo{benennung der pspmvektoren}
 % Dadurch können alle Zustandswechsel ebenfalls parallel  werden.
 
-%\todo{Wo stehen Zeiteinheiten festgelegt -> Implementierung}
 
-
-\subsubsection{By-Event}
+\subsection{By-Event}
+Der Ablauf der ereignisbasierten Simulation ist in \ref{algo_by_event} angegeben. Auch bei dieser Simulationsart unterscheidet sich das 2-Zustände Modell vom 3-Zustände Modell nur in der Realisierung eines Simulationsschrittes, in diesem Fall der Bearbeitung eines Events.
 
 \begin{algorithm}
 \caption{Ablauf der by-Event Simulation}
@@ -191,10 +260,9 @@ Für die neuen Orte kann einfach der neue Zustandsvektor auf den alten Ortsvekto
 \end{algorithmic}
 \end{algorithm}
 
-Der Ablauf der ereignisbasierten Simulation ist in \ref{algo_by_event} angegeben.
 
 % Dabei muss für jeden Zeitpunkt $t$ verwaltet werden, welche Teilchen zu diesem Zeitpunkt ihren Zustand wechseln. 
-Auch hier werden $n$ Teilchen simuliert. Jedes davon besteht dabei aus seinem Ort und seinem Zustand. 
+Wie bei der schrittweisen Simulation werden hier $n$ Teilchen simuliert. Jedes davon besteht dabei aus seinem Ort und seinem Zustand. 
 Zunächst starten alle Teilchen bei Zeitpunkt $0$, an Ort $0$ und stationär. Dadurch werden sie im ersten Simulationsschritt mobil und bewegen sich direkt fort. 
 Im Gegensatz zur schrittweisen Simulation wird nun eine Liste mit Zeitpunkten verwaltet. Jeder Zeitpunkt beinhaltet eine Liste von Teilchen, die zu diesem Zeitpunkt simuliert werden müssen. Nach erfolger Simulation aller Teilchen der Liste, wird der Zeitpunkt gelöscht und der nächste Zeitpunkt, an dem etwas passieren soll, bearbeitet.
 
@@ -345,71 +413,11 @@ Ob diese Berechnung nach jedem Simulationsschritt, also vor Neueintragung in die
 
 In Abbildung \ref{2p_by_event} ist beispielhaft die Simulation eines Events gezeigt. Wie in \ref{2p_by_event_a} zu sehen, ist das nächste Event $e_3$. Es beinhaltet die Teilchen $p_1 = (z_1, o_1)$, $p_4 = (z_4, o_4)$ und $p_7 = (z_7, o_7)$. Keines der Teilchen hat bereits die Säulenlänge erreicht, sodass für alle ein Schritt simuliert wird. Gezogen werden die Zufallszahlen $x=2$, $y=13$ und $z=6$. Damit werden die Teilchen den Events $e_5$, $e_{16}$ und $e_9$ hinzugefügt. $p_{7}$ war mobil und geht nun in den stationären Zustand über. Deshalb ändert sich auch nichts an seinem Ort. $p_1$ und $p_4$ waren stationär und werden beide mobil. Darum muss ihr Ort noch um $2$ bzw. $13$ angepasst werden. Der Zustand der Zeitpunkteliste nach Abarbeitung der drei Teilchen ist in \ref{2p_by_event_b} abgebildet. Im nächsten Durchlauf wird das Event $e_4$ bearbeitet.
 
-\subsection{Simulation des 3-Zustände Modells}
 
-Analog zum 2-Zustände Modell kann auch das 3-Zustände Modell entweder schrittweise oder ereignisbasiert umgesetzt werden. Dafür bleiben die Algorithmen \ref{algo_by_Step} und \ref{algo_by_event} im Wesentlichen unverändert, lediglich die Umsetzung der Simulation eines Schrittes bzw. eines Zeitpunktes muss angepasst werden.
+%Analog zum 2-Zustände Modell kann auch das 3-Zustände Modell entweder schrittweise oder ereignisbasiert umgesetzt werden. Dafür bleiben die Algorithmen \ref{algo_by_Step} und \ref{algo_by_event} im Wesentlichen unverändert, lediglich die Umsetzung der Simulation eines Schrittes bzw. eines Zeitpunktes muss angepasst werden.
 
-\subsubsection{Step-by-Step}
 
-Durch die Hinzunahme eines weiteren Zustandes können nun nicht mehr boolesche Werte zur Zustandsbeschreibung herangezogen werden. Nun gilt Zustand $z \in \{0, 1, 2\}$  wobei $0$ für den mobilen Zustand steht, $1$ für die Adsorption und $2$ für die Lösung. Außerdem werden die Wahrscheinlichkeiten entsprechend auf eine Transitionsmatrix wie in \ref{3s_Transit} angepasst.
-
-Um weiterhin eine logische Formel für die Zustandsberechnung nutzen zu können, sind viele Hilfsarrays nötig, die entsprechend viel überflüssige Information enthalten.
-
-Um aus den gezogenen Zufallszahlen die passenden Arrays zu erstellen, aus denen die neuen Zustände berechnet werden können, wird zunächst eine Hilfstabelle mit den kumulierten Wahrscheinlichkeiten erstellt. %erstelle kumulierte Wahrscheinlichkeiten (ein mal zu beginn)
-
-Beispiel:
-$T= 
-\begin{pmatrix}
-0,5 & 0,3 & 0,2 \\
-0,2 & 0,2 & 0,6 \\
-0,15 & 0,15 & 0,7 
-\end{pmatrix}
-$  wird zu 
-$K= 
-\begin{pmatrix}
-0,5 & 0,8 & 1 \\
-0,2 & 0,4 & 1 \\
-0,15 & 0,3 & 1 
-\end{pmatrix}
-$ 
-
-In Abbildung \ref{3s_by_step_tabelle} ist der Ablauf der Simulation eines Zustandswechels für mehrere Teilchen exemplarisch zu sehen. Farblich markiert sind jeweils für einen gleichen Startzustand die relevanten Berechnungsschritte. Die Übergangswahrscheinlichkeiten entsprechen denen im obigen Beispiel.
-Zunächst wird pro Zustand $z$ eine Maske $M_z$ erstellt, die eine $1$ an den Positionen enthält, an denen sich ein Teilchen in $z$ befindet. 
-
-Außerdem wird analog zum 2-Zustände Modell jeweils aus den Zufallszahlen alle möglichen Übergänge berechnet. $U_{xy}$ steht dabei für den Übergang von Zustand $x$ nach Zustand $y$. Die Übergänge für $U_{x2}$ würden für alle $x$ auf Grund der kumulierten Wahrscheinlichkeiten nur Nulleinträge enthalten, daher können sie ausgelassen werden. 
-
-Der neue Zustand eines Teilchens, das sich in Startzustand $x$ befindet, ergibt sich dann aus der Summe der beiden Arrays $U_{x0}$ und $U_{x1}$. Über diese Summe wird nun noch die passende Maske $M_x$ gelegt, damit jeweils nur der richtige Zielzustand für den Startzustand ausgewählt wird.
-Dadurch entsteht pro Zustand ein Array, welches für jedes in diesem Zustand befindliche Teilchen den neuen Zustand nach dem Schritt beinhaltet. Diese Arrays brauchen nun nur noch kombiniert zu werden, um die Endzustände für alle Teilchen zu erhalten.
-%\todo{Formulierung}
-
-\begin{figure}
- \begin{tabular}{ l || l | l | l | l | l | l | l | l | l }
-  \hline
-  Startzustände & \cellcolor{orange!25}0 & \cellcolor{blue!25} 1 & \cellcolor{orange!25}0 & \cellcolor{green!25}2 & \cellcolor{green!25}2 & \cellcolor{blue!25} 1 & \cellcolor{orange!25}0 & \cellcolor{green!25}2 & \cellcolor{blue!25} 1 \\ \hline \hline 
-  ZV & 0,3 & 0,9 & 0,7 & 0,8 & 0,2 & 0,1 & 0,9 & 0,1 & 0,3 \\ \hline \hline
-  $M_0$ & \cellcolor{orange!25}1 & 0 & \cellcolor{orange!25}1 & 0 & 0 & 0 & \cellcolor{orange!25}1 & 0 & 0 \\ 
-  $M_1$ & 0 & \cellcolor{blue!25}1 & 0 & 0 & 0 & \cellcolor{blue!25}1 & 0 & 0 & \cellcolor{blue!25}1 \\
-  $M_2$ & 0 & 0 & 0 & \cellcolor{green!25}1 & \cellcolor{green!25}1 & 0 & 0 & \cellcolor{green!25}1 & 0 \\ \hline \hline
-  $U_{00}$ & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\ 
-  $U_{01}$ & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ \hline
-  $M_0\cdot (U_{00} + U_{01}$) & \cellcolor{orange!25}0 & 0 & \cellcolor{orange!25}1 & 0 & 0 & 0 & \cellcolor{orange!25}2 & 0 & 0 \\ \hline \hline
-  $U_{10}$ & 1 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 1 \\ 
-  $U_{11}$ & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\ \hline
-  $M_1 \cdot (U_{10}+U_{11}$) & 0 & \cellcolor{blue!25}2 & 0 & 0 & 0 & \cellcolor{blue!25}0 & 0 & 0 & \cellcolor{blue!25}1 \\ \hline \hline
-  $U_{20}$ & 1 & 1 & 1 & 1 & 1 & 0 & 1 & 0 & 1 \\ 
-  $U_{21}$ & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\ \hline
-  $M_2\cdot (U_{20}+U_{21}$) & 0 & 0 & 0 & \cellcolor{green!25}2 & \cellcolor{green!25}1 & 0 & 0 & \cellcolor{green!25}0 & 0 \\ \hline \hline
-  Endzustände & \cellcolor{orange!25}0 & \cellcolor{blue!25}2 & \cellcolor{orange!25}1 & \cellcolor{green!25}2 & \cellcolor{green!25}1 & \cellcolor{blue!25}0 & \cellcolor{orange!25}2 & \cellcolor{green!25}0 & \cellcolor{blue!25}1 \\ \hline
- \end{tabular}
-\caption{Berechnung eines Zustandswechsels bei der schrittweisen Simulation im 3-Zustände Modell}
-\label{3s_by_step_tabelle}
-\end{figure}
-
-Die Berechnung der neuen Orte der Teilchen ist dann wiederum einfach. Da die Maske für den mobilen Zustand bereits alle mobilen Teilchen markiert, kann diese auf den Ortsvektor addiert werden. Um $M_0$ nicht nach den Zustandswechseln neu berechnen zu müssen, findet das Fortbewegen im Simulationschritt vor dem Zustandswechsel statt und die Teilchen starten dafür an Position $0$ statt an $1$ wie es bei der 2-Zustände Simulation der Fall war.
-
-\todo{Erweiterung auf mehr Zustände mit exakt diesem Vorgehen wohl kaum sinnvoll, da zu laufzeitintensiv-> Diskussionskapitel?}
-
-\subsubsection{By-Event}
+\subsubsection{3-Zustände Modell}
 Bei dieser Simulationsart sind nur minimale Anpassungen notwendig. Wie in der Step-by-Step Simulation wird ein weiterer Zustand eingeführt, sodass $z_p \in \{0,1,2\}$ und die Wahrscheinlichkeiten werden angepasst.
 
 Die Berechnung, wann ein Teilchen von Zustand $z$ in einen neuen Zustand $z'$ mit $z' \neq $ z wechselt, bleibt gleich, da sie nur vom aktuellen Zustand bzw. der Wahrscheinlichkeit in diesem Zustand zu bleiben abhängt. Unverändert bleibt auch die Bestimmung des neuen Ortes sowie der Test, ob ein Teilchen die Säule vollständig durchquert hat. 
@@ -575,7 +583,7 @@ Außerdem werden Werte sehr nah bei 0 (<10hoch-17) ignoriert. Solche Werte werde
 \path [line width=1.4pt, line cap=rect, draw=green!40!yellow, bend right=40](sm2) edge (m'2) ;
 
 \end{tikzpicture}
-\caption{PAA}
+\caption{Berechnung der neuen Zustände des PAA im 2-Zustände Modell}
 \label{paa2p_prinzip}
 \end{figure}
 
@@ -602,9 +610,18 @@ Sowohl für die Simulation vieler Teilchen als auch bei der Verwendung eines PAA
 
 Bei den Teilchensimulationen liegen die Peaks als Liste von Ankuftszeiten vor, beim PAA hingegen als Anteil der Gesamtwahrscheinlichkeit zu jedem Zeitpunkt. 
 
-Besonders bei den Teilchensimulationen ist es vorteilhaft, jeweils mehrere Zeitpunkte zusammen zu fassen, um die Peaks zu glätten.
-\todo{Bild unzusammengefasster Daten zur Verdeutlichung?}
+Besonders bei den Teilchensimulationen ist es vorteilhaft, jeweils mehrere Zeitpunkte zusammen zu fassen, um die Peaks zu glätten. Durch die zufälligen Bewegungen der Teilchen kann es sonst vorkommen, dass die Peaks sehr verrauscht sind. Außerdem erfassen Detektoren im Experiment auch nur in gewissen Zeitintervallen die ankommenden Stoffe, sodass dadurch kein Nachteil der Simulation entsteht.
+Werden die Datenpunkte nicht zusammengefasst, kann es insbesondere bei der Bestimmung des Maximalwertes eines Peaks, zu deutlichen Verschiebungen kommen, wenn zu einem beliebigen Zeitpunkt zufällig mehr Teilchen den Säulendurchlauf beenden, als am Maximalpunkt des zusammengefassten Peaks.
 
-Maximalstelle: Am häufigsten vorkommende Ankunftszeit bzw. argmax der Wahrscheinlichkeiten
+\begin{figure}
+ \centering
+  \includegraphics[width = \textwidth]{bilder/zeiten_zusammenfassen}\\
+  \caption[Zeiten zusammenfassen]{Beispielpeak vor (links) und nach (rechts) der Zusammenfassung der Datenpunkte}
+  \label{zeiten_zusammenfassen}
+\end{figure}
+
+Bei der Simulation, welche die Peaks in Abbildung \ref{zeiten_zusammenfassen} erzeugt hat, wurden $1000$ Teilchen simuliert. Es ist auf den ersten Blick nicht klar, wo sich die Maximalstelle des Peaks befindet, sowohl bei $t_1 = 7$ als auch bei $ t_2 = 8,5$ erreicht die Kurve ihren Maximalwert. Nach der Zusammenfassung von Ankunftszeiten wird klar, dass die Maximalstelle eher bei $t_2 = 8,5$ liegen muss.
+
+Die Lage des Peaks und damit seine Retentionszeit bestimmt sich als .Am häufigsten vorkommende Ankunftszeit bzw. argmax der Wahrscheinlichkeiten
 
 Breite und Schiefe: Jeweils Quartile berechnen und daraus IQR und IQK
