@@ -1,0 +1,51 @@
+
+\usetikzlibrary{arrows,%
+                topaths}%
+\tikzstyle{knoten}=[draw,-,thick,fill=none,inner sep=0pt, minimum width=45pt, circle]
+\tikzstyle{kante}=[draw,-,thick,black]
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{%
+	calc,%
+	decorations.pathmorphing,%
+	fadings,%
+	shadings%
+}
+
+ \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm, thick,
+  state node/.style={circle,fill=white,draw,font=\sffamily\bfseries, minimum height=30pt, text width = 1.5cm, align = center},
+  operation node/.style= {regular polygon, regular polygon sides=3,  fill = white, draw, inner sep=  0pt},
+  emission node/.style={rectangle, fill = lightgray!50, draw, text width = 2cm}]
+ 
+  \node[state node] (m) at (2, 0) {m};
+  \node[state node] (s1) at (8, 2) {a}; 
+  \node[state node] (s2) at (8, -2) {l};
+
+  \node[operation node, align = center] (om)  at (1.5,-0.8) {$+$};
+  \node[operation node, align = center] (os1)  at (8.5, 1.5) {$+$};
+  \node[operation node, align = center] (os2)  at (8.5,-2.5) {$+$};
+
+  \path[every node/.style={font=\sffamily\large}]
+
+    (m) edge [loop left] node {$p_{mm}$} (m)
+			edge [bend left] node [above] {$p_{ma}$} (s1)
+            edge [bend left = 10] node [below]{$p_{ml}$} (s2)
+        
+    (s1)  edge [bend left = 10] node[above]{$p_{am}$} (m) 
+             edge [loop above] node {$p_{aa}$} (s1)
+ 			edge [bend left] node[right]{$p_{al}$} (s2)
+    
+    (s2)  edge [bend left] node[below]{$p_{lm}$} (m)
+ 			 edge [bend left] node[right]{$p_{la}$} (s1)	
+             edge [loop below] node {$p_{ll}$} (s2)
+        ;
+
+   \fill[color=lightgray!40] (1.1, 2.5) --(2,0.9) -- (2.9,2.5) -- cycle ;
+   \fill[color=lightgray!40] (8.9, 2) -- (10,1.5) -- (10,2.5) -- cycle ;
+   \fill[color=lightgray!40] (8.9, -2) -- (10,-1.5) -- (10, -2.5) -- cycle ;
+% 
+   \node[emission node, align = center] (em) [right of= s1] {$e_a(0) = 1$\\$e_a(1)=0$};
+   \node[emission node, align = center] (em) [right of = s2] {$e_l(0) = 1$\\$e_l(1)=0$};
+   \node[emission node, align = center] (es) [above of = m] {$e_m0) = 0$\\$e_m(1)=1$};
+  
+\end{tikzpicture}

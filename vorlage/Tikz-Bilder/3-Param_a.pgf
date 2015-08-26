@@ -1,29 +1,31 @@
 
 \usetikzlibrary{arrows,%
                 topaths}%
-\tikzstyle{knoten}=[draw,-,thick,fill=none,inner sep=0pt, minimum width=25pt, circle]
+\tikzstyle{knoten}=[thick,fill=none,inner sep=0pt, minimum width=25pt, circle]
 \tikzstyle{kante}=[draw,-,thick,black]
 \usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit}
 
-\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
-  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries}]
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\small\bfseries},
+  knoten/.style={thick,fill=none,inner sep=0pt, minimum width=25pt, circle}]
+{
+  \node[knoten] (im){};
+  \node[main node] (m) at (0, 0) {mob};
+  \node[main node] (s1) at (4, 2) {ads}; 
+  \node[main node] (s2) at (4, -2) {lsg};
 
-
-   \node[main node] (m)  {mob};
-  \node[main node] (s1) [right of = m]{stat1};
-  \node[main node] (s2) [right of = s1]{stat2};
-
-  \path[every node/.style={font=\sffamily\tiny}]
-
-    (s2)   edge [bend left] node [below] {$1-p_s$} (s1)
-            edge [loop right] node {$p_s$} (s1)
+  \path[every node/.style={font=\sffamily}]
         
-    (s1)   edge [bend left] node [above] {$p_j$} (s2)
-            edge [bend left] node[below] {$p_k$} (m)
-			edge [loop above] node {$p_i$} (s1)
+    (m)  edge [bend left] node[above left]{$p_{ma}$} (s1) 
+            edge [bend right] node[below left]{$p_{ml}$} (s2)
+             edge [loop left] node {$p_{mm}$} (m)
+
+    (s2)   edge node [right] {$p_{lm}$} (m)
+            edge [loop right] node {$p_{ll}$} (s1)
         
-    (m)  edge [bend left] node[above]{$1-p_m$} (s1)
-             edge [loop left] node {$p_m$} (m)
-        ;
+    (s1)  edge node [right] {$p_{am}$} (m)
+	  edge [loop right] node {$p_{aa}$} (s1)
+
+        ;}
 \end{tikzpicture}
 

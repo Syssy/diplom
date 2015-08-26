@@ -10,7 +10,7 @@
 
 \begin{scope}[start chain =1 going right, node distance =-0.3mm]
 	\node [on chain =1, feld, draw=none,minimum width=2cm] {Events $e$};
-	\node [on chain=1, feld,minimum width=2cm] (p2) {$e_2$};
+	\node [on chain=1, feld,minimum width=2cm] (p2) {$e_4$};
 	\node [on chain=1, feld,minimum width=2cm] (p5) {$e_5$};
 	\node [on chain=1, feld,minimum width=2cm] (p7) {$e_7$};
 	\node [on chain=1, feld,minimum width=2cm] (p9) {$e_9$};
@@ -26,7 +26,7 @@
 
 \begin{scope}[start chain = 1 going below,shift={(4cm, -2cm)}, node distance=0.5cm]
 	\node[on chain = 1, feld] (5x1) {($s_{10}, o_{10}$)};
-	\node[on chain = 1, feld, fill=green!50!white] (5x2) {($s_1, o_1$)};
+	\node[on chain = 1, feld, fill=green!50!white] (5x2) {$p_1 = (1, 4)$};
 \end{scope}
 
 \begin{scope}[start chain = 1 going below,shift={(6cm, -2cm)}, node distance=0.5cm]
@@ -36,7 +36,7 @@
 \end{scope}
 
 \begin{scope}[start chain = 1 going below,shift={(8cm, -2cm)}, node distance=0.5cm]
-	\node[on chain = 1, feld, fill=orange!50!white] (9x1) {($s_7, o_7$)};
+	\node[on chain = 1, feld, fill=orange!50!white] (9x1) {$p_7 = (0, 3)$};
 \end{scope}
 
 \begin{scope}[start chain = 1 going below,shift={(10cm, -2cm)}, node distance=0.5cm]
@@ -44,7 +44,7 @@
 \end{scope}
 
 \begin{scope}[start chain = 1 going below,shift={(12cm, -2cm)}, node distance=0.5cm]
-	\node[on chain = 1, feld, fill=blue!40!white] (16x1) {($s_4, o_4$)};
+	\node[on chain = 1, feld, fill=blue!40!white] (16x1) {$p_4 =(1, 14)$};
 \end{scope}
 
 %\path [line width=1.4pt, line cap=rect, draw](1x2) edge (1x3) ;
