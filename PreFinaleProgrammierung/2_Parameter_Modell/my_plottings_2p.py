@@ -321,7 +321,7 @@ def plot_simlist(sim_list, histogram_spec, histogram_noise, peak, qq_Plot_norm, 
         noise = []
         for i in range(int(sim_list[0].number*len(sim_list)/10)):
             #noise.append(random.uniform(0, round(time_max)))
-            noise.append(random.uniform(0, 240))
+            noise.append(random.uniform(0, 200))
         for sim in sim_list:
             for t in sim.times:
                 if sim.pd[0][0] < 250:
@@ -329,40 +329,55 @@ def plot_simlist(sim_list, histogram_spec, histogram_noise, peak, qq_Plot_norm, 
         plt.hist(noise, 500, normed = 1, alpha = 0.6)
         plt.suptitle("Spektrum mit Rauschen")
         plt.show()       
+        hist, bins = np.histogram(noise, bins=100, normed=1)
+        offset = bins[1:] - bins [:-1]
+        plt.plot(bins[:-1]+offset, hist, 'k')
+        plt.xlim([0, 200])
+        plt.xlabel("Retentionszeit/s")
+        plt.ylabel("Signalitensität")
+        plt.show()
     # Je Peak ein Ausgabefenster mit separatem Histogramm/qq-Plot mit gewaehlten Params/qq mit automatischem Fit 
-    number_stats = sum([peak, qq_Plot_norm, fit_qq_Plot])
+    number_stats = sum([peak, qq_Plot_norm, fit_qq_Plot])+1
     #print (number_stats)
     if peak or qq_Plot_norm or fit_qq_Plot:
         logging.log(25, "Erstelle separate Plots")
-    for sim in sim_list:
-        startzeit = time.clock() 
-        # korrekte Anzahl Unterfenster erstellen
-        fig = plt.figure(figsize=(4*number_stats, 4))
-        gs1 = gridspec.GridSpec(1, number_stats)
-        ax_list = [fig.add_subplot(ss) for ss in gs1]
-        #zaehler fuer die gewuentschte Anzahl Fenster
-        akt = 0
-        fig.suptitle("ps, pm"+str(sim.params), size = 15)
-        # Einzelnen Peak als Kurve (nicht Histogram) darstellen
-        if peak:
-            ax_list[akt].set_title("Peak")
-            hist, bins = np.histogram(sim.times, bins=num_bins)
-            offset = bins[1:]-bins[:-1]
-            ax_list[akt].plot(bins[:-1]+offset, hist)
-            akt+=1      
-        # qq-Plot mit Normalverteilung
-        if qq_Plot_norm:
-            sm.qqplot (np.array(sim.times), scipy.stats.norm,  line = 'r', ax=ax_list[akt])
-            ax_list[akt].set_title("qq-Plot; Normalverteilung")
-            akt+=1  
-        #qq Plot mit anderer Verteilung (z.B. Inverse Gauss)
-        if fit_qq_Plot:
-            sm.qqplot (np.array(sim.times), compare_Dist, fit=True,  line = 'r', ax=ax_list[akt])
-            ax_list[akt].set_title("qq-Plot; gewaehlte Verteilung")
-            akt+=1
-            gs1.tight_layout(fig, rect=[0, 0.03, 1, 0.95]) 
-        logging.log(20, "Zeit fuer Plot: %s", str(time.clock()-startzeit))
-        plt.show()    
+        for sim in sim_list:
+            startzeit = time.clock() 
+            # korrekte Anzahl Unterfenster erstellen
+            fig = plt.figure(figsize=(4*number_stats, 4))
+            gs1 = gridspec.GridSpec(1, number_stats)
+            ax_list = [fig.add_subplot(ss) for ss in gs1]
+            #zaehler fuer die gewuentschte Anzahl Fenster
+            akt = 0
+            #fig.suptitle("ps, pm"+str(sim.params), size = 15)
+            # Einzelnen Peak als Kurve (nicht Histogram) darstellen
+            if peak:
+                #ax_list[akt].set_title("Peak")
+                hist, bins = np.histogram(sim.times, bins=100)#num_bins)
+                offset = bins[1:]-bins[:-1]
+                ax_list[akt].plot(bins[:-1]+offset, hist)
+                ax_list[akt].set_xlabel("Zeit")
+                ax_list[akt].set_ylabel("Anzahl Teilchen")
+                akt+=1      
+                hist, bins = np.histogram(sim.times, bins=20)
+                offset = bins[1:]-bins[:-1]
+                ax_list[akt].plot(bins[:-1]+offset, hist)
+                plt.xlabel("Zeit")
+                plt.ylabel("Anzahl Teilchen")
+                akt+=1      
+            # qq-Plot mit Normalverteilung
+            if qq_Plot_norm:
+                sm.qqplot (np.array(sim.times), scipy.stats.norm,  line = 'r', ax=ax_list[akt])
+                ax_list[akt].set_title("qq-Plot; Normalverteilung")
+                akt+=1  
+            #qq Plot mit anderer Verteilung (z.B. Inverse Gauss)
+            if fit_qq_Plot:
+                sm.qqplot (np.array(sim.times), compare_Dist, fit=True,  line = 'r', ax=ax_list[akt])
+                ax_list[akt].set_title("qq-Plot; gewaehlte Verteilung")
+                akt+=1
+                gs1.tight_layout(fig, rect=[0, 0.03, 1, 0.95]) 
+            logging.log(20, "Zeit fuer Plot: %s", str(time.clock()-startzeit))
+            plt.show()    
 
 def plot_spectrum(sim_list, maxtime=250): 
     """Plottet ein Spektrum mehrerer Peaks, wird auch von plot_simlist aufgerufen, mit fester maxtime von 250s"""

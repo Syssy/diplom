@@ -91,7 +91,7 @@ class Simulation():
         self.mode="T"
         
         # aktuelle Orte der Teilchen
-        locations = np.zeros(number)
+        locations = np.ones(number)
         # akutelle Zustaende der Teilchen 
         mobile_states = np.array([True]*number)
     

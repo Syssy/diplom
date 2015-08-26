@@ -77,11 +77,11 @@ def combine_params(args, nr_of_choice = 5): #TODO Auf die sinnvollen beschraenke
     if args == "viele005":
         schrittweite = 0.00005
         #0.9985 0.9998
-        ps_catalogue = np.arange(0.99965, 0.9998, schrittweite)
+        ps_catalogue = np.arange(0.999, 0.9999, schrittweite)
         #ps_catalogue = [0.999, 0.9992, 0.9998, 0.99992]
         
-        schrittweite = 0.05
-        pm_catalogue = np.arange(0.1, 0.45, schrittweite)
+        schrittweite = 0.1
+        pm_catalogue = np.arange(0.1, 0.9, schrittweite)
         #pm_catalogue = [0.99, 0.9, 0.3, 0.1]
         
         p_combinations = []
@@ -96,10 +96,10 @@ def combine_params(args, nr_of_choice = 5): #TODO Auf die sinnvollen beschraenke
         # p_combinations = [(0.995, 0.995),(0.9997, 0.9995),(0.9995, 0.9999),(0.9999, 0.9995)]
         # p_combinations = [(0.995, 0.999),(0.999, 0.9995),(0.995, 0.995),(0.9999, 0.9995)]
             
-        p_combinations = [(0.9996, 0.99992),  (0.998, 0.992),(0.997, 0.99),(0.996, 0.99),  (0.998, 0.991)]
+        p_combinations = [(0.9996, 0.92),  (0.998, 0.2),(0.9995, 0.5)]#,(0.996, 0.99),  (0.998, 0.991)]
         
-        p_combinations = [(0.99985, 0.62),(0.99985, 0.63), (0.99985, 0.64), (0.99985, 0.65)]
-        p_combinations = [(0.99988, 0.45)]
+        #p_combinations = [(0.99985, 0.62),(0.99985, 0.63), (0.99985, 0.64), (0.99985, 0.65)]
+        #p_combinations = [(0.99988, 0.45)]
         #p_combinations = [(0.99994, 0.85), (0.9999, 0.75),(0.999945, 0.01), (0.9998, 0.4),(0.999825, 0.001), (0.99992, 0.9)]
         #p_combinations = [(0.99991, 0.75),(0.99991, 0.76),(0.99991, 0.77),(0.99991, 0.78),(0.99991, 0.79)]
 
@@ -206,7 +206,7 @@ def combine_params(args, nr_of_choice = 5): #TODO Auf die sinnvollen beschraenke
                 p_combinations.append((round(ps, 10), round(pm, 10)))
      
     if args == "wdh":#???
-        p_combinations = [(0.999,0.999)]
+        p_combinations = [(0.9999,0.99)]
     
     logging.log(20, "p_combinations %s, anzahl: %s", p_combinations, len(p_combinations))    
     return (sorted(list(set(p_combinations))))
@@ -266,6 +266,7 @@ def start_simulations(length, number, mode, p_combinations):
             
             #Neue Simulation notwendig
             if not sim_exists:
+                print ("simuliere")
                 store = True
                 mySim = simulation.Simulation(round(ps, 10), round(pm,10), length, number, mode)
                 mySim.simulate()
@@ -375,9 +376,9 @@ def main():
     #for i in range(len(new_sims)):
         #plotkram.plot_single_peak(new_sims[i], qq= scipy.stats.norm)
         #time.sleep(2)
-    plotkram.plot_widthmap(new_sims)
-    plotkram.plot_widthandskew(new_sims)
-    #plotkram.plot_params_at_time(new_sims, 50, 10, True)
+    #plotkram.plot_widthmap(new_sims)
+    #plotkram.plot_widthandskew(new_sims)
+    plotkram.plot_params_at_time(new_sims, 100, 5, True)
     #plotkram.plot_heatmap_of_moments(filename, ff = True, moment= "mean")
     #plotkram.plot_heatmap_of_moments(new_sims, moment="mean") 
     #plotkram.plot_4_heatmaps(filename, ff=True, moment="mean")   
