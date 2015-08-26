@@ -45,6 +45,7 @@ function updateDistributions!(params::Array{Float32,2}, distributions, index, nu
        index: zur spaeteren Verschiebung des Arrays, wird erhoeht, wenn zu kleine Werte abgeschnitten werden
        return: Neue distributions, index
     =#
+    #TODO Sind hier neun nötig oder reichen auch 6?
     # Erstelle Hilfsmatrix aus Arrays. Jedes Array wird später befüllt aus einer alten Verteilung mal entsprechender Uebergangswahrscheinlichkeit. Bei 3 Zustaenden ergeben sich so 9 Arrays
     hilfsdings = Array(Any, num_states)
     for i in 1:num_states
@@ -128,11 +129,12 @@ function combineParams()
     
     #Erstelle zunaechst Listen fuer Einzelwahrscheinlichkeiten fuer mobilen Ausgangszustand...
     pmms = [0.005f0, 0.5f0, 0.99f0]
-    pmms = [0.005f0, 0.01f0, 0.05f0, 0.1f0, 0.15f0, 0.2f0, 0.25f0, 0.3f0, 0.35f0, 0.4f0, 0.45f0, 0.5f0, 0.55f0, 0.6f0, 0.65f0, 0.7f0, 0.75f0, 0.8f0, 0.85f0, 0.9f0]
+    pmms = [0.1f0, 0.2f0, 0.3f0, 0.4f0, 0.5f0, 0.6f0]
+    #pmms = [0.005f0, 0.01f0, 0.05f0, 0.1f0, 0.15f0, 0.2f0, 0.25f0, 0.3f0, 0.35f0, 0.4f0, 0.45f0, 0.5f0, 0.55f0, 0.6f0, 0.65f0, 0.7f0, 0.75f0, 0.8f0, 0.85f0, 0.9f0]
     #pmms = [0.005f0, 0.007f0, 0.01f0, 0.05f0, 0.1f0, 0.15f0, 0.2f0, 0.25f0, 0.3f0, 0.35f0, 0.4f0, 0.45f0, 0.5f0, 0.55f0, 0.6f0, 0.65f0, 0.7f0, 0.75f0, 0.8f0, 0.85f0, 0.9f0, 0.95f0, 0.99f0]
     # 0.00001f0 ist zu klein, nicht ausreichend teilchen drin, daher kein schönes tailing
     pmls = [0.01f0, 0.001f0, 0.00001f0] 
-    pmls = [0.005f0, 0.003f0, 0.001f0, 0.0007f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.00005f0] 
+    pmls = [0.005f0, 0.003f0, 0.001f0, 0.0007f0, 0.0006f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.00005f0] 
     #pmls = [0.01f0, 0.005f0, 0.003f0, 0.001f0, 0.0007f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.00005f0, 0.00003f0, 0.00001f0] 
     pms = Array(Any, 0)
     for pmm in pmms
@@ -143,7 +145,7 @@ function combineParams()
     end
     # ... fuer adsorbierten Ausgangszustand...  
     paas = [0.99f0, 0.9992f0, 0.9999f0]   
-    paas = [0.997f0, 0.998f0, 0.9985f0, 0.999f0, 0.9991f0, 0.9992f0, 0.9993f0, 0.9994f0, 0.9995f0, 0.9996f0]   
+    paas = [0.999f0, 0.9991f0, 0.9992f0, 0.9993f0, 0.9994f0, 0.9995f0, 0.9996f0]   
     #paas = [0.99f0, 0.995f0, 0.997f0, 0.998f0, 0.9985f0, 0.999f0, 0.9991f0, 0.9992f0, 0.9993f0, 0.9994f0, 0.9995f0, 0.9996f0, 0.9999f0]   
     pas = Array(Any, 0)
     for paa in paas
@@ -152,7 +154,7 @@ function combineParams()
     end
     # ... und fuer geloesten Ausgangszustand
     plls = [0.9999f0, 0.99999f0, 0.999999f0]
-    plls = [0.9999f0, 0.999925f0, 0.99995f0, 0.999975f0, 0.99999f0, 0.999993f0, 0.999995f0, 0.999997f0, 0.999999f0]
+    plls = [0.99999f0, 0.999993f0, 0.999995f0, 0.999997f0]
     #0.999999f0 ist zu groß
     #plls = [0.9999f0, 0.999925f0, 0.99995f0, 0.999975f0, 0.999985f0, 0.99999f0, 0.999993f0, 0.999995f0, 0.999996f0, 0.999997f0, 0.999999f0]
     pls = Array(Any, 0)
@@ -219,13 +221,13 @@ params=[0.15f0 0.845f0 0.005f0; 0.0005f0 0.9995f0 0.0f0; 0.000025f0 0.0f0 0.9999
 push!(param_list, params)
 params=[0.1f0 0.899f0 0.001f0; 0.0007f0 0.9993f0 0.0f0; 0.000001f0 0.0f0 0.999999f0]
 push!(param_list, params)
-#param_list = combineParams()
-#reverse!(param_list)
+param_list = combineParams()
+reverse!(param_list)
 println(length(param_list))
 
 # Simulationen starten, vorher testen, ob diese schon exisitert
 for params in param_list
-    filename = "savedata_julia/l$laenge/Sim_"
+    filename = "savedata_julia/l$laenge/Sim"
     for i in 1:3
         for j in 1:3
     #        println (i, " ", params[i, j])
@@ -233,27 +235,27 @@ for params in param_list
             #println (filename)
         end
     end
-#    if !isfile(filename)
-#    # if isfile("savedata_julia/l$laenge/$params")
-#    #    println("Summe ", sum(res))
-#    #    if (sum(res) < 0.999 )
-#    #        println("zu gering bei $params")
-#    #    end
-# #         #println (filename, " ")
-# #         if !isfile(filename)
-# #             println ("filename: ", filename, " ")
-# #             res = readcsv("savedata_julia/l$laenge/$params")
-# #             writecsv(filename, res)
-# #         end
-# #        println ("isfile, $params")
-# #     else
+   if !isfile(filename)
+   # if isfile("savedata_julia/l$laenge/$params")
+   #    println("Summe ", sum(res))
+   #    if (sum(res) < 0.999 )
+   #        println("zu gering bei $params")
+   #    end
+        println (filename, " ")
+#         if !isfile(filename)
+#             println ("filename: ", filename, " ")
+#             res = readcsv("savedata_julia/l$laenge/$params")
+#             writecsv(filename, res)
+#         end
+#        println ("isfile, $params")
+#     else
         println(strftime(time()), " starte: ")
         println (params, " ")
-        for i in 1:5
+       # for i in 1:5
             res = @time(waitingTimeForValue(params, laenge, maxtime))
-            println("Summe ", sum(res))
-        end
-   #     writecsv(filename, res)
+        #    println("Summe ", sum(res))
+        #end
+        writecsv(filename, res)
    # end
 #     else
 #    #     if (sum(res) >= 0.9 )
