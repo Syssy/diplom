@@ -324,7 +324,7 @@ läuft
 06.08.2015
  * 20.08., 9:15 Treffen
  * Etwas weiter geschrieben, Abläufe teilweise als Algo formuliert. Methodenkapitel teilweise ausformuliert. Erste Evaluationen
- 
+ * Spontane Laufzeitverbesserung für by-step, 3s gefunden: knapp ein viertel schneller, durch weglassen unnötiger übergänge 
  
  
  

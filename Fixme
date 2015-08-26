@@ -2,13 +2,10 @@ Hier kommt alles an wichtigen Todos rein, die vielleicht auch über längere Zei
 
 Besprechung:
  * Fragen:
-    ** Die Sache mit den Peaks die zu schmal für meine Sim waren fällt ja quasi weg, es gibt ohne Daten keine Hinweise darauf, dass es nötig ist, schmalere Peaks zu erzeugen. Daher einfach aufschreiben, DASS da eine Grenze ist (nach oben aber fast beliebig breit)
-    ** Lohnt es sich, noch mal an der julia 3s rumzubasteln?
+    ** Wo packe ich die simulationsannahmen, also länge, dauer eines zeitschrittes, längeneinheit am geschicktesten hin?
+    ** "Vielleicht macht es Sinn, "Standardparameter" für einen "normalen" Peak anzugeben (mittlere Retentionszeit, "normal" breit, nicht allzu schief), und vor allem die Parameter um diesen Peak herum zu untersuchen. " Ist damit gemeint, dass ich mir einen solchen peak suche, drum herum viel simuliere und gucke, wie sich welche pd verändert? 
+    ** Plot für Zeitpunkt mit erreichbarer Schiefe/Breite zeigen, ob der so gemeint war?
  * Berichte:
-    ** Fehler bei der Unterklasse für mosdi entdeckt, dadurch ist das nun viel schneller. 2p ist julia besser, aber 3s ist mosdi besser. 
-    ** Wenn Länge erhöht würde (10000 statt 1000) wäre auch julia in 3s besser. Ebenso gibt es Kombis, die ganz frühe, schmale Peaks erzeugen, wo julia schneller ist.
-    ** Mosdi ist für 3s viel schneller als für 2p. Echt seltsam!
-    ** Parametereinflüssse untersucht
  * Geplant:
     ** 
  
