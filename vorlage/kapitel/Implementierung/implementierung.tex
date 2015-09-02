@@ -5,40 +5,39 @@
 \todo{Kapitel Implementierung schreiben}
 \todo{Soll hier auch erwähnt werden, wie die verschiedenen Auswertungen gemacht wurden? Plots etc}
 
-\section{Festlegung der Einheiten}
-$20$ cm entspricht 200000 Schritten, in die MCC unterteilt wird.
-1 Schritt ist damit $1$\,\textmu m
-Trägergas hat nach etwa $0,1$ Sekunden die Säule durchlaufen.
-Eine Zeiteinheit entspricht demnach ca. 0.1/200000 Sekunden 0.0000005s 0.0005ms $0,5$\,\textmu s
 
-
-\section{Simulation der Modelle}
+\section{Teilchensimulation}
 Zur Simulation der beiden Modelle wurde Python (Python3) verwendet.
 
-Abhängigkeiten von Numpy(Arrays zur schnelleren Verarbeitung), Scipy (Berechnung von Peakdaten) und PyPlot (graphische Darstellung) sowie statsmodels (für die qq-Plots)
+Abhängigkeiten von Numpy (Arrays zur schnelleren Verarbeitung), Scipy (Berechnung von Peakdaten) und PyPlot (graphische Darstellung) sowie statsmodels (für die qq-Plots)
 
-Mit der 3-s kann auch 2p simuliert werden, indem nicht benötigte Übergangswahrscheinlichkeiten auf 0 gesetzt werden. Die reine 2p-Simulation ist aber deutlich schneller, da nur auf boolschen Werten gearbeitet werden muss.
+Sowohl bei der Umsetzung der Step-by-Step Methode als auch By-Event kann mit der Implementierung des 3-Zustände Modells auch das 2-Zustände Modell simuliert werden, indem nicht benötigte Übergangswahrscheinlichkeiten auf einen Wert von $0$ gesetzt werden. Die 2-Zustände Simulation ist aber vor allem bei der Step-by-Step Implementierung deutlich schneller, da nur auf boolschen Werten gearbeitet werden muss und deutlich weniger ungenutzte Information in den Zwischenschritten berechnet wird.
 
 
 \subsection{Step-by-step}
 
 Im Laborexperiment wird nur in gewissen Intervallen die Ankunft von Teilchen detektiert, bei der MCC-IMS-Kopplung wird beispielsweise nur zwei Mal pro Sekunde eine Messung durchgeführt. Daher genügt es auch in der Simulation, wenn nicht nach jedem Simulationsschritt die Orte aller Teilchen getestet werden, um ein ausreichend exaktes Ergebnis zu erhalten.
 Es können also zunächst viele Simulationsschritte durchgeführt werden, bevor getestet wird, ob Teilchen die Länge $l$ erreicht haben. Nach den oben angegebenen Einheiten können so zwischen jedem Test $50$ Simulationsschritte erfolgen, was $0,5 s$ entspricht. Dadurch entfallen viele Abfragen und es kann Simulationszeit eingespart werden. 
+
 Da außerdem klar ist, dass frühestens nach $l$ Schritten Teilchen überhaupt die Säule durchlaufen haben können, muss vor diesem Zeitpunkt auch kein Test auf Erreichen der Länge durchgeführt werden, wodurch weitere Zeit eingespart werden kann.
 \todo{wie viel Zeit ist das jeweils? ist das interssant?}
 
-% Es kann entweder jeder Zeitschritt der Chromatographie simuliert und dabei für jedes Teilchen entschieden werden, ob es sich bewegt. Dabei angenommen, dass die Wahrscheinlichkeit der Wechselwirkung unabhängig vom aktuellen Ort oder dem Zeitpunkt des letzten Phasenwechsels ist. Es wird für jedes Teilchen festgehalten, wo es sich befindet und ähnlich wie bei der echten Chromatographie beobachtet, wann wie viele Teilchen die Säule durchquert haben. 
-% \todo{Stey by step-Simulation beschreiben -> Methoden}
 
 \subsection{By-Event}
-Bei Übergangswahrscheinlichkeiten, die sehr groß oder klein sind, kommt es selten zu Zustandsänderungen, sodass es in diesem Fall effizienter ist, eine Wartezeitmethode zu nutzen: Es wird für jedes Teilchen entschieden, wann es den Zustand wechselt und, falls es mobil ist, wie weit es bis dahin weiter wandert. Es werden also nur die tatsächlichen Ereignisse simuliert, Schritte für Zeitpunkte, zu denen nichts passiert, entfallen.
-\todo{by event-simulation beschreiben -> Methoden}
+%Bei Übergangswahrscheinlichkeiten, die sehr groß oder klein sind, kommt es selten zu Zustandsänderungen, sodass es in diesem Fall effizienter ist, eine Wartezeitmethode zu nutzen: Es wird für jedes Teilchen entschieden, wann es den Zustand wechselt und, falls es mobil ist, wie weit es bis dahin weiter wandert. Es werden also nur die tatsächlichen Ereignisse simuliert, Schritte für Zeitpunkte, zu denen nichts passiert, entfallen.
+%\todo{by event-simulation beschreiben -> Methoden}
+???
 
 \subsection{Vergleich von Step-by-Step und By-Event}
-Resultierende Peaks sind (natürlich) gleich. Der Laufzeitvergleich hängt stark von den gewählten Parametern, aber auch Länge der Säule, ab.
-Bei Parametern nah an 1 lohnt meist die By-Event, da dann nur seltener Ereignisse erzeugt werden und viele Schritte in denen nichts (also kein Zustandswechsel) passiert, übersprungen werden können.
-Bei sehr vielen Teilchen lohnt sich eher die Step-by-Step Variante, da die Teilchen, die in Numpy-Arrays als True und False - Werte vorliegen sehr viel schneller verarbeitet werden können, als die Listen, die bei der Event -Variante verwendet werden. Eine weitere Parallelisierung scheint hier aber nicht zu lohnen
-Zumindest bei Parametern extrem nah bei 1 kann sich die Laufzeit der By-Event stark vergrößern, wenn die Säule zu kurz ist, da die Teilchen ``viel zu weit über das Ziel hinausschiessen'', aber das erst später festgestellt wird, wenn das Teilchen wieder betrachtet wird und schon entsprechend viele Zeitschritte vergangen sind. 
+Die aus den beiden Simulationsarten resultierenden Peaks sind (natürlich) gleich. Der Laufzeitvergleich hängt stark von den gewählten Parametern ab, außerdem gibt es gravierende Unterschiede zwischen dem 2- und 3-Zustände Modell.
+
+Bei der Simulation den 2-Zustände Modells ist die Step-by-Step Variante für die meisten Parameterkombinationen deutlich schneller, als die By-Event Implementierung. Der große Vorteil von Step-by-Step liegt hier in der Verwendung von booleschen Werten und Nutzung von Numpy-Arrays, auf welchen die Ausführung logischer Operationen parallel erfolgen kann. Lediglich einem sehr großen Wert für $p_{\text{m}}$, ab etwa $0.99$ ist die By-Event Variante geringfügig schneller. Das liegt daran, dass in diesen Fällen besonders selten Ereignisse erzeugt werden müssen und sich die Teilchen in großen Sprüngen forbewegen können. 
+
+Für die 3-Zustände Simulation müssen jedoch in der Step-by-Step Implementierung sehr viele Einträge für die Hilfsarrays erzeugt werden, die jedoch für die Berechnung der neuen Arrays nicht benötigt werden. Durch diese überflüssigen Berechnungen verliert die Step-by-Step Implementierung ihren Vorteil gegen über der By-Event Variante, sodass diese schneller wird. Dies wird deutlicher, je größer $p_{\text{mm}}$ wird.
+
+%Bei Parametern nah an $1$ lohnt meist die Nutzung der By-Event Implementierung, da dann nur seltener Ereignisse erzeugt werden und viele Schritte in denen nichts passiert, also kein Zustandswechsel stattfindet, übersprungen werden können.
+%Bei sehr vielen Teilchen lohnt sich eher die Step-by-Step Variante, da die Teilchen, die in Numpy-Arrays als boolesche Werte vorliegen, sehr viel schneller verarbeitet werden können, als die Listen, die bei der Event -Variante verwendet werden. Eine weitere Parallelisierung scheint hier aber nicht zu lohnen
+%Zumindest bei Parametern extrem nah bei 1 kann sich die Laufzeit der By-Event stark vergrößern, wenn die Säule zu kurz ist, da die Teilchen ``viel zu weit über das Ziel hinausschiessen'', aber das erst später festgestellt wird, wenn das Teilchen wieder betrachtet wird und schon entsprechend viele Zeitschritte vergangen sind. 
 
 % Generelles: Welche Sprachen, warum (?)
 % Die Simulation in Python, beide Varianten (Also by-event und step-by-step) 
@@ -47,17 +46,14 @@ Zumindest bei Parametern extrem nah bei 1 kann sich die Laufzeit der By-Event st
 \section{Simulation des PAA}
 Die Berechnung des PAA existiert in Java, dabei Referenz auf mosdi (Zitiere Paper, in dem das vorgestellt wird und sage, dass ich das verwende)
 
-da allerdings zu langsam: abgespeckte version nachprogrammiert in julia
-Größte Unterschiede dabei: start eingeschränkte funktionalität, da addition (von 1) unterstützt, das macht teilweise das arbeiten auf true/false möglich, außerdem auch nur jeweils feste ausgabe von 0 oder 1, festgelegt nach zustand etc.
-außerdem arbeiten mit arrays variabler länge, nur der relevante bereich (wkeiten != 0) wird betrachtet und zusätzlich zu kleine Werte zu beginn und ende der teilchenmasse abgeschnitten, um die länge weiter zu beschränken und dadurch zeit zu sparen (laufzeit linear/quadratisch oder so in irgendwas? noch mal bei mosdi nachgucken) länge sowieso beschränkt durch länge der säule (?????) und nicht durch maximale wartezeit
+In der Hoffnung, Laufzeit einzusparen durch eine eingeschränkte Version des PAA und Nutzung von Julia, wurde eine eigene Implementierung entwickelt.
+
+%(laufzeit linear/quadratisch oder so in irgendwas? noch mal bei mosdi nachgucken) länge sowieso beschränkt durch länge der säule (?????) und nicht durch maximale wartezeit
 
 Warum Julia? 
 
-Was kann meine PAA-Version und was nicht?
-
 Laufzeitvergleich bei gleichen Ergebnissen
 
-Nachbearbeitung der Ergebnisse wieder in Python
-
+Die Nachbearbeitung der Ergebnisse des PAA wurde wiederum in Python implementiert.
 
 

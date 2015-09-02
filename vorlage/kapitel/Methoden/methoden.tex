@@ -9,7 +9,7 @@ Im zweiten Abschnitt des Kapitels wird beschieben, wie der PAA umgesetzt werden 
 Die Ankunftszeiten der simulierten Teilchen bzw. die Verteilung der Wartezeiten auf das Erreichen der Säulenlänge, können dann als Peak aufgefasst und dargestellt werden. Wie aus diesen Daten außerdem werden die resultierenden Peakdaten berechnet werden können, steht im letzten Abschnitt beschrieben.
 
 \section{Simulation}
-Offensichtlich ist es möglich, tatsächlich jeden einzelnen Zeitschritt für alle Teilchen zu betrachten. Jedes Teilchen durchläuft also den Automaten aus \ref{tikz:2p_Mod} und es wird in jedem Schritt entschieden, ob es sich fortbewegt. Diese schrittweise Art der Simulation wird im Folgenden als ``Step-by-Step'' bezeichnet.
+Offensichtlich ist es möglich, tatsächlich jeden einzelnen Zeitschritt für alle Teilchen zu betrachten. Jedes Teilchen durchläuft also den Automaten aus Abbildung \ref{tikz:2p_Mod} und es wird in jedem Schritt entschieden, ob es sich fortbewegt. Diese schrittweise Art der Simulation wird im Folgenden als ``Step-by-Step'' bezeichnet.
 
 Wenn Zustandswechsel jedoch nicht sehr häufig vorkommen, kann es viel Zeit einsparen, nur zu relevanten Zeitpunkten, also für jeden Zustandswechsel, zu simulieren und dabei den Zeitpunkt des nächsten Wechsels zu notieren. Diese Zeitpunkte werden als Ereignisse verwaltet, daher wird diese Art der Simulation im Folgenden auch ``By-Event'' genannt.
 
@@ -24,11 +24,11 @@ Wenn Zustandswechsel jedoch nicht sehr häufig vorkommen, kann es viel Zeit eins
 \caption{Ablauf der Step-by-Step Simulation}
 \label{algo_by_Step}
 \begin{algorithmic}
-\REQUIRE Zustandsliste $z= [z_1 , \ldots, z_n]$, Ortsliste $o=[o_1, \ldots , o_n]$, Zeit $t=0$, Maximalzeit $t_{max}$, Parameter $p_{\text{s}}$ und $p_{\text{m}}$
+\REQUIRE Zustandsliste $z= [z_1 , \ldots, z_n]$, Ortsliste $o=[o_1, \ldots , o_n]$, Zeit $t=0$, Maximalzeit $t_{max}$, Transitionen $T$
 \ENSURE Ankuftszeiten $r$ oder FAIL
 \WHILE{$t < t_{max}$ \AND $len(z) > 0$}
-\FORALL {$p$}
-\STATE Simuliere $p(p_s, p_{\text{m}})$
+\FORALL {Teilchen $p$}
+\STATE Simuliere $p(T)$
 \IF {$o_p >l$}
 \STATE $r \leftarrow t$
 \STATE Lösche $z_p$ und $o_p$
@@ -48,7 +48,7 @@ Wenn Zustandswechsel jedoch nicht sehr häufig vorkommen, kann es viel Zeit eins
 
 Der Ablauf einer schrittweisen Simulation ist in Algorithmus \ref{algo_by_Step} gegeben und unterscheidet sich zunächst nicht für das 2-Zustände und 3-Zustände Modell.
 
-Simuliert werden $n$ Teilchen. Für jedes Teilchen $p$ muss jeweils der aktuelle Zustand $z_p$ und Ort $o_p$ festgehalten werden, außerdem muss in jedem Schritt der aktuelle Zeitpunkt $t$ vermerkt werden. Die Zustände $z_p$ und Orte der Teilchen $o_p$ %\in \{0, \ldots, l\}$ 
+Simuliert werden $n$ Teilchen. Für jedes Teilchen $p$ muss jeweils der aktuelle Zustand $z_p$ und Ort $o_p$ festgehalten werden, außerdem muss in jedem Schritt der aktuelle Zeitpunkt $t$ vermerkt werden. Die Zustände $z_p$ und Orte der Teilchen $o_p$ %\in \{0, \ldots, \ell\}$ 
 werden jeweils in einem Array festgehalten. Die Identifikation der Teilchen geschieht dabei über ihre Postition, die in beiden Arrays identisch ist.
 %\todo{Array oder Vektor, bzw ohne Parallelisierbarkeit, da ja eigentlich nicht nötig?}
 %Für jedes Teilchen wird in einem zweiten Array an gleicher Position sein aktueller Ort gespeichert. 
@@ -56,7 +56,7 @@ werden jeweils in einem Array festgehalten. Die Identifikation der Teilchen gesc
 Simuliert wird, bis alle Teilchen das Säulenende erreicht haben, also die Vektoren eine Länge von $0$ haben. 
 Als alternative Abbruchbedingung kann eine maximale Anzahl von Simulationsschritten gewählt werden, nach deren Ablauf die Simulation beendet ist, wenn nur Peaks von Interesse sind, die vor diesem Zeitpunkt im Chromatogramm erscheinen.
 
-Es wird nun jeweils ein Zeitschritt für alle Teilchen simuliert. Nach jedem solchen Simulationsschritt wird getestet, ob Teilchen bereits den Wert von $l$ erreicht und damit die ganze Säule durchlaufen haben. Die entsprechende Anzahl dafür benötigter Schritte entspricht der Ankunftszeit der Teilchen und wird festgehalten, sodass als Ergebnis am Ende der Simulation eine Liste von Ankunftszeiten aller Teilchen entsteht. Teilchen, die angekommen sind, werden aus beiden Vektoren gelöscht.
+Es wird nun jeweils ein Zeitschritt für alle Teilchen simuliert. Nach jedem solchen Simulationsschritt wird getestet, ob Teilchen bereits den Wert von $\ell$ erreicht und damit die ganze Säule durchlaufen haben. Die entsprechende Anzahl dafür benötigter Schritte entspricht der Ankunftszeit der Teilchen und wird festgehalten, sodass als Ergebnis am Ende der Simulation eine Liste von Ankunftszeiten aller Teilchen entsteht. Teilchen, die angekommen sind, werden aus beiden Vektoren gelöscht.
 
 Wenn die Simulation für alle Teilchen zu Ende geführt wurde, ist die Rückgabe die Liste der Ankunftszeiten aller Teilchen. Ansonsten gilt die Simulation als gescheitert, die Parameter $p_{\text{s}}$ und $p_{\text{m}}$ sorgen offenbar nicht für einen vollständigen Peak innerhalb des simulierten Zeitraumes.
 
@@ -155,7 +155,8 @@ Zum Ablauf der Simulation wurde entschieden, dass zunächst die Entscheidung üb
 \label{2p_by_step}
 \end{figure}
 
-In Abbildung \ref{2p_by_step} ist eine schematische Darstellung eines Simulationsschritts zu finden. Die angenommenen Wahrscheinlichkeiten für sind hier $p_{\text{s}} = 0,8$ und $p_{\text{m}} = 0,5$
+In Abbildung \ref{2p_by_step} ist eine schematische Darstellung eines Simulationsschritts zu finden. Die angenommenen Wahrscheinlichkeiten für das Verweilen in den Zuständen sind hier $p_{\text{s}} = 0,8$ und $p_{\text{m}} = 0,5$.
+
 Um eine parallele Bearbeitung aller Teilchen zu ermöglichen, soll nicht jeweils eine explizite Zustandsabfrage gemacht werden. Statt dessen werden für alle $n$ gezogenen Zufallszahlen die daraus resultierenden Übergänge für beide Zustände berechnet und in zwei Hilfsvektoren gespeichert, in $s$ wird jeweils vermerkt, ob ein Teilchen stationär bleibt und in $m$, ob es mobil bleibt, so es denn im jeweiligen Zustand war. Beispielsweise wurde für die violett und orange markierten Teilchen eine $0,7$ gezogen, was für mobile Teilchen wie das Violette bedeutet, dass sie den Zustand wechseln müssen, für stationäre Teilchen wie das Orangene jedoch, dass sie stationär bleiben. 
 Dadurch, dass alle Übergänge vorberechnet wurden, werden die neuen Zustände über die Formel: $(z_p \land m_p) \lor (\lnot z_p \land \lnot s_p)$ berechnet. 
 
@@ -164,7 +165,7 @@ Für die neuen Orte kann einfach der neue Zustandsvektor auf den alten Ortsvekto
 
 \subsubsection{Simulation des 3-Zustände Modells}
 
-Durch die Hinzunahme eines weiteren Zustandes können nun nicht mehr boolesche Werte zur Zustandsbeschreibung herangezogen werden. Nun gilt Zustand $z \in \{0, 1, 2\}$  wobei $0$ für den mobilen Zustand steht, $1$ für die Adsorption und $2$ für die Lösung. Außerdem werden die Wahrscheinlichkeiten entsprechend auf eine Transitionsmatrix wie in \ref{3s_Transit} angepasst.
+Durch die Hinzunahme eines weiteren Zustandes können nun nicht mehr boolesche Werte zur Zustandsbeschreibung herangezogen werden. Nun gilt Zustand $z \in \{0, 1, 2\}$  wobei $0$ für den mobilen Zustand steht, $1$ für die Adsorption und $2$ für die Lösung. Außerdem werden die Wahrscheinlichkeiten entsprechend auf eine Transitionsmatrix wie in Definition \ref{3s_Transit} angepasst.
 
 Damit weiterhin eine logische Formel für die Zustandsberechnung genutzt werden kann und so die neuen Zustände parallel berechnen zu können, sind einige Hilfsarrays nötig.%, die entsprechend viel überflüssige Information enthalten.
 Um aus den gezogenen Zufallszahlen die passenden Arrays zu erstellen, aus denen die neuen Zustände berechnet werden können, wird zunächst eine Hilfstabelle mit den kumulierten Wahrscheinlichkeiten erstellt. %erstelle kumulierte Wahrscheinlichkeiten (ein mal zu beginn)
@@ -198,10 +199,10 @@ Dadurch entsteht pro Zustand ein Array, welches für jedes in diesem Zustand bef
  \begin{tabular}{ l || l | l | l | l | l | l | l | l | l }
   \hline
   Startzustände & \cellcolor{orange!25}0 & \cellcolor{blue!25} 1 & \cellcolor{orange!25}0 & \cellcolor{green!25}2 & \cellcolor{green!25}2 & \cellcolor{blue!25} 1 & \cellcolor{orange!25}0 & \cellcolor{green!25}2 & \cellcolor{blue!25} 1 \\ \hline \hline 
-  ZV & 0,3 & 0,9 & 0,7 & 0,8 & 0,2 & 0,1 & 0,9 & 0,1 & 0,3 \\ \hline \hline
   $M_0$ & \cellcolor{orange!25}1 & 0 & \cellcolor{orange!25}1 & 0 & 0 & 0 & \cellcolor{orange!25}1 & 0 & 0 \\ 
   $M_1$ & 0 & \cellcolor{blue!25}1 & 0 & 0 & 0 & \cellcolor{blue!25}1 & 0 & 0 & \cellcolor{blue!25}1 \\
   $M_2$ & 0 & 0 & 0 & \cellcolor{green!25}1 & \cellcolor{green!25}1 & 0 & 0 & \cellcolor{green!25}1 & 0 \\ \hline \hline
+  ZV & 0,3 & 0,9 & 0,7 & 0,8 & 0,2 & 0,1 & 0,9 & 0,1 & 0,3 \\ \hline \hline
   $U_{00}$ & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\ 
   $U_{01}$ & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ \hline
   $M_0\cdot (U_{00} + U_{01}$) & \cellcolor{orange!25}0 & 0 & \cellcolor{orange!25}1 & 0 & 0 & 0 & \cellcolor{orange!25}2 & 0 & 0 \\ \hline \hline
@@ -234,11 +235,11 @@ Der Ablauf der ereignisbasierten Simulation ist in \ref{algo_by_event} angegeben
 \caption{Ablauf der by-Event Simulation}
 \label{algo_by_event}
 \begin{algorithmic}
-\REQUIRE Eventliste $e= [e_0 = [(z_0, o_0), \ldots, (z_n, o_n)]]$ mit $z_p = 0, o_p = 0$ $\forall p$ , Zeit $t=0$, Maximalzeit $t_{max}$, Parameter $p_{\text{s}}$ und $p_{\text{m}}$
+\REQUIRE Eventliste $e= [e_0 = [(z_0, o_0), \ldots, (z_n, o_n)]]$ mit $z_p = 0, o_p = 0$ $\forall p$ , Zeit $t=0$, Maximalzeit $t_{max}$, Transitionen $T$
 \ENSURE Ankuftszeiten $r$ oder FAIL
 \WHILE{$t<t_{max}$ \AND Länge $e> 0$}
 \FORALL {$(z_p, o_p)$ in $e[t]$}
-\IF {$o_p > l$}
+\IF {$o_p > \ell$}
 \STATE Berechne $t_a(p)$ 
 \STATE $r \leftarrow t_a(p)$
 \STATE Lösche $(z_p, o_p)$
@@ -277,8 +278,8 @@ Wann ein Teilchen das nächste Mal seinen Zustand wechselt, wird mit Hilfe einer
 Daher lohnt sich diese Art der Simulation insbesondere bei Parametern nahe 1. 
 Wenn ein Teilchen im aktuellen Schritt in den mobilen Zustand gewechsel hat, muss auch sein Ort angepasst werden. Da sich Teilchen eine Raumeinheit pro Zeitschritt bewegen, wird der Ort entsprechend der gezogenen Zufallszahl erhöht.
 
-Allerdings gestaltet sich das Testen auf Erreichen der Säulenlänge bei dieser Methode etwas schwieriger, da $l$ nur sehr selten genau getroffen wird. In vielen Fällen wird ein Teilchen von einem Ort kleiner $l$ direkt auf einen viel größeren Ort befördert. Daher muss zwischen jedem Simulationsschritt getestet werden, ob ein Teilchen bereits $l$ überschritten hat. Wenn das der Fall ist, muss mit Hilfe der Differenz zum aktuellen Simulationszeitpunkt die korrekte Ankunftszeit des Teilchens berechet werden.
-Ob diese Berechnung nach jedem Simulationsschritt, also vor Neueintragung in die Liste geschieht, oder vor jedem Schritt, ist egal. Allerdings muss im zweiten Fall beachtet werden, dass, falls als Abbruchbedingung eine Maximalzeit gewählt wurde, sichergestellt sein muss, dass alle übrigen Teilchen noch einmal auf Erreichen von $l$ getestet werden.
+Allerdings gestaltet sich das Testen auf Erreichen der Säulenlänge bei dieser Methode etwas schwieriger, da $\ell$ nur sehr selten genau getroffen wird. In vielen Fällen wird ein Teilchen von einem Ort kleiner $\ell$ direkt auf einen viel größeren Ort befördert. Daher muss zwischen jedem Simulationsschritt getestet werden, ob ein Teilchen bereits $\ell$ überschritten hat. Wenn das der Fall ist, muss mit Hilfe der Differenz zum aktuellen Simulationszeitpunkt die korrekte Ankunftszeit des Teilchens berechet werden.
+Ob diese Berechnung nach jedem Simulationsschritt, also vor Neueintragung in die Liste geschieht, oder vor jedem Schritt, ist egal. Allerdings muss im zweiten Fall beachtet werden, dass, falls als Abbruchbedingung eine Maximalzeit gewählt wurde, sichergestellt sein muss, dass alle übrigen Teilchen noch einmal auf Erreichen von $\ell$ getestet werden.
 
 \begin{figure}
 \begin{subfigure}[t]{\textwidth}
@@ -460,12 +461,15 @@ Nun muss nur noch eine weitere Zufallszahl gezogen werden, anhand derer sich mit
 
 \section{PAA}
 
-Zur Nutzung des PAA könnte man einfach die bereits vorhandene mosdi-Implementierung nutzen. Da diese jedoch mit steigender Säulenlänge deutlich langsamer wird \todo{Laufzeitverweis mosdi} wurde eine neue Herangehensweise gewählt. Hierbei werden einige nicht für das Modell benötigte Funktionalitäten eines PAA nicht umgesetzt. 
+% Zur Nutzung des PAA könnte man einfach die bereits vorhandene mosdi-Implementierung nutzen. 
+% \todo{Umschreiben, zu viele Werte extrem nah bei 0 verwendet, feste Array-länge} Da diese jedoch mit steigender Säulenlänge deutlich langsamer wird \todo{Laufzeitverweis mosdi} wurde eine neue Herangehensweise gewählt. Hierbei werden einige nicht für das Modell benötigte Funktionalitäten eines PAA nicht umgesetzt.  
+Die im Folgenden vorgestellte Umsetzung des PAA beinhaltet einige Einschränkungen gegenüber dem allgemeinen Modell, da nicht alle Funktionalitäten benötigt werden.
 
 Dies betrifft die Möglichkeit je Zustand mehrere verschiedene Emissionen mit einer jeweiligen Wahrsscheinlichkeit zuzulassen. Es wird, wie in den Abbildungen \ref{PAA_2P} und \ref{3sPAA} zu sehen ist, nur jeweils ein Wert mit der Wahrscheinlichkeit $1$ emittiert. Außerdem wird keine Möglichkeit weitere Operationen zuzulassen benötigt, Addition genügt. Da darüber hinaus nur im mobilen Zustand überhaupt eine Veränderung des Wertes erfolgt, wird der PAA auf diese Möglichkeit beschränkt.
-Außerdem wird nicht jeweils die vollständige Zustands-Werte-Verteilung betrachtet, sondern nur der tatsächlich relevante Bereich. Dieser Bereich umfass zu Beginn einer Simulation lediglich die bereits erreichbaren Werte.
-Für alle n<l ist n der maximal erreichbare Wert in schritt n
-Außerdem werden Werte sehr nah bei 0 (<10hoch-17) ignoriert. Solche Werte werden aus der Verteilung gelöscht und die dadurch benötigten Arrays verkürzt, wodurch wiederum Simulationszeit eingespart wird.
+
+Außerdem wird nicht jeweils die vollständige Zustands-Werte-Verteilung betrachtet, sondern nur der tatsächlich relevante Bereich. Dieser Bereich umfasst zu Beginn einer Simulation lediglich die bereits erreichbaren Werte. Für alle $n<\ell$ ist $n$ der maximal erreichbare Wert in Schritt $n$.
+
+Zusätzlich werden Werte sehr nah bei $0$ ignoriert. Solche Werte werden aus der Verteilung gelöscht und die dadurch benötigten Arrays verkürzt, wodurch wiederum Simulationszeit eingespart wird.
 
 %todo Wie werden die neuen Einträge berechnet? Graphik, Text dazu
 
@@ -473,20 +477,43 @@ Außerdem werden Werte sehr nah bei 0 (<10hoch-17) ignoriert. Solche Werte werde
 
 \subsection{PAA für das 2-Zustände Modell}
 
-Ähnlich wie bei der Simulation der Teilchen 
+\begin{algorithm}
+\caption{Berechnung der Wartezeit}
+\label{algo_paa}
+\begin{algorithmic}
+\REQUIRE Startverteilungen $s$ und $m$, Maximalzeit $t_{max}$, Zielwert $\ell$, Parameter $T$, Startzeit $t=0$
+\ENSURE Verteilung der Wartezeit
+%\STATE{index = 1}
+\WHILE{$t < t_{max}$}
+\STATE{Akutalisiere $s$ und $m$}
+\IF{length($m$) $> \ell$}
+\STATE{$r \leftarrow (s[\ell] +m[\ell])$}
+\STATE{Lösche $s[\ell]$ und $[\ell])$}
+\ELSE
+\STATE {$r \leftarrow 0$}
+\ENDIF
+\STATE {$t +=1$}
+\ENDWHILE
+\RETURN $r$
+\end{algorithmic}
+\end{algorithm}
 
-\begin{figure}
+In Algorithmus \ref{algo_paa} ist der Ablauf der Simulation mit einem PAA beschrieben. Die Verteilungen werden in jedem Schritt in $s$ und $m$ gespeichert. Die Position im Array entspricht dabei dem Wert und damit der Position in der Säule. 
+Beispielsweise steht in $s_t[0]$ bezeichnet die Wahrscheinlichkeit, mit der sich zum Zeitpunkt $t$ Teilchen im stationären Zustände und an Position $0$ in der Säule befinden.
 
+Die Simulation beginnt mit $s_0 = [0]$ und $m_0 = [1]$. Alle Teilchen befinden sich zunächst im mobilen Zustand und am Beginn der Säule. Weitere Einträge würden nur aus Wahrscheinlichkeiten von $0$ bestehen und werden daher ausgelassen.
+
+\begin{figure}[H]
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries}]
 \tikzstyle{feld}=[draw,minimum width=2cm,minimum height=1cm,font=\sffamily\scriptsize]
 
 \begin{scope}[start chain=1 going right,node distance=-0.0mm]
-    \node [on chain=1,feld,draw=none, font=\small] {stat.};
-    \node [on chain=1,feld] (s1) {$z_1$};
-    \node [on chain=1,feld] (s2) {$z_2$};
-    \node [on chain=1,feld] {$z_3$};
-    \node [on chain=1,feld] {$z_4$};
+    \node [on chain=1,feld,draw=none, font=\small] {$s_{t-1}$};
+    \node [on chain=1,feld] (s1) {$s_1$};
+    \node [on chain=1,feld] (s2) {$s_2$};
+    \node [on chain=1,feld] {$s_3$};
+    \node [on chain=1,feld] {$s_4$};
     \node [on chain=1,feld,draw=none] {$\ldots$};
 %     \node [on chain=1,feld,draw=none] {$\ldots$};
 %     \node [on chain=1] {\textbf{Text}};
@@ -494,7 +521,7 @@ Außerdem werden Werte sehr nah bei 0 (<10hoch-17) ignoriert. Solche Werte werde
 
 
 \begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-1.2cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
-    \node [on chain=1,feld,draw=none, font=\small] {mob.};
+    \node [on chain=1,feld,draw=none, font=\small] {$m_{t-1}$};
     \node [on chain=1,feld] (m1) {$m_1$};
     \node [on chain=1,feld] (m2) {$m_2$};
     \node [on chain=1,feld] {$m_3$};
@@ -505,28 +532,28 @@ Außerdem werden Werte sehr nah bei 0 (<10hoch-17) ignoriert. Solche Werte werde
 \end{scope}
 
 \begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-2.6cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
-    \node [on chain=1,feld,draw=none, font=\small] {s\_to\_{\text{s}} };
-    \node [on chain=1,feld] (ss1) {$z_1\cdot p_{\text{s}}$};
-    \node [on chain=1,feld] (ss2) {$z_2\cdot p_{\text{s}}$};
-    \node [on chain=1,feld] {$z_3\cdot p_{\text{s}}$};
-    \node [on chain=1,feld] {$z_4\cdot p_{\text{s}}$};
+    \node [on chain=1,feld,draw=none, font=\small] {$ss$ };
+    \node [on chain=1,feld] (ss1) {$s_1\cdot p_{\text{s}}$};
+    \node [on chain=1,feld] (ss2) {$s_2\cdot p_{\text{s}}$};
+    \node [on chain=1,feld] {$s_3\cdot p_{\text{s}}$};
+    \node [on chain=1,feld] {$s_4\cdot p_{\text{s}}$};
     \node [on chain=1,feld,align=center] {$0$};
 %     \node [on chain=1,feld,draw=none] {$\ldots$};
 %     \node [on chain=1] {\textbf{Text}};
 \end{scope}
 \begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-3.8cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
-    \node [on chain=1,feld,draw=none, font=\small] {s\_to\_{\text{m}}};
+    \node [on chain=1,feld,draw=none, font=\small] {$sm$};
     \node [on chain=1,feld,align=center](sm1) {$0$};
-    \node [on chain=1,feld] (sm1) {$z_1(1-p_{\text{s}})$};
-    \node [on chain=1,feld] (sm2) {$z_2(1-p_{\text{s}})$};
-    \node [on chain=1,feld] {$z_3(1-p_{\text{s}})$};
-    \node [on chain=1,feld] {$z_4(1-p_{\text{s}})$};
+    \node [on chain=1,feld] (sm1) {$s_1(1-p_{\text{s}})$};
+    \node [on chain=1,feld] (sm2) {$s_2(1-p_{\text{s}})$};
+    \node [on chain=1,feld] {$s_3(1-p_{\text{s}})$};
+    \node [on chain=1,feld] {$s_4(1-p_{\text{s}})$};
 %     \node [on chain=1,feld,draw=none] {$\ldots$};
 %     \node [on chain=1] {\textbf{Text}};
 \end{scope}
 
 \begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-5cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
-    \node [on chain=1,feld,draw=none, font=\small] {m\_to\_{\text{m}} };
+    \node [on chain=1,feld,draw=none, font=\small] {$mm$};
     \node [on chain=1,feld,align=center] {$0$};
     \node [on chain=1,feld] (mm1){$m_1\cdot p_{\text{m}}$};
     \node [on chain=1,feld] (mm2){$m_2\cdot p_{\text{m}}$};
@@ -537,22 +564,22 @@ Außerdem werden Werte sehr nah bei 0 (<10hoch-17) ignoriert. Solche Werte werde
 \end{scope}
 
 \begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-6.2cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
-    \node [on chain=1,feld,draw=none, font=\small] {m\_to\_s};
-    \node [on chain=1,feld](ms1) {$z_1(1-p_{\text{s}})$};
-    \node [on chain=1,feld] (ms2){$z_2(1-p_{\text{s}})$};
-    \node [on chain=1,feld] {$z_3(1-p_{\text{s}})$};
-    \node [on chain=1,feld] {$z_4(1-p_{\text{s}})$};
+    \node [on chain=1,feld,draw=none, font=\small] {$ms$};
+    \node [on chain=1,feld](ms1) {$s_1(1-p_{\text{s}})$};
+    \node [on chain=1,feld] (ms2){$s_2(1-p_{\text{s}})$};
+    \node [on chain=1,feld] {$s_3(1-p_{\text{s}})$};
+    \node [on chain=1,feld] {$s_4(1-p_{\text{s}})$};
     \node [on chain=1,feld,align=center] {$0$};
 %     \node [on chain=1,feld,draw=none] {$\ldots$};
 %     \node [on chain=1] {\textbf{Text}};
 \end{scope}
 
 \begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm, -7.6cm)}]
-    \node [on chain=1,feld,draw=none, font=\small] {stat};
-    \node [on chain=1,feld,align=center] (s'1) {$z_1\cdot p_{\text{s}} +$\\$m_1(1-p_{\text{m}})$};
-    \node [on chain=1,feld,align=center](s'2) {$z_2\cdot p_{\text{s}} +$\\$m_2(1-p_{\text{m}})$};
-    \node [on chain=1,feld,align=center] {$z_3\cdot p_{\text{s}} +$\\$m_3(1-p_{\text{m}})$};
-    \node (n2) [on chain=1,feld,align=center] {$z_4\cdot p_{\text{s}} +$\\$m_4(1-p_{\text{m}})$};
+    \node [on chain=1,feld,draw=none, font=\small] {$s'$};
+    \node [on chain=1,feld,align=center] (s'1) {$s_1\cdot p_{\text{s}} +$\\$m_1(1-p_{\text{m}})$};
+    \node [on chain=1,feld,align=center](s'2) {$s_2\cdot p_{\text{s}} +$\\$m_2(1-p_{\text{m}})$};
+    \node [on chain=1,feld,align=center] {$s_3\cdot p_{\text{s}} +$\\$m_3(1-p_{\text{m}})$};
+    \node (n2) [on chain=1,feld,align=center] {$s_4\cdot p_{\text{s}} +$\\$m_4(1-p_{\text{m}})$};
     \node [on chain=1,feld,align=center] {$0$};
     \node [on chain=1,feld,draw=none] {$\ldots$};
 %     \node [on chain=1,feld,draw=none] {$\ldots$};
@@ -561,12 +588,12 @@ Außerdem werden Werte sehr nah bei 0 (<10hoch-17) ignoriert. Solche Werte werde
 
 
 \begin{scope}[start chain=1 going right,node distance=-0.0mm, shift={(0cm,-8.8cm)},start chain=circle placed {at=(-\tikzchaincount*60:1.5)}]
-    \node (n1) [on chain=1,feld,draw=none, font=\small] {mob};
+    \node (n1) [on chain=1,feld,draw=none, font=\small] {$m'$};
     \node [on chain=1,feld] {$0$};
-    \node [on chain=1,feld,align=center] (m'1){$m_1\cdot p_{\text{m}}$\\$z_1(1-p_{\text{s}})$};
-    \node [on chain=1,feld,align=center] (m'2){$m_2\cdot p_{\text{m}}$\\$z_4(1-p_{\text{s}})$};
-    \node [on chain=1,feld,align=center] {$m_3\cdot p_{\text{m}}$\\$z_4(1-p_{\text{s}})$};
-    \node [on chain=1,feld,align=center] {$m_4\cdot p_{\text{m}}$\\$z_4(1-p_{\text{s}})$};
+    \node [on chain=1,feld,align=center] (m'1){$m_1\cdot p_{\text{m}}$\\$s_1(1-p_{\text{s}})$};
+    \node [on chain=1,feld,align=center] (m'2){$m_2\cdot p_{\text{m}}$\\$s_4(1-p_{\text{s}})$};
+    \node [on chain=1,feld,align=center] {$m_3\cdot p_{\text{m}}$\\$s_4(1-p_{\text{s}})$};
+    \node [on chain=1,feld,align=center] {$m_4\cdot p_{\text{m}}$\\$s_4(1-p_{\text{s}})$};
     \node [on chain=1,feld,draw=none] {$\ldots$};
 %     \node [on chain=1,feld,draw=none] {$\ldots$};
 %     \node [on chain=1] {\textbf{Text}};
@@ -587,26 +614,56 @@ Außerdem werden Werte sehr nah bei 0 (<10hoch-17) ignoriert. Solche Werte werde
 \label{paa2p_prinzip}
 \end{figure}
 
-In \ref{paa2p_prinzip} ist exemplarisch dargestellt, wie die sich neuen Wahrscheinlichkeitsverteilungen in jedem Schritt berechnen. 
-Gegeben sind die alten Wahrscheinlichkeitsverteilungen $stat$ und $mob$.
-Um auf die neue Verteilung für den stationären Zustand zu kommen, muss für jede Position berechnet werden, welcher Anteil Teilchen stationär bleibt (s\_to\_s) und welcher Anteil bisher mobiler Teilchen in den stationären Zustand wechselt (m\_to\_s).
-Analog müssen für die mobile Verteilung die mobil bleibenden sowie die sich aus dem Zustand lösenden Anteile berechnet werden. Da sich die Teilchen in der mobilen Phase jeweils einen Ort vorwärts bewegen, wird hier zusätzlich der ganze Vektor um ein Feld verschoben. Um eine anschließenden parallelen Berechnung der Wahrscheinlichkeiten der beiden Phasen durchführen zu können, wird zum Ausgleich den neu stationären Teilchenmassen ein neues Feld mit der Wahrscheinlichkeit von $0$ angehängt werden
+In jedem Schritt werden die beiden Verteilungen aktualisiert. Diese Berechnung ist in Abbildung \ref{paa2p_prinzip} exemplarisch dargestellt.
 
+Gegeben sind die alten Wahrscheinlichkeitsverteilungen $s_{t-1}$ und $m_{t-1}$.
+Um auf die neue Verteilung für den stationären Zustand zu kommen, muss für jede Position berechnet werden und jeden möglichen Ausgangs- und Folgezustand berechnet werden, welchen Anteil an Teilchen er enthält. 
+In $ss$ sind diejenigen Anteile enthalten, die stationär waren und es bleiben, in $ms$ diejenigen, die aus dem mobilen Zustand in den stationären Zustand wechseln. In Summe ergeben die beiden die neuen Verteilungen für den stationären Zustand.
+In $sm$ und $mm$ sind dann die Anteile enthalten, die vom stationären Zustand mobil werden beziehungsweise mobil bleiben. Da in diesen Fällen die Teilchen anschließend mobil sind, müssen die Felder um eine Postition verschoben werden. Zum Ausgleich werden den neu stationären Verteilungen jeweils ein Feld mit der Wahrscheinlichkeit von $0$ angehängt.
+Daher vergrößern sich die beiden Verteilungsvektoren um jeweils ein Feld pro Schritt.
+
+Nach jedem solchen Berechnungsschritt wird getestet, ob Anteile der Teilchenmasse bereits den Zielwert $\ell$ erreicht haben. Die ist der Fall, wenn sich ein Eintrag an Position $\ell$ befindet, kann einfach auf die Länge der Verteilungsvektoren getestet werden. Im positiven Fall wird diese Wahrscheinlichkeit ins Ergebnis geschrieben, ansonsten sind keine Anteile der Teilchenmasse angekommen und es wird entsprechend eine Wahrscheinlichkeit von $0$ ins Ergebnis geschrieben.
+Dadurch entsteht letztendlich eine Liste von Ankuftswahrscheinlichkeiten für jeden Zeitpunkt.
+
+Bei Erreichen der maximalen Wartezeit wird die Berechnung beendet. Ob die gesamte Wahrscheinlichkeitsmasse erreicht wurde kann anschließend berechnet werden, um herauszufinden, ob mit den getesteten Parametern ein Ergebnis innerhalb der vorgegebenen Wartezeit erzielt werden konnte. 
+
+Wie bereits erwähnt, sollen zu kleine Wahrscheinlichkeiten ignoriert werden. Daher wird nach jedem Schritt getestet, ob an der ersten oder letzten Position von $s$ und $m$ Werte unterhalb des Schwellwerts liegen. Ist das der Fall, werden beide Werte entfernt, wodurch sich die Verteilungsvektoren um ein Feld verkürzen. Wenn die letzte Postition gelöscht wird, hat dies auf den sonstigen Ablauf keine weiteren Auswirkungen. Wenn die erste Position gelöscht wird, muss jedoch ein zusätzlicher Index eingeführt werden, der beim Testen auf Erreichen des Zielwertes auf die Länge der Arrays addiert werden muss, um korrekte Ergebnisse zu erhalten.
+% 
+% , welcher Anteil Teilchen stationär bleibt 
+% und welcher Anteil bisher mobiler Teilchen in den stationären Zustand wechselt..
+% Analog müssen für die mobile Verteilung die mobil bleibenden sowie die stationär werdenden Anteile berechnet werden. 
+% Da sich die Teilchen in der mobilen Phase jeweils einen Ort vorwärts bewegen, wird hier zusätzlich der ganze Vektor um ein Feld verschoben. Um eine anschließenden parallelen Berechnung der Wahrscheinlichkeiten der beiden Phasen durchführen zu können, wird zum Ausgleich den neu stationären Teilchenmassen ein neues Feld mit der Wahrscheinlichkeit von $0$ angehängt werden
+% 
+% In jedem Berechnungsschritt vergrößern sich die Arrays, welche die Verteilungen enthalten, um ein Feld.
 
 \subsection{PAA für das 3-Zustände Modell}
-Wie bei der schrittweisen Teilchensimulation tritt auch beim PAA für das 3-Zustände Modell das Problem auf, dass nicht mehr nur boolesche Werte  ausreichen, um den Zustand zu beschreiben. 
+%Wie bei der schrittweisen Teilchensimulation tritt auch beim PAA für das 3-Zustände Modell das Problem auf, dass nicht mehr nur boolesche Werte  ausreichen, um den Zustand zu beschreiben. %TODO Mach ich das überhaupt? Hä?
 
-\todo {kommt diese berechnung nicht eher in die methoden?} %Transfer von modell 3s paa
-Berechnung für nächsten Schritt '
-Habe Matrix mit m, a, l und Orten 0...Länge mit den jeweiligen W'keiten
-Neue Matrix:
-$z^{'}_x(n) = z_{x-1}(1) \cdot  p_{1,n} + \sum^{|N|}_{m=2}{z_x(m) \cdot  p_{m,n}}$
+Der PAA wird auf drei Zustände erweitert, indem einfach ein weiterer Verteilungsvektor eingeführt wird. Es gibt dann also für jeden der drei Zustände m, a und l ein Array $m$, $a$ und $l$, in welchem die Zustands-Werte-Verteilung gespeichert wird. Wie auch beim PAA für das 2-Zustände Modell ist dann zum Beispiel in $a_t[o]$ die Wahrscheinlichkeit enthalten, dass sich zum Zeitpunkt $t$ Teilchen an Position $o$ im adsorbierten Zustand befinden.
+Algorithmus \ref{algo_paa} muss dann dahingehend angepasst werden, dass alle drei dieser Verteilungen als Eingabe aktzeptiert und in jedem Schritt aktualisiert werden.
+Die Startverteilungen sind offensichtlich $m_0 = [1]$, $a_0 = [0]$ und $l_0=[0]$. 
 
-Erklaerung anschaulich auf dem Zettel vom 10.6.15
+Die Aktualisierung der Verteilungen wird ähnlich wie im Fall von nur zwei Zuständen behandelt, nur dass nun neun statt vier Hilfsvektoren nötig sind, um alle möglichen Zustandsübergänge zu berechnen. 
+
+Alternativ kann jedes Feld der drei Verteilungen einzeln berechnet werden. Ein neues Feld $z_t[o]$, welches die Wahrscheinlichkeit an Postition $o$ in Zustand $z$ beschreibt, berechnet sich dann aus den drei alten Verteilungen $m$, $a$ und $l$ nach folgender Formel:
+$z_t[o] = m_t[o-1] \cdot p_{\text{m}z} + a_t[o] \cdot p_{\text{a}z} + l_t[o] \cdot p_{\text{l}z} $
+
+% In jedem Schritt werden die Zustandsvektoren dann aktualisiert und die neue Verteilung $z', z \in \{m, a, l\}$ berechnet sich wie folgt:
+% $z^{'}_t = m_{t-1} \cdot p_{\text{m}z} + a_{t} \cdot p_{\text{a}z} + l_{t} \cdot p_{\text{l}z} $
+
+Nach jedem Schritt werden auch hier zu kleine Werte entfernt, wobei natürlich jeweils überprüft werden muss, ob der Eintrag an der ersten oder letzten Position für jeweils alle drei Vektoren zu klein ist.
+
+% Berechnung für nächsten Schritt '
+% Habe Matrix mit m, a, l und Orten 0...Länge mit den jeweiligen W'keiten
+% Neue Matrix:
+% $z^{'}_x(n) = z_{x-1}(1) \cdot  p_{1,n} + \sum^{|N|}_{m=2}{z_x(m) \cdot  p_{m,n}}$
+% 
+% $z^{'}_t = m_{t-1} \cdot p_{\text{m}z} + a_{t} \cdot p_{\text{a}z} + l_{t} \cdot p_{\text{l}z} $
+% Erklaerung anschaulich auf dem Zettel vom 10.6.15
 
 
 \section{Berechnung der Peakdaten}
-Sowohl für die Simulation vieler Teilchen als auch bei der Verwendung eines PAA müssen nach der Simulation noch die Peakdaten berechnet werden. 
+Sowohl für die Simulation vieler Teilchen als auch bei der Verwendung eines PAA müssen nach der Simulation noch die Eigenschaften der Peaks berechnet werden. 
 
 Bei den Teilchensimulationen liegen die Peaks als Liste von Ankuftszeiten vor, beim PAA hingegen als Anteil der Gesamtwahrscheinlichkeit zu jedem Zeitpunkt. 
 
@@ -620,8 +677,8 @@ Werden die Datenpunkte nicht zusammengefasst, kann es insbesondere bei der Besti
   \label{zeiten_zusammenfassen}
 \end{figure}
 
-Bei der Simulation, welche die Peaks in Abbildung \ref{zeiten_zusammenfassen} erzeugt hat, wurden $1000$ Teilchen simuliert. Es ist auf den ersten Blick nicht klar, wo sich die Maximalstelle des Peaks befindet, sowohl bei $t_1 = 7$ als auch bei $ t_2 = 8,5$ erreicht die Kurve ihren Maximalwert. Nach der Zusammenfassung von Ankunftszeiten wird klar, dass die Maximalstelle eher bei $t_2 = 8,5$ liegen muss.
+Bei der Simulation, welche die Peaks in Abbildung \ref{zeiten_zusammenfassen} erzeugt hat, wurden $1000$ Teilchen simuliert. Es ist auf den ersten Blick nicht klar, wo sich die Maximalstelle des Peaks befindet, sowohl bei $t_1 = 7$ als auch bei $ t_2 = 8,5$ erreicht die Kurve ihren Maximalwert. Nach der Zusammenfassung von Ankunftszeiten wird klar, dass die Maximalstelle eher bei $t_2 = 8,5$ liegen muss. Die Berechnung der Lage der Peaks bezieht sich daher auf die zusammengefassten Daten.
 
-Die Lage des Peaks und damit seine Retentionszeit bestimmt sich als .Am häufigsten vorkommende Ankunftszeit bzw. argmax der Wahrscheinlichkeiten
+Die Lage des Peaks und damit seine Retentionszeit bestimmt sich als am häufigsten vorkommende Ankunftszeit bei der Teilchensimulation bzw. als Lage des Maximalwertes beim PAA.
 
-Breite und Schiefe: Jeweils Quartile berechnen und daraus IQR und IQK
+Für die Bestimmung von IQR und QK müssen zunächst die Quartile der Verteilung berechnet werden. Daraus lassen sich die beiden Werte direkt mit den in Kapitel \ref{chapter:gru} angegebenen Formeln berechnen. 

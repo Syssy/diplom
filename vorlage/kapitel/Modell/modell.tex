@@ -1,21 +1,57 @@
 \chapter{Modell} %Modell/Modelle?
 \label{chapter:mod}
+\todo{Kapitelstruktur?}
+
 Im Folgenden werden die Simulationsmodelle für die Chromatographie vorgestellt. Basis für die Modelle ist der im letzten Kapitel beschriebene Phasenwechsel der Teilchen im Verlauf der Chromatographie. Zusätzlich zur Simulation vieler Teilchen wird auch jeweils eine Modellierung als PAA vorgestellt.
 
 %Kapitelübersicht: Man kann unterscheiden zwischen verschiedenen Modellen (2p/3s) und den Arten, wie diese umgesetzt werden (Teilchensim oder PAA)
+
+\section{Vorgaben}
+\todo{Grundlegendes: Zeit und Orte disktet und endlich}
+
+%\section{Festlegung der Einheiten}
+$20$ cm entspricht 1000 Schritten, in die MCC unterteilt wird.
+
+1 Schritt ist damit $0,2$\, mm
+
+Trägergas hat nach etwa $0,1$ Sekunden die Säule durchlaufen.
+
+Eine Zeiteinheit entspricht demnach ca. $0.1/1000$ Sekunden also $0,1$\, ms
+
+Zusammenfassung in Tabelle \ref{einheiten}.
+
+\begin{table}[H]
+\centering
+\caption{Entsprechung der Einheiten}
+\label{einheiten}
+\begin{tabular}{|l||l|l|}
+\hline
+			  & MCC                 			& Simulation              \\ \hline \hline
+Länge der Säule           & $20$ cm               		& $1000$ Raumschritte       \\ \hline
+			  & \multicolumn{2}{l|}{1 Zeitschritt $\equiv 0,2$ mm} \\ \hline
+Durchlaufzeit Trägergas   & $0,1$ s $\equiv$ $2$ m/s       	& $1000$ Zeitschritte       \\ \hline
+			  & \multicolumn{2}{l|}{1 Raumschritt $\equiv 0,1$ ms} \\ \hline
+Geschwindigkeit Trägergas & $2$ m/s 				& 1 Raumschritt / Zeitschritt \\ \hline	
+\end{tabular}
+\end{table}
+
+\todo{einheiten tabelle}
+Die Intensität eines Peaks in echten Messungen ist unter anderem abhängig vom Messverfahren und der Stoffmenge im zu analysierenden Gemisch. In den Simulationen wird stets eine bestimmte Anzahl von Teilchen, zum Beispiel $1000$ oder $10000$ Teilchen simuliert.
+
 
 \section{2-Zustände Modell}
 \label{chapter:mod:2p}
 
 Als Grundlage für die Entwicklung eines Simulationsmodells dient die Beobachtung des chromatographischen Prozesses. Dieser ist wie in Kapitel \ref{chapter:gru} beschrieben gekennzeichnet durch viele Teilchen, welche häufig zwischen der stationären und mobilen Phase wechslen. Es liegt also nahe, dass im Modell ebenfalls Teilchen simuliert werden, die zwischen zwei Zuständen, welche die beiden Phasen repräsentieren, wechseln. Im Folgenden bezeichnet m die mobile und s die stationäre Phase. Der Phasenwechsel geschieht jeweils mit einer bestimmten Wahrscheinlichkeit. Dabei kann es möglich sein, dass die Wahrscheinlichkeiten für den Wechsel in die eine oder andere Richtung voneinander abhängig sind. Da dies jedoch nicht sein muss, wird für das Modell zunächst der Fall von unabhängigen Wechselwahrscheinlichkeiten angenommen. Es sei also $p_{\text {m}}$ die Wahrscheinlichkeit, dass ein Teilchen, welches sich bereits in der mobilen Phase befindet, auch mobil bleibt und $1-p_{\text {m}}$ die Wahrscheinlichkeit, dass es in die stationäre Phase übergeht. Analog seien $p_{\text {s}}$ und $1-p_{\text {s}}$ die Wahrscheinlichkeiten, dass ein stationäres Teilchen in der stationären Phase bleibt bzw. zur mobilen Phase wechselt. 
 
-Damit ergibt sich als erstes Modell ein einfacher Automat mit zwei Zuständen $\mathcal{Q} = \{\text{m, s}\}$. m ist Startzustand, da die Teilchen stets nur in der mobilen Phase in die Säule eintreten können. Dazu kommen die oben beschriebenen Transitionen $T= 
+\subsection{Teilchensimulation}
+Durch die eben gemachten Annahmen ergibt sich als erstes Modell ein einfacher Automat mit zwei Zuständen $\mathcal{Q} = \{\text{m, s}\}$. m ist Startzustand, da die Teilchen stets nur in der mobilen Phase in die Säule eintreten können. Dazu kommen die oben beschriebenen Transitionen $T= 
 \begin{pmatrix}
 p_{\text {m}} & 1-p_{\text {m}} \\
 1-p_{\text {s}} & p_{\text {s}} 
 \end{pmatrix}
 $ 
-Eine graphische Darstellung des Modells zeigt \ref{tikz:2p_Mod} %\todo{Formale Beschreibung meines Modells}
+Eine graphische Darstellung des Modells zeigt Abbildung \ref{tikz:2p_Mod} %\todo{Formale Beschreibung meines Modells}
 
 \begin{figure}[ht]
  \centering
@@ -63,27 +99,35 @@ In Kapitel \ref{chapter:meth} werden verschiedene Arten der Simulation und der g
 
 \subsection{PAA für das 2-Zustände Modell}
 % Modell als PAA
-Wie in Kapitel \ref{chapter:gru} erwähnt, kann der chromatographische Prozess auch als PAA modelliert werden. Die nötigen Zustände sind offensichtlich $\mathcal{Q} = \{\text{s, m}\}$ und auch hier ist der Startzustand der mobile Zustand. Auch die Transitionen entsprechen denen im oben beschriebenen Modell. Um den Aufenthaltsort der Teilchen zu modellieren, werden die Werte genutzt. Dementsprechend liegen mögliche Werte im Bereich $\mathcal{V} = [0, \ldots, l]$ mit dem Startwert $v_0 = 0$. Mit Hilfe der Emissionen wird die Fortbewegung der Teilchen modelliert: Im mobilen Zustand sollen die Analyte um einen Schritt fortbewegt werden, im stationären Zustand nicht. Damit ergeben sich zwei mögliche Emissionen: $\mathcal{E} = \{0, 1\}$. $0$ wird stets und ausschließlich in Zustand s emittiert, gleiches gilt für Emission $1$ und Zustand m. Offensichtlich muss die Emission jeweils auf den Wert addiert werden, daher entspricht $\theta$ der Addition.
+Wie in Kapitel \ref{chapter:gru} erwähnt, kann der chromatographische Prozess auch als PAA modelliert werden. Die nötigen Zustände sind offensichtlich $\mathcal{Q} = \{\text{s, m}\}$ und auch hier ist der Startzustand der mobile Zustand. Auch die Transitionen entsprechen denen im oben beschriebenen Modell. Um den Aufenthaltsort der Teilchen zu modellieren, werden die Werte genutzt. Dementsprechend liegen mögliche Werte im Bereich $\mathcal{V} = \{0, \ldots, \ell\}$ mit dem Startwert $v_0 = 0$. Mit Hilfe der Emissionen wird die Fortbewegung der Teilchen modelliert: Im mobilen Zustand sollen die Analyte um einen Schritt fortbewegt werden, im stationären Zustand nicht. Damit ergeben sich zwei mögliche Emissionen: $\mathcal{E} = \{0, 1\}$. Emission $0$ wird stets und ausschließlich in Zustand s emittiert, gleiches gilt für Emission $1$ und Zustand m. Offensichtlich muss die Emission jeweils auf den Wert addiert werden, daher entspricht $\theta$ der Addition.
 
-Dadurch ergibt sich folgende Definition für den PAA für das 2-Zustände Modell:\\ 
-$ \mathcal{Q} = \{\text{s, m}\} , q_0 = \text{m}, \\
-T = \begin{pmatrix}
-  p_{\text{m}} & 1-p_{\text{m}}  \\
-  1-p_{\text{s}} & p_{\text{s}} \\
- \end{pmatrix}, \mathcal{E} = \{0, 1\},
- e_{\text{s}}(z) = \begin{cases}
-                    1, & \text{wenn } z = 0, \\
-                    0, & \text{sonst.}
-                   \end{cases},\\
- e_{\text{m}}(z) = \begin{cases}
-                    1, & \text{wenn } z = 1, \\
-                    0, & \text{sonst.}
-                   \end{cases}, \\
- %e_{\text{s}}(0) = 1, e_{\text{s}}(1)=0, e_{\text{m}}(0) = 0, e_{\text{m}}(1)=1, 
- \mathcal{V} = \{0, \ldots, l\}, v_0 = 0, \\
- \theta_{\text{s}} = \theta_{\text{m}} = + $
+Dadurch ergibt sich folgende Definition für den PAA für das 2-Zustände Modell:
+\begin{itemize}
+ \item $ \mathcal{Q} = \{\text{s, m}\} $
+ \item $ q_0 = \text{m}$
+ \item $ T = \begin{pmatrix}
+	  p_{\text{m}} & 1-p_{\text{m}}  \\
+	  1-p_{\text{s}} & p_{\text{s}} \\
+	\end{pmatrix} $
+ \item $\mathcal{E} = \{0, 1\}$
+ \item $ e_{\text{s}}(z)= [\![ z=0 ]\!]$
+ \item $ e_{\text{m}}(z) = [\![ z=1 ]\!]$ %\begin{cases}
+                  %  1, & \text{wenn } z = 1, \\
+                  %  0, & \text{sonst.}
+                  % \end{cases}$ %e_{\text{s}}(0) = 1, e_{\text{s}}(1)=0, e_{\text{m}}(0) = 0, e_{\text{m}}(1)=1, 
+ \item $   \mathcal{V} = \{0, \ldots, \ell\}$
+ \item $ v_0 = 0 $
+ \item $ \theta_{\text{s}} = \theta_{\text{m}} = + $
+\end{itemize}
+ 
+ %Dabei ist $[\![ b ]\!]$ definiert als $1$ falls die Bedingung $b$ wahr ist und $0$ sonst.
+Dabei ist $[\![ b ]\!]$ definiert als 
+$\begin{cases}
+ 1, & \text{wenn } b \text{ wahr ist}, \\
+ 0, & \text{sonst.}
+\end{cases}$
 
- \todo{Wie schreibe ich die PAA-Def schön auf?}
+% \todo{iverson bracket definieren}
  
 \begin{figure}
  \centering
@@ -139,7 +183,7 @@ Um dieses Problem zu lösen, wird im Folgenden ein erweitertes Modell mit 3 Zust
 
 Bisher fand keine Unterscheidung zwischen Adsorption und Lösung der Teilchen an bzw. in der stationären Phase statt, sodass zwei Zustände und Transitionen zwischen diesen beiden Zuständen als Modell ausreichten. In der Realität können beide Wechselwirkungen parallel zueinander statt finden: Wenn ein Teilchen in den stationären Zustand wechselt, wird jeweils entschieden, ob es adsorbiert wird oder sich löst.
 
-Außerdem ist es realistisch, dass sich die Wahrscheinlichkeiten, in einen der beiden Zustände überzugehen oder in die mobile Phase zurückzukehren, unterscheiden. Die Wahrscheinlichkeit, dass ein Teilchen adsorbiert wird, kann viel höher oder niedriger sein als die, dass es zur Lösung übergeht. Umgekehrt kann ein Teilchen viel leichter oder schwerer aus der Adsorption in die mobile Phase zurückkehren, als dies beim gelösten Zustand der Fall ist. Daher liegt es nahe, einen neuen Zustand einzuführen, sodass die Adsorption und die Lösung voneinander getrennt behandelt werden. Die Tatsache, dass Tailing, wie bereits anfangs erwähnt, unter anderem durch zusätzlich Adsorptionseffekte verursacht sein kann, lässt vermuten, dass durch diesen dritten Zustand ein Tailing in der Simulation verursacht werden kann. 
+Außerdem ist es realistisch anzunehmen, dass sich die Wahrscheinlichkeiten, in einen der beiden Zustände überzugehen oder in die mobile Phase zurückzukehren, unterscheiden. Die Wahrscheinlichkeit, dass ein Teilchen adsorbiert wird, kann viel höher oder niedriger sein als die, dass es zur Lösung übergeht. Umgekehrt kann ein Teilchen viel leichter oder schwerer aus der Adsorption in die mobile Phase zurückkehren, als dies beim gelösten Zustand der Fall ist. Daher liegt es nahe, einen neuen Zustand einzuführen, sodass die Adsorption und die Lösung voneinander getrennt behandelt werden. Die Tatsache, dass Tailing, wie bereits anfangs erwähnt, unter anderem durch zusätzlich Adsorptionseffekte verursacht sein kann, lässt vermuten, dass durch diesen dritten Zustand ein Tailing in der Simulation verursacht werden kann. 
  
 \begin{figure}[h]
 \begin{subfigure}[t]{\textwidth}
@@ -269,26 +313,24 @@ Analog zum PAA für nur zwei Zustände kann für drei Zustände ein PAA definier
 \label{3sPAA}
 \end{figure}
 
-Eine graphische Darstellung des PAA für drei Zustände ist in Abbildung \ref{3sPAA} gegeben. Der stationäre Zustand wurde in zwei Zustände aufgeteilt, sodass $\mathcal{Q} = \{\text{m, a, l}\}$. m bleibt Startzustand. Die Transitionen wurden entsprechend der Transitionsmatrix \ref{3s_Transit} angepasst. An den Werten ändert sich im Vergleich zum 2-Zustände PAA nichts, da weiterhin die gleiche Säulenlänge $l$ zu erreichen ist. Ebenso bleibt die Addition für alle Zustände $z$ als Operation $\theta_z$ bestehen. Bezüglich der Emissionen ändert sich am mobilen Zustand nichts und die beiden stationären Zustände übernehmen das gleiche Verhalten des bisherigen stationären Zustandes, da sich in beiden die Analyte nicht fortbewegen.
+Eine graphische Darstellung des PAA für drei Zustände ist in Abbildung \ref{3sPAA} gegeben. Der stationäre Zustand wurde in zwei Zustände aufgeteilt, sodass $\mathcal{Q} = \{\text{m, a, l}\}$. m bleibt Startzustand. Die Transitionen wurden entsprechend der Transitionsmatrix \ref{3s_Transit} angepasst. An den Werten ändert sich im Vergleich zum 2-Zustände PAA nichts, da weiterhin die gleiche Säulenlänge $\ell$ zu erreichen ist. Ebenso bleibt die Addition für alle Zustände $z$ als Operation $\theta_z$ bestehen. Bezüglich der Emissionen ändert sich am mobilen Zustand nichts und die beiden stationären Zustände übernehmen das gleiche Verhalten des bisherigen stationären Zustandes, da sich in beiden die Analyte nicht fortbewegen.
 
-$ \mathcal{Q} = \{\text{m, a, l}\} , q_0 = \text{m}, \\
-T = \begin{pmatrix}
+\begin{itemize}
+ \item $ \mathcal{Q} = \{\text{m, a, l}\}  $
+ \item $  q_0 = \text{m} $
+ \item $ T = \begin{pmatrix}
   p_{\text{mm}} & p_{\text{ma}} & p_{\text{ml}} \\
   p_{\text{am}} & p_{\text{aa}} & p_{\text{ll}} \\
   p_{\text{lm}} & p_{\text{la}} & p_{\text{ml}} \\
- \end{pmatrix}, \mathcal{E} = \{0, 1\}, 
- e_{\text{m}}(z) = \begin{cases}
-                    1, & \text{wenn } z = 1, \\
-                    0, & \text{sonst.}
-                   \end{cases}, \\
-  e_{\text{a}}(z) = e_{\text{l}}(z) = \begin{cases}
-                    1, & \text{wenn } z = 0, \\
-                    0, & \text{sonst.}
-                   \end{cases},\\
- %e_{\text{m}}(1) = e_{\text{a}}(0) = e_{\text{l}}(0) = 1, e_{\text{m}}(0) = e_{\text{a}}(1) = e_{\text{l}}(1) = 0,
- \mathcal{V} = \{0, \ldots, l\}, v_0 = 0,\\
- \theta_{\text{m}} = \theta_{\text{a}} = \theta_{\text{l}} = + $
-\todo{Auch hier sieht die def doof aus}
+ \end{pmatrix} $
+ \item $  \mathcal{E} = \{0, 1\} $
+ \item $ e_{\text{m}}(z) = [\![ z=1 ]\!]$
+ \item $  e_{\text{a}}(z) = e_{\text{l}}(z) = [\![ z=0 ]\!]$
+ \item $  %e_{\text{m}}(1) = e_{\text{a}}(0) = e_{\text{l}}(0) = 1, e_{\text{m}}(0) = e_{\text{a}}(1) = e_{\text{l}}(1) = 0,
+ \mathcal{V} = \{0, \ldots, \ell\} $
+ \item $ v_0 = 0 $
+ \item $  \theta_{\text{m}} = \theta_{\text{a}} = \theta_{\text{l}} = + $
+\end{itemize}
 
 \section{Weitere Modelle}
 

@@ -6,7 +6,7 @@
 \section{Chromatographie}
 
 Die Chromatographie ist ein Verfahren zur Auftrennung von Stoffgemischen. 
-Die Auftrennung erfolgt dabei zwischen zwei sogenannten Phasen, der stationären und der mobilen Phase, welche sich in unterschiedlichen Aggregatzuständen befinden und untereinander nicht mischen. Die Analyte werden bewegen sich dabei durch die chromatographische Apparatur, ndem sie von der mobilen Phase mitgenommen werden. Immer wieder geraten sie dabei in Kontakt zur stationären Phase und interagieren mit dieser. Abhängig von den Eigenschaften der verschiedenen Stoffe, werden sie dadurch kürzer oder länger aufgehalten, sodass sich verschiedene Stoffe von einander trennen.
+Die Auftrennung erfolgt dabei zwischen zwei sogenannten Phasen, der stationären und der mobilen Phase, welche sich in unterschiedlichen Aggregatzuständen befinden und untereinander nicht mischen. Die Analyte werden bewegen sich dabei durch die chromatographische Apparatur, indem sie von der mobilen Phase mitgenommen werden. Immer wieder geraten sie dabei in Kontakt zur stationären Phase und interagieren mit dieser. Abhängig von den Eigenschaften der verschiedenen Stoffe, werden sie dadurch kürzer oder länger aufgehalten, sodass sich verschiedene Stoffe von einander trennen.
 
 Es existieren viele Varianten der Chromatographie. Eine mögliche Unterscheidung findet durch die dabei verwendeten Aggregatzustände der beiden Phasen statt. Zum einen gibt es die Flüssigchromatographie (LC, engl. Liquid Chromatography),
 %\todo{Muss englische Worterklärung kursiv oä?}
@@ -29,16 +29,16 @@ Beispielsweise kann die GC in einer Multikapillarsäule (MCC, engl. Multi Capill
 Die nachfolgende Beschreibung des chromatographischen Prozesses bezieht sich auf die Gaschromatographie in Kapillarsäulen. Die prinzipielle Auftrennung der Stoffe durch häufigen Wechsel zwischen den beiden Phasen, ist aber allen Arten der Chromatographie gemein.
 \todo{weitere Quelle zum ausführlichen Nachlesen}
 Ausführlich beschrieben ist der chromatograpische Prozess beispielsweise in \cite{kolb2003}.
-Die für diese Arbeit wesentlichen Punkte seien hier kurz zusammengefasst:
+Die für diese Arbeit wesentlichen Punkte sind hier kurz zusammengefasst:
 
 Die Substanzen unterscheiden sich vor allem durch ihre Wechselwirkungen mit der stationären Phase. Während dieser Wechselwirkungen haften die Teilchen an der stationären Phase, bewegen sich also nicht fort. Finden verhältnismäßig wenig Wechselwirkungen statt, passieren die Teilchen die Säule schneller, als wenn viele Wechselwirkungen stattfinden. Dies beeinflusst die so genannte Retentionszeit, also die Zeit, die zum Durchlaufen der Säule gebraucht wird.
 
 Dabei existieren verschiedene Arten von Wechselwirkungen zwischen den Analytteilchen und der stationären Phase. Zum Einen die Adsorption, bei der die Teilchen mit der Oberfläche der stationären Phase in Kontakt kommen und sich dort anreichern. Die Adsorption findet dabei auf Grund von physikalischen Kräften wie der Van-Der-Waals-Kräften statt. Dadurch ist die Bindung der Stoffe an die stationäre Phase nicht sehr fest und die Teilchen können sich leicht wieder daraus lösen.
 
-Zum Anderen können sich die Analyte aber auch in der stationären Phase lösen. Da sie dabei eine chemische Bindung eingehen, sind sie schwerer als bei der Adsorption wieder voneinander zu trennen. Die Stoffe verweilen dadurch durchschnittlich länger in der stationären Phase und ihre Durchschnittsgewschindigkeit sinkt.
+Zum Anderen können sich die Analyte aber auch in der stationären Phase lösen. Gelöste Teilchen trennen sich schwerer als adsorbierte Teilchen von der stationären Phase. Die Stoffe verweilen dadurch durchschnittlich länger in der stationären Phase und ihre Durchschnittsgewschindigkeit sinkt.
 
 Auf die eine oder andere Weise diffundieren die Teilchen nun zwischen den beiden Phasen hin und her, wodurch sich ein Gleichgewicht zwischen den Phasen einstellt. Durch dieses Gleichgewicht wandern die Teilchen eines Stoffes als Pulk durch die Säule, bis sie diese verlassen. Für Teilchen vorne im Pulk besteht nur die Möglichkeit, in Wechselwirkung mit der stationären Phase zu treten, bis sich eine Sättigung einstellt. Später ankommmende Teilchen können nur dann in Wechselwirkung treten, wenn bereits wieder Teilchen mobil geworden sind, wodurch sich das Gleichgewicht aufrecht erhält. 
-Je nach Verweildauer der einzelnen Teilchen in der stationären Phase, ergibt sich eine für diesen Stoff charakteristische Durchschnittsgeschwindigkeit, die den Zeitpunkt der höchsten Austrittsintensität bestimmt.
+Je nach Verweildauer der einzelnen Teilchen in der stationären Phase, ergibt sich eine für diesen Stoff charakteristische Durchschnittsgeschwindigkeit.%TODO, die den Zeitpunkt der höchsten Austrittsintensität bestimmt.
 
 
 \subsection{Detektion}
@@ -92,23 +92,23 @@ Allerdings gibt es immer einen minimalen Zeitraum der nach Start der Chromatogra
 Für die Gaschromatographie in Multikapillarsäulen liegen die Retentionszeiten typischerweise bei wenigen Sekunden bis Minuten.
 %\todo{Ende der Simulation hier festlegen?}
 
+
+\subsection{Breite}
+Peaks können unterschiedlich breit sein. Dabei ist zu beobachten, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden.
+% 10% der peakhöhe: kolb, s33. allerdings als tailingfaktor, entspricht eher der schiefemessung
+Da jedoch ein Peak mit größerer Intensität, also möglicherweise größerer Stoffmenge, automatisch auch einen höheren und damit breiteren Peak erzeugt, kann die Halbwertsbreite als Maß für die Peakbreite herangezogen werden. Die Halbwertsbreite wird auf halber Maximalhöhe des Peaks gemessen. Im Fall von auftretendem Tailing ist dieser Wert jedoch wahrscheinlich nicht mehr aussagekräftig. Außerdem ist die Halbwertsbreite kein robustes Maß für die Breite, sodass statt dessen der Interquartilsabstand (IQR, engl. interquartile range) als Maß für die Breite verwendet werden kann. Auch dieses Maß ist unabhängig von der Stoffmenge, die den Peak verursacht hat. Der IQR ist entspricht der Differenz zwischen den Quartilen $Q_{25}$ und $Q_{75}$: $IQR = Q_{75} -Q_{25}$ \todo{Quantil, $Q_p$, Quartil}
+
+ % \todo{Zitat IQR, diesen erkären, warum dieses Mass}
 \subsection{Form}
-Außerdem können die Peaks verschiedene Formen haben. Im theoretischen Idealfall haben sie die Form einer Gaußkurve. %\todo{Quelle}
-Abweichend davon treten in echten Messungen häufig asymmetrische Peaks auf, die dann ein Tailing aufweisen, auch rechtsschiefe genannt. Dabei steigt die Kurve zunächst stark an, sinkt jedoch nach Erreichen des Maximalwerts deutlich langsamer ab, es entsteht ein Schwanz (engl. Tail).
-Ursachen für solche schiefen Peaks gibt es viele und werden beispielsweise in \cite{kolb2003, Moretti2004, Giddings1963} beschrieben. Einige Beispiele für Ursachen sind zusätzliche Adsorptionseffekte, die beim Altern einer Säule auftreten, technische Ursachen wie kleinste Hohlräume zwischen der Säule und dem Gaseinlass bzw. -austritt, sowie einige Stoffe, die generell zu Tailing neigen. %\todo{Zitat, dass einige Stoffe gererell tailen}. 
+Als dritte Eigenschaft können sich Peaks in ihrer Form unterscheiden. Im theoretischen Idealfall haben sie die Form einer Gaußkurve. %\todo{Quelle}
+Abweichend davon treten in echten Messungen häufig asymmetrische Peaks auf, die dann ein Tailing aufweisen, diese Eigenschaft wird auch Rechtsschiefe genannt. Dabei steigt die Kurve zunächst stark an, sinkt jedoch nach Erreichen des Maximalwerts deutlich langsamer ab, es entsteht ein Schwanz (engl. Tail).
+Ursachen für solche schiefen Peaks gibt es viele \cite{kolb2003, Moretti2004, Giddings1963}. Einige Beispiele für Ursachen sind zusätzliche Adsorptionseffekte, die beim Altern einer Säule auftreten, technische Ursachen wie kleinste Hohlräume zwischen der Säule und dem Gaseinlass bzw. -austritt, sowie einige Stoffe, die generell zu Tailing neigen. %\todo{Zitat, dass einige Stoffe gererell tailen}. 
 
 Als Maß für die Schiefe bietet sich der Quartilskoeffizient nach Yule-Bowley an. Dieser berechnet sich aus den Quartilen einer Verteilung und ist definiert als: 
 \begin{equation*}
 \frac{Q_{25} + Q_{75} -2\cdot Q_{50} }{ Q_{75} - Q_{25}}
 \end{equation*}
 \todo{Salome nach zitierwürdiger Quelle fragen}
-
-\subsection{Breite}
-Als drittes können Peaks unterschiedlich breit sein. Dabei ist zu beobachten, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden.
-% 10% der peakhöhe: kolb, s33. allerdings als tailingfaktor, entspricht eher der schiefemessung
-Da jedoch ein Peak mit größerer Intensität, also möglicherweise größerer Stoffmenge, automatisch auch einen höheren und damit breiteren Peak erzeugt, kann die Halbwertsbreite als Maß für die Peakbreite herangezogen werden. Die Halbwertsbreite wird auf halber Maximalhöhe des Peaks gemessen. Im Fall von auftretendem Tailing ist dieser Wert jedoch wahrscheinlich nicht mehr aussagekräftig. Außerdem ist die Halbwertsbreite kein robustes Maß für die Breite, sodass statt dessen der Interquartilsabstand (IQR, engl. interquartile range) als Maß für die Breite verwendet werden kann. Auch dieses Maß ist unabhängig von der Stoffmenge, die den Peak verursacht hat. Der IQR ist entspricht der Differenz zwischen den Quartilen $Q_{25}$ und $Q_{75}$.
-
- % \todo{Zitat IQR, diesen erkären, warum dieses Mass}
 
 
 \section{Probabilistische Arithmetische Automaten}
@@ -151,12 +151,35 @@ Ein PAA ist zu jedem Zeitpunkt mit einer bestimmten Wahrscheinlichkeit in jedem 
 % 
 % wahrscheinlichkeit für neuen Zustand $q'$ ausgehend von allen Zuständen $q$
 % 
-% $ P(q_n'| q_{n-1} ) = (T_{q, q'} \cdot  P(q_{n-1}))$
+% $ P(q_n'\mid q_{n-1} ) = (T_{q, q'} \cdot  P(q_{n-1}))$
 % 
 % $ P(q_n' ) = \sum_q (T_{q, q'} \cdot  P(q_{n-1})$
 % Gebe eher p(Q) an
 
-\todo{Algos für die Verteilung und Wartezeit-Berechnung vorstellen}
 \subsection{Algorithmus zur Berechnung der Wartezeit}
+\todo{Algos für die Verteilung und Wartezeit-Berechnung überarbeiten}
 
+Habe: Zustands-Werte-Verteilung, die für alle Zeitpunkte schrittweise berechnet werden kann.
+Suche: Verteilung für Wert $v$ zu Zeitpunkt $t$: $P(v_t = v) $ ist die Summe über alle Werte in den verschiedenen Zuständen, die zu Zeitpunkt $t$ erreicht werden können. Also $P(v_t = v)  = \sum_{q \in \mathcal{Q}} P(q_n = q, v_n = v)$
+
+Warte auf Wert x: 
+Gesucht ist der minimale Zeitpunkt $t$, an dem $V_t$ den Wert x angenommen hat. Es gibt viele Zeitpunkte an denen x angenommen werden kann (bspw, wenn Teilchen grad stecken geblieben ist, rein theoretisch) 
+Die Wartezeit ist eine Zufallsvariable, definiert als: $W_x = \min\{t \in \mathbb{N}\mid v_t = x\}$
+
+Es kann sein, dass Wartezeit größer als t immer da ist (teilchen bleiben ewig stecken) aber uns interessiert nur bis zeitpunkt y. (y=240s). Dann kennt man die verteilung darüber hinaus nicht, aber die gesamtwkeit dafür schon.
+
+Zur Berechnung der Wartezeit wird ein modifizierter PAA konstruiert. Hierbei werden zwei neue Zustände eingeführt, $\bullet$ und $\circ$, sodass der neue PAA die Zustände $\mathcal{V}' = \mathcal{V} \cup \{\bullet, \circ\}$ hat. Außerdem werden die Operationen angepasst auf
+
+$ \theta'_q(v,e)=
+\begin{cases}
+\theta_q(v,e), 	& \text{wenn } v \notin \{\bullet, \circ\} \text{ und } \theta_q(v,e) \neq x ,\\
+\bullet,	& \text{wenn } v \notin \{\bullet, \circ\} \text{ und } \theta_q(v,e) = x ,  \\
+\circ, 		& \text{wenn } v \in \{\bullet, \circ\}
+\end{cases}$
+
+Der Wert $\bullet$ wird also genau dann erreicht, wenn im aktuellen Berechnungsschritt die ursprüngliche Operation den Zielwert $x$ erreicht. Also gilt für die Wartezeit $t$: $P(W_x = t) = P(v'_t = \bullet)$.
+Die Verteilung für $P(v'_t = \bullet)$ kann wie oben angegeben berechnet werden. 
+
+Offensichtlich entspricht die Wartezeit auf den Wert $x$ der Wahrscheinlichkeit von Wert $\bullet$
+Es kann also für alle Zeitpunkte $t$ die Wahrscheinlichkeit für den neuen Wert $\bullet$ berechnet werden.
 TODO

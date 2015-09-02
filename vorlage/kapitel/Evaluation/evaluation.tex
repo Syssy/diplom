@@ -3,24 +3,76 @@
 \chapter{Evaluation}
 \label{chapter:eva}
 
-\todo{Intro Evaluation}
+\todo{Durchschnittsgeschwindigkeit: Achtung mean!=mode. s. grundlagen }
+Im folgenden Kapitel wird betrachtet, was mit den vorgestellten Modellen simuliert werden kann. Es werden die Einflüsse der Simulationsparameter auf die Peakcharakteristika beschrieben, Zusammenhänge zwischen den verschiedenen Parametern untersucht und Grenzen der einzelnen Modelle aufgezeigt.
 
 % Was kann ich mit meinem Modell?
 % Simulation von Peaks die ideal-gaußförmig sind oder tailing aufweisen
 % Formel zur Umrechnung von Peakdaten in Parameter, oder falls das nicht drin ist, zumindest Zusammenhänge, dazu zb Plots von drei festen Parametern
 % Evtl Tabelle mit exemplarischen Daten, anhand derer weitere gewünschte Peaks angenähert werden können?
 % 3a modell liefert tailing, welches bei 3b nicht gefunden wurde (vielleicht einfach nur die falschen parameter ausprobiert?)
-\todo{Mit 3s ist ab jetzt immer 3a gemeint, das andere wurde nicht genauer untersucht}
 
-\section{Relevanter Parameterbereich / relevante Peaks}
+\section{Untersuchte Peaks}
+Mit den beiden vorgestellten Modellen ist es möglich, eine Vielzahl verschiedener Verteilungen der Ankunftszeiten von Teilchen zu simulieren. 
+Dazu wurden zunächst im gesamten Parameterraum Simulationen durchgeführt und die aus den verschiedenen Kombinationen resultierenden Verteilungen betrachtet.
 
-\todo{Strukur: erst komplett 2p dann 3s?, wegen referenz auf schiefe bei 2p in den params für 3s}
+Einige Kombinationen würden zwar Peaks erzeugen, diese lägen jedoch (teilweise) jenseits der $240$ Sekunden, die als Maximalzeit gesetzt wurden. Diese Verteilungen werden in den nicht weiter berücksichtigt, da die Simulationen vorher abgebrochen wurden und daher auch die Eigenschaften der Peaks nicht oder nur teilweise berechnet wurden. Insbesondere betrifft dies Simulationen, in denen die Wahrscheinlichkeit mobil zu bleiben ($p_m$ bzw. $pmm$) sehr gering ist und die Wahrscheinlichkeit(en) stationär zu bleiben sehr hoch ist. Ein Beispiel für eine Kombination im 2-Zustände Modell, die einen Peak erzeugt, der teilweise außerhalb des Chromatogramms liegt ist links in Abbildung \ref{kein_peak} gezeigt.
 
-\subsection{2-Zustände Modell}
+Auch von den übrigen, innerhalb des Zeitraumes von $240$ Sekunden liegenden Verteilungen, sind nicht alle als Peak zu bezeichnen. Beispielsweise kann eine Verteilung extrem breit sein und über das gesamte Spektrum bis reichen. Damit würde sie in einer echten Messung wohl eher als Hintergrundrauschen erkannt werden. Ein Beispiel dafür ist in rechts in Abbildung \ref{kein_peak} zu sehen.
+Wo genau eine sinnvolle Obergrenze für die Breite der Peaks liegt, ist schwer abzugrenzen. 
+
+Andere Parameterkombinationen 
+
+\begin{figure}[h]
+\includegraphics[width=0.5\textwidth]{bilder/outof240}
+\includegraphics[width=0.5\textwidth]{bilder/huegel}
+
+\caption[Nicht berücksichtigte Verteilungen]{Nicht berücksichtigte Verteilungen, links teilweise außerhalb des Chromatogramms, rechts zu breit}
+\label{kein_peak}
+\end{figure}
+
+
+\section{2-Zustände Modell} 
+
 
 \todo{Parameterbereich für 2p Modell}
 
-\subsection{3-Zustände Modell}
+\subsection{Einfluss der Parameter}
+
+\begin{figure}[h]
+\includegraphics[width=0.5\textwidth]{bilder/ps/psfest_pm03}
+\includegraphics[width=0.5\textwidth]{bilder/ps/psfest_pm07}
+
+\caption{Der Einfluss von $p_{s}$ auf die Peaks abhängig von $p_{m}$}
+\label{einfluss_ps_1}
+\end{figure}
+
+
+\begin{figure}[h]
+\includegraphics[width=0.5\textwidth]{bilder/pm/pmfest_ps09995}
+\includegraphics[width=0.5\textwidth]{bilder/pm/pmfest_ps0999}
+
+\caption{Der Einfluss von $p_{m}$ auf die Peaks abhängig von $p_{s}$}
+\label{einfluss_pm_1}
+\end{figure}
+
+
+Schiefe nur von pmm beeinflusst. Auch wenn pm auf den Wert von 0.999 gesetzt ist, was ja schiefe verursacht, ergeben alle ps's gleiche schiefe. Umgekehrt erzeugen bei festem ps jeweils die pm von ca 0.999 schiefe peaks bei sehr kleinen zeitpunkten (loc = 0.1, also minimalzeitpunkt) Das sieht so aus, als würde der direkt am beginn starten, aber das ist der kompression geschuldet, wenn ich nur ein zehntel komprimiere, hat der peak vorlauf
+
+Sowohl Zeitpunkt als auch Breite der Peaks hängen von ps und pm ab.
+Nur in einem sehr kleinen Bereich, bei dem die Peaks ihren Maximalzeitpunkt bei etwa TODO haben, tritt überhaupt Schiefe auf. 
+
+\todo{Parametereinfluss bei 2p}
+
+
+
+
+
+\section{3-Zustände Modell}
+\todo{Mit 3s ist ab jetzt immer 3a gemeint, das andere wurde nicht genauer untersucht}
+
+
+\subsection{Relevanter Parameterbereich / relevante Peaks}
 \todo{Wo erwähnen, dass nach 240 sec Schluss ist?}
 \todo{ sagen, dass ab jetzt pmm, pml, paa und pll betrachtet werden, die restlichen params ergeben sich daraus}
 
@@ -51,18 +103,41 @@ In allen Fällen gilt jedoch, dass auch jeweils die Kombination der Parameter be
 
 
 
-\section{Einfluss der verschiedenen Parameter auf Peaks}
+\subsection{Einfluss der verschiedenen Parameter auf Peaks}
+Auch bei 3 Zuständen können in den meisten Fällen ein deutlicher Zusammenhang zwischen den Parametern und Peakdaten beobachtet werden, diese seien im Folgenden aufgeführt.
 
-In den meisten Fällen kann ein deutlicher Zusammenhang zwischen den Parametern und Peakdaten beobachtet werden, diese seien im Folgenden aufgeführt.
+\subsection{Einfluss auf einzelne Peaks}
 
-\subsection{2-Zustände Modell} 
+Um den Einfluss der Parameter auf Peaks zu untersuchen, wurden zunächst einige realistische Ausgangspeaks gewählt. Die dafür verwendeten Simulationsparameter wurden dann nur wenig verändert und beobachtet, wie sich der Peak verändert. In \ref{einfluss_t50} und \ref{einfluss_t100} ist jeweils gezeigt, wie der Peak auf die Veränderungen reagiert. 
 
-Sowohl Zeitpunkt als auch Breite der Peaks hängen von ps und pm ab.
-Nur in einem sehr kleinen Bereich, bei dem die Peaks ihren Maximalzeitpunkt bei etwa TODO haben, tritt überhaupt Schiefe auf. 
+Zu erkennen ist, dass eine Veränderung von pmm und paa jeweils die Lage des Peaks beeinflusst, hingegen eine Änderung von pml oder pll kaum einen Einfluss auf die Lage hat. Umgekehrt wird die Breite hauptsächlich durch pml und pll verändert, jedoch nur minimal von pmm und paa. 
 
-\todo{Parametereinfluss bei 2p}
 
-\subsection{3-Zustände Modell}
+\begin{table}[]
+\centering
+\caption{Einfluss auf einen Peak}
+\label{einfluss_t50}
+\begin{tabular}{|l|l|l|l||l|l|l|}
+\hline
+pmm & pml    & paa    & pll      & Lage  & Breite & Schiefe \\ \hline \hline
+0,6 & 0.0006 & 0,9992 & 0,999993 & 50,14 & 12,34  & 0,46    \\ \hline \hline
+\cellcolor{yellow} 0,5 & 0.0006 & 0,9992 & 0,999993 & 62,69 & 12,45  & 0,43    \\ \hline
+\cellcolor{yellow} 0,7 & 0.0006 & 0,9992 & 0,999993 & 37,59 & 12,2   & 0,5     \\ \hline
+0,6 & \cellcolor{yellow} 0.0005 & 0,9992 & 0,999993 & 50,09 & 9,7    & 0,38    \\ \hline
+0,6 & \cellcolor{yellow} 0.0007 & 0,9992 & 0,999993 & 50,19 & 14,82  & 0,5     \\ \hline
+0,6 & 0.0006 & \cellcolor{yellow} 0,9991 & 0,999993 & 44,55 & 12,18  & 0,5     \\ \hline
+0,6 & 0.0006 & \cellcolor{yellow} 0,9993 & 0,999993 & 57,33 & 12,57  & 0,41    \\ \hline
+0,6 & 0.0006 & 0,9992 & \cellcolor{yellow} 0,99999  & 50,25 & 9,2    & 0,33    \\ \hline
+0,6 & 0.0006 & 0,9992 & \cellcolor{yellow} 0,999995 & 50,05 & 16,66  & 0,58    \\ \hline
+\end{tabular}
+\end{table}
+
+\todo{Bild oder Tabelle?}
+
+
+\subsubsection{Einfluss abhängig von anderen Parametern}
+
+%\subsection{3-Zustände Modell}
 Bei diesem Modell ergeben sich durch die größere Anzahl an Parametern, komplexere Zusammenhänge zwischen den Parametern und den Peakdaten. Teilweise hängt die Stärke des Einflusses eines Parameters auf ein Peakcharakteristikum vom Wert eines anderen Parameters ab. Das heißt, der Einfluss eines Parameters auf die resultierenden Peaks kann größer oder kleiner sein, abhängig davon, ob ein anderer Parameter eher im oberen oder unteren Bereich seines oben angegebenen Intervalls liegt.
 Zunächst können jedoch folgenden einfachen Zusammenhänge beobachtet werden:
 
@@ -330,12 +405,49 @@ $p_{ml}$ und $p_{ll}$ haben zunächst beide einen proportionalen Einfluss auf di
 Tailing/Schiefe entsteht immer da, wo nur wenige Teilchen langsamer sind, als die große Masse. Sind viele Teilchen lange stationär, werden die Peaks statt dessen breit. Der Maximalzeitpunkt ist hauptsächlich durch die Durchschnittsgeschwindigkeit der Teilchen bestimmt, sind sie hauptsächlich mobil, entstehen frühe Peaks, sind sie oft und lange stationär, wandern die Peaks nach hinten.
 
 
+\subsubsection{Parameter für ähnliche Peaks}
+
+Durch die vielfältigen und unterschiedlich starken Einflüsse der einzelnen Parameter, ist es möglich, fast gleiche Peaks mit völlig unterschiedlichen Parameterkombinationen zu erzeugen. Zwei Beispiele dafür sind in den Abbildungen \ref{2kombis_1} und \ref{2kombis_2} gezeigt.
+
+\begin{figure}[h]
+\includegraphics[width=0.5\textwidth]{bilder/kombis/1peak1_kombi1}
+\includegraphics[width=0.5\textwidth]{bilder/kombis/1peak1_kombi2}
+\caption{Sehr ähnliche Peaks bei $t \approx 25$}
+\label{2kombis_1}
+\end{figure}
+
+\begin{figure}[h]
+\includegraphics[width=0.5\textwidth]{bilder/kombis/1peak2_kombi1}
+\includegraphics[width=0.5\textwidth]{bilder/kombis/1peak2_kombi2}
+\caption{Sehr ähnliche Peaks bei $t \approx 100$}
+\label{2kombis_2}
+\end{figure}
+
+\todo{Achsenbeschrifung}
+
+In beiden Fällen unterscheiden sich die resultierenden Peaks kaum, sie könnten jedoch durch minimale Parameterveränderungen noch stärker angenähert werden. Die Zuordnung von Simulationsparameter zu Peakcharakteristika ist also nicht eindeutig.
+
 \section{Grenzen der Modelle}
 
 Wie bereits erwähnt, ist es mit dem 2-Zustände Modell nur eingeschränkt möglich, Tailing zu erzeugen. Insbesondere tritt dieses nicht zu den späteren Zeitpunkten im Chromatogramm auf. Dieses Problem konnte, wie gezeigt, mit dem 3-Zustände Modell behoben werden. 
 
 Eine weitere Grenze ist jedoch die Minimalbreite der erzeugten Peaks. Damit ist gemeint, dass mit zunehmender Zeit die Minimalbreite der Peaks, die an diesem Zeitpunkt ihr Maximum haben, ansteigt. 
 \todo{Plot der Zeit/Breiten-Verhältnisse, Gesamtübersicht, sowie einzelverläufe mit sichbarem Erreichen der parametergrenzen (fast 0 für pm)}
+
+% \begin{figure}[h]
+% \centering
+% \includegraphics[width=0.75\textwidth]{bilder/2s_zeitbreiten}
+% \caption{Mit dem 2-Zustände Modell erreichbare Zeitpunkte und Breiten}
+% \label{Grenzen_2p}
+% \end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{bilder/2s_zeitbreiten_ohnep}
+\caption{Mit dem 2-Zustände Modell erreichbare Zeitpunkte und Breiten}
+\label{Grenzen_2p_ohnep}
+\end{figure}
+
 Dieses Problem kann mit dem 3-Zustände Modell nicht gelöst werden, da die Peaks durch Hinzunahme eines weiteren stationären Zustandes höchstens breiter werden. 
 
 %\section{Laufzeiten}
