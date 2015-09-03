@@ -59,3 +59,12 @@ Um dieses Ziel zu erreichen, wird zunächst mit einem sehr einfachen Modell bego
  \item Wiederholung von 2-4 bis gegebene Peaks ausreichend angenähert
 \end{enumerate}
 
+\section{Andere Arbeiten}
+
+Es existieren bereits Simulatoren für die Chromatographie, welche jedoch Daten auf eine andere Art erzeugen als eine Simulation des chromatographischen Prozesses erzeugen.
+
+Es gibt beispielsweise einen älteren Ansatz \citep{spreadsheet}, bei dem verschiedene Peaks als Funktionen eingegeben werden können. Die dort zu Grunde liegende Annahme ist, dass sich Peaks, ebenso wie das Hintergrundrauschen einer Messung, durch jeweils eine Funktion darstellen lassen. Diese Eingaben werden dann mit Hilfe einer Tabellenkalkulationssoftware zu einem gemeinsamen Spektrum kombiniert. Ein solcher Ansatz ist aber erst nützlich, wenn die Peaks bereits als Funktionen vorliegen.
+
+Ein anderer Ansatz wurde von \citet{hplcsim} beschrieben. Dort geht es zwar um Flüssigchromatographie, die jedoch der Gaschromatographie ausreichend ähnlich ist, um als Vergleich herangezogen zu werden. In der dort beschriebenen Software können verschiedene Parameter der Chromatographie wie Druck oder Temperatur variiert und verschiedene Analyte ausgewählt werden und es werden daraus Chromatogramme erzeugt. Die so gewonnenen Daten werden aber nicht simuliert, sondern aus experimentellen Daten interpoliert. Dazu wurden in vielen Experimenten die Einflüsse der Einstellungen des Chromatographiegerätes untersucht und festgestellt, wie sich beispielsweise die Temperatur auf die resultierenden Peaks auswirkt. Für diese unterschiedlichen Messbedingungen wurden Formeln entwickelt, die in der Simulation auf die Peaks der einzelnen Analyte angewendet werden, um so je nach gewählten Einstellungen modifzierte Chromatogramme zu erhalten.
+
+ 

@@ -10,8 +10,12 @@ Es wurde ein Zusammenhang zwischen den Simulationsparametern und Peakdaten gefun
 \section{Ausblick}
 
 % Bessere bzw. genauere Aufarbeitung der Referenzdaten: Methoden, die ztatsächlichen Peaks gut zu isolieren (\todo{kann man hier auf bestehende Arbeiten zur peakfindung verweisen?}) evtl. feinere Daten durch schätzen weiterer zwischenmessungen, um glattere Daten zu erhalten? Verfahren umd zu erkennen, ob Peaks gut sind für den Vergleich
+Abgleich mit Messungen in größerem Maßstab: Verschiedene Hersteller, verschiedene Längen, etc. Um zu gucken, wofür das Modell alles ausreicht
+
 Das ganze mit existierenden Daten vergleichen, um zu gucken, ob schmalere Peaks notwendig sind und alle realen Peakdatenkombinationen erreicht werden können, dann eventuell noch mal das Modell anpassen:
 Tailform richtig?
+Doch noch mal Halbwertsbreite bzw 10\% Breite und Breite links und rechts des Maximums als Maße für Breite und Schiefe testen, da in einigen Fällen die berechneten Werte den vom menschlichen Betrachter gewonnenen Eindruck widersprechen.
+
 
 Je nachdem, ob die bisherigen Ergebnisse ausreichen, um eine größere Anzahl im Experiment gefundener Peaks zu simulieren, können die am Ende von Kapitel \ref{chapter:mod} erwähnten Ideen für weitere Modellveränderungen ausprobiert werden. Sowohl die Berücksichtigung des Gleichgewichts der Phasen als auch eine maximale Kapazität für die Adsorption können für weiteres Tailing sorgen. Außerdem ist es auch gut vorstellbar, dass so schmalere Peaks zum gleichen Zeitpunkt entstehen, da sich für einige Teilchen die Wahrscheinlichkeit, mobil zu bleiben erhöht und ein Teilchenpulk enger beieinander bleibt.
 
@@ -27,6 +31,8 @@ Falls Formel für entsprecung nicht gefunden: Das Sekantenverfahren erwähnen?
 Verfahren entwickeln, um gewünschten Peak zu simulieren. Bisher funktioniert das händisch unter Anwendung der Erkenntnisse, wie sich die Parameter auf die Peaks auswirken. Wenn also ein Peak mit bestimmten Eigenschaften gewünscht ist, wird bisher die grobe Umgebung abgesucht. Die Parameter der dort gefundenen Peaks werden in die passende Richtung abgewandelt (zb. er ist etwas zu früh, dann wird pmm verringert oder zu schmal, dann wird pll erhöht). Anschließend wird überprüft, wo der neue Peak liegt und evtl noch mal die Parameter angepasst. 
 Um das zu ersparen müsste entweder der komplette Parameterraum noch besser abgedeckt werden (was uU sehr viel Laufzeit und Speicherplatz kostet) oder die Vorgehensweise automatisiert werden.
 
-Umsetzung von Modellen mit mehr Zuständen: Simulation als event nicht schwer (und von den Laufzeiten her wohl auch ganz gut) die by-step müsste aber angepasst werden (Schleifen) da sonst wohl zu aufwändig und zu langsam. gleiches gilt für paa, da wäre auch eine neue umsetzung nötig
+Nach einarbeitung der anderen Maße, noch mal gucken, ob alle realen Peaks automatisch angennähert werden können. (Ausgehend von Peaks in der Umgebung Parameter anpassen)
+Im nächsten Schritt dann nicht mehr über die Maße gehen, sondern Funktionswerte der echten Peaks genau simulieren.
 
-Doch noch mal Halbwertsbreite bzw 10\% Breite und Breite links und rechts des Maximums als Maße für Breite und Schiefe testen, da in einigen Fällen die berechneten Werte den vom menschlichen Betrachter gewonnenen Eindruck widersprechen.
+Laufzeitvorschläge
+Umsetzung von Modellen mit mehr Zuständen: Simulation als event nicht schwer (und von den Laufzeiten her wohl auch ganz gut) die by-step müsste aber angepasst werden (Schleifen) da sonst wohl zu aufwändig und zu langsam. gleiches gilt für paa, da wäre auch eine neue umsetzung nötig

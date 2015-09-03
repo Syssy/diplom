@@ -114,20 +114,8 @@ Der Einfluss des Parameters pm in Abhängigkeit von ps ist in Abbildung \ref{ein
 \section{Grenzen}
 Mit diesem Modell sind kaum tailende Peaks erzeugbar. Schiefe von mehr als $0,05$ tritt nur selten auf, immer bei Peaks, die ihren Maximalzeitpunkt ganz am Anfang des Spektrums, knapp über der Trägergaszeit von $0,1$ Sekunden haben. Der Effekt wird verursacht durch einen sehr großen Wert für pm, der bei ungefähr $0,999$ liegt. Dadurch gibt es viele Teilchen die (bei einer Säulenlänge von $1000$ Schritten) gar nicht in Wechselwirkung mit der stationären Phase geraten und dadurch mit Trägergasgeschwindigkeit durch die Säule wandern. Die wenigen Teilchen, die doch in die stationäre Phase eintreten, verursachen den Tail, da sie deutlich später als der Pulk die Säule verlassen.
 
-
 Eine weitere Grenze ist jedoch die Minimalbreite der erzeugten Peaks. Damit ist gemeint, dass mit zunehmender Zeit die Minimalbreite der Peaks, die an diesem Zeitpunkt ihr Maximum haben, ansteigt. Zur Verdeutlichung ist in Abbildung \ref{Grenzen_2p_ohnep} eine Übersicht über die erreichbaren Zeit-Breiten Kombinationen gegeben. Jeder Punkt steht für einen Peak, der mit der entsprechenden Maximalzeit und Breite erzeugt wurde.
 Zu sehen ist, dass es zu jedem Zeitpunkt möglich ist, Peaks mit dem Modell zu erzeugen. Auch zwischen den einzelnen Punkten sind Peaks erzeugbar, wenn die Parameter entsprechend angepasst werden.
-
-Dass die untere Kante der Punktewolke jedoch eine Grenze für die Breite darstellt, ist in Abbildung \ref{Grenzen_2p_ausschnitt} zu sehen.
-
-\todo{Plot der Zeit/Breiten-Verhältnisse, Gesamtübersicht, sowie einzelverläufe mit sichbarem Erreichen der parametergrenzen (fast 0 für pm)}
-
-% \begin{figure}[h]
-% \centering
-% \includegraphics[width=0.75\textwidth]{bilder/2s_zeitbreiten}
-% \caption{Mit dem 2-Zustände Modell erreichbare Zeitpunkte und Breiten}
-% \label{Grenzen_2p}
-% \end{figure}
 
 \begin{figure}[h]
 \centering
@@ -136,6 +124,8 @@ Dass die untere Kante der Punktewolke jedoch eine Grenze für die Breite darstel
 \label{Grenzen_2p_ohnep}
 \end{figure}
 
+Dass die untere Kante der Punktewolke jedoch eine Grenze für die Breite darstellt, ist in Abbildung \ref{Grenzen_2p_ausschnitt} zu sehen. Zu sehen sind zwei Reihen von Peaks, die mit jeweils dem gleichen Parameter ps erzeugt wurden, die Breite nimmt mit fallendem pm zu. Diese Beobachtung wurde bereits im letzten Abschnitt gemacht. Jedoch ist hier zu sehen, dass sich bei einer Annäherung von pm an $0$ keine deutlich späteren Peaks ergeben, sondern der Zeitpunkt auf einem Wert stagniert. Das liegt daran, dass bei so kleinen Werten für pm in fast jedem Schritt, der in der mobilen Phase startet, ein Wechsel zur stationären Phase statt findet. Der Zeitpunkt wird dann also maßgeblich durch ps beeinflusst. Da höhere Werte für ps nicht nur für einen späteren Zeitpunkt sorgen, sondern auch für eine größere Breite, ergibt sich dadurch eine Minimalbreite für alle Zeitpunkte.
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.75\textwidth]{bilder/2s_zeitbreiten_ausschnitt.pdf}
@@ -143,47 +133,48 @@ Dass die untere Kante der Punktewolke jedoch eine Grenze für die Breite darstel
 \label{Grenzen_2p_ausschnitt}
 \end{figure}
 
+Auch die obere Kante der Punktewolke aus Abbildung \ref{Grenzen_2p_ohnep} stellt gewissermaßen eine Grenze für die mit diesem Modell erreichbaren Zeit-Breiten Kombinationen dar. Zwar können in dem Bereich, der Tailing aufweist, fast beliebig breite Peaks erzeugt werden, wenn ps sehr groß gewählt wird. \todo{obergrenze?}
+
 
 \section{3-Zustände Modell}
-\todo{Mit 3s ist ab jetzt immer 3a gemeint, das andere wurde nicht genauer untersucht}
+Die wenigen Peaks, die beim 2-Zustände Modell Schiefe aufweisen dienen als Hinweis darauf, wie das Tailing entsteht: Einige wenige Teilchen kommen deutlich nach dem Hauptpulk an, da sie in der stationären Phase verweilen, während die Teilchen des Pulks ohne Interaktion die Säule durchqueren. 
+Wenn nun bei einer beliebigen, nicht-tailenden Verteilung, die dadurch entsteht, dass immer wieder Teilchen mit der stationären Phase interagieren, ein zusätzlicher Zustand hinzugefügt wird, in den die Teilchen seltener, aber dafür viel länger eintreten, müsste genau dieser Effekt auch bei anderen als den ganz frühen Verteilungen entstehen.
+
+Genau dieser Zustand steht im 3-Zustände Modell zur Verfügung. Untersucht wurde vor allem das Modell aus Abbildung \ref{tikz:4p_Mod_a}, bei dem die beiden stationären Zustände getrennt sind.
+
+Im Folgenden werden die Einflüsse der Parameter dieses Modells untersucht, dabei beschränkt sich diese Untersuchung auf pmm, pml, paa und pll. Die anderen Parameter pma, pam und plm können daraus berechnet werden.
 
 
-\subsection{Relevanter Parameterbereich / relevante Peaks}
-\todo{Wo erwähnen, dass nach 240 sec Schluss ist?}
-\todo{ sagen, dass ab jetzt pmm, pml, paa und pll betrachtet werden, die restlichen params ergeben sich daraus}
-
-Die wenigen Peaks, die beim 2-Zustände Modell Schiefe aufweisen dienen als Grundlage für eine sinnvolle Parametereinschränkung für $p_{ml}$ und $p_{ll}$. Dabei war zu beobachten, dass Tailing nur dann auftritt, wenn die Teilchen nur selten in den stationären Zustand eintreten, dafür aber sehr lange dort verweilen. Um diesen Effekt nachzuahmen, muss $p_{ml}$ dementsprechend sehr klein im Vergleich zu $p_{ma}$ und $p_{mm}$ sein, außerdem muss $p_{ll}$ sehr groß sein, deutlich größer als $p_{aa}$.
-
-In der experimentellen Phase der Arbeit wurden zunächst im gesamten Parameterraum %$[0;1]^3$ 
-einige Simulationen durchgeführt, um herauszufinden, in welchen Bereichen sich Verteilung ergeben, die als Peaks interpretiert werden können. 
-Durch die Beschränkung des Spektrums auf $240$ Sekunden scheiden schon viele Parameterkombinationen aus, welche spätere Peaks erzeugen würden. Das betrifft insbesondere diejenigen Kombinationen, die eine geringe Wahrscheinlichkeit haben, mobil zu bleiben oder zu werden, dafür aber mit einer sehr hohen Wahrscheinlichkeit stationär werden oder bleiben. 
-% Für die Schiefe soll es zunächst keine Beschränkungen geben, TODO (gibt es ne sinnvolle Obergrenze, Optik mit Werten vergleichen)
-Typischerweise sind Peaks zu Beginn des Spektrums eher schmal, spätere Peaks können breiter werden. 
-Generell lässt sich sagen, dass der IQR eines Peaks geringer sein sollte, als sein Maximalzeitpunkt, ansonsten ist er schwer als Peak zu identifzieren. Darüber hinaus wurde eine maximale Peakbreite von TODO $10+0.2\cdot t_{max}$ \todo{sinnvolle maximalbreite} festgelegt. Peaks mit höherem IQR sind in einem Spektrum kaum noch als Peaks zu erkennen.
-Durch die Verwendung von IQR und IKQ als Maße für Breite und Schiefe, sind sehr breite Peaks auch dann als Peak zu erkennen, wenn sie sehr schief sind.
-
-Für die Schiefe gilt, dass ein Tailing ab einem IQK von 0.2 gut zu erkennen ist. Werte bis 0.4 treten meist bei schiefen Peaks auf, die auch vom optischen Eindruck einem realistischen Peak ähneln. Werte darüber hinaus deuten meist auf ein sehr langes Tailing, welches teilweise auch über die Maximalzeit hinausragt. Dieses Tailing ist jedoch auf einem so niedrigen Niveau, dass es in einer realen Messung wahrscheinlin im Rauschen unter gehen würde.
-\todo{Bilder zu verschiedenen Peaks, darunter sehr flache Hügel wie auch extremes Tailing!}
-
-Dadurch ergeben sich folgende Einschränkungen für die verschiedenen Parameter:
-\begin{itemize}
- \item $p_{mm}$: keine generellen Einschränkungen, es wurden für Werte im Intervall $[0,005; 0,99]$ Peaks gefunden. Bei noch kleineren Werten und auch bei Werten im unteren Bereich des Intervalls kommen abhängig von den anderen Parametern zu späte Peaks heraus. Bei größeren Werten dominiert dieser Parameter zu sehr, sodass nur extrem frühe und schmale sowie kaum schiefe Peaks entstehen.
- \item $p_{ml}$: sinnvolle Werte liegen im Bereich $[0,00005; 0,005]$. Bei kleineren Werten ergeben sich auch Peaks, welche jedoch kein oder fast kein Tailing mehr aufweisen, sodass auch auf das 2-Zustände Modell zurückgegriffen werden kann. Bei größeren Werten verweilen die Teilchen so häufig im gelösten Zustand, dass die Peaks extrem breit werden. Insbesondere, wenn der Parameter $p_{ll}$ auch sehr groß gewählt wurde, gilt dies auch für hohe Werte für $p_{ml}$ innerhalb des Intervalls.
- \item $p_{aa}$: für diesen Parameter wurde das Intervall auf $[0,997; 0,9996]$ beschränkt. Kleinere Werte sorgen für extrem frühe Peaks. Diese könnten zwar berücksichtigt werden, unterscheiden sich jedoch kaum voneinander. Bei größeren Werten werden die Peaks meist sehr breit oder ragen über die Maximalzeit hinaus. 
- \item $p_{ll}$: sinnvolle Werte liegen im Bereich $[0,9999; 0,999995]$. Bei Werten ab dem unteren Intervallbereich ergeben keine oder nur kaum schiefe Peaks. Bei größeren Werten werden die Teilchen so lange im stationären Zustand gehalten, dass das Tailing meist weit über das Maximum von 240 Sekunden hinausragt oder Peaks zu breit werden. Dies gilt insbesondere, wenn für $p_{ml}$ ebenfalls ein großer Wert gewählt wurde. 
- %Im oberen Bereich des Intervalls (>0.999995) erzeugen werden hier Peaks erzeugt, die eine sehr große Schiefe aufweisen, wo der Tail jedoch (wahrscheinlich) im Rauschen verschwindet. Mit den aktuellen Maßen lässt sich das kaum zeigen, wird jedoch beim Blick auf einen geplotteten Peak sofort klar.
-\end{itemize}
-
-In allen Fällen gilt jedoch, dass auch jeweils die Kombination der Parameter berücksichtigt werden muss, insbesondere, wenn ein Parameter am Rand des jeweils angegebenen Intervalls liegt, kommt es häufig vor, dass er nur in einigen wenigen Kombinationen für realistische Peaks sorgt.
-\todo{Beispiele; ein paar Kombis nennen, die grenzwertig, bzw drüber hinaus sind?}
+% \subsection{Relevanter Parameterbereich / relevante Peaks}
+% Die wenigen Peaks, die beim 2-Zustände Modell Schiefe aufweisen dienen als Grundlage für eine sinnvolle Parametereinschränkung für $p_{ml}$ und $p_{ll}$. Dabei war zu beobachten, dass Tailing nur dann auftritt, wenn die Teilchen nur selten in den stationären Zustand eintreten, dafür aber sehr lange dort verweilen. Um diesen Effekt nachzuahmen, muss $p_{ml}$ dementsprechend sehr klein im Vergleich zu $p_{ma}$ und $p_{mm}$ sein, außerdem muss $p_{ll}$ sehr groß sein, deutlich größer als $p_{aa}$.
+% 
+% In der experimentellen Phase der Arbeit wurden zunächst im gesamten Parameterraum %$[0;1]^3$ 
+% einige Simulationen durchgeführt, um herauszufinden, in welchen Bereichen sich Verteilung ergeben, die als Peaks interpretiert werden können. 
+% Durch die Beschränkung des Spektrums auf $240$ Sekunden scheiden schon viele Parameterkombinationen aus, welche spätere Peaks erzeugen würden. Das betrifft insbesondere diejenigen Kombinationen, die eine geringe Wahrscheinlichkeit haben, mobil zu bleiben oder zu werden, dafür aber mit einer sehr hohen Wahrscheinlichkeit stationär werden oder bleiben. 
+% % Für die Schiefe soll es zunächst keine Beschränkungen geben, TODO (gibt es ne sinnvolle Obergrenze, Optik mit Werten vergleichen)
+% Typischerweise sind Peaks zu Beginn des Spektrums eher schmal, spätere Peaks können breiter werden. 
+% Generell lässt sich sagen, dass der IQR eines Peaks geringer sein sollte, als sein Maximalzeitpunkt, ansonsten ist er schwer als Peak zu identifzieren. Darüber hinaus wurde eine maximale Peakbreite von TODO $10+0.2\cdot t_{max}$ \todo{sinnvolle maximalbreite} festgelegt. Peaks mit höherem IQR sind in einem Spektrum kaum noch als Peaks zu erkennen.
+% Durch die Verwendung von IQR und IKQ als Maße für Breite und Schiefe, sind sehr breite Peaks auch dann als Peak zu erkennen, wenn sie sehr schief sind.
+% 
+% Für die Schiefe gilt, dass ein Tailing ab einem IQK von 0.2 gut zu erkennen ist. Werte bis 0.4 treten meist bei schiefen Peaks auf, die auch vom optischen Eindruck einem realistischen Peak ähneln. Werte darüber hinaus deuten meist auf ein sehr langes Tailing, welches teilweise auch über die Maximalzeit hinausragt. Dieses Tailing ist jedoch auf einem so niedrigen Niveau, dass es in einer realen Messung wahrscheinlin im Rauschen unter gehen würde.
+% 
+% Dadurch ergeben sich folgende Einschränkungen für die verschiedenen Parameter:
+% \begin{itemize}
+%  \item $p_{mm}$: keine generellen Einschränkungen, es wurden für Werte im Intervall $[0,005; 0,99]$ Peaks gefunden. Bei noch kleineren Werten und auch bei Werten im unteren Bereich des Intervalls kommen abhängig von den anderen Parametern zu späte Peaks heraus. Bei größeren Werten dominiert dieser Parameter zu sehr, sodass nur extrem frühe und schmale sowie kaum schiefe Peaks entstehen.
+%  \item $p_{ml}$: sinnvolle Werte liegen im Bereich $[0,00005; 0,005]$. Bei kleineren Werten ergeben sich auch Peaks, welche jedoch kein oder fast kein Tailing mehr aufweisen, sodass auch auf das 2-Zustände Modell zurückgegriffen werden kann. Bei größeren Werten verweilen die Teilchen so häufig im gelösten Zustand, dass die Peaks extrem breit werden. Insbesondere, wenn der Parameter $p_{ll}$ auch sehr groß gewählt wurde, gilt dies auch für hohe Werte für $p_{ml}$ innerhalb des Intervalls.
+%  \item $p_{aa}$: für diesen Parameter wurde das Intervall auf $[0,997; 0,9996]$ beschränkt. Kleinere Werte sorgen für extrem frühe Peaks. Diese könnten zwar berücksichtigt werden, unterscheiden sich jedoch kaum voneinander. Bei größeren Werten werden die Peaks meist sehr breit oder ragen über die Maximalzeit hinaus. 
+%  \item $p_{ll}$: sinnvolle Werte liegen im Bereich $[0,9999; 0,999995]$. Bei Werten ab dem unteren Intervallbereich ergeben keine oder nur kaum schiefe Peaks. Bei größeren Werten werden die Teilchen so lange im stationären Zustand gehalten, dass das Tailing meist weit über das Maximum von 240 Sekunden hinausragt oder Peaks zu breit werden. Dies gilt insbesondere, wenn für $p_{ml}$ ebenfalls ein großer Wert gewählt wurde. 
+%  %Im oberen Bereich des Intervalls (>0.999995) erzeugen werden hier Peaks erzeugt, die eine sehr große Schiefe aufweisen, wo der Tail jedoch (wahrscheinlich) im Rauschen verschwindet. Mit den aktuellen Maßen lässt sich das kaum zeigen, wird jedoch beim Blick auf einen geplotteten Peak sofort klar.
+% \end{itemize}
+% 
+% In allen Fällen gilt jedoch, dass auch jeweils die Kombination der Parameter berücksichtigt werden muss, insbesondere, wenn ein Parameter am Rand des jeweils angegebenen Intervalls liegt, kommt es häufig vor, dass er nur in einigen wenigen Kombinationen für realistische Peaks sorgt.
+% \todo{Beispiele; ein paar Kombis nennen, die grenzwertig, bzw drüber hinaus sind?}
 
 
-
-\subsection{Einfluss der verschiedenen Parameter auf Peaks}
-Auch bei 3 Zuständen können in den meisten Fällen ein deutlicher Zusammenhang zwischen den Parametern und Peakdaten beobachtet werden, diese seien im Folgenden aufgeführt.
+% \subsection{Einfluss der verschiedenen Parameter auf Peaks}
+% Auch bei 3 Zuständen können in den meisten Fällen ein deutlicher Zusammenhang zwischen den Parametern und Peakdaten beobachtet werden, diese seien im Folgenden aufgeführt.
 
 \subsection{Einfluss auf einzelne Peaks}
-
 Um den Einfluss der Parameter auf Peaks zu untersuchen, wurden zunächst einige realistische Ausgangspeaks gewählt. Die dafür verwendeten Simulationsparameter wurden dann nur wenig verändert und beobachtet, wie sich der Peak verändert. In \ref{einfluss_t50} und \ref{einfluss_t100} ist jeweils gezeigt, wie der Peak auf die Veränderungen reagiert. 
 
 Zu erkennen ist, dass eine Veränderung von pmm und paa jeweils die Lage des Peaks beeinflusst, hingegen eine Änderung von pml oder pll kaum einen Einfluss auf die Lage hat. Umgekehrt wird die Breite hauptsächlich durch pml und pll verändert, jedoch nur minimal von pmm und paa. 
@@ -191,24 +182,42 @@ Zu erkennen ist, dass eine Veränderung von pmm und paa jeweils die Lage des Pea
 
 \begin{table}[]
 \centering
-\caption{Einfluss auf einen Peak}
+\caption{Einfluss auf einen Peak (1)}
 \label{einfluss_t50}
 \begin{tabular}{|l|l|l|l||l|l|l|}
 \hline
 pmm & pml    & paa    & pll      & Lage  & Breite & Schiefe \\ \hline \hline
-0,6 & 0.0006 & 0,9992 & 0,999993 & 50,14 & 12,34  & 0,46    \\ \hline \hline
-\cellcolor{yellow} 0,5 & 0.0006 & 0,9992 & 0,999993 & 62,69 & 12,45  & 0,43    \\ \hline
-\cellcolor{yellow} 0,7 & 0.0006 & 0,9992 & 0,999993 & 37,59 & 12,2   & 0,5     \\ \hline
-0,6 & \cellcolor{yellow} 0.0005 & 0,9992 & 0,999993 & 50,09 & 9,7    & 0,38    \\ \hline
-0,6 & \cellcolor{yellow} 0.0007 & 0,9992 & 0,999993 & 50,19 & 14,82  & 0,5     \\ \hline
-0,6 & 0.0006 & \cellcolor{yellow} 0,9991 & 0,999993 & 44,55 & 12,18  & 0,5     \\ \hline
-0,6 & 0.0006 & \cellcolor{yellow} 0,9993 & 0,999993 & 57,33 & 12,57  & 0,41    \\ \hline
-0,6 & 0.0006 & 0,9992 & \cellcolor{yellow} 0,99999  & 50,25 & 9,2    & 0,33    \\ \hline
-0,6 & 0.0006 & 0,9992 & \cellcolor{yellow} 0,999995 & 50,05 & 16,66  & 0,58    \\ \hline
+$$0,6$$ & $0,0006$ & $0,9992$ & $0,999993$ & $50,14$ & $12,34$  & $0,46$    \\ \hline \hline
+\cellcolor{yellow} $0,5$ & $0,0006$ & $0,9992$ & $0,999993$ & $62,69$ & $12,45$  & $0,43$    \\ \hline
+\cellcolor{yellow} $0,7$ & $0,0006$ & $0,9992$ & $0,999993$ & $37,59$ & $12,2$   & $0,5$     \\ \hline
+$0,6$ & \cellcolor{yellow} $0,0005$ & $0,9992$ & $0,999993$ & $50,09$ & $9,7$    & $0,38$    \\ \hline
+$0,6$ & \cellcolor{yellow} $0,0007$ & $0,9992$ & $0,999993$ & $50,19$ & $14,82$  & $0,5$     \\ \hline
+$0,6$ & $0,0006$ & \cellcolor{yellow} $0,9991$ & $0,999993$ & $44,55$ & $12,18$  & $0,5$     \\ \hline
+$0,6$ & $0,0006$ & \cellcolor{yellow} $0,9993$ & $0,999993$ & $57,33$ & $12,57$  & $0,41$    \\ \hline
+$0,6$ & $0,0006$ & $0,9992$ & \cellcolor{yellow} $0,99999$  & $50,25$ & $9,2$    & $0,33$    \\ \hline
+$0,6$ & $0,0006$ & $0,9992$ & \cellcolor{yellow} $0,999995$ & $50,05$ & $16,66$  & $0,58$    \\ \hline
 \end{tabular}
 \end{table}
 
-\todo{Bild oder Tabelle?}
+
+\begin{table}[]
+\centering
+\caption{Einfluss auf einen Peak (2)}
+\label{einfluss_t100}
+\begin{tabular}{|l|l|l|l||l|l|l|}
+\hline
+pmm & pml    & paa    & pll      & Lage  & Breite & Schiefe \\ \hline \hline
+ $0,1$ & $0,0005$  & $0.9991$  & $0.99999$  & $100,22$  & $8,1$  & $0,23$ \\ \hline
+ $0,05$ & $0,0005$  & $0.9991$  & $0.99999$  & $105,76$  & $8,11$  & $0,23$ \\ \hline
+ $0,2$ & $0,0003$  & $0.9991$  & $0.99999$  & $89,1$  & $8,05$  & $0,23$ \\ \hline
+ $0,1$ & $0,0007$  & $0.9991$  & $0.99999$  & $100,04$  & $6,22$  & $0,12$ \\ \hline
+ $0,1$ & $0,0005$  & $0.9991$  & $0.99999$  & $100,4$  & $10,89$  & $0,34$ \\ \hline
+ $0,1$ & $0,0005$  & $0.999$  & $0.99999$  & $90,17$  & $7,68$  & $0,26$ \\ \hline
+ $0,1$ & $0,0005$  & $0.9992$  & $0.99999$  & $112,77$  & $8,64$  & $0,2$ \\ \hline
+ $0,1$ & $0,0005$  & $0.9991$  & $0.999975$  & $100,41$  & $5,91$  & $0,8$ \\ \hline
+ $0,1$ & $0,0005$  & $0.9991$  & $0.999993$  & $100,12$  & $9,93$  & $0,34$ \\ \hline
+\end{tabular}
+\end{table}
 
 
 \subsubsection{Einfluss abhängig von anderen Parametern}
@@ -509,7 +518,7 @@ Mit dem 2-Zustände Modell war es nur eingeschränkt möglich, Tailing zu erzeug
 
 Das andere Problem jedoch, dass Peaks zu jedem Zeitpunkt eine Minimalbreite haben, konnte dadurch jedoch nicht gelöst werden. Die Peaks können durch Hinzunahme eines weiteren stationären Zustandes höchstens breiter werden. 
 
-%\section{Laufzeiten}
-\todo{Was muss noch evaluiert werden?}
+\section{Laufzeiten}
+\todo{Wohin mit Laufzeiten? Hier und Implementierung!}
 
-\todo{Wohin mit Laufzeiten? Hier oder Implementierung}
+ 
