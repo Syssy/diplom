@@ -1,24 +1,22 @@
 \chapter{Modell} %Modell/Modelle?
 \label{chapter:mod}
-\todo{Kapitelstruktur?}
+%\todo{Kapitelstruktur?}
+Im Folgenden werden die Simulationsmodelle für die Chromatographie vorgestellt. 
+Zunächst müssen einige Vorgaben festgelegt werden, wie reale Bedingungen in der Simulation abgebildet werden sollen.
 
-Im Folgenden werden die Simulationsmodelle für die Chromatographie vorgestellt. Basis für die Modelle ist der im letzten Kapitel beschriebene Phasenwechsel der Teilchen im Verlauf der Chromatographie. Zusätzlich zur Simulation vieler Teilchen wird auch jeweils eine Modellierung als PAA vorgestellt.
+Basis für die anschließend vorgestellten Modelle ist der im letzten Kapitel beschriebene Phasenwechsel der Teilchen im Verlauf der Chromatographie. Nach einem sehr einfachen Modell, das mit lediglich zwei Parametern auskommt, wird ein weiteres, komplexeres Modell beschrieben.
 
-%Kapitelübersicht: Man kann unterscheiden zwischen verschiedenen Modellen (2p/3s) und den Arten, wie diese umgesetzt werden (Teilchensim oder PAA)
+Zusätzlich zur Simulation vieler einzelner Teilchen, welche die Modelle durchlaufen, wird auch jeweils eine Modellierung als PAA vorgestellt.
 
 \section{Vorgaben}
-\todo{Grundlegendes: Zeit und Orte disktet und endlich}
+Bei jeder Simulation müssen Einschränkungen gegenüber den realen Bedingungen gemacht werden. In diesem Fall betrifft das vor allem drei Punkte: den Raum, die Zeit und die Anzahl der Analytteilchen.
 
 %\section{Festlegung der Einheiten}
-$20$ cm entspricht 1000 Schritten, in die MCC unterteilt wird.
+Für die Simulation wird eine Multikapillarsäule von $20$ cm Länge angenommen. Diese wird in $1000$ Einheiten von je $0,2$\, mm unterteilt. Damit nutzt die Simulation ein diskretes Raummodell. Außerdem wird nicht berücksichtigt, dass die Säule eine Röhre und damit dreidimensional ist, sondern wird als gerade Strecke angenommen. An jeder der $1000$ Positionen der Strecke können sich jedoch beliebig viele Teilchen aufhalten, ohne aufeinander Einfluss zu nehmen.
 
-1 Schritt ist damit $0,2$\, mm
+Die Zeit wird ebenfalls als diskret und endlich angenommen. Es wird ein Trägergas, welches nach etwa $0,1$ Sekunden die Säule durchlaufen hat. Außerdem soll es sich pro Zeitschritt und damit pro Simulationsschritt je einen Raumschritt fortbewegen, was einer Geschwindigkeit von $2$ m/s entspricht. Damit entspricht eine Zeiteinheit $0.1/1000$ Sekunden also $0,1$\, ms. Um die Simulationsdauer zu beschränken und da auch reale Experimente nach einer bestimmten Zeit beendet sind, wird eine maximale Zeit von $240$ Sekunden, also $2400000$ Simulationsschritten gesetzt. Insbesondere diese Grenze lässt sich aber nach Belieben verändern.
 
-Trägergas hat nach etwa $0,1$ Sekunden die Säule durchlaufen.
-
-Eine Zeiteinheit entspricht demnach ca. $0.1/1000$ Sekunden also $0,1$\, ms
-
-Zusammenfassung in Tabelle \ref{einheiten}.
+Die gemachten Vorgaben sind in Tabelle \ref{einheiten} zusammengefasst.
 
 \begin{table}[H]
 \centering
@@ -31,18 +29,19 @@ Länge der Säule           & $20$ cm               		& $1000$ Raumschritte     
 			  & \multicolumn{2}{l|}{1 Zeitschritt $\equiv 0,2$ mm} \\ \hline
 Durchlaufzeit Trägergas   & $0,1$ s $\equiv$ $2$ m/s       	& $1000$ Zeitschritte       \\ \hline
 			  & \multicolumn{2}{l|}{1 Raumschritt $\equiv 0,1$ ms} \\ \hline
-Geschwindigkeit Trägergas & $2$ m/s 				& 1 Raumschritt / Zeitschritt \\ \hline	
+Geschwindigkeit Trägergas & $2$ m/s 				& 1 Raumschritt / Zeitschritt \\ \hline
 \end{tabular}
 \end{table}
+%\todo{einheiten tabelle}
 
-\todo{einheiten tabelle}
-Die Intensität eines Peaks in echten Messungen ist unter anderem abhängig vom Messverfahren und der Stoffmenge im zu analysierenden Gemisch. In den Simulationen wird stets eine bestimmte Anzahl von Teilchen, zum Beispiel $1000$ oder $10000$ Teilchen simuliert.
+Die Anzahl der Analytteilchen pro Stoff im Laborexperiment ist viel zu groß, als dass tatsächlich jedes einzelne simuliert werden könnte und dabei in akzeptabler Zeit Ergebnisse erzielt würden. Daher wurde die Anzahl der Teilchen auf $1000$ bzw. $10.000$ beschränkt. Wie sich in den simulierten Daten zeigt, ergeben sich bereits bei $1000$ Teilchen erkennbare Peaks, die jedoch noch von Simulationsdurchlauf zu Simulationsdurchlauf Unterschiede aufweisen können. Bei $10.000$ simulierten Teilchen ergeben sich demgegenüber geglättete Peaks, die sich zwischen den Simulationen nur minimal unterscheiden.
+%Die Intensität eines Peaks in echten Messungen ist unter anderem abhängig vom Messverfahren und der Stoffmenge im zu analysierenden Gemisch. In den Simulationen wird stets eine bestimmte Anzahl von Teilchen, zum Beispiel $1000$ oder $10000$ Teilchen simuliert.
 
 
 \section{2-Zustände Modell}
 \label{chapter:mod:2p}
 
-Als Grundlage für die Entwicklung eines Simulationsmodells dient die Beobachtung des chromatographischen Prozesses. Dieser ist wie in Kapitel \ref{chapter:gru} beschrieben gekennzeichnet durch viele Teilchen, welche häufig zwischen der stationären und mobilen Phase wechslen. Es liegt also nahe, dass im Modell ebenfalls Teilchen simuliert werden, die zwischen zwei Zuständen, welche die beiden Phasen repräsentieren, wechseln. Im Folgenden bezeichnet m die mobile und s die stationäre Phase. Der Phasenwechsel geschieht jeweils mit einer bestimmten Wahrscheinlichkeit. Dabei kann es möglich sein, dass die Wahrscheinlichkeiten für den Wechsel in die eine oder andere Richtung voneinander abhängig sind. Da dies jedoch nicht sein muss, wird für das Modell zunächst der Fall von unabhängigen Wechselwahrscheinlichkeiten angenommen. Es sei also $p_{\text {m}}$ die Wahrscheinlichkeit, dass ein Teilchen, welches sich bereits in der mobilen Phase befindet, auch mobil bleibt und $1-p_{\text {m}}$ die Wahrscheinlichkeit, dass es in die stationäre Phase übergeht. Analog seien $p_{\text {s}}$ und $1-p_{\text {s}}$ die Wahrscheinlichkeiten, dass ein stationäres Teilchen in der stationären Phase bleibt bzw. zur mobilen Phase wechselt. 
+Als Grundlage für die Entwicklung eines Simulationsmodells dient die Beobachtung des chromatographischen Prozesses. Dieser ist wie in Kapitel \ref{chapter:gru} beschrieben gekennzeichnet durch viele Teilchen, welche häufig zwischen der stationären und mobilen Phase wechslen. Es liegt also nahe, dass im Modell ebenfalls Teilchen simuliert werden, die zwischen zwei Zuständen, welche die beiden Phasen repräsentieren, wechseln. Im Folgenden bezeichnet m die mobile und s die stationäre Phase. Der Phasenwechsel geschieht jeweils mit einer bestimmten Wahrscheinlichkeit. Dabei kann es möglich sein, dass die Wahrscheinlichkeiten für den Wechsel in die eine oder andere Richtung voneinander abhängig sind. Beispielsweise könnte eine hohe Wahrscheinlichkeit in den stationären Zustand zu wechsel eine ebenfalls hohe Wahrscheinlichkeit, wieder mobil zu werden bedingen. Da ein solcher Zusammenhang jedoch nicht gegeben sein muss, wird für das Modell zunächst der Fall von unabhängigen Wechselwahrscheinlichkeiten angenommen. Es sei also $p_{\text {m}}$ die Wahrscheinlichkeit, dass ein Teilchen, welches sich bereits in der mobilen Phase befindet, auch mobil bleibt und $1-p_{\text {m}}$ die Wahrscheinlichkeit, dass es in die stationäre Phase übergeht. Analog seien $p_{\text {s}}$ und $1-p_{\text {s}}$ die Wahrscheinlichkeiten, dass ein stationäres Teilchen in der stationären Phase bleibt bzw. zur mobilen Phase wechselt. 
 
 \subsection{Teilchensimulation}
 Durch die eben gemachten Annahmen ergibt sich als erstes Modell ein einfacher Automat mit zwei Zuständen $\mathcal{Q} = \{\text{m, s}\}$. m ist Startzustand, da die Teilchen stets nur in der mobilen Phase in die Säule eintreten können. Dazu kommen die oben beschriebenen Transitionen $T= 

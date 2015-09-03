@@ -23,7 +23,10 @@ Außerdem existieren Idee, noch eine Sättigung der freien Plätze zur Adsorptio
 
 Das ganze auch für spätere Zeitpunkte überprüfen (echte Messlänge, dauert nur halt lange mit der Sim, evtl dafür die eventsim nutzbar?)
 
-
 Falls Formel für entsprecung nicht gefunden: Das Sekantenverfahren erwähnen?
+Verfahren entwickeln, um gewünschten Peak zu simulieren. Bisher funktioniert das händisch unter Anwendung der Erkenntnisse, wie sich die Parameter auf die Peaks auswirken. Wenn also ein Peak mit bestimmten Eigenschaften gewünscht ist, wird bisher die grobe Umgebung abgesucht. Die Parameter der dort gefundenen Peaks werden in die passende Richtung abgewandelt (zb. er ist etwas zu früh, dann wird pmm verringert oder zu schmal, dann wird pll erhöht). Anschließend wird überprüft, wo der neue Peak liegt und evtl noch mal die Parameter angepasst. 
+Um das zu ersparen müsste entweder der komplette Parameterraum noch besser abgedeckt werden (was uU sehr viel Laufzeit und Speicherplatz kostet) oder die Vorgehensweise automatisiert werden.
 
 Umsetzung von Modellen mit mehr Zuständen: Simulation als event nicht schwer (und von den Laufzeiten her wohl auch ganz gut) die by-step müsste aber angepasst werden (Schleifen) da sonst wohl zu aufwändig und zu langsam. gleiches gilt für paa, da wäre auch eine neue umsetzung nötig
+
+Doch noch mal Halbwertsbreite bzw 10\% Breite und Breite links und rechts des Maximums als Maße für Breite und Schiefe testen, da in einigen Fällen die berechneten Werte den vom menschlichen Betrachter gewonnenen Eindruck widersprechen.
