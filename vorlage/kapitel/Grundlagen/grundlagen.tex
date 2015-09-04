@@ -23,12 +23,12 @@ Bei der Gaschromatographie (GC) ist die mobile Phase ein Gas und es wird zusätz
 % Verwandte Arbeiten?
 % Wo kommt das mit den Referenzdatensätzen rein?
 
-Beispielsweise kann die GC in einer Multikapillarsäule (MCC, engl. Multi Capillary Colum) stattfinden. Sie besteht aus ca. 1000 bis 2000 einzelnen Kapillaren \cite{obinski1999, Baumbach2009}. Jede davon ist innen mit der stationären Phase beschichtet. Außerdem kommt ein Trägergas, die mobile Phase, zum Einsatz, welches die Analyte durch die Säule transportiert. Dieses kann beispielsweise Stickstoff, Helium \cite{obinski1999} oder Luft sein \cite{Baumbach2009}.
+Beispielsweise kann die GC in einer Multikapillarsäule (MCC, engl. Multi Capillary Colum) stattfinden. Sie besteht aus ca. 1000 bis 2000 einzelnen Kapillaren \citep{obinski1999, Baumbach2009}. Jede davon ist innen mit der stationären Phase beschichtet. Außerdem kommt ein Trägergas, die mobile Phase, zum Einsatz, welches die Analyte durch die Säule transportiert. Dieses kann beispielsweise Stickstoff, Helium \citep{obinski1999} oder Luft sein \citep{Baumbach2009}.
 
 \subsection{Der chromatograpische Prozess}
 Die nachfolgende Beschreibung des chromatographischen Prozesses bezieht sich auf die Gaschromatographie in Kapillarsäulen. Die prinzipielle Auftrennung der Stoffe durch häufigen Wechsel zwischen den beiden Phasen, ist aber allen Arten der Chromatographie gemein.
 \todo{weitere Quelle zum ausführlichen Nachlesen}
-Ausführlich beschrieben ist der chromatograpische Prozess beispielsweise in \cite{kolb2003}.
+Ausführlich beschrieben wurde der chromatograpische Prozess beispielsweise von \cite {kolb2003}.
 Die für diese Arbeit wesentlichen Punkte sind hier kurz zusammengefasst:
 
 Die Substanzen unterscheiden sich vor allem durch ihre Wechselwirkungen mit der stationären Phase. Während dieser Wechselwirkungen haften die Teilchen an der stationären Phase, bewegen sich also nicht fort. Finden verhältnismäßig wenig Wechselwirkungen statt, passieren die Teilchen die Säule schneller, als wenn viele Wechselwirkungen stattfinden. Dies beeinflusst die so genannte Retentionszeit, also die Zeit, die zum Durchlaufen der Säule gebraucht wird.
@@ -44,7 +44,11 @@ Je nach Verweildauer der einzelnen Teilchen in der stationären Phase, ergibt si
 \subsection{Detektion}
 Nach Durchlaufen der Säule wird detektiert, welche Menge an Substanzen austritt. Dabei wird nicht die Art des Analyts festgestellt, sondern nur die Menge der zum jeweiligen Zeitpunkt austretenden Stoffe. Während sich die meisten Stoffe ausreichend in ihrem Verhalten zur stationären Phase unterscheiden und dadurch aufgetrennt die Säule verlassen, kann es aber durchaus vorkommen, dass sich zwei Stoffe hinreichend ähnlich sind und  zumindest teilweise überlappend austreten.
 
-Zur Detektion existieren mehrere Möglichkeiten. Zum Einen kann ein Detektor wie beispielsweise ein Wärmeleitfähigkeitsdetektor oder Flammenionisationsdetektor ein Chromatogramm aufzeichen. Dabei wird in bestimmten Zeitintervallen die austretende Menge Analyte festgestellt. Beispielhaft ist ein Chromatogramm in Abbildung \ref{chromatogramm} zu sehen. 
+Zur Detektion existieren mehrere Möglichkeiten. Zum Einen kann ein Detektor wie beispielsweise ein Wärmeleitfähigkeitsdetektor oder Flammenionisationsdetektor ein Chromatogramm aufzeichen. Dabei wird in bestimmten Zeitintervallen die austretende Menge Analyte festgestellt. 
+%Beispielhaft ist ein Chromatogramm in Abbildung \ref{chromatogramm} zu sehen. 
+In Abbildung \ref{chromatogramm} ist ein Beispiel für ein Chromatogramm zu sehen, welches aus mehreren simulierten Daten und Hintergrundrauschen erstellt wurde.
+Typischerweise sind zu Beginn einer Messung die Peaks sehr schmal und werden mit zunehmender Retentionszeit eher breiter.
+\todo{neues chroma mit breiter werdenden peaks}
 %\todo{Bild Chromatogramm (zb ein verrauschter plot 2-3 stoffe, dabei unterschiedlichen pd)}
 
 \begin{figure}
@@ -55,12 +59,13 @@ Zur Detektion existieren mehrere Möglichkeiten. Zum Einen kann ein Detektor wie
 \end{figure}
 
 Alternativ kann die Gaschromatographie auch als Vorverarbeitung für Verfahren wie Massenspektrometrie (MS) oder Ionen-Mobilitäts-Spektrometrie (IMS) dienen. Auch bei diesen Technologien können nicht in jedem Fall alle Stoffe voneinander unterschieden werden. Zum Beispiel existieren Isomere, also Moleküle gleicher Masse aber unterschiedlicher Struktur, die von der MS nicht unterschieden werden können. Durch zuvor statt findende GC jedoch wird nach einer weiteren Stoffeigenschaft unterschieden, sodass diese ähnlichen Stoffe durch die Vortrennung zu verschiedenen Zeitpunkten mit dem zweiten Analyseverfahren beginnen und so doch getrennt im resultierenden Spektrum erscheinen. Wenn eine solche Weiterverarbeitung statt finden soll, werden die aus der MCC austretenden Moleküle direkt ionisiert und in den entsprechenden Geräten weiter analysiert.
-Die Kopplung von GC und MS ist beispielsweise in \cite{Hubschmann2009} ausführlich beschrieben, näheres zur Kopplung von GC und IMS findet sich zum Beispiel in \cite{Baumbach2009}. 
+Die Kopplung von GC und MS ist beispielsweise von \cite{Hubschmann2009} ausführlich beschrieben worden, näheres zur Kopplung von GC und IMS findet sich zum Beispiel bei \citep{Baumbach2009}. 
 
 %\todo{Wo kann ich sonst Peaks beobachten?}
 
 \subsection{Technische Daten}
-TODO
+TODO: Fließtext. 
+Angaben von Webseite (Hersteller) mit Fußnote
 
 Eine MCC besteht aus ca. $1000 - 2000$ Kapillaren mit je
 \begin{itemize}
@@ -76,7 +81,8 @@ Der Querschnitt einer MCC ist in Abbildung \ref{MCC} zu sehen.
 \begin{figure}
  \centering
   \includegraphics[width = 0.5\textwidth]{bilder/MultiCapillaryColumn}\\
-  \caption[Querschnitt einer MCC]{Querschnitt einer MCC \protect\footnotemark}
+  %\caption[Querschnitt einer MCC]{Querschnitt einer MCC \protect\footnotemark}
+  \caption[Querschnitt einer MCC]{Querschnitt einer MCC, Quelle: http://yas.yanaco.co.jp/products/import-gc-ims.html}
   \label{MCC}
 \end{figure}
 \footnotetext{http://yas.yanaco.co.jp/products/import-gc-ims.html}
@@ -102,7 +108,7 @@ Da jedoch ein Peak mit größerer Intensität, also möglicherweise größerer S
 \subsection{Form}
 Als dritte Eigenschaft können sich Peaks in ihrer Form unterscheiden. Im theoretischen Idealfall haben sie die Form einer Gaußkurve. %\todo{Quelle}
 Abweichend davon treten in echten Messungen häufig asymmetrische Peaks auf, die dann ein Tailing aufweisen, diese Eigenschaft wird auch Rechtsschiefe genannt. Dabei steigt die Kurve zunächst stark an, sinkt jedoch nach Erreichen des Maximalwerts deutlich langsamer ab, es entsteht ein Schwanz (engl. Tail).
-Ursachen für solche schiefen Peaks gibt es viele \cite{kolb2003, Moretti2004, Giddings1963}. Einige Beispiele für Ursachen sind zusätzliche Adsorptionseffekte, die beim Altern einer Säule auftreten, technische Ursachen wie kleinste Hohlräume zwischen der Säule und dem Gaseinlass bzw. -austritt, sowie einige Stoffe, die generell zu Tailing neigen. %\todo{Zitat, dass einige Stoffe gererell tailen}. 
+Ursachen für solche schiefen Peaks gibt es viele \citep{kolb2003, Moretti2004, Giddings1963}. Einige Beispiele für Ursachen sind zusätzliche Adsorptionseffekte, die beim Altern einer Säule auftreten, technische Ursachen wie kleinste Hohlräume zwischen der Säule und dem Gaseinlass bzw. -austritt, sowie einige Stoffe, die generell zu Tailing neigen. %\todo{Zitat, dass einige Stoffe gererell tailen}. 
 
 Als Maß für die Schiefe bietet sich der Quartilskoeffizient nach Yule-Bowley an. Dieser berechnet sich aus den Quartilen einer Verteilung und ist definiert als: 
 \begin{equation*}

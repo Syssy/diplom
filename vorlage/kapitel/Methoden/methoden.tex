@@ -220,7 +220,6 @@ Dadurch entsteht pro Zustand ein Array, welches für jedes in diesem Zustand bef
 
 Die Berechnung der neuen Orte der Teilchen ist dann wiederum einfach. Da die Maske für den mobilen Zustand bereits alle mobilen Teilchen markiert, kann diese auf den Ortsvektor addiert werden. Um $M_0$ nicht nach den Zustandswechseln neu berechnen zu müssen, findet das Fortbewegen im Simulationschritt vor dem Zustandswechsel statt und die Teilchen starten dafür an Position $0$ statt an $1$ wie es bei der 2-Zustände Simulation der Fall war. Die Eingabe der Orte für Algorithmus \ref{algo_by_Step} ist also $o= [o_1 = 0, \ldots, o_n=0]$.
 
-\todo{Erweiterung auf mehr Zustände mit exakt diesem Vorgehen wohl kaum sinnvoll, da zu laufzeit intensiv-> Diskussionskapitel?}
 
 % Hier werden die Teilchen alle parallel bearbeitet 
 % \todo{müsste hier nicht schon ein verweis auf numpy hin?}

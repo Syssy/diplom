@@ -107,12 +107,19 @@ In Abbildung \ref{einfluss_ps_1} ist der Einfluss des Parameters ps in Abhängig
 \label{einfluss_pm_1}
 \end{figure}
 
-Der Einfluss des Parameters pm in Abhängigkeit von ps ist in Abbildung \ref{einfluss_pm_1} zu dargestellt. Auch hier ist der Einfluss von pm auf Breite und Lage der Peaks erkennbar, der stärker ist bei größerem ps. Zu erkennen ist hier auch eine geringe Zunahme der Schiefe mit steigendem pm. Diese Veränderung ist jedoch nicht abhängig von ps.
+Der Einfluss des Parameters pm in Abhängigkeit von ps ist in Abbildung \ref{einfluss_pm_1} zu dargestellt. In beiden Fällen werden die Peaks mit zunehmendem pm schmaler und erscheinen zu einem früheren Zeitpunkt. Dies verstärkt sich bei größerem ps. 
+Zu erkennen ist hier auch eine geringe Zunahme der Schiefe mit steigendem pm. Diese Veränderung ist jedoch nicht abhängig von ps.
+
+
+
+%Auch hier ist der Einfluss von pm auf Breite und Lage der Peaks erkennbar, der stärker ist bei größerem ps. 
+TODO wohin?: Unter anderen ergibt sich dieser Zusammenhang sich daraus, dass sich in diesem Fall auch der Maximalzeitpunkt nach hinten verschiebt und spätere Peaks generell breiter sind, als frühe Peaks. Durch mehr Interaktionen, deren Länge jeweils zufällig ist, wird der Pulk breiter.
+
 
 %Schiefe nur von pmm beeinflusst. Auch wenn pm auf den Wert von 0.999 gesetzt ist, was ja schiefe verursacht, ergeben alle ps's gleiche schiefe. Umgekehrt erzeugen bei festem ps jeweils die pm von ca 0.999 schiefe peaks bei sehr kleinen zeitpunkten (loc = 0.1, also minimalzeitpunkt) Das sieht so aus, als würde der direkt am beginn starten, aber das ist der kompression geschuldet, wenn ich nur ein zehntel komprimiere, hat der peak vorlauf
 
 \section{Grenzen}
-Mit diesem Modell sind kaum tailende Peaks erzeugbar. Schiefe von mehr als $0,05$ tritt nur selten auf, immer bei Peaks, die ihren Maximalzeitpunkt ganz am Anfang des Spektrums, knapp über der Trägergaszeit von $0,1$ Sekunden haben. Der Effekt wird verursacht durch einen sehr großen Wert für pm, der bei ungefähr $0,999$ liegt. Dadurch gibt es viele Teilchen die (bei einer Säulenlänge von $1000$ Schritten) gar nicht in Wechselwirkung mit der stationären Phase geraten und dadurch mit Trägergasgeschwindigkeit durch die Säule wandern. Die wenigen Teilchen, die doch in die stationäre Phase eintreten, verursachen den Tail, da sie deutlich später als der Pulk die Säule verlassen.
+Mit diesem Modell sind kaum tailende Peaks erzeugbar. Schiefe von mehr als $0,05$ tritt nur selten auf und immer bei Peaks, die ihren Maximalzeitpunkt ganz am Anfang des Spektrums, knapp über der Trägergaszeit von $0,1$ Sekunden haben. Der Effekt wird verursacht durch einen sehr großen Wert für pm, der bei ungefähr $0,999$ liegt. Dadurch gibt es viele Teilchen die (bei einer Säulenlänge von $1000$ Schritten) gar nicht in Wechselwirkung mit der stationären Phase geraten und dadurch mit Trägergasgeschwindigkeit durch die Säule wandern. Die wenigen Teilchen, die doch in die stationäre Phase eintreten, verursachen den Tail, da sie deutlich später als der Pulk die Säule verlassen.
 
 Eine weitere Grenze ist jedoch die Minimalbreite der erzeugten Peaks. Damit ist gemeint, dass mit zunehmender Zeit die Minimalbreite der Peaks, die an diesem Zeitpunkt ihr Maximum haben, ansteigt. Zur Verdeutlichung ist in Abbildung \ref{Grenzen_2p_ohnep} eine Übersicht über die erreichbaren Zeit-Breiten Kombinationen gegeben. Jeder Punkt steht für einen Peak, der mit der entsprechenden Maximalzeit und Breite erzeugt wurde.
 Zu sehen ist, dass es zu jedem Zeitpunkt möglich ist, Peaks mit dem Modell zu erzeugen. Auch zwischen den einzelnen Punkten sind Peaks erzeugbar, wenn die Parameter entsprechend angepasst werden.
@@ -175,12 +182,10 @@ Im Folgenden werden die Einflüsse der Parameter dieses Modells untersucht, dabe
 % Auch bei 3 Zuständen können in den meisten Fällen ein deutlicher Zusammenhang zwischen den Parametern und Peakdaten beobachtet werden, diese seien im Folgenden aufgeführt.
 
 \subsection{Einfluss auf einzelne Peaks}
-Um den Einfluss der Parameter auf Peaks zu untersuchen, wurden zunächst einige realistische Ausgangspeaks gewählt. Die dafür verwendeten Simulationsparameter wurden dann nur wenig verändert und beobachtet, wie sich der Peak verändert. In \ref{einfluss_t50} und \ref{einfluss_t100} ist jeweils gezeigt, wie der Peak auf die Veränderungen reagiert. 
+Um den Einfluss der Parameter auf Peaks zu untersuchen, wurden zunächst einige realistische Ausgangspeaks gewählt. Der erste hat eine Retetionszeit von ca $50$, eine Breite von $12$ und Schiefe von $0,46$. Der zweite hat eine Retetionszeit von $100$, Breite von $8$ und Schiefe von $0,23$.
+Die für die beiden Peaks verwendeten Simulationsparameter wurden dann nur wenig verändert und beobachtet, wie die Maße der Peaks darauf reagierten. In \ref{einfluss_t50} und \ref{einfluss_t100} sind diese Veränderungen jeweils gezeigt. Gelb markiert ist immer der Parameter, der in der jeweiligen Simulation verändert wurde.
 
-Zu erkennen ist, dass eine Veränderung von pmm und paa jeweils die Lage des Peaks beeinflusst, hingegen eine Änderung von pml oder pll kaum einen Einfluss auf die Lage hat. Umgekehrt wird die Breite hauptsächlich durch pml und pll verändert, jedoch nur minimal von pmm und paa. 
-
-
-\begin{table}[]
+\begin{table}[h]
 \centering
 \caption{Einfluss auf einen Peak (1)}
 \label{einfluss_t50}
@@ -199,8 +204,7 @@ $0,6$ & $0,0006$ & $0,9992$ & \cellcolor{yellow} $0,999995$ & $50,05$ & $16,66$ 
 \end{tabular}
 \end{table}
 
-
-\begin{table}[]
+\begin{table}[h]
 \centering
 \caption{Einfluss auf einen Peak (2)}
 \label{einfluss_t100}
@@ -208,28 +212,35 @@ $0,6$ & $0,0006$ & $0,9992$ & \cellcolor{yellow} $0,999995$ & $50,05$ & $16,66$ 
 \hline
 pmm & pml    & paa    & pll      & Lage  & Breite & Schiefe \\ \hline \hline
  $0,1$ & $0,0005$  & $0.9991$  & $0.99999$  & $100,22$  & $8,1$  & $0,23$ \\ \hline
- $0,05$ & $0,0005$  & $0.9991$  & $0.99999$  & $105,76$  & $8,11$  & $0,23$ \\ \hline
- $0,2$ & $0,0003$  & $0.9991$  & $0.99999$  & $89,1$  & $8,05$  & $0,23$ \\ \hline
- $0,1$ & $0,0007$  & $0.9991$  & $0.99999$  & $100,04$  & $6,22$  & $0,12$ \\ \hline
- $0,1$ & $0,0005$  & $0.9991$  & $0.99999$  & $100,4$  & $10,89$  & $0,34$ \\ \hline
- $0,1$ & $0,0005$  & $0.999$  & $0.99999$  & $90,17$  & $7,68$  & $0,26$ \\ \hline
- $0,1$ & $0,0005$  & $0.9992$  & $0.99999$  & $112,77$  & $8,64$  & $0,2$ \\ \hline
- $0,1$ & $0,0005$  & $0.9991$  & $0.999975$  & $100,41$  & $5,91$  & $0,8$ \\ \hline
- $0,1$ & $0,0005$  & $0.9991$  & $0.999993$  & $100,12$  & $9,93$  & $0,34$ \\ \hline
+\cellcolor{yellow} $0,05$ & $0,0005$  & $0.9991$  & $0.99999$  & $105,76$  & $8,11$  & $0,229$ \\ \hline
+\cellcolor{yellow} $0,2$ & $0,0003$  & $0.9991$  & $0.99999$  & $89,1$  & $8,05$  & $0,235$ \\ \hline
+ $0,1$ & \cellcolor{yellow} $0,0007$  & $0.9991$  & $0.99999$  & $100,04$  & $6,22$  & $0,12$ \\ \hline
+ $0,1$ & \cellcolor{yellow} $0,0005$  & $0.9991$  & $0.99999$  & $100,4$  & $10,89$  & $0,34$ \\ \hline
+ $0,1$ & $0,0005$  & \cellcolor{yellow} $0.999$  & $0.99999$  & $90,17$  & $7,68$  & $0,26$ \\ \hline
+ $0,1$ & $0,0005$  & \cellcolor{yellow} $0.9992$  & $0.99999$  & $112,77$  & $8,64$  & $0,2$ \\ \hline
+ $0,1$ & $0,0005$  & $0.9991$  & \cellcolor{yellow} $0.999975$  & $100,41$  & $5,91$  & $0,08$ \\ \hline
+ $0,1$ & $0,0005$  & $0.9991$  & \cellcolor{yellow} $0.999993$  & $100,12$  & $9,93$  & $0,34$ \\ \hline
 \end{tabular}
 \end{table}
 
+Zu erkennen ist, dass eine Veränderung von pmm und paa jeweils die Lage des Peaks deutlich beeinflusst, hingegen eine Änderung von pml oder pll kaum einen Einfluss auf die Lage hat. Umgekehrt wird die Breite viel deutlicher durch pml und pll verändert, pmm und paa haben hier auch einen Einfluss, der jedoch viel geringer erscheint. 
+
+Dabei ist deutlich, dass pmm die gleichen Auswirkungen auf die Peaks bezüglich Lage und Breite hat, wie pm im 2-Zustände Modell. Die gleiche Entsprechung findet sich für paa und ps.
+
+Die Schiefe wird, von allen Parametern zumindest geringfügig beeinflusst. Dabei wird die Schiefe größer, wenn pmm, pml oder pll größer oder paa kleiner werden.
+ 
+TODO: Als Tabelle? 
+Für den Maximalzeitpunkt des Peaks sowie seine Breite gilt, dass beide größer werden, wenn die Parameter $p_{ml}$, $p_{aa}$ und $p_{ll}$ größer werden oder $p_{mm}$ kleiner wird. 
+Die Schiefe steigt mit fallendem $p_{aa}$ und in den meisten Fällen mit steigendem $p_{mm}$. Für $p_{ml}$, $p_{ll}$ und in wenigen Fällen auch $p_{mm}$ ist zu beobachten, dass bei größer werdenden Parametern die Schiefe zunächst auch ansteigt, ab einem gewissen Wert jedoch sinkt.
+
+Insgesamt scheint es, dass die Einflüsse auf Zeitpunkt und Breite der Peaks weniger komplex sind, als die Einflüsse auf die Schiefe. Das ist auch damit erklärbar, dass für Zeitpunkt und Breite eigentlich nur die zwei Parameter des einfachen Modells nötig sind und die Aufsplittung des stationären Zustands daran nicht viel ändert. Die Schiefe jedoch hängt immer von mehreren Parametern und deren Kombination ab.
 
 \subsubsection{Einfluss abhängig von anderen Parametern}
 
 %\subsection{3-Zustände Modell}
-Bei diesem Modell ergeben sich durch die größere Anzahl an Parametern, komplexere Zusammenhänge zwischen den Parametern und den Peakdaten. Teilweise hängt die Stärke des Einflusses eines Parameters auf ein Peakcharakteristikum vom Wert eines anderen Parameters ab. Das heißt, der Einfluss eines Parameters auf die resultierenden Peaks kann größer oder kleiner sein, abhängig davon, ob ein anderer Parameter eher im oberen oder unteren Bereich seines oben angegebenen Intervalls liegt.
+Bei diesem Modell ergeben sich durch die größere Anzahl an Parametern, komplexere Zusammenhänge zwischen den Parametern und den Peakdaten. Teilweise hängt die Stärke des Einflusses eines Parameters auf ein Peakcharakteristikum von den anderen Parametern ab. Das heißt, der Einfluss eines Parameters auf die resultierenden Peaks kann größer oder kleiner sein, abhängig davon, welchen Wert ein oder mehrere der anderen Parameter annehmen.
 Zunächst können jedoch folgenden einfachen Zusammenhänge beobachtet werden:
 
-Für den Maximalzeitpunkt des Peaks sowie seine Breite gilt, dass beide größer werden, wenn die Parameter $p_{ml}$, $p_{aa}$ und $p_{ll}$ größer werden oder $p_{mm}$ kleiner wird. 
-Die Schiefe steigt mit fallendem $p_{aa}$ und in den meisten Fällen mit steigendem $p_{mm}$. Für $p_{ml}$, $p_{ll}$ und in wenigen Fällen auch $p_{mm}$ ist zu beobachten, dass bei größer werdenden Parametern die Schiefe zunächst auch ansteigt, ab einem gewissen Wert jedoch sinkt.
-
-Insgesamt gilt, dass die Einflüsse auf Zeitpunkt und Breite der Peaks weniger komplex sind, als die Einflüsse auf die Schiefe. Das ist auch damit erklärbar, dass für Zeitpunkt und Breite eigentlich nur die zwei Parameter des einfachen Modells nötig sind und die Aufsplittung des stationären Zustands daran nicht viel ändert. Die Schiefe jedoch hängt immer von mehreren Parametern und deren Kombination ab.
 
 Im Folgenden ist für jeden der vier Parameter eine detaillierte Übersicht gegeben welche Eigenschaften der Peaks er in Abhängigkeit anderer Parameter beeinflusst. Die zur Verdeutlichung verwendeten Plots sind denen aus der Auswertung des 2-Zustände Modells sehr ähnlich, hier wurden drei der vier Parameter fest gehalten, der vierte wird variiert. Auch diese Plots wurden zur besseren Vergleichbarkeit weiterhin mit der gleichen Achseneinteilung erstellt. 
 
@@ -268,7 +279,7 @@ Im Folgenden ist für jeden der vier Parameter eine detaillierte Übersicht gege
 
 Wie in Abbildung \ref{einfluss_pmm_1} zu sehen, ist der Einfluss von $p_{mm}$ auf den Zeitpunkt von $p_{aa}$ abhängig: Je größer $p_{aa}$ ist, desto stärker wird der Zeitpunkt von $p_{mm}$ beeinflusst. Wenn $p_{mm}$ und $p_{aa}$ klein sind, entstehen nur Peaks zu Beginn des Spektrums, unabhängig von $p_{ml}$ oder $p_{ll}$.
 
-Der Einfluss von $p_{mm}$ auf die Breite ebenfalls von $p_{aa}$ abhängig. Bei größerem $p_{aa}$ steigt dieser Einfluss etwas, wie ebenfalls in Abbildung \ref{einfluss_pmm_1} zu erkennen ist. Dieser Zusammenhang ergibt sich daraus, dass sich in diesem Fall auch der Maximalzeitpunkt nach hinten verschiebt und spätere Peaks generell breiter sind, als frühe Peaks.
+Der Einfluss von $p_{mm}$ auf die Breite ebenfalls von $p_{aa}$ abhängig. Bei größerem $p_{aa}$ steigt dieser Einfluss etwas, wie ebenfalls in Abbildung \ref{einfluss_pmm_1} zu erkennen ist.
 
 \todo{Noch mal den kleinen Bereich untersuchen, wo die Schiefe negativ beeinflusst wird. Das ist ein Bereich, in dem die Peaks zwar eher früh, aber dafür fast zu breit sind. Vielleicht hängt das damit zusammen? siehe: $p_{mm}$0.001 0.998 0.99999}
 
