@@ -59,9 +59,9 @@ public class myPAA_2s extends PAA implements DeterministicEmitter{
 	
         public static double[][] combineParams(){
             // gewuenschte Parametereinstellungen
-            double[] ps_list = new double[] {0.997, 0.999, 0.9992, 0.9995, 0.9999};
-            double[] pm_list = new double[] {0.01, 0.3, 0.9, 0.99};
-            double[][] param_list = new double[20][2];
+            double[] ps_list = new double[] {0.3, 0.997, 0.999, 0.9992, 0.9995};//, 0.9999};
+            double[] pm_list = new double[] {0.000000000000001, 0.01, 0.3, 0.9, 0.99};
+            double[][] param_list = new double[25][2];
             
             for (int i = 0; i<ps_list.length; i++){
                 for (int j = 0; j<pm_list.length; j++){
