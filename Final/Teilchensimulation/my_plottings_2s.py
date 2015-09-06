@@ -72,16 +72,18 @@ def plot_spectrum(sims, noise = False, maxtime=240):
         plt.suptitle(title)
         plt.show()
 
-def plot_widthmap(sim_array, trait = "loc"):
-    '''Erstelle Heatmap ueber die Breiten der Peaks, nur sinnvoll für systematische Simulationenliste'''
-    #print ("plot heatmap of width")
+def plot_trait(sim_array, trait = "loc"):
+    '''Erstelle Heatmap ueber die Eigenschaft der Peaks, nur sinnvoll für systematische Simulationenliste'''
     # traitdict enhält die Positionen der gewählten Eigenschaft in den pd
     traitdict =  {"loc": (0, "Lage"), "iqr": (2, "Breite"), "qk": (3, "Schiefe")}
-    c = traitdict[trait][0]
+    try:
+        c = traitdict[trait][0]
+    except KeyError:
+        logging.log(40, "Bitte Eigenschaft waehlen")
     #sortierte Liste der Params erstellen, noetig fuer die Ticks und die groesse des plots
     ps_list = sorted(list(set([sim.params[0] for sim in sim_array])))
     pm_list = sorted(list(set([sim.params[1] for sim in sim_array])))
-    print ("ps", ps_list, "pm", pm_list)   
+    #print ("ps", ps_list, "pm", pm_list)   
     #Alle Breiten ins array, das sind die zu plottenden Daten
     array_of_width = [[sim.pd[c] for sim in sim_array if sim.params[0]==ps] for ps in ps_list]
     print ("breiten", array_of_width)
@@ -109,36 +111,36 @@ def plot_reachable(folder, show_params = False):
     plt.xlabel("Zeit")
     plt.title("ps \n pm")
     for filename in filenames:  
-        #aSim = None
         with open (folder+filename, "r+b") as data:
             sim = pickle.load(data)
-    #Alle Peakdaten plotten
-    #for sim in sim_list:
-            #print (sim.params)
+            #Alle Peakdaten plotten
             if sim.pd[0] < 240 and sim.valid:
-     #            (loc, scale), breite, height, iqr = sim.pd
                 point = plt.plot(sim.pd[0], sim.pd[2], "ro-")
                 if show_params:
                     t = plt.text(sim.pd[0], sim.pd[2], str(sim.params[0])+'\n'+str(sim.params[1]), size= "small")#oder xx-small
     plt.show()
      
-def plot_params_at_time(sim_list, t, epsilon = 0.1, show_params = False):
+def plot_params_at_time(folder, t, epsilon = 0.1, show_params = False):
     """plotte Parameterkombinationen zu Zeit t, mit erlaubter Abweichung von t um epsilon"""
     # Plot erstellen und beschriften
     ax = plt.axes()
     ax.get_xaxis().get_major_formatter().set_useOffset(False)
     plt.xlabel("ps")
     plt.ylabel("pm")
+    filenames = [name for name in os.listdir(folder) if name.startswith("Sim_")]
     # Alle Sim durchgehen, wenn Bedingung erfuellt, plotten
-    for sim in sim_list:
-        if sim.pd[0] == sim.pd[0]:
-            if abs(sim.pd[0] - t) > epsilon:
-                logging.log(24, "Abweichung zu gross, %s, bei sim %s", sim.pd[0], sim)
-            else:
-                #Groesse der Punkte zeigt Breite(IQR) des Peaks    
-                ax.plot(sim.params[0], sim.params[1], "o", markersize = 2+(sim.pd[2]), label = (str(round(sim.pd[2],2)) + "  " +  str(round(sim.pd[0], 2))))
-                if show_params:
-                    ax.text(sim.params[0], sim.params[1], str(round(sim.params[0],8)) +"_" + str(round(sim.params[1],5)))
+    for filename in filenames:  
+        with open (folder+filename, "r+b") as data:
+            sim = pickle.load(data)
+            if sim.valid:
+                if abs(sim.pd[0] - t) > epsilon:
+                    logging.log(24, "Abweichung zu gross, %s, bei sim %s", sim.pd[0], sim)
+                else:
+                    #Groesse der Punkte zeigt Breite(IQR) des Peaks    
+                    logging.log(20, "Gefunden: %s", sim.pd)
+                    ax.plot(sim.params[0], sim.params[1], "o", markersize = 2+(sim.pd[2]), label = (str(round(sim.pd[2],2)) + "  " +  str(round(sim.pd[0], 2))))
+                    if show_params:
+                        ax.text(sim.params[0], sim.params[1], str(round(sim.params[0],8)) +"_" + str(round(sim.params[1],5)))
         logging.log(21, sim.pd[3])
     plt.suptitle("Parameter fuer Zeit "+ str(t) + " mit Abweichung " + str(epsilon))
     plt.legend(title = "Breite,   Retentionszeit", numpoints = 1, loc = 2)
