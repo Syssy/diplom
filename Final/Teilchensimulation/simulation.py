@@ -8,7 +8,9 @@ import logging
 import argparse
 import time
 import math
+import random
 from collections import Counter
+from abc import ABCMeta, abstractmethod 
 
 import scipy.stats   
 import numpy as np
@@ -17,10 +19,9 @@ import matplotlib.pyplot as plt
 
 # Speichert alle interessanten Dinge einer Simulation ab
 # Hat Methoden zur Simulation, sowie zur Berechnung von Peakdaten
-class Simulation():
+class Simulation(metaclass = ABCMeta):
     """Simuliert und speichert Daten einer Simulation
     """
-    
     def __init__(self, params, model, length = 1000, times = [], maxtime = 240, number = 1000, approach = "E"):
         """__init__
         params - Parameter ps,pm bzw pmm,pml,paa,pll
@@ -82,27 +83,12 @@ class Simulation():
                 self.valid = False
         self.pd=pd
         return
+    
+    @abstractmethod   
+    def simulate_step(self, locations, mobile_states, number):
+        pass
 
-    def simulate_step_2s(self, locations, mobile_states, number):
-        """Simuliere einen Schritt für alle Teilchen innerhalb der each_timestep-Simulation
-        Wahrscheinlichkeit stationaer/mobil zu bleiben, Zugriff über self.params
-        (new_)locations -- np-array aller Orte vor bzw. nach diesem Aufruf
-        (new_)mobile_states -- np-array aller Teilchenstates vor bzw. nach diesem Aufruf
-        number -- Anzahl der zu simulierenden Teilchen, nicht immer gleich self.number, da es am Ende weniger werden
-        """
-        zzv = np.random.random(number)
-        zzv2 = zzv < self.params[0]
-        zzv3 = zzv < self.params[1]
-        #berechne neuen Zustand für die Teilchen    
-        # entweder: vorher mobil und bleibe es (zzv3, pm)
-        # oder: war nicht mobil und bleibe nicht (invertiert zu oder)
-        new_mobile_states =  np.bitwise_or(np.bitwise_and(mobile_states, zzv3), (np.invert(np.bitwise_or(mobile_states, zzv2))))
-        # wenn mobil, addiere 200 zum Ort; Festlegung auf 0.2mm mitte November 2014
-        new_locations = locations + (new_mobile_states)
-              
-        return new_locations, new_mobile_states
-
-    def simulate_step_by_step_2s(self):
+    def simulate_step_by_step(self):
         """ Simuliere jeden Zeitschritt fuer jedes Teilchen"""
         # starttime für Laufzeitmessungen
         starttime = time.time()
@@ -123,7 +109,7 @@ class Simulation():
         #Teil 1: Sim bis frueheste Teilchen ankommen koennen, hier muss noch keine Abbruchbed. getestet werden. 
         # Carrier ist nach length Schritten durch, das entspricht 0.1 sec
         while time_needed <= (self.length):
-            locations, mobile_states = self.simulate_step_2s(locations, mobile_states, number)
+            locations, mobile_states = self.simulate_step(locations, mobile_states, number)
             time_needed += 1
         logging.log(20, "Teil1 vorbei, zeit:%s, simdauer:%s", time_needed, time.time()-starttime)
         #Teil 2: Ab jetzt koennen Teilchen fertig sein, teste erst, dann x neue Runden
@@ -153,12 +139,12 @@ class Simulation():
             
             # Damit es schneller geht, nach je x schritten nur testen
             for x in range (50):
-                locations, mobile_states = self.simulate_step_2s(locations, mobile_states, number)
+                locations, mobile_states = self.simulate_step(locations, mobile_states, number)
                 time_needed+=1
         # durch Schritte pro Sekunde teilen, zur normierung der zeiten
         self.times = [date/10000 for date in arrival_counter]
-       
-    def _test_finished(self, particle_list):
+    
+    def test_finished(self, particle_list):
         """Teste, ob die Teilchen schon durch sind. Aufruf durch simulate_by_event_2s"""        
         #extrahiere nicht fertige Teilchen als (zustands-ort)-Paare
         particles = [(state, location) for state, location in particle_list if location < self.length]
@@ -166,35 +152,12 @@ class Simulation():
         times = [(location-self.length) for state, location in particle_list if location >= self.length]      
         #Rueckgabe der nicht fertigen Teilchen und Ankunftszeiten fertiger Teilchen
         return particles, times
-        
-    def _simulate_event_2s(self, particle_list):
-        """Simuliere ein zeitliches Event, gebe neue Ereignisliste zurueck, Aufruf durch simulate_by_event_2s"""
-        
-        # extrahiere je eine liste von Zustaenden und Orten
-        states, locations = zip(*particle_list)
-        
-        # Geometrisch verteilt: Zeitspannen bis zum naechsten Erfolg, jeweils fuer alle Teilchen und fuer ps und pm
-        periods_ps = scipy.stats.geom.rvs(1-self.params[0], size = len(particle_list))
-        periods_pm = scipy.stats.geom.rvs(1-self.params[1], size = len(particle_list))
-        
-        #fuer pm nur die mobilen Zustaende relevant
-        periods_pm *= states
-        # Zustaende aendern
-        states = [not x for x in states]
-        # fuer ps nur die neuen mobilen Zustaende relevant
-        periods_ps *= states        
-        #neue events nach den jeweilig relevanten Zeitspannen erstellen
-        periods = periods_pm + periods_ps
-        
-        # gehe nur bei den mobilen Zustaenden weiter
-        locations += (periods_pm)  
-        logging.log(10, "locations %s", locations[0:10])
-        
-        new_events = list(zip(periods, states, locations))
-        
-        return new_events
-        
-    def simulate_by_event_2s(self, maxtime=240):
+       
+    @abstractmethod   
+    def simulate_event(self, particle_list):
+        pass
+    
+    def simulate_by_event(self, maxtime=240):
         """Simuliere mit Hilfe einer Liste von Events"""
         starttime = time.time()
         logging.log(20, "simuliere %s E", self.params)
@@ -224,14 +187,14 @@ class Simulation():
                 logging.log(15, "betrachte zeitpunkt %s", act_time)
                 # teste, ob zum aktuellen Zeitpunkt schon Teilchen fertig, fuege deren Zeiten ein
                 particle_list = np.array(events[act_time])
-                particle_list, times = self._test_finished(particle_list)
+                particle_list, times = self.test_finished(particle_list)
                 arrival_counter.extend([(act_time-(date)) for date in times])
                 
                 #logging.log(5, "noch da2, %s", arrival_counter)
                 # Falls die Teilchen dieses Zeitpunktes alle durch sind, wird nicht mehr simuliert
                 # sonst Simulation aller uebriger Teilchen
                 if len(particle_list) > 0:
-                    new_events = self._simulate_event_2s(particle_list)
+                    new_events = self.simulate_event(particle_list)
                     for timediff, state, location in new_events:
                         try:
                             # Zeitpunkt schon vorhanden -> einfuegen
@@ -273,16 +236,177 @@ class Simulation():
     def simulate(self, model = None, approach = None):
         '''Simuliert je nach Modell und Modus'''
         #TODO Abfragen, dass Anzahl der Params und Modell zusammen passen
-        if self.model == "2s" or model == "2s":
+        if self.model == "2s" or model == "2s" or self.model == "3s" or model == "3s" or self.model == "3a" or model == "3a" :
             if self.approach == "E" or approach == "E":
-                self.simulate_by_event_2s()
+                self.simulate_by_event()
             elif self.approach == "T" or approach == "T":
-                self.simulate_step_by_step_2s()
+                self.simulate_step_by_step()
             else:
                 print ("Bitte gewuenschten Simulationsmodus angeben; ", self.approach, " nicht gueltig")
         else:
-            print ("Modell auswählen (2s/3s), ", self.model, " nicht gültig")
+            print ("Modell auswählen (2s/3s/3a), ", self.model, " nicht gültig")
+    
+    
+class Simulation_2s(Simulation):    
+    def simulate_step(self, locations, mobile_states, number):
+        """Simuliere einen Schritt für alle Teilchen innerhalb der each_timestep-Simulation
+        Wahrscheinlichkeit stationaer/mobil zu bleiben, Zugriff über self.params
+        (new_)locations -- np-array aller Orte vor bzw. nach diesem Aufruf
+        (new_)mobile_states -- np-array aller Teilchenstates vor bzw. nach diesem Aufruf
+        number -- Anzahl der zu simulierenden Teilchen, nicht immer gleich self.number, da es am Ende weniger werden
+        """
+        zzv = np.random.random(number)
+        zzv2 = zzv < self.params[0]
+        zzv3 = zzv < self.params[1]
+        #berechne neuen Zustand für die Teilchen    
+        # entweder: vorher mobil und bleibe es (zzv3, pm)
+        # oder: war nicht mobil und bleibe nicht (invertiert zu oder)
+        new_mobile_states =  np.bitwise_or(np.bitwise_and(mobile_states, zzv3), (np.invert(np.bitwise_or(mobile_states, zzv2))))
+        # wenn mobil, addiere 200 zum Ort; Festlegung auf 0.2mm mitte November 2014
+        new_locations = locations + (new_mobile_states)
+              
+        return new_locations, new_mobile_states
+
+    def simulate_event(self, particle_list):
+        """Simuliere ein zeitliches Event, gebe neue Ereignisliste zurueck, Aufruf durch simulate_by_event_2s"""
+        
+        # extrahiere je eine liste von Zustaenden und Orten
+        states, locations = zip(*particle_list)
+        
+        # Geometrisch verteilt: Zeitspannen bis zum naechsten Erfolg, jeweils fuer alle Teilchen und fuer ps und pm
+        periods_ps = scipy.stats.geom.rvs(1-self.params[0], size = len(particle_list))
+        periods_pm = scipy.stats.geom.rvs(1-self.params[1], size = len(particle_list))
+        
+        #fuer pm nur die mobilen Zustaende relevant
+        periods_pm *= states
+        # Zustaende aendern
+        states = [not x for x in states]
+        # fuer ps nur die neuen mobilen Zustaende relevant
+        periods_ps *= states        
+        #neue events nach den jeweilig relevanten Zeitspannen erstellen
+        periods = periods_pm + periods_ps
+        
+        # gehe nur bei den mobilen Zustaenden weiter
+        locations += (periods_pm)  
+        logging.log(10, "locations %s", locations[0:10])
+        
+        new_events = list(zip(periods, states, locations))
+        
+        return new_events
+        
+
+class Simulation_3s(Simulation):
+    def __init__(self, params, model, length = 1000, times = [], maxtime = 240, number = 1000, approach = "E"):
+        super().__init__(params, model, length, times, maxtime, number, approach)
+        # das allgemeine 3s nimmt nur [[pmm,pma,pml],[pam,paa,pal],[plm,pla,pll]]
+        # 3a kann [pmm,pml,paa,pll] annehmen, das muss entsprechend umgeformt werden
+        if self.model == "3a":
+            self.params = self.init_params_3a(params)
+        self.kum_params = self.kumulate_params()
+        self.num_states = len(params)
+        self.zielmatrix = self.erstelle_zielmatrix(self.num_states)
+    
+    def init_params_3a(self, params):
+        pm = [params[0], (1-params[0]-params[1]), params[1]]
+        pa = [1-params[2], params[2], 0]
+        pl = [1-params[3], 0, params[3]]
+        new_params = [pm, pa, pl]
+        return new_params
+    
+    def erstelle_zielmatrix(self, num_states):
+        '''Matrix mit Wahrscheinlichkeiten für Event basierte Sim'''
+        zielmatrix = [0,0,0]
+        for i in range(3):
+            nenner = 1 - self.params[i][i]
+            #print ("i ", i, " folge ", (i+1)%3)
+            zaehler = self.params[i][(i+1)%3]
+            #print("z ", zaehler, " n ", nenner)
+            zielmatrix[i] = zaehler/nenner
+        #print ("zielmatrix", zielmatrix)
+        return zielmatrix
+
+    def kumulate_params(self):
+        '''Vorberechnung für Übergangswahrscheinlichkeiten für by-step Simulation'''
+        result = []
+        for p in self.params:
+            r = []
+            r.append(p[0])
+            for pp in range(len(p)-1):
+                r.append(r[pp]+p[pp+1])
+            result.append(r)    
+        return result
+    
+    def simulate_step(self, locations, mobile_states, number):
+        """Simuliere einen Schritt für alle Teilchen innerhalb der each_timestep-Simulation    
+        Wahrscheinlichkeit stationaer/mobil zu bleiben, Zugriff über self.params
+        (new_)locations -- np-array aller Orte vor bzw. nach diesem Aufruf
+        (new_)mobile_states -- np-array aller Teilchenstates vor bzw. nach diesem Aufruf
+        number -- Anzahl der zu simulierenden Teilchen, nicht immer gleich self.number, da es am Ende weniger werden
+        """
+        zzv = np.random.random(number)
+        #print ("zzv", zzv)
+        #print ("sl", mobile_states, locations)
+        
+        mobile_states = np.array(mobile_states)
+        
+        maske_0 = mobile_states == 0
+        maske_1 = mobile_states == 1
+        maske_2 = mobile_states == 2
+        
+        new_locations = locations + (maske_0)
+        
+        # uebergang_x2 kann jeweils wegfallen, da immer 0. kum_params[x][2] ist nämlich immer 1       
+        uebergang_00 = zzv > self.kum_params[0][0]
+        uebergang_01 = zzv > self.kum_params[0][1]
+        #uebergang_02 = zzv > self.kum_params[0][2]
+        #print ("uebergang_0", ((0) + uebergang_00 + uebergang_01 + uebergang_02))
+        uebergang_0 = ((0) + uebergang_00 + uebergang_01 ) * maske_0
+        
+        uebergang_10 = zzv > self.kum_params[1][0]
+        uebergang_11 = zzv > self.kum_params[1][1]
+        #uebergang_12 = zzv > self.kum_params[1][2]
+        uebergang_1 = ((0) + uebergang_10 + uebergang_11) * maske_1
+        
+        
+        uebergang_20 = zzv > self.kum_params[2][0]
+        uebergang_21 = zzv > self.kum_params[2][1]
+        #uebergang_22 = zzv > self.kum_params[2][2]
+        uebergang_2 = ((0) + uebergang_20 + uebergang_21 ) * maske_2
+                
+        new_mobile_states= (uebergang_0 + uebergang_1 + uebergang_2)
+ 
+        return new_locations, new_mobile_states
+
+    def simulate_event(self, particle_list):
+        """Simuliere ein zeitliches Event, gebe neue Ereignisliste zurueck, Aufruf durch simulate_by_event"""
+        periods, n_states, n_locations = [], [], []      
+        # extrahiere je eine liste von Zustaenden und Orten
+        states, locations = zip(*particle_list)
+        for s, l in particle_list:
+            #Zufallszahlen ziehen: Geom fuer Zeitpunkt des naechsten Events, entspricht Zeitpunkt des Misserfolgs (also nicht-Verweilen)
+            period = scipy.stats.geom.rvs(1-self.params[s][s])
+            # zz fuer Bestimmung des naechsten Zustands
+            zz = random.random()
+            #print("period ", period, " zz ", zz)
+            # Berechne neuen Zustand (gehe 1 weiter und evtl noch einen, falls Zufall das sagt, mod 3)
+            n_zustand = (s + 1 + ( zz > self.zielmatrix[s])) % 3
+            #print ("rechnung ", (s+1+(zz > self.zielmatrix[s]))%3, "bool ",zz > self.zielmatrix[s]  )
+            #print("zustand, alt ", s, " neu ", n_zustand)
+            #n_locations.append(!n_zustand*period +l)
+            #loc = l + period*100 if s== 0 else l
+            #Wenn alter Zustand mobil war, gehe vor, sonst nicht
+            if s == 0:
+                n_locations.append(l+period)
+            else:
+                n_locations.append(l)
+            #n_locations.append(loc)
+            #Entsprechende neue Zustaende und Zeitpunkte anhaengen
+            n_states.append(n_zustand)
+            periods.append(period)
             
+        return list(zip(periods, n_states, n_locations)) #new_events 
+    
+    
 # für Kommandozeilentests, Aufruf nur in main()    
 def get_argument_parser():
     p = argparse.ArgumentParser(
@@ -295,8 +419,8 @@ def get_argument_parser():
                    help = "Maximale Retentionszeit in Sekunden")
     p.add_argument("--approach", "-a", default = "E", 
                    help = "Art der Simulation; E = by-event, T = each_timestep")
-    p.add_argument("--model", "-m",
-                   help = "Modell: 2 oder 3 Zustände (2s/3s)")
+    p.add_argument("--model", "-m", default = "",
+                   help = "Modell: 2 oder 3 Zustände (2s/3s/3a)")
     p.add_argument("--params", "-p", nargs = '+', type = float,
                    help = "Parameter fuer die Simulation")
     #TODO: Jeden Param eingeben?
@@ -307,12 +431,25 @@ def main():
     p = get_argument_parser()
     args = p.parse_args()
     logging.log(20, "Eingaben fuer Simulation, %s", args)
-    print ("n", args.number, "l", args.length, "m", args.approach, time.strftime("%d%b%Y_%H:%M:%S"))
+    #print ("n", args.number, "l", args.length, "a", args.approach, time.strftime("%d%b%Y_%H:%M:%S"))
     
-    testsim = Simulation((args.params), args.model, args.length, maxtime = args.maxtime, number = args.number, approach = args.approach)
-    #print (testsim)
-    testsim.simulate()
+    #Parameterübergabe für 3s: Komplett als 3x3 matrix. daher Umformung nötig
+    if args.model == "3s":
+        args.params = [[args.params[0],args.params[1],args.params[2]],[args.params[3],args.params[4],args.params[5]],[args.params[6],args.params[7],args.params[8]]]
+ 
+    if args.model.startswith("3"):
+        testsim3s = Simulation_3s(args.params, args.model, args.length, maxtime=args.maxtime, number=args.number, approach =args.approach)
+        testsim3s.simulate()
+        testsim3s.calculate_pd()
+        print (testsim3s.pd)
+    
+    if args.model == "2s":
+        testsim = Simulation_2s((args.params), args.model, args.length, maxtime = args.maxtime, number = args.number, approach = args.approach)
+        #print (testsim)
+        testsim.simulate()
+        testsim.calculate_pd()
+        print (testsim.pd)
        
 if __name__ == "__main__":
-    logging.basicConfig(level=20)
+    logging.basicConfig(level=35)
     main()
