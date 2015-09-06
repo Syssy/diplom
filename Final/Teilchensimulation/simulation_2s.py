@@ -59,17 +59,24 @@ class Simulation():
     def calculate_pd(self):
         """Peakdaten, (Lage, [Quartile], IQK und QK), setze Valid-Flag"""
         #Lage bestimmen ( = am häufigsten vorkommende Ankunftszeit)
+        #print (self.times)
         c = Counter(self.times)
+        #print (c.most_common())
         #print (c.most_common(1), c.most_common(1)[0][0])
         #most_common(x) gibt Liste mit häufigsten x Werten als Liste von Tupeln aus (Wert, Anzahl) zurück
-        loc = c.most_common(1)[0][0]
-        #Quartile berechnen
-        quartiles = (np.percentile(self.times, 25), np.percentile(self.times, 50), np.percentile(self.times, 75))
-        #IQR berechnen
-        iqr =  quartiles[2] - quartiles[0]
-        #QK berechnen
-        qk = (quartiles[2] + quartiles[0] - 2*quartiles[1]) / (quartiles[2] - quartiles[0])
-        pd = (loc, quartiles, iqr, qk)
+        try:
+            loc = c.most_common(1)[0][0]
+            #Quartile berechnen
+            quartiles = (np.percentile(self.times, 25), np.percentile(self.times, 50), np.percentile(self.times, 75))
+            #IQR berechnen
+            iqr =  quartiles[2] - quartiles[0]
+            #QK berechnen
+            qk = (quartiles[2] + quartiles[0] - 2*quartiles[1]) / (quartiles[2] - quartiles[0])
+            pd = (loc, quartiles, iqr, qk)
+        # Der Fehler tritt bei leeren Ankunftszeitlisten auf, dann ist kein Teilchen angekommen
+        except IndexError:
+            pd = (float("nan"), [float("nan"), float("nan"), float("nan")], float("nan"), float("nan"))
+            self.valid = False
         self.pd=pd
         return
 
@@ -92,7 +99,7 @@ class Simulation():
               
         return new_locations, new_mobile_states
 
-    def simulate_step_by_step_2s(self, maxtime=240):
+    def simulate_step_by_step_2s(self):
         """ Simuliere jeden Zeitschritt fuer jedes Teilchen"""
         # starttime für Laufzeitmessungen
         starttime = time.time()
@@ -102,6 +109,7 @@ class Simulation():
         time_needed = 0
         # Anzahl zu simulierender Teilchen
         number = self.number
+        self.valid = True
         self.approach="T"
         
         # aktuelle Orte der Teilchen
@@ -133,11 +141,11 @@ class Simulation():
                 logging.log(25, "fertig, simzeit: %s, realtime: %s", time_needed, (time.time()-starttime))
                 break
             if time_needed > self.maxtime * 10000:
-                logging.log(30, "Ueberschreitung der Maximalzeit von %s Sekunden, %s", self.maxtime, (time.time()-starttime))
+                logging.log(30, "Ueberschreitung der Maximalzeit von %s Sekunden, Simdauer: %s", self.maxtime, (time.time()-starttime))
                 self.valid = False
                 # alle noch nicht fertigen Teilchen bekommen Strafe, damit man sieht, dass Simulation nicht zu Ende durchgefuehrt wurde
-                for j in range(len(locations)):
-                    arrival_counter.append(time_needed+self.length*1000)
+                #for j in range(len(locations)):
+                #    arrival_counter.append(time_needed+self.length*1000)
                 break    
             
             # Damit es schneller geht, nach je x schritten nur testen
@@ -183,13 +191,14 @@ class Simulation():
         
         return new_events
         
-    def simulate_by_event_2s(self):
+    def simulate_by_event_2s(self, maxtime=240):
         """Simuliere mit Hilfe einer Liste von Events"""
         starttime = time.time()
         logging.log(20, "simuliere %s E", self.params)
         length = self.length
         number = self.number
         self.approach = "E"
+        self.valid = True
         act_time = 0
     
         # Ereignisse als dict. Jeweils als key einen Zeitpunkt (enthaelt nur diejenigen, wo auch was passiert, Vergangenheit wird geloescht) und eine Liste aller Teilchen, mit denen dann was passieren soll
@@ -206,7 +215,7 @@ class Simulation():
         arrival_counter = []
         
         # solange noch Ereignisse ausstehen, wird simuliert
-        while len(events) >= 1:
+        while len(events) >= 1 and act_time < self.maxtime * 10000:
             if act_time in events:
                 #print (events)
                 logging.log(15, "betrachte zeitpunkt %s", act_time)
@@ -231,9 +240,20 @@ class Simulation():
                 del events[act_time]
             #naechste Zeit betrachen    
             act_time += 1  
+        #print (arrival_counter)
+        if len(events) > 1:
+            logging.log(20, "Das wird nix, uebrig: %s", (len(events)))
+            # teste alle events, ob Teilchen nicht doch schon fertig
+            for ev in events:
+                particle_list = np.array(events[ev])
+                #print("particles", ev, particle_list)
+                particle_list, times = self._test_finished(particle_list)
+                #times sind die zeiten der doch angekommenen teilchen
+                arrival_counter.extend([(act_time-(date)) for date in times])
+                #wenn teilchen uebrig, waren diese zu langsam
+                if len(particle_list) > 0:
+                    self.valid = False
         # Zeitpunkte normalisieren    
-        #self.times = [date/(50*self.step) for date in arrival_counter]
-        #self.times = arrival_counter
         self.times = [date/10000 for date in arrival_counter]
 
         logging.log(25, "fertig, simschritte: %s, realtime: %s", act_time, (time.time()-starttime))
