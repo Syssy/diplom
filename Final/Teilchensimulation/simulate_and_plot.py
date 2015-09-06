@@ -18,18 +18,21 @@ import matplotlib.pyplot as plt
 import my_plottings_2s as plottings
 import simulation_2s as simulation
 
-def combine_params(args, nr_of_choice = 5):
+def combine_params(args, nr_of_choice = 5, params=(0.999, 0,5)):
     """Kombiniere Wahrscheinlichkeiten als ps- und pm-Parameter fuer die Simulation"""
     p_combinations = []
     if not args:
         args = "random"
     logging.log(20, "args" + args + "nr_of_choice" + str(nr_of_choice))
     p_combinations = []
-    #Kleine Auswahl
     
+    if args == "single":
+        p_combinations.append((params[0], params[1]))
+        
     if args == "ellytest":
         p_combinations.append((0.9993, 0.5))
     
+    #Kleine Auswahl
     if args == "small_set":
         ps_catalogue = [0.998, 0.999, 0.9993, 0.9996, 0.9999]
         pm_catalogue = [0.1, 0.3, 0.5, 0.7, 0.9]
@@ -45,13 +48,22 @@ def combine_params(args, nr_of_choice = 5):
                 p_combinations.append((ps, pm))   
     #Grosse Auswahl            
     if args == "large_set":
-        ps_catalogue = list(np.arange(0.999, 1.0, 0.0001))
+        ps_catalogue = list(np.arange(0.999, 0.999999, 0.0001))
         ps_catalogue.extend([0.99, 0.995, 0.997, 0.998, 0.99995])
-        pm_catalogue = list(np.arange(0.05, 1.0, 0.05))
+        pm_catalogue = list(np.arange(0.05, 0.999999, 0.05))
         pm_catalogue.extend([0.001, 0.01, 0.99, 0.999])
         for ps in ps_catalogue:
             for pm in pm_catalogue:
-                p_combinations.append((ps, pm))   
+                p_combinations.append((ps, pm)) 
+    #Parameterkombis, die Schiefe ergeben
+    if args == "skew":
+        ps_catalogue = list(np.arange(0.999, 0.999999, 0.0001))
+        ps_catalogue.extend([0.995])
+        pm_catalogue = list(np.arange(0.993, 0.99999, 0.001))
+        pm_catalogue.extend([0.9985])
+        for ps in ps_catalogue:
+            for pm in pm_catalogue:
+                p_combinations.append((ps, pm))
     # zufaellige Kombis, bei denen ps > 0.99 ist
     if args == "random":
         while len(p_combinations) < nr_of_choice:
@@ -143,7 +155,7 @@ def get_argument_parser():
     p.add_argument("--choicenumber", "-cn", type = int, default = "5",
                    help = "bei zufaelliger Parameterwahl: Wie viele Kombinationen sollen gewaehlt werden")
     p.add_argument("--pcombioption", "-p",  
-                   help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: small_set, medium_set, large_set, random")
+                   help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: single, small_set, medium_set, large_set, skew, random")
     p.add_argument("--reverse", "-r", action = "store_true",
                    help = "Reihenfolge der p_combinations invertieren")
     p.add_argument("--length", "-l", type = int, default = "1000",
@@ -152,6 +164,24 @@ def get_argument_parser():
                    help = "Anzahl zu simulierender Teilchen")
     p.add_argument("--approach", "-a", default = "E", 
                    help = "Art der Simulation; E = by-event, T = each_timestep")
+    p.add_argument("--plot_peak", "-pp", nargs = '+', type = float,
+                   help = "Einzelne Parameterkombi eingeben, deren Peak dann geplottet wird" )
+    p.add_argument("--plot_spectrum", "-ps", action = "store_true",
+                   help = "Auswahl ob Spektrum mit Rauschen geplottet werden soll")
+    p.add_argument("--plot_params_at_time", "-ppt", action = "store_true",
+                   help = "Auswahl ob Parameter für Retentionszeit -rt und Abweichung -e geplottet werden soll")
+    p.add_argument("--retention", "-rt", default = "50", type = float,
+                   help = "zu plottende Retentionszeit fuer plot_params_at_time")
+    p.add_argument("--epsilon", "-e", default = "5", type = float,
+                   help = "erlaubte Abweichung von -rt fuer plot_params_at_time")
+    p.add_argument("--plot_trait", "-pt", action = "store_true",
+                   help = "Auswahl ob Heatmap ueber Eigenschaft -t (loc, iqr, qk) geplottet werden soll")
+    p.add_argument("--trait", "-t", 
+                   help = "Zu plottende Eigenschaft für plot_trait")
+    p.add_argument("--plot_reachable", "-pr", action = "store_true",
+                   help = "Auswahl ob Plot erreichbarer Zeiten/Breiten erstellt werden soll")
+    p.add_argument("--show_params", "-sp", action = "store_true",
+                   help = "Wenn gewählt, werden im Plot Parameter angezeigt, sofern Option verfügbar")
     return p
 
 def main():
@@ -160,30 +190,43 @@ def main():
     p = get_argument_parser()
     args = p.parse_args()
       
+    #dic =   'simulated_data/2_states/l1000/n1000/'
+    #filenames = [name for name in os.listdir(dic) if name.startswith("Sim_")]
+    #print (len(filenames))
+    #for filename in filenames:  
+        #aSim = None
+        #with open (dic+filename, "r+b") as data:
+            #aSim = pickle.load(data)
+            #try:
+                #print (filename)
+                #print (filename, aSim.valid)
+            #except AttributeError:
+                #print ("error")
+                #aSim.valid = True
+                #print (filename, aSim.valid)
+                #with open(dic+filename, "wb") as data2:
+                    #pickle.dump(aSim, data2)    
+                ##pickle.dump (aSim, data)   
+                ##time.sleep(1)
+            
     #liste aller zu simulierenden kombis erstellen
-    p_combinations = combine_params(args.pcombioption, args.choicenumber)
+    p_combinations = combine_params(args.pcombioption, args.choicenumber, args.plot_peak)
     if args.reverse:
         p_combinations.reverse()
-    
+
     simlist = start_simulations(args.length, args.number, args.approach, p_combinations)
-   # plottings.plot_single_peak(simlist[0]) 
-    plottings.plot_spectrum(simlist, noise=True)
-    
-    
-    #for i in range(len(new_sims)):
-        #plotkram.plot_single_peak(new_sims[i], qq= scipy.stats.norm)
-        #time.sleep(2)
-    #plotkram.plot_widthmap(new_sims)
-    #plotkram.plot_widthandskew(new_sims)
-    #plotkram.plot_params_at_time(new_sims, 100, 5, True)
-    #plotkram.plot_heatmap_of_moments(filename, ff = True, moment= "mean")
-    #plotkram.plot_heatmap_of_moments(new_sims, moment="mean") 
-    #plotkram.plot_4_heatmaps(filename, ff=True, moment="mean")   
-    #plotkram.plot_4_heatmaps(new_sims, moment="mean") 
-    #plotkram.plot_simlist_ff(filename, True, True, True, True, True, compare_Dist = scipy.stats.gamma)
-    #plotkram.plot_simlist(new_sims, False, False, True, False, False)
-    
-    
+    if args.plot_peak:
+        plottings.plot_single_peak(simlist[0])
+    if args.plot_spectrum:
+        plottings.plot_spectrum(simlist, noise=True)
+    if args.plot_params_at_time:
+        plottings.plot_params_at_time(simlist, t=args.retention, epsilon=args.epsilon, show_params=True)
+    if args.plot_trait:
+        plottings.plot_widthmap(simlist, args.trait)
+    if args.plot_reachable:
+        folder = 'simulated_data/2_states/l' +str(args.length) + "/n" + str(args.number) + '/'
+        plottings.plot_reachable(folder, args.show_params)
+   # plotkram.plot_heatmap_of_trait(new_sims, trait="iqr") 
     
     # Ende :)
     print ("Zeit " + str(time.clock()-starttime))
