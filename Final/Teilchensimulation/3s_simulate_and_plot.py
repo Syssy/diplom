@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 import my_plottings as plottings
 import simulation
 
-def combine_params(args, nr_of_choice = 5, params=(0.999, 0,5)):
+def combine_params(args, model, nr_of_choice = 5, params=(0.999, 0,5)):
     """Kombiniere Wahrscheinlichkeiten als ps- und pm-Parameter fuer die Simulation"""
     p_combinations = []
     if not args:
@@ -26,50 +26,60 @@ def combine_params(args, nr_of_choice = 5, params=(0.999, 0,5)):
     logging.log(20, "args" + args + "nr_of_choice" + str(nr_of_choice))
     p_combinations = []
     
-    if args == "single":
-        p_combinations.append((params[0], params[1]))
+    if args == "single" and model == "3s":
+        p_combinations.append((params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7], params[8]))
+        
+    if args == "single" and model == "3a":
+        p_combinations.append((params[0], params[1], params[2], params[3]))
         
     if args == "ellytest":
-        p_combinations.append((0.9993, 0.5))
+        p_combinations.append((0.9, 0.0005, 0.9992, 0.999993))
     
     #Kleine Auswahl
-    if args == "small_set":
-        ps_catalogue = [0.998, 0.999, 0.9993, 0.9996, 0.9999]
-        pm_catalogue = [0.1, 0.3, 0.5, 0.7, 0.9]
-        for ps in ps_catalogue:
-            for pm in pm_catalogue:
-                p_combinations.append((ps, pm))
-    #Mittlere Auswahl            
-    if args == "medium_set":
-        ps_catalogue = [0.997, 0.998, 0.999, 0.9991, 0.9992, 0.9993, 0.9995, 0.9996, 0.9999]
-        pm_catalogue = np.arange(0.05, 1.0, 0.05)
-        for ps in ps_catalogue:
-            for pm in pm_catalogue:
-                p_combinations.append((ps, pm))   
-    #Grosse Auswahl            
-    if args == "large_set":
-        ps_catalogue = list(np.arange(0.999, 0.999999, 0.0001))
-        ps_catalogue.extend([0.99, 0.995, 0.997, 0.998, 0.99995])
-        pm_catalogue = list(np.arange(0.05, 0.999999, 0.05))
-        pm_catalogue.extend([0.001, 0.01, 0.99, 0.999])
-        for ps in ps_catalogue:
-            for pm in pm_catalogue:
-                p_combinations.append((ps, pm)) 
-    #Parameterkombis, die Schiefe ergeben
-    if args == "skew":
-        ps_catalogue = list(np.arange(0.999, 0.999999, 0.0001))
-        ps_catalogue.extend([0.995])
-        pm_catalogue = list(np.arange(0.993, 0.99999, 0.001))
-        pm_catalogue.extend([0.9985])
-        for ps in ps_catalogue:
-            for pm in pm_catalogue:
-                p_combinations.append((ps, pm))
+    if args == "small_set" and model == "3a":
+        pmm_catalogue = [0.1, 0.5, 0.9]
+        pml_catalogue = [0.001, 0.0005, 0.0001]
+        paa_catalogue = [0.999, 0.9993, 0.9996]
+        pll_catalogue = [0.99995, 0.99999, 0.999995]
+        for pmm in pmm_catalogue:
+            for pml in pml_catalogue:
+                for paa in paa_catalogue:
+                    for pll in pll_catalogue:
+                        p_combinations.append((pmm, pml, paa, pll))
+    #Mittlere Auswahl  
+    if args == "medium_set" and model == "3a":
+        pmm_catalogue = list(np.arange(0.1, 0.95, 0.2))
+        pmm_catalogue.extend([0.05, 0.95])
+        pml_catalogue = [0.001, 0.0007, 0.0005, 0.0003, 0.0001]
+        paa_catalogue = [0.998, 0.999, 0.9993, 0.9995, 0.9996]
+        pll_catalogue = [0.99995, 0.99999, 0.999995, 0.999999]
+        for pmm in pmm_catalogue:
+            for pml in pml_catalogue:
+                for paa in paa_catalogue:
+                    for pll in pll_catalogue:
+                        p_combinations.append((pmm, pml, paa, pll))  
+    #Grosse Auswahl 
+        if args == "large_set" and model == "3a":
+        pmm_catalogue = list(np.arange(0.1, 0.95, 0.1))
+        pmm_catalogue.extend([0.001, 0.01, 0.05, 0.95, 0.99])
+        pml_catalogue = [0.003, 0.001, 0.0007, 0.0005, 0.0003, 0.0001, 0.00005]
+        paa_catalogue = list(np.arange(0.999, 0.9997, 0.0001))
+        paa_catalogue.extend[0.997, 0.998]
+        pll_catalogue = [0.999925, 0.99995, 0.999975, 0.99999, 0.999993, 0.999995, 0.999999]
+        for pmm in pmm_catalogue:
+            for pml in pml_catalogue:
+                for paa in paa_catalogue:
+                    for pll in pll_catalogue:
+                        p_combinations.append((pmm, pml, paa, pll)) 
     # zufaellige Kombis, bei denen ps > 0.99 ist
     if args == "random":
         while len(p_combinations) < nr_of_choice:
-            ps = random.uniform(0.99, 0.99999)
-            pm = np.random.random()
-            p_combinations.append((round(ps, 10), round(pm, 10)))
+            pmm = np.random.random()
+            pml = random.uniform(0.00005, 0.005)
+            pml = random.uniform(0.997, 0.9999)
+            pml = random.uniform(0.9999, 0.999999)
+            p_combinations.append((round(pmm, 10), round(pml, 10), round(paa, 10), round(pll, 10)))
+            
     logging.log(20, "p_combinations %s, anzahl: %s", p_combinations, len(p_combinations))    
     return (sorted(list(set(p_combinations))))
 
@@ -80,13 +90,13 @@ def start_simulations(length, number, approach, p_combinations):
     # Die Simulationen werden hier zwischengespeichert
     results = []
     # fuer alle vorhandenen Kombinationen von Parametern
-    for ps, pm in p_combinations:
-            logging.log(24, "ps, pm, %(ps)f %(pm)f", locals())
+    for params in p_combinations:
+            logging.log(24, "params, %s", params)
             # gehe erst mal davon aus, dass Sim vorhanden ist, daher nicht speichern, sondern auf Aktualitaet ueberpruefen
             sim_exists = True
             store = False
-            mySim = simulation.Simulation_2s((round(ps, 10), round(pm,10)), "2s", length, number=number, approach=approach)
-            filename = 'simulated_data/2s/l' +str(length) + "/n" + str(number) + '/Sim_' + str(mySim) + ".p" 
+            mySim = simulation.Simulation_2s((params), "3s", length, number=number, approach=approach)
+            filename = 'simulated_data/3s/l' +str(length) + "/n" + str(number) + '/Sim_' + str(mySim) + ".p" 
             try:
                 logging.log(24,"filename: %s", filename)
                 with open(filename, 'rb') as data:
@@ -111,7 +121,7 @@ def start_simulations(length, number, approach, p_combinations):
             # Kombination nicht vorhanden, daher neue Sim machen
             except IOError:
                 sim_exists =  False
-                logging.log(25,"%s, %s, simuliere, da nicht vorhanden, todo %s, ready %s", round(ps, 10), round(pm,10), nr_todo, nr_ready)
+                logging.log(25,"%s, simuliere, da nicht vorhanden, todo %s, ready %s", params, nr_todo, nr_ready)
             
             # diverse Fehler, im Zweifel auch neu simulieren
             except (EOFError, UnicodeDecodeError, TypeError)  as err:
@@ -139,9 +149,9 @@ def start_simulations(length, number, approach, p_combinations):
                 # Ornder existieren nicht, daher neu anlegen        
                 except FileNotFoundError as err:
                     logging.log(40, "%s, lege Ordner an", err)
-                    if not os.path.exists('simulated_data/2s/l' + str(length)):
-                        os.makedirs('simulated_data/2s/l' + str(length))
-                    os.makedirs('simulated_data/2s/l' + str(length)  + "/n" + str(number)) 
+                    if not os.path.exists('simulated_data/3s/l' + str(length)):
+                        os.makedirs('simulated_data/3s/l' + str(length))
+                    os.makedirs('simulated_data/3s/l' + str(length)  + "/n" + str(number)) 
                     logging.log(35, "Speichern weiter Versuch, %s, %s", time.strftime("%d%b%Y_%H:%M:%S"), mySim)
                     with open(filename, 'wb') as data:
                         pickle.dump(mySim, data)  
@@ -156,9 +166,11 @@ def get_argument_parser():
     p.add_argument("--choicenumber", "-cn", type = int, default = "5",
                    help = "bei zufaelliger Parameterwahl: Wie viele Kombinationen sollen gewaehlt werden")
     p.add_argument("--pcombioption", "-p",  
-                   help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: single, small_set, medium_set, large_set, skew, random")
+                   help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: single, small_set, medium_set, large_set, random")
     p.add_argument("--reverse", "-r", action = "store_true",
                    help = "Reihenfolge der p_combinations invertieren")
+    p.add_argument("--model", "-m", default = "3a",
+                   help = "Auswahl, welches Modell (3s/3a)")
     p.add_argument("--length", "-l", type = int, default = "1000",
                    help = "Laenge der Saeule")
     p.add_argument("--number", "-n", type = int, default = "1000",
@@ -171,18 +183,6 @@ def get_argument_parser():
                    help = "Auswahl ob Spektrum geplottet werden soll fuer Rauschen zusaetzlich -an")
     p.add_argument("--addnoise", "-an", action= "store_true",
                    help = "Rauschen hinzufuegen")
-    p.add_argument("--plot_params_at_time", "-ppt", action = "store_true",
-                   help = "Auswahl ob Parameter für Retentionszeit -rt und Abweichung -e geplottet werden soll")
-    p.add_argument("--retention", "-rt", default = "50", type = float,
-                   help = "zu plottende Retentionszeit fuer plot_params_at_time")
-    p.add_argument("--epsilon", "-e", default = "5", type = float,
-                   help = "erlaubte Abweichung von -rt fuer plot_params_at_time")
-    p.add_argument("--plot_trait", "-pt", action = "store_true",
-                   help = "Auswahl ob Heatmap ueber Eigenschaft -t (loc, iqr, qk) geplottet werden soll")
-    p.add_argument("--trait", "-t", 
-                   help = "Zu plottende Eigenschaft für plot_trait")
-    p.add_argument("--plot_reachable", "-pr", action = "store_true",
-                   help = "Auswahl ob Plot erreichbarer Zeiten/Breiten erstellt werden soll")
     p.add_argument("--show_params", "-sp", action = "store_true",
                    help = "Wenn gewählt, werden im Plot Parameter angezeigt, Option verfuegbar fuer -ppt, -pr")
     return p
@@ -216,7 +216,7 @@ def main():
         args.pcombioption = "single"
     #liste aller zu simulierenden kombis erstellen
     if (args.pcombioption or args.plot_spectrum or args.plot_trait):
-        p_combinations = combine_params(args.pcombioption, args.choicenumber, args.plot_peak)
+        p_combinations = combine_params(args.pcombioption, args.model, args.choicenumber, args.plot_peak)
         if args.reverse:
             p_combinations.reverse()
         #Simulationen starten
@@ -225,14 +225,6 @@ def main():
             plottings.plot_single_peak(simlist[0])
         if args.plot_spectrum:
             plottings.plot_spectrum(simlist, noise=args.addnoise)
-        if args.plot_trait:
-            plottings.plot_trait(simlist, args.trait)
-    # Aus allen vorhandenen Simulationen plotten   
-    folder = 'simulated_data/2s/l' +str(args.length) + "/n" + str(args.number) + '/'
-    if args.plot_reachable:
-        plottings.plot_reachable(folder, args.show_params)
-    if args.plot_params_at_time:
-        plottings.plot_params_at_time(folder, t=args.retention, epsilon=args.epsilon, show_params=args.show_params)
     
     # Ende :)
     print ("Zeit " + str(time.clock()-starttime))

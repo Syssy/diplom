@@ -102,7 +102,10 @@ class Simulation(metaclass = ABCMeta):
         self.approach="T"
         
         # aktuelle Orte der Teilchen
-        locations = np.ones(number)
+        if self.model == "2s":
+            locations = np.ones(number)
+        else:
+            locations = np.zeros(number)
         # akutelle Zustaende der Teilchen 
         mobile_states = np.array([True]*number)
     
@@ -138,7 +141,7 @@ class Simulation(metaclass = ABCMeta):
                 break    
             
             # Damit es schneller geht, nach je x schritten nur testen
-            for x in range (50):
+            for x in range (1):
                 locations, mobile_states = self.simulate_step(locations, mobile_states, number)
                 time_needed+=1
         # durch Schritte pro Sekunde teilen, zur normierung der zeiten
@@ -214,7 +217,7 @@ class Simulation(metaclass = ABCMeta):
             for ev in events:
                 particle_list = np.array(events[ev])
                 #print("particles", ev, particle_list)
-                particle_list, times = self._test_finished(particle_list)
+                particle_list, times = self.test_finished(particle_list)
                 #times sind die zeiten der doch angekommenen teilchen
                 arrival_counter.extend([(act_time-(date)) for date in times])
                 #wenn teilchen uebrig, waren diese zu langsam
@@ -222,8 +225,9 @@ class Simulation(metaclass = ABCMeta):
             if nr_failed > 0.001*self.number:
                 self.valid = False
                 print (nr_failed)
-        # Zeitpunkte normalisieren    
-        self.times = [date/10000 for date in arrival_counter]
+        # Zeitpunkte normalisieren  
+        # Dabei wegen Konstistenz mit step-by-step und Zusammenlegen von Messzeitpunkten runden
+        self.times = [round(date/10000, 2) for date in arrival_counter]
 
         logging.log(25, "fertig, simschritte: %s, realtime: %s", act_time, (time.time()-starttime))
         
@@ -262,7 +266,7 @@ class Simulation_2s(Simulation):
         # entweder: vorher mobil und bleibe es (zzv3, pm)
         # oder: war nicht mobil und bleibe nicht (invertiert zu oder)
         new_mobile_states =  np.bitwise_or(np.bitwise_and(mobile_states, zzv3), (np.invert(np.bitwise_or(mobile_states, zzv2))))
-        # wenn mobil, addiere 200 zum Ort; Festlegung auf 0.2mm mitte November 2014
+        # wenn mobil, addiere einen Schritt
         new_locations = locations + (new_mobile_states)
               
         return new_locations, new_mobile_states
@@ -321,7 +325,10 @@ class Simulation_3s(Simulation):
             #print ("i ", i, " folge ", (i+1)%3)
             zaehler = self.params[i][(i+1)%3]
             #print("z ", zaehler, " n ", nenner)
-            zielmatrix[i] = zaehler/nenner
+            if nenner == 0:
+                zielmatrix[i] = 1
+            else:
+                zielmatrix[i] = zaehler/nenner
         #print ("zielmatrix", zielmatrix)
         return zielmatrix
 
@@ -353,6 +360,7 @@ class Simulation_3s(Simulation):
         maske_1 = mobile_states == 1
         maske_2 = mobile_states == 2
         
+        #aktualisiere orte
         new_locations = locations + (maske_0)
         
         # uebergang_x2 kann jeweils wegfallen, da immer 0. kum_params[x][2] ist nämlich immer 1       
@@ -442,6 +450,9 @@ def main():
         testsim3s.simulate()
         testsim3s.calculate_pd()
         print (testsim3s.pd)
+        n, bins, patches = plt.hist(testsim3s.times, 50)
+        plt.title(args.model + args.approach)
+        plt.show()
     
     if args.model == "2s":
         testsim = Simulation_2s((args.params), args.model, args.length, maxtime = args.maxtime, number = args.number, approach = args.approach)
@@ -449,6 +460,9 @@ def main():
         testsim.simulate()
         testsim.calculate_pd()
         print (testsim.pd)
+        n, bins, patches = plt.hist(testsim.times, 50)
+        plt.title(args.model + args.approach)
+        plt.show()
        
 if __name__ == "__main__":
     logging.basicConfig(level=35)
