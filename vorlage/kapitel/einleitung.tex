@@ -3,8 +3,9 @@
 
 \chapter{Einleitung}
 
-\todo{(Wo) Soll die Aufgabenstellung noch mal rein? Also Entsprechung zwischen Peakparametern und Sim-Parametern}
 \section{Motivation und Hintergrund}
+
+
 ``Multikapillarsäule'', MCC (engl. Multi Capillary Column)
 
 Trennsäule in der Gaschromatographie
@@ -22,7 +23,6 @@ Keine physikalische Simulation der Moleküle
 
 %(Was ich nicht tue, was es schon gibt?, einfaches Modell)
 
-
 Im Rahmen der Diplomarbeit soll eine Multikapillarsäule simuliert werden. 
 
 Es geht dabei nicht um eine physikalische Simulation auf molekularer Ebene, sondern um die Entwicklung eines abstrakten, probabilistischen Modells, welches mit möglichst wenig Parametern auskommt. 
@@ -30,23 +30,26 @@ Es geht dabei nicht um eine physikalische Simulation auf molekularer Ebene, sond
 In der Simulation soll jeweils nur ein Stoff, charakterisiert durch diese Parameter, simuliert werden. Das Resultat einer Simulation ist jeweils ein einzelner Peak, welcher durch seine Lage und Form beschrieben werden kann. Die Lage entspricht dabei der Retentionszeit am Maximum des Peaks. Die Form ist durch seine Breite an einer bestimmten Höhe (zum Beispiel Halbwertsbreite) sowie Schiefe gekennzeichnet.
 
 
-
-\section{Aufbau der Arbeit}
-In Kapitel \ref{chapter:gru} wird zu Einen die Chromatographie, insbesondere die Gaschromatographie vorgestellt und der chromatographische Prozess erklärt. Zum Anderen PAA
-
 \section{Ziel der Arbeit}
 \todo{Ziel und Vorgehensweise}
-Umgekehrt soll es möglich sein, für eine gegebene Peaklage und Peakform die nötigen Simulationsparameter zu ermitteln, mit denen ein solcher Peak simuliert werden kann.
+\todo{Aufgabenstellung: Entsprechung zwischen Peakparametern und Sim-Parametern}
 
-\todo{Umformulierung auf hypothetische Peaks}
+Ziel dieser Diplomarbeit ist es, eine Entsprechung von Peakcharakteristika, wie sie in Kapitel \ref{chapter:gru} beschrieben werden, zu den Simulationsparametern, die für das Modell verwendet werden, zu finden, falls es eine solche Entsprechung gibt.
+
+Das heißt es soll sowohl möglich sein, aus den Simulationsparametern vorherzusagen, welche Eigenschaften ein damit simulierter Peak haben wird. Umgekehrt soll aber auch zu einem vorgegebenen Peak bestimmt werden können, welche Parameter nötig sind, um mit einer Simulation einen möglichst ähnlichen Peak zu erzeugen.
+
+Gesucht ist also eine allgemeine Entsprechung der Simulationsparameter zu den Parametern mit denen ein Peak beschrieben werden kann, falls diese existiert. 
+%Eine Berechnung des Peaks nur durch die Simulationsparameter und umgekehrt eine Vorhersage der Simulationsparameter zu bekannten Peakdaten soll damit realisiert werden.
+
+Das Problem kann daher als unbekannte Funktion : $F: [0,1] ^ x \rightarrow \mathbb{R}^y$ formuliert werden. Dabei ist $x$ eine zunächst unbekannte Zahl nötiger Parameter in der Simulation und $y$ die Anzahl an Peakcharakteristika mit denen ein Peak beschrieben wird. Schön wäre es, $F(p_1, \ldots, p_x) = (\lambda_1, \ldots, \lambda_y)$ für alle in echten Daten zu findenden $\lambda_j$ zu kennen. Zumindest aber soll geklärt werden welcher Parameter $p_i$ welchen Einfluss auf die verschiedenen $\lambda_j$ hat. 
+
+%zu einem gegebenen Peak die Parameter bestimmen, mit denen eben jener Peak simuliert werden kann. Umgekehrt soll zu gegebenen Simulationsparametern, der dadurch erzeugte Peak vorhergesagt werden können.
+%Umgekehrt soll es möglich sein, für eine gegebene Peaklage und Peakform die nötigen Simulationsparameter zu ermitteln, mit denen ein solcher Peak simuliert werden kann.
+
+%\todo{Umformulierung auf hypothetische Peaks}
 %Zum Vergleich liegen einige MCC-IMS-Messungen von Mischungen sieben bekannter Stoffe vor. Diese Datensätze wurden zur Verfügung gestellt von der Firma B \& S Analytik  (\mbox{\url{http://www.bs-analytik.de/}}). Zu den dadurch gegebenen Peaks sollen Parameter für die Simulation ermittelt und diese Peaks simuliert werden.
 
-Gesucht ist letztendlich eine allgemeine Entsprechung der Simulationsparameter zu den Parametern mit denen ein Peak beschrieben werden kann, falls diese existiert. Eine Berechnung des Peaks nur durch die Simulationsparameter und umgekehrt eine Vorhersage der Simulationsparameter zu bekannten Peakdaten soll damit realisiert werden.
 
-Ziel dieser Diplomarbeit ist es, eine Entsprechung von Peakcharakteristika, wie sie in Kapitel \ref{chapter:gru} beschrieben werden, zu den Simulationsparametern, die für das endgültige Modell verwendet werden, zu finden, falls es eine solche Entsprechung gibt.
-Das heißt es soll sowohl möglich sein, zu einem gegebenen Peak die Parameter bestimmen, mit denen eben jener Peak simuliert werden kann. Umgekehrt soll zu gegebenen Simulationsparametern, der dadurch erzeugte Peak vorhergesagt werden können.
- 
-Habe unbekannte Funktion : $F: [0,1] ^ x \rightarrow \mathbb{R}^y$. Dabei ist $x$ eine zunächst unbekannte Zahl nötiger Parameter und $y$ die Anzahl gefundener Peakcharakteristika. Schön wäre es, $F(p_1, \ldots, p_x) = (\lambda_1, \ldots, \lambda_y)$ für alle in echten Daten zu findenden $\lambda_j$ zu kennen. Zumindest aber soll geklärt werden welcher Parameter $p_i$ welchen Einfluss auf die verschiedenen $\lambda_j$ hat. 
 
 Um dieses Ziel zu erreichen, wird zunächst mit einem sehr einfachen Modell begonnen, welches nach und nach angepasst werden muss, bis die durch die Referenzdatensätze vorgegebenen Peaks ausreichend angenähert werden können.
 
@@ -59,12 +62,25 @@ Um dieses Ziel zu erreichen, wird zunächst mit einem sehr einfachen Modell bego
  \item Wiederholung von 2-4 bis gegebene Peaks ausreichend angenähert
 \end{enumerate}
 
+
 \section{Andere Arbeiten}
 
 Es existieren bereits Simulatoren für die Chromatographie, welche jedoch Daten auf eine andere Art erzeugen als eine Simulation des chromatographischen Prozesses erzeugen.
 
-Es gibt beispielsweise einen älteren Ansatz \citep{spreadsheet}, bei dem verschiedene Peaks als Funktionen eingegeben werden können. Die dort zu Grunde liegende Annahme ist, dass sich Peaks, ebenso wie das Hintergrundrauschen einer Messung, durch jeweils eine Funktion darstellen lassen. Diese Eingaben werden dann mit Hilfe einer Tabellenkalkulationssoftware zu einem gemeinsamen Spektrum kombiniert. Ein solcher Ansatz ist aber erst nützlich, wenn die Peaks bereits als Funktionen vorliegen.
+Es gibt beispielsweise einen älteren Ansatz \citep{spreadsheet}, bei dem verschiedene Peaks als Funktionen eingegeben werden können. Die dort zu Grunde liegende Annahme ist, dass sich Peaks, ebenso wie das Hintergrundrauschen einer Messung, durch jeweils eine Funktion darstellen lassen. Diese Eingaben werden dann mit Hilfe einer Tabellenkalkulationssoftware zu einem gemeinsamen Spektrum kombiniert. Ein solcher Ansatz ist aber erst nützlich, wenn die Peaks bereits als Funktionen vorliegen, die erhofften Zusammenhänge zwischen Parametern einzelner Peaks und damit verbundenen Eigenschaften müssen also bereits im Vorhinein vorliegen.
 
 Ein anderer Ansatz wurde von \citet{hplcsim} beschrieben. Dort geht es zwar um Flüssigchromatographie, die jedoch der Gaschromatographie ausreichend ähnlich ist, um als Vergleich herangezogen zu werden. In der dort beschriebenen Software können verschiedene Parameter der Chromatographie wie Druck oder Temperatur variiert und verschiedene Analyte ausgewählt werden und es werden daraus Chromatogramme erzeugt. Die so gewonnenen Daten werden aber nicht simuliert, sondern aus experimentellen Daten interpoliert. Dazu wurden in vielen Experimenten die Einflüsse der Einstellungen des Chromatographiegerätes untersucht und festgestellt, wie sich beispielsweise die Temperatur auf die resultierenden Peaks auswirkt. Für diese unterschiedlichen Messbedingungen wurden Formeln entwickelt, die in der Simulation auf die Peaks der einzelnen Analyte angewendet werden, um so je nach gewählten Einstellungen modifzierte Chromatogramme zu erhalten.
 
- 
+
+\section{Aufbau der Arbeit}
+Zunächst werden in Kapitel \ref{chapter:gru} die nötigen Grundlagen für diese Arbeit vorgestellt. Dies ist zum Einen die Chromatographie, insbesondere die Gaschromatographie und der chromatographische Prozess. Zudem werden einige Eigenschaften, welche die resultierenden Peaks haben können, vorgestellt. Zum Anderen wird eine Möglichkeit zur Modellierung des Problems als Probabilistischer Arithmetischer Automat (PAA) in Betracht gezogen.
+
+Kapitel \ref{chapter:mod} stellt zwei aufeinander aufbauende Modelle für die Simulation vor. Das erste ist ein sehr einfaches Modell, welches mit nur zwei Parametern auskommt, jedoch nur einen Teil der gewünschten Ergebnisse liefert. Das zweite Modell berücksichtigt weitere Details der Chromatographie und verfügt über bis zu sechs Parameter. Für beide Varianten wird jeweils auch eine Modellierung als PAA vorgestellt.
+
+In Kapitel \ref{chapter:meth} werden Methoden zur Umsetzung der Modelle erklärt. Dabei gibt es zwei Herangehensweisen, die für jeweils das einfache und das komplexere Modell vorgestellt werden, zudem wird auch eine mögliche Umsetzung des PAA besschrieben.
+
+Kapitel \ref{chapter:imp} gibt einen Überblick über die Implementierung der vorgestellten Methoden. 
+
+In Kapitel \ref{chapter:eva} werden die Ergebnisse der Simulationen ausgewertet. Für beide Modelle wird der Einfluss der einzelnen Parameter auf die Simulationsergebnisse untersucht und mögliche zusammen wirkende Einflüsse der Parameter beleuchtet. Außerdem werden die Grenzen der Modelle aufgezeigt.
+
+Zuletzt werden in Kapitel \ref{chapter:dis} die Ergebnisse der Arbeit zusammengefasst und ein Ausblick auf mögliche weiterführende Ideen oder Verbesserungen gegeben.

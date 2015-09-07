@@ -470,6 +470,7 @@ Außerdem wird nicht jeweils die vollständige Zustands-Werte-Verteilung betrach
 
 Zusätzlich werden Werte sehr nah bei $0$ ignoriert. Solche Werte werden aus der Verteilung gelöscht und die dadurch benötigten Arrays verkürzt, wodurch wiederum Simulationszeit eingespart wird.
 
+
 %todo Wie werden die neuen Einträge berechnet? Graphik, Text dazu
 
 % todo Wie werden die Arrays gekürzt
@@ -479,7 +480,7 @@ Zusätzlich werden Werte sehr nah bei $0$ ignoriert. Solche Werte werden aus der
 \begin{algorithm}
 \caption{Berechnung der Wartezeit}
 \label{algo_paa}
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \REQUIRE Startverteilungen $s$ und $m$, Maximalzeit $t_{max}$, Zielwert $\ell$, Parameter $T$, Startzeit $t=0$
 \ENSURE Verteilung der Wartezeit
 %\STATE{index = 1}
@@ -487,7 +488,7 @@ Zusätzlich werden Werte sehr nah bei $0$ ignoriert. Solche Werte werden aus der
 \STATE{Akutalisiere $s$ und $m$}
 \IF{length($m$) $> \ell$}
 \STATE{$r \leftarrow (s[\ell] +m[\ell])$}
-\STATE{Lösche $s[\ell]$ und $[\ell])$}
+\STATE{Lösche $s[\ell]$ und $m[\ell])$}
 \ELSE
 \STATE {$r \leftarrow 0$}
 \ENDIF
@@ -613,7 +614,7 @@ Die Simulation beginnt mit $s_0 = [0]$ und $m_0 = [1]$. Alle Teilchen befinden s
 \label{paa2p_prinzip}
 \end{figure}
 
-In jedem Schritt werden die beiden Verteilungen aktualisiert. Diese Berechnung ist in Abbildung \ref{paa2p_prinzip} exemplarisch dargestellt.
+In jedem Schritt werden die beiden Verteilungen aktualisiert. Diese Berechnung ist in Abbildung \ref{paa2p_prinzip} exemplarisch dargestellt. 
 
 Gegeben sind die alten Wahrscheinlichkeitsverteilungen $s_{t-1}$ und $m_{t-1}$.
 Um auf die neue Verteilung für den stationären Zustand zu kommen, muss für jede Position berechnet werden und jeden möglichen Ausgangs- und Folgezustand berechnet werden, welchen Anteil an Teilchen er enthält. 
@@ -621,7 +622,8 @@ In $ss$ sind diejenigen Anteile enthalten, die stationär waren und es bleiben, 
 In $sm$ und $mm$ sind dann die Anteile enthalten, die vom stationären Zustand mobil werden beziehungsweise mobil bleiben. Da in diesen Fällen die Teilchen anschließend mobil sind, müssen die Felder um eine Postition verschoben werden. Zum Ausgleich werden den neu stationären Verteilungen jeweils ein Feld mit der Wahrscheinlichkeit von $0$ angehängt.
 Daher vergrößern sich die beiden Verteilungsvektoren um jeweils ein Feld pro Schritt.
 
-Nach jedem solchen Berechnungsschritt wird getestet, ob Anteile der Teilchenmasse bereits den Zielwert $\ell$ erreicht haben. Die ist der Fall, wenn sich ein Eintrag an Position $\ell$ befindet, kann einfach auf die Länge der Verteilungsvektoren getestet werden. Im positiven Fall wird diese Wahrscheinlichkeit ins Ergebnis geschrieben, ansonsten sind keine Anteile der Teilchenmasse angekommen und es wird entsprechend eine Wahrscheinlichkeit von $0$ ins Ergebnis geschrieben.
+Eine Berechnung der Zustands-Werte Verteilung würde nur aus dieser schrittweisen Akualisierung entstehen. Um die Verteilung der Wartezeiten zu berechnen, wird nach jedem solchen Berechnungsschritt getestet, ob Anteile der Teilchenmasse bereits den Zielwert $\ell$ erreicht haben. Dies ist der Fall, wenn sich ein Eintrag an Position $\ell$ befindet, also kann einfach auf die Länge der Verteilungsvektoren getestet werden. Im positiven Fall würde der theoretische PAA in Zustand $\bullet$ übergehen. Hier wird die Wahrscheinlichkeit an Stelle $\ell$ ins Ergebnis geschrieben. Außerdem wird der nächste Übergang in den theoretischen Zustand $\circ$, aus dem kein Übergang wieder heraus führt, dadurch realisiert, dass die Werte an Position $\ell$ gelöscht werden.
+Im negativen Fall sind keine Anteile der Teilchenmasse angekommen und es wird entsprechend eine Wahrscheinlichkeit von $0$ ins Ergebnis geschrieben.
 Dadurch entsteht letztendlich eine Liste von Ankuftswahrscheinlichkeiten für jeden Zeitpunkt.
 
 Bei Erreichen der maximalen Wartezeit wird die Berechnung beendet. Ob die gesamte Wahrscheinlichkeitsmasse erreicht wurde kann anschließend berechnet werden, um herauszufinden, ob mit den getesteten Parametern ein Ergebnis innerhalb der vorgegebenen Wartezeit erzielt werden konnte. 

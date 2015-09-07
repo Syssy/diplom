@@ -25,6 +25,8 @@ Einige Kombinationen würden zwar Peaks erzeugen, diese lägen jedoch teilweise 
 \label{kein_peak}
 \end{figure}
 
+\todo{Peaks mit zeitpunkt 0,1 sind kritisch, da teilweise (je nach berechnung/rundung) fehler auftreten, im zweifel: ignorieren}
+
 Auch von den übrigen, innerhalb des Zeitraumes von $240$ Sekunden liegenden Verteilungen, sind nicht alle als Peak zu bezeichnen. Beispielsweise kann eine Verteilung extrem breit sein und über das gesamte Spektrum reichen. Damit würde sie in einer echten Messung wohl eher als Hintergrundrauschen erkannt werden. Ein Beispiel dafür ist in rechts in Abbildung \ref{kein_peak} zu sehen. 
 %Für die nachfolgenden Evaluationen wurde eine willkürliche Obergrenze bei einem IQR von $30$ gesetzt. Breitere Peaks können zwar mit den Modellen simuliert, werden aber nicht mehr berücksichtigt.
 
@@ -118,7 +120,7 @@ TODO wohin?: Unter anderen ergibt sich dieser Zusammenhang sich daraus, dass sic
 
 %Schiefe nur von pmm beeinflusst. Auch wenn pm auf den Wert von 0.999 gesetzt ist, was ja schiefe verursacht, ergeben alle ps's gleiche schiefe. Umgekehrt erzeugen bei festem ps jeweils die pm von ca 0.999 schiefe peaks bei sehr kleinen zeitpunkten (loc = 0.1, also minimalzeitpunkt) Das sieht so aus, als würde der direkt am beginn starten, aber das ist der kompression geschuldet, wenn ich nur ein zehntel komprimiere, hat der peak vorlauf
 
-\section{Grenzen}
+\subsection{Grenzen}
 Mit diesem Modell sind kaum tailende Peaks erzeugbar. Schiefe von mehr als $0,05$ tritt nur selten auf und immer bei Peaks, die ihren Maximalzeitpunkt ganz am Anfang des Spektrums, knapp über der Trägergaszeit von $0,1$ Sekunden haben. Der Effekt wird verursacht durch einen sehr großen Wert für pm, der bei ungefähr $0,999$ liegt. Dadurch gibt es viele Teilchen die (bei einer Säulenlänge von $1000$ Schritten) gar nicht in Wechselwirkung mit der stationären Phase geraten und dadurch mit Trägergasgeschwindigkeit durch die Säule wandern. Die wenigen Teilchen, die doch in die stationäre Phase eintreten, verursachen den Tail, da sie deutlich später als der Pulk die Säule verlassen.
 
 Eine weitere Grenze ist jedoch die Minimalbreite der erzeugten Peaks. Damit ist gemeint, dass mit zunehmender Zeit die Minimalbreite der Peaks, die an diesem Zeitpunkt ihr Maximum haben, ansteigt. Zur Verdeutlichung ist in Abbildung \ref{Grenzen_2p_ohnep} eine Übersicht über die erreichbaren Zeit-Breiten Kombinationen gegeben. Jeder Punkt steht für einen Peak, der mit der entsprechenden Maximalzeit und Breite erzeugt wurde.
@@ -235,7 +237,7 @@ Die Schiefe steigt mit fallendem $p_{aa}$ und in den meisten Fällen mit steigen
 
 Insgesamt scheint es, dass die Einflüsse auf Zeitpunkt und Breite der Peaks weniger komplex sind, als die Einflüsse auf die Schiefe. Das ist auch damit erklärbar, dass für Zeitpunkt und Breite eigentlich nur die zwei Parameter des einfachen Modells nötig sind und die Aufsplittung des stationären Zustands daran nicht viel ändert. Die Schiefe jedoch hängt immer von mehreren Parametern und deren Kombination ab.
 
-\subsubsection{Einfluss abhängig von anderen Parametern}
+\subsection{Einfluss abhängig von anderen Parametern}
 
 %\subsection{3-Zustände Modell}
 Bei diesem Modell ergeben sich durch die größere Anzahl an Parametern, komplexere Zusammenhänge zwischen den Parametern und den Peakdaten. Teilweise hängt die Stärke des Einflusses eines Parameters auf ein Peakcharakteristikum von den anderen Parametern ab. Das heißt, der Einfluss eines Parameters auf die resultierenden Peaks kann größer oder kleiner sein, abhängig davon, welchen Wert ein oder mehrere der anderen Parameter annehmen.
@@ -501,7 +503,8 @@ $p_{ml}$ und $p_{ll}$ haben zunächst beide einen proportionalen Einfluss auf di
 Tailing/Schiefe entsteht immer da, wo nur wenige Teilchen langsamer sind, als die große Masse. Sind viele Teilchen lange stationär, werden die Peaks statt dessen breit. Der Maximalzeitpunkt ist hauptsächlich durch die Durchschnittsgeschwindigkeit der Teilchen bestimmt, sind sie hauptsächlich mobil, entstehen frühe Peaks, sind sie oft und lange stationär, wandern die Peaks nach hinten.
 
 
-\subsubsection{Parameter für ähnliche Peaks}
+\subsection{Parameter für ähnliche Peaks}
+\label{chapter:eva_gleichePeaks}
 
 Durch die vielfältigen und unterschiedlich starken Einflüsse der einzelnen Parameter, ist es möglich, fast gleiche Peaks mit völlig unterschiedlichen Parameterkombinationen zu erzeugen. Zwei Beispiele dafür sind in den Abbildungen \ref{2kombis_1} und \ref{2kombis_2} gezeigt.
 
@@ -523,7 +526,7 @@ Durch die vielfältigen und unterschiedlich starken Einflüsse der einzelnen Par
 
 In beiden Fällen unterscheiden sich die resultierenden Peaks kaum, sie könnten jedoch durch minimale Parameterveränderungen noch stärker angenähert werden. Die Zuordnung von Simulationsparameter zu Peakcharakteristika ist also nicht eindeutig.
 
-\section{Grenzen des Modells}
+\subsection{Grenzen}
 
 Mit dem 2-Zustände Modell war es nur eingeschränkt möglich, Tailing zu erzeugen. Insbesondere tritt kein Tailing nicht zu den späteren Zeitpunkten im Chromatogramm auf. Diese Einschränkung konnte, wie gezeigt wurde, mit dem 3-Zustände Modell aufgehoben werden. 
 

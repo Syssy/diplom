@@ -64,28 +64,24 @@ Die Kopplung von GC und MS ist beispielsweise von \cite{Hubschmann2009} ausführ
 %\todo{Wo kann ich sonst Peaks beobachten?}
 
 \subsection{Technische Daten}
-TODO: Fließtext. 
-Angaben von Webseite (Hersteller) mit Fußnote
 
-Eine MCC besteht aus ca. $1000 - 2000$ Kapillaren mit je
-\begin{itemize}
- \item $20\,-\,80$\,\textmu m Durchmesser
- \item Stationäre Phase ist ein Flüssigkeitsfilm, als ca. $0,1\,-\,0,8$\,\textmu m dicke Beschichtung
-\end{itemize}
-Insgesamt ist eine MCC damit etwa $2\,-6$\,mm dick und $20$\,cm lang
+Es gibt verschiedene Multikapillarsäulen, die sich in der Anzahl und Größe ihrer Kapillaren, ihrer Länge, ihrer stationären Phase oder der maximalen Temperatur und Druck mit denen sie betrieben werden können, unterscheiden können. Dadurch können sie auch ein unterschiedliches Gasvolumen aufnehmen und trennen und die Durchlaufzeiten für eine Analyse variieren entsprechend. Außerdem können mit ein und derselbsen Säule verschiedene Betriebsmodi verwendet werden, die sich beispielsweise durch verwendetem Druck und damit in der Geschwindigkeit des Trägergases oder der Temperatur unterscheiden. Damit können bei gleichen Analyten sehr unterschiedlich aussehende Chromatogramme erzeugt werden, da die Stoffe auch unterschiedlich auf solche Veränderungen reagieren.
 
-\todo{Technische Daten belegen, soll das überhaupt rein, gibt so viele verschiedene und ohne referenzdaten ist das blöd}
+Um eine Einschätzung für eine MCC zu geben, sind hier einige mögliche Daten angegeben. Weitere Spezifikationen finden sich beispielsweise auf der Webseite des Herstellers Multichrom Ltd. \footnote[1]{http://www.mcc-chrom.com/catalogue} \footnote[2]{http://www.mcc-chrom.com/species} 
+
+
+Eine MCC besteht aus ca. $1000\,$--$\,2000$ Kapillaren mit je $20\,$--$\,80$\,\textmu m Durchmesser. Damit ist sie etwa $2\,$--$\,6$\,mm dick. Die Länge beträgt etwa  $20\,$--$\,40 $\,cm. Die stationäre Phase ist ein Flüssigkeitsfilm, der als ca. $0,1\,$--$\,0,8$\,\textmu m dicke Beschichtung auf die Innenseite der Kapillaren aufgebracht ist. 
 
 Der Querschnitt einer MCC ist in Abbildung \ref{MCC} zu sehen.
 
-\begin{figure}
+\begin{figure}[h]
  \centering
   \includegraphics[width = 0.5\textwidth]{bilder/MultiCapillaryColumn}\\
   %\caption[Querschnitt einer MCC]{Querschnitt einer MCC \protect\footnotemark}
   \caption[Querschnitt einer MCC]{Querschnitt einer MCC, Quelle: http://yas.yanaco.co.jp/products/import-gc-ims.html}
   \label{MCC}
 \end{figure}
-\footnotetext{http://yas.yanaco.co.jp/products/import-gc-ims.html}
+%\footnotetext{http://yas.yanaco.co.jp/products/import-gc-ims.html}
 
 \section{Peakcharakteristika}
 Die im gaschromatographischen Experiment gewonnenen, sowie später auch die simulierten Peaks müssen durch einige Eigenschaften beschrieben werden, um sie vergleichbar zu machen. Dafür seien hier drei solcher Eigenschaften beschrieben, die Lage, Breite und Form eines Peaks.
@@ -102,7 +98,15 @@ Für die Gaschromatographie in Multikapillarsäulen liegen die Retentionszeiten 
 \subsection{Breite}
 Peaks können unterschiedlich breit sein. Dabei ist zu beobachten, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden.
 % 10% der peakhöhe: kolb, s33. allerdings als tailingfaktor, entspricht eher der schiefemessung
-Da jedoch ein Peak mit größerer Intensität, also möglicherweise größerer Stoffmenge, automatisch auch einen höheren und damit breiteren Peak erzeugt, kann die Halbwertsbreite als Maß für die Peakbreite herangezogen werden. Die Halbwertsbreite wird auf halber Maximalhöhe des Peaks gemessen. Im Fall von auftretendem Tailing ist dieser Wert jedoch wahrscheinlich nicht mehr aussagekräftig. Außerdem ist die Halbwertsbreite kein robustes Maß für die Breite, sodass statt dessen der Interquartilsabstand (IQR, engl. interquartile range) als Maß für die Breite verwendet werden kann. Auch dieses Maß ist unabhängig von der Stoffmenge, die den Peak verursacht hat. Der IQR ist entspricht der Differenz zwischen den Quartilen $Q_{25}$ und $Q_{75}$: $IQR = Q_{75} -Q_{25}$ \todo{Quantil, $Q_p$, Quartil}
+Da jedoch ein Peak mit größerer Intensität, also möglicherweise größerer Stoffmenge, automatisch auch einen höheren und damit breiteren Peak erzeugt, kann die Halbwertsbreite als Maß für die Peakbreite herangezogen werden. Die Halbwertsbreite wird auf halber Maximalhöhe des Peaks gemessen. Im Fall von auftretendem Tailing ist dieser Wert jedoch wahrscheinlich nicht mehr aussagekräftig. Außerdem ist die Halbwertsbreite kein robustes Maß für die Breite, sodass statt dessen der Interquartilsabstand (IQR, engl. interquartile range) als Maß für die Breite verwendet werden kann. Auch dieses Maß ist unabhängig von der Stoffmenge, die den Peak verursacht hat. 
+\todo{Quantil, $Q_p$, Quartil definieren}
+
+Der IQR ist entspricht der Differenz zwischen den Quartilen $Q_{25}$ und $Q_{75}$:
+\begin{equation}
+IQR = Q_{75} -Q_{25}
+\end{equation}
+
+ 
 
  % \todo{Zitat IQR, diesen erkären, warum dieses Mass}
 \subsection{Form}
@@ -110,11 +114,13 @@ Als dritte Eigenschaft können sich Peaks in ihrer Form unterscheiden. Im theore
 Abweichend davon treten in echten Messungen häufig asymmetrische Peaks auf, die dann ein Tailing aufweisen, diese Eigenschaft wird auch Rechtsschiefe genannt. Dabei steigt die Kurve zunächst stark an, sinkt jedoch nach Erreichen des Maximalwerts deutlich langsamer ab, es entsteht ein Schwanz (engl. Tail).
 Ursachen für solche schiefen Peaks gibt es viele \citep{kolb2003, Moretti2004, Giddings1963}. Einige Beispiele für Ursachen sind zusätzliche Adsorptionseffekte, die beim Altern einer Säule auftreten, technische Ursachen wie kleinste Hohlräume zwischen der Säule und dem Gaseinlass bzw. -austritt, sowie einige Stoffe, die generell zu Tailing neigen. %\todo{Zitat, dass einige Stoffe gererell tailen}. 
 
-Als Maß für die Schiefe bietet sich der Quartilskoeffizient nach Yule-Bowley an. Dieser berechnet sich aus den Quartilen einer Verteilung und ist definiert als: 
-\begin{equation*}
-\frac{Q_{25} + Q_{75} -2\cdot Q_{50} }{ Q_{75} - Q_{25}}
-\end{equation*}
-\todo{Salome nach zitierwürdiger Quelle fragen}
+Als Maß für die Schiefe bietet sich der Quantilskoeffizient \citep{johnson1994} an.
+Dieser berechnet sich, aus den Quantilen einer Verteilung und ist definiert als: 
+\begin{equation}
+\frac{Q_{\alpha} + Q_{1-\alpha} -2\cdot Q_{50} }{ Q_{1-\alpha} - Q_{\alpha}}
+\end{equation}
+
+Für $\alpha = 25$ spricht man auch vom Quartilskoeffizienten nach Yule-Bowley und dieser soll später als Maß für die Schiefe der Peaks verwendet werden.
 
 
 \section{Probabilistische Arithmetische Automaten}
@@ -163,29 +169,37 @@ Ein PAA ist zu jedem Zeitpunkt mit einer bestimmten Wahrscheinlichkeit in jedem 
 % Gebe eher p(Q) an
 
 \subsection{Algorithmus zur Berechnung der Wartezeit}
-\todo{Algos für die Verteilung und Wartezeit-Berechnung überarbeiten}
 
-Habe: Zustands-Werte-Verteilung, die für alle Zeitpunkte schrittweise berechnet werden kann.
-Suche: Verteilung für Wert $v$ zu Zeitpunkt $t$: $P(v_t = v) $ ist die Summe über alle Werte in den verschiedenen Zuständen, die zu Zeitpunkt $t$ erreicht werden können. Also $P(v_t = v)  = \sum_{q \in \mathcal{Q}} P(q_n = q, v_n = v)$
+Neben der eben vorgestellten schrittweisen Berechnung der Zustand-Werte Verteilung kann es von Interesse sein, die Verteilung der Wartezeit auf einen bestimmten Wert $v^*$ zu kennen. Für die Teilchen in der MCC entspricht dieser Zielwert der Länge der Säule und man ist interessiert in der Verteilung der Anzahl der Schritte die zum Durchlaufen dieser Strecke benötigt werden. 
 
-Warte auf Wert x: 
-Gesucht ist der minimale Zeitpunkt $t$, an dem $V_t$ den Wert x angenommen hat. Es gibt viele Zeitpunkte an denen x angenommen werden kann (bspw, wenn Teilchen grad stecken geblieben ist, rein theoretisch) 
-Die Wartezeit ist eine Zufallsvariable, definiert als: $W_x = \min\{t \in \mathbb{N}\mid v_t = x\}$
+Da es sein kann, dass in einigen Abfolgen von Zuständen, der Wert $v^*$ erst sehr spät oder gar nicht erreicht werden kann, wird eine maximale Wartezeit $t_{max}$ gesetzt. Zwar können dann Wartezeiten für $v^*$ größer als $t_{max}$ auftreten, deren genaue Verteilung unbekannt ist, Gesamtwahrscheinlichkeit dieser Zeitpunkte kann jedoch berechnet werden.
+% TODO Wohin damit? Es kann sein, dass Wartezeiten für $v^*$ größer als $t_{max}$ auftreten. Dann ist die Verteilung der Wahrscheinlichkeiten für diese Zeitpunkte zwar unbekannt, aber die Gesamtwahrscheinlichkeit für solche Wartezeiten kann berechnet werden.% (teilchen bleiben ewig stecken) aber uns interessiert nur bis zeitpunkt y. (y=240s). Dann kennt man die verteilung darüber hinaus nicht, aber die gesamtwkeit dafür schon.
 
-Es kann sein, dass Wartezeit größer als t immer da ist (teilchen bleiben ewig stecken) aber uns interessiert nur bis zeitpunkt y. (y=240s). Dann kennt man die verteilung darüber hinaus nicht, aber die gesamtwkeit dafür schon.
+Außerdem können innerhalb eines Prozesses mehrere Zeitpunkte existieren, an denen der Wert $v^*$ angenommen werden kann, gesucht ist der kleineste dieser Zeitpunkte. %(bspw, wenn Teilchen grad stecken geblieben ist, rein theoretisch) 
+Daher kann die Wartezeit auch als Zufallsvariable aufgefasst werden, die definiert als: $W_{v^*} = \min\{t \in \mathbb{N}\mid v_t = v^*\}$.
+%Warte auf Wert $v^*$: 
+%Gesucht ist der minimale Zeitpunkt $t$, an dem $v_t$ den Wert $v^*$ angenommen hat. 
+%Die Wartezeit ist eine Zufallsvariable, definiert als: $W_{v^*} = \min\{t \in \mathbb{N}\mid v_t = v^*\}$
 
-Zur Berechnung der Wartezeit wird ein modifizierter PAA konstruiert. Hierbei werden zwei neue Zustände eingeführt, $\bullet$ und $\circ$, sodass der neue PAA die Zustände $\mathcal{V}' = \mathcal{V} \cup \{\bullet, \circ\}$ hat. Außerdem werden die Operationen angepasst auf
+Wie oben beschrieben, existiert die Möglichkeit, die Zustands-Werte Verteilung schrittweise für alle Zeitpunkte bis zu einem gewünschten Maximalzeitpunkt $t_{max}$ zu berechnen.
+Gesucht ist nun die Verteilung über die Zeitpunkte $t < t_{max}$ für einen Zielwert $v^*$. $P(v_{t} = v^*)$ ist die Wahrscheinlichkeit für jeden solchen Zeitpunkt $t$, $v^*$  zu erreichen. Dies entspricht der Summe über alle Zuständen, die zu Zeitpunkt $t$ den Wert $v^*$ erreichen können. Also ist $P(v_t = v^*)  = \sum_{q \in \mathcal{Q}} P(q_{t} = q, v_{t} = v^*)$
+
+
+Zur Berechnung der Verteilung der Wartezeit auf $v^*$ wird ein modifizierter PAA konstruiert. Hierbei werden zwei neue Zustände eingeführt, $\bullet$ und $\circ$, sodass der neue PAA die Zustände $\mathcal{V}' = \mathcal{V} \cup \{\bullet, \circ\}$ hat. Außerdem werden die Operationen angepasst auf
 
 $ \theta'_q(v,e)=
 \begin{cases}
-\theta_q(v,e), 	& \text{wenn } v \notin \{\bullet, \circ\} \text{ und } \theta_q(v,e) \neq x ,\\
-\bullet,	& \text{wenn } v \notin \{\bullet, \circ\} \text{ und } \theta_q(v,e) = x ,  \\
+\theta_q(v,e), 	& \text{wenn } v \notin \{\bullet, \circ\} \text{ und } \theta_q(v,e) \neq v^* ,\\
+\bullet,	& \text{wenn } v \notin \{\bullet, \circ\} \text{ und } \theta_q(v,e) = v^* ,  \\
 \circ, 		& \text{wenn } v \in \{\bullet, \circ\}
-\end{cases}$
+\end{cases}$.
 
-Der Wert $\bullet$ wird also genau dann erreicht, wenn im aktuellen Berechnungsschritt die ursprüngliche Operation den Zielwert $x$ erreicht. Also gilt für die Wartezeit $t$: $P(W_x = t) = P(v'_t = \bullet)$.
-Die Verteilung für $P(v'_t = \bullet)$ kann wie oben angegeben berechnet werden. 
+Der Wert $\bullet$ wird also genau dann erreicht, wenn im aktuellen Berechnungsschritt die ursprüngliche Operation den Zielwert $v^*$ erreicht. Also gilt für alle Zeiten $t < t_{max}$: $P(W_{v^*} = t) = P(v'_t = \bullet)$.
 
-Offensichtlich entspricht die Wartezeit auf den Wert $x$ der Wahrscheinlichkeit von Wert $\bullet$
-Es kann also für alle Zeitpunkte $t$ die Wahrscheinlichkeit für den neuen Wert $\bullet$ berechnet werden.
-TODO
+Die Verteilung für $P(v'_{t} = \bullet)$ kann wie oben angegeben schrittweise für alle Zeitpunkte $t$ ausgehend von der Startverteilung bis zu $t_{max}$ berechnet werden. Dadurch, dass im jeweils nächsten Berechnungsschritt der PAA in Zustand $\circ$ gelangt, wird jeweils nur das erste Erreichen von $v^*$ berücksichtigt.
+
+Durch Berechnung der Wahrsscheinlichkeiten $P(v'_{t} = \bullet)$ für alle $t < t_{max}$ erhält man die Verteilung der Wartezeiten auf $v^*$.
+
+%Offensichtlich entspricht die Wartezeit auf den Wert $v^*$ der Wahrscheinlichkeit von Wert $\bullet$
+%Es kann also für alle Zeitpunkte $t$ die Wahrscheinlichkeit für den neuen Wert $\bullet$ berechnet werden.
+%TODO
