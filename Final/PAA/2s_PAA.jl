@@ -39,9 +39,9 @@ function updateDistributions!(ps::Float32, pm::Float32, stationaryVector, mobile
     return stationaryVector, mobileVector, index        
 end
 
-# Berechne Wartezeit für Wert value. Maximale Wartezeit durch maxTime gegeben
-# ps und pm W'keiten, stationär bzw mobil zu bleiben
 function waitingTimeForValue(ps::Float32, pm::Float32, value, maxTime)
+    # Berechne Wartezeit für Wert value. Maximale Wartezeit durch maxTime gegeben
+    # ps und pm W'keiten, stationär bzw mobil zu bleiben
     # Beginne mit leerem ergebnis
     result = zeros(Float32, 1)
     # stationaryVector ist der Vektor für die stat. Phase, enthält zu Beginn an Stelle 0 0% der Teilchen
@@ -109,15 +109,16 @@ end
 column_length = 1000
 maxtime = 2400000
 param_list = combineParams()
+#param_list = [(0.999f0, 0.9f0)]
 #reverse!(param_list)
 # Simuliere alle Parameterkombinationen
 for (ps, pm) in param_list
-    filename = "savedata_julia/l$column_length/2_states/Sim_$ps" * "_$pm"
+    filename = "savedata_julia/l$column_length/2s/Sim_$ps" * "_$pm"
     print(filename)
     if !isfile(filename) 
         println("ps:", ps, " pm: ", pm)
         # Simulieren
-        res = @time(waitingTimeForValue(ps, pm, column_length+1, maxtime))
+        res = waitingTimeForValue(ps, pm, column_length+1, maxtime)
         #Summe zur Kontrolle
         println("Sum ", sum(res))
         #Speichern

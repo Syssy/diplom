@@ -11,7 +11,7 @@ import math
 import os
 import csv
 
-import scipy.stats   
+#import scipy.stats   
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -170,6 +170,7 @@ def plot_single_peak(filename, quartiles = True):
         #print (aPeak.times)
         plt.plot(aPeak.times, label = " ")
         hoehe = np.max(aPeak.times)
+        print (aPeak.pd)
         # Quartile mitplotten
         if quartiles:
             plt.plot([aPeak.pd[1][0] * 10, aPeak.pd[1][0] * 10], [0, hoehe])
@@ -178,7 +179,7 @@ def plot_single_peak(filename, quartiles = True):
         #plt.axis([0.0,2400,0.0,0.03])
         plt.title("ps: " + str(aPeak.params[0]) +" pm: " + str(aPeak.params[1])) 
         #ax.set_xticklabels([0, 50, 100, 150, 200])
-        plt.legend(title = "loc " + str(round(aPeak.pd[0],2))+ " iqr "+str(round(aPeak.pd[2],2)) + " skew " +str(round(aPeak.pd[3],2)))
+        plt.legend(title = "loc " + str(round(aPeak.pd[0],4))+ " iqr "+str(round(aPeak.pd[2],2)) + " skew " +str(round(aPeak.pd[3],2)))
         plt.annotate(str(aPeak.pd[0])+str(aPeak.pd[2])+str(aPeak.pd[3]),(aPeak.pd[1][2] * 10, aPeak.pd[1][2] * 10))
         plt.show()
     return
@@ -268,10 +269,10 @@ def main():
     #fig_dir = "savefigs_python/l1000"
    
 
-    filename = dest_directory + "Sim_0.999985_0.99000007.p"
-    #plot_single_peak(filename, False)
+    filename = dest_directory + "Sim_0.999_0.9.p"
+    plot_single_peak(filename, False)
    # plotte_Zeitpunkt(dest_directory, [0,240], [0,30], [0,1])  
-    plot_erreichbare_regionen(dest_directory)
+   # plot_erreichbare_regionen(dest_directory)
     
     pss = [0.998, 0.999, 0.9992, 0.9994, 0.9996, 0.9999]
     #pss = [0.9995]

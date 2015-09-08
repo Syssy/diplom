@@ -11,11 +11,11 @@ import os
 import sys
 
 import numpy as np
-import scipy.stats as stats
-import scipy
+#import scipy.stats as stats
+#import scipy
 import matplotlib.pyplot as plt
 
-import my_plottings as plottings
+import plottings
 import simulation
 
 def combine_params(args, model, nr_of_choice = 5, params=(0.999, 0,5)):
@@ -27,10 +27,12 @@ def combine_params(args, model, nr_of_choice = 5, params=(0.999, 0,5)):
     p_combinations = []
     
     if args == "single" and model == "3s":
-        p_combinations.append((params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7], params[8]))
+        p_combinations = [([params[0], params[1], params[2]], [params[3], params[4], params[5]], [params[6], params[7], params[8]])]
+        return (p_combinations)
         
     if args == "single" and model == "3a":
         p_combinations.append((params[0], params[1], params[2], params[3]))
+        return(p_combinations)
         
     if args == "ellytest":
         p_combinations.append((0.9, 0.0005, 0.9992, 0.999993))
@@ -59,12 +61,12 @@ def combine_params(args, model, nr_of_choice = 5, params=(0.999, 0,5)):
                     for pll in pll_catalogue:
                         p_combinations.append((pmm, pml, paa, pll))  
     #Grosse Auswahl 
-        if args == "large_set" and model == "3a":
+    if args == "large_set" and model == "3a":
         pmm_catalogue = list(np.arange(0.1, 0.95, 0.1))
         pmm_catalogue.extend([0.001, 0.01, 0.05, 0.95, 0.99])
         pml_catalogue = [0.003, 0.001, 0.0007, 0.0005, 0.0003, 0.0001, 0.00005]
         paa_catalogue = list(np.arange(0.999, 0.9997, 0.0001))
-        paa_catalogue.extend[0.997, 0.998]
+        paa_catalogue.extend([0.997, 0.998])
         pll_catalogue = [0.999925, 0.99995, 0.999975, 0.99999, 0.999993, 0.999995, 0.999999]
         for pmm in pmm_catalogue:
             for pml in pml_catalogue:
@@ -83,7 +85,7 @@ def combine_params(args, model, nr_of_choice = 5, params=(0.999, 0,5)):
     logging.log(20, "p_combinations %s, anzahl: %s", p_combinations, len(p_combinations))    
     return (sorted(list(set(p_combinations))))
 
-def start_simulations(length, number, approach, p_combinations):
+def start_simulations(length, number, model, approach, p_combinations):
     '''Teste, ob Simulationen in geeigneter Version vorhanden sind und simuliere ggf. neu'''
     # nr_todo: wie viele noch nicht bearbeitet, nr_ready: wie viele schon fertig
     nr_todo, nr_ready = len(p_combinations), 0    
@@ -95,7 +97,7 @@ def start_simulations(length, number, approach, p_combinations):
             # gehe erst mal davon aus, dass Sim vorhanden ist, daher nicht speichern, sondern auf Aktualitaet ueberpruefen
             sim_exists = True
             store = False
-            mySim = simulation.Simulation_2s((params), "3s", length, number=number, approach=approach)
+            mySim = simulation.Simulation_3s((params), model, length, number=number, approach=approach)
             filename = 'simulated_data/3s/l' +str(length) + "/n" + str(number) + '/Sim_' + str(mySim) + ".p" 
             try:
                 logging.log(24,"filename: %s", filename)
@@ -134,7 +136,7 @@ def start_simulations(length, number, approach, p_combinations):
             
             #Neue Simulation notwendig
             if not sim_exists:
-                logging.log(20,"simuliere")
+                logging.log(19,"simuliere")
                 store = True
                 #mySim = simulation.Simulation(round(ps, 10), round(pm,10), "2s", length, number=number, approach=approach)
                 mySim.simulate()
@@ -166,7 +168,7 @@ def get_argument_parser():
     p.add_argument("--choicenumber", "-cn", type = int, default = "5",
                    help = "bei zufaelliger Parameterwahl: Wie viele Kombinationen sollen gewaehlt werden")
     p.add_argument("--pcombioption", "-p",  
-                   help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: single, small_set, medium_set, large_set, random")
+                   help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: small_set, medium_set, large_set, random")
     p.add_argument("--reverse", "-r", action = "store_true",
                    help = "Reihenfolge der p_combinations invertieren")
     p.add_argument("--model", "-m", default = "3a",
@@ -176,7 +178,7 @@ def get_argument_parser():
     p.add_argument("--number", "-n", type = int, default = "1000",
                    help = "Anzahl zu simulierender Teilchen")
     p.add_argument("--approach", "-a", default = "E", 
-                   help = "Art der Simulation; E = by-event, T = each_timestep")
+                   help = "Art der Simulation; E = by-event, S = step-by-step")
     p.add_argument("--plot_peak", "-pp", nargs = '+', type = float,
                    help = "Einzelne Parameterkombi eingeben, deren Peak dann geplottet wird" )
     p.add_argument("--plot_spectrum", "-ps", action = "store_true",
@@ -220,7 +222,7 @@ def main():
         if args.reverse:
             p_combinations.reverse()
         #Simulationen starten
-        simlist = start_simulations(args.length, args.number, args.approach, p_combinations)
+        simlist = start_simulations(args.length, args.number, args.model, args.approach, p_combinations)
         if args.plot_peak:
             plottings.plot_single_peak(simlist[0])
         if args.plot_spectrum:

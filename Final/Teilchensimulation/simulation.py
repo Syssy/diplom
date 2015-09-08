@@ -12,7 +12,6 @@ import random
 from collections import Counter
 from abc import ABCMeta, abstractmethod 
 
-import scipy.stats   
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -49,6 +48,7 @@ class Simulation(metaclass = ABCMeta):
 
     def set_model(self):
         '''Aus der Anzahl der Parameter das dahinter liegende Modell extrahieren'''
+        print ("modell setzen")
         if len(self.params) == 2:
             self.model = "2s"
         elif len(self.params) == 4 or len(self.params) == 6 or len(self.params) == 9:
@@ -234,7 +234,15 @@ class Simulation(metaclass = ABCMeta):
     def __repr__(self):
         if self.model == "2s":
             return (self.model + "_" + str(round(self.params[0],8))+ "_" + str(round(self.params[1],5)) )#+ "_" + self.approach)
-        
+        if self.model == "3s" or self.model == "3a":
+            result = ''
+            for param in self.params:
+                result+=("[")
+                for i in range(len(param)-1):
+                    result+=(str(round(param[i], 6)) + "_")
+                result+=(str(round(param[-1], 6)) + "]")
+            #result+=("]")                      
+            return result
         return (self.model + "_" + str(self.params))# + "_" + self.approach)
               
     def simulate(self, model = None, approach = None):
@@ -278,8 +286,8 @@ class Simulation_2s(Simulation):
         states, locations = zip(*particle_list)
         
         # Geometrisch verteilt: Zeitspannen bis zum naechsten Erfolg, jeweils fuer alle Teilchen und fuer ps und pm
-        periods_ps = scipy.stats.geom.rvs(1-self.params[0], size = len(particle_list))
-        periods_pm = scipy.stats.geom.rvs(1-self.params[1], size = len(particle_list))
+        periods_ps = np.random.geometric(1-self.params[0], size = len(particle_list))
+        periods_pm = np.random.geometric(1-self.params[1], size = len(particle_list))
         
         #fuer pm nur die mobilen Zustaende relevant
         periods_pm *= states
@@ -392,7 +400,7 @@ class Simulation_3s(Simulation):
         states, locations = zip(*particle_list)
         for s, l in particle_list:
             #Zufallszahlen ziehen: Geom fuer Zeitpunkt des naechsten Events, entspricht Zeitpunkt des Misserfolgs (also nicht-Verweilen)
-            period = scipy.stats.geom.rvs(1-self.params[s][s])
+            period = np.random.geometric(1-self.params[s][s])
             # zz fuer Bestimmung des naechsten Zustands
             zz = random.random()
             #print("period ", period, " zz ", zz)
@@ -426,7 +434,7 @@ def get_argument_parser():
     p.add_argument("--maxtime", "-mt", type = int, default = "240",
                    help = "Maximale Retentionszeit in Sekunden")
     p.add_argument("--approach", "-a", default = "E", 
-                   help = "Art der Simulation; E = by-event, T = each_timestep")
+                   help = "Art der Simulation; E = by-event, S = step-by-step")
     p.add_argument("--model", "-m", default = "",
                    help = "Modell: 2 oder 3 Zustände (2s/3s/3a)")
     p.add_argument("--params", "-p", nargs = '+', type = float,
