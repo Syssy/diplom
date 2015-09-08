@@ -1,7 +1,6 @@
 % diskussion.tex
 \chapter{Diskussion}
 \label{chapter:dis}
-\todo{Kapitel Diskussion schreiben}
 
 \section{Ergebnisse}
 Es wurde ein Zusammenhang zwischen den Simulationsparametern und Peakdaten gefunden. Es existiert zwar noch keine Formel, die eine exakte Entsprechung beschreibt, jedoch ist der Einfluss der Parameter auf die Peakdaten bekannt. 
@@ -12,31 +11,59 @@ Aktuell kann für die in der Einleitung erwähnte, unbekannte Funktion  $F: [0,1
 
 
 \section{Ausblick}
+Ausgehend von den bisherigen Ergebnissen sind viele Ansätze für eine Fortsetzung der Arbeit denkbar.
 
-% Bessere bzw. genauere Aufarbeitung der Referenzdaten: Methoden, die ztatsächlichen Peaks gut zu isolieren (\todo{kann man hier auf bestehende Arbeiten zur peakfindung verweisen?}) evtl. feinere Daten durch schätzen weiterer zwischenmessungen, um glattere Daten zu erhalten? Verfahren umd zu erkennen, ob Peaks gut sind für den Vergleich
-Abgleich mit Messungen in größerem Maßstab: Verschiedene Hersteller, verschiedene Längen, etc. Um zu gucken, wofür das Modell alles ausreicht
+\paragraph{Andere Maße zur Peakbeschreibung}
+Wie in Abbildung \ref{diverse_schiefen} zu sehen war und dort bereits erwähnt wurde, widersprechen die Maße zur Beschreibung der Peaks in manchen Fällen der Wahrnehmung eines menschlichen Betrachters. Insbesondere ist dies der Fall, wenn das Tailing eines Peaks, wie unten rechts in Abbildung \ref{diverse_schiefen}, eine sehr niedrige Intensität relativ zur maximalen Peakhöhe aufweist. Dadurch wächst auch der IQR deutlich an, jedoch nicht die wahrgenommene Breite eines Peaks.
 
-Das ganze mit existierenden Daten vergleichen, um zu gucken, ob schmalere Peaks notwendig sind und alle realen Peakdatenkombinationen erreicht werden können, dann eventuell noch mal das Modell anpassen:
-Tailform richtig?
-Doch noch mal Halbwertsbreite bzw 10\% Breite und Breite links und rechts des Maximums als Maße für Breite und Schiefe testen, da in einigen Fällen die berechneten Werte den vom menschlichen Betrachter gewonnenen Eindruck widersprechen.
+Um die Auswirkungen dieser Art von Tailing zu untersuchen, müssten Chromatogramme mit realistischem Rauschen erstellt werden. Anschließend müssten die Peaks wieder extrahiert werden, um festzustellen, ob diese nach wie vor tailen beziehungweise, welchen Wert die gemessene Schiefe anschließend hat. Die daraus resultierenden Konsequenzen für den IQR müssten ebenfalls untersucht werden.
+
+Um dieses Problem zu umgehen, könnten die Peaks auch weitere Maße für Breite und Schiefe erhalten. Eine Möglichkeit wäre es, doch die Halbwertsbreite als Maß für die Breite heranzuziehen. Zumindest in den Beispielen aus Abbildung \ref{diverse_schiefen} würde die Halbwertsbreite den optischen Eindruck zur Breite der Peaks bestätigen, nämlich, dass der Peak unten rechts der schmalste der Peaks ist. 
+
+Zur Beschreibung der Schiefe der Peaks müsste dann ebenfalls ein neuer Koeffizient gebildet werden. Dazu werden die Zeiten vor und nach dem Maximalzeitpunkt $t$, zu denen der Peak die halbe Maximalintensität erreicht hat, ermittelt. Diese werden nun mit $t_l$ und $t_r$ für links und rechts des Maximums bezeichnet. Anschließend werden die Abstände der beiden Zeiten zum Maximalzeitpunkt gebildet: $a_l = t-t_l$ und $a_r = t_r -t$. Das Verhältnis dieser Abstände gibt einen Hinweis auf die Schiefe: Wenn $a_l < a_r$, dann liegt ein Tailing vor.
+Alternativ zur halbem Maximalhöhe können die Werte für $t_l$ und $t_r$ auch auf 30\% oder 10\% der Maximalhöhe des Peaks ermittelt werden um weitere Kenngrößen zu erhalten.
+
+Nach Einarbeitung dieser Maße und eventuell weiterer Peakcharakteristika, müsste erneut eine Evaluierung der vorhandenen Simulationen statt finden. 
+
+\paragraph{Peaks als Funktionen}
+Bisher wurden Peaks durch mehrere Maße charakterisiert. Jedoch ist insbesondere die Form eines Peaks schwer zu beschreiben. Ein Peak, der einen sehr langen, aber wenig intensiven Tail aufweist, wird damit möglicherweise mit den gleichen Werten beschrieben wie ein Peak mit einem kurzen Tail, der aber eine höhere Intensität aufweist. Mit der Halbwertsbreite und dem neuen Schiefe-Koeffizienten könnte dieses Problem auch nur teilweise behoben werden, da die relevaten Maße nur punktuell gemessen werden, nämlich auf 50\% oder 10\% der Peakhöhe. Statt eine Beschreibung der Form eines Peaks durch diese Maße, könnte statt dessen auch versucht werden, die Peaks als Funktionen aufzufassen und die Funktionswerte, die den Peak darstellen möglichst genau zu simulieren. 
+
+Dies bedeutet aber weitreichende neue Untersuchungen, wie sich die Parameter auf diese Funktionswerte auswerten, um daraus Schlüsse ziehen zu können, welche Parameter für einen gewünschten Peak vonnöten sind.
 
 
-Je nachdem, ob die bisherigen Ergebnisse ausreichen, um eine größere Anzahl im Experiment gefundener Peaks zu simulieren, können die am Ende von Kapitel \ref{chapter:mod} erwähnten Ideen für weitere Modellveränderungen ausprobiert werden. Sowohl die Berücksichtigung des Gleichgewichts der Phasen als auch eine maximale Kapazität für die Adsorption können für weiteres Tailing sorgen. Außerdem ist es auch gut vorstellbar, dass so schmalere Peaks zum gleichen Zeitpunkt entstehen, da sich für einige Teilchen die Wahrscheinlichkeit, mobil zu bleiben erhöht und ein Teilchenpulk enger beieinander bleibt.
+%TODO? dann noch einmal untersucht werden, ob alle realen Peaks automatisch angennähert werden können. (Ausgehend von Peaks in der Umgebung Parameter anpassen)
 
-Aufgreifen der nicht umgesetzten Modellerweiterungen: Berücksichtigung des Gleichgewichts der Phasen und beschränkte Anzahl freier Plätze bei der Adsorption.
+\paragraph{Verifikation des Modells in größerem Rahmen}
+Da mit dem Simulationsmodell echte Daten simuliert werden sollen, wäre es sinnvoll, den Vergleich von simulierten und echten Daten in größerem Rahmen durchzuführen. Dazu wäre ein Vergleich der simulierten Peaks mit verschiedenen echten Messungen nützlich. Diese unterschiedlichen Messungen sollten dann Ergebnisse aus Säulen unterschiedlicher Hersteller berücksichtigen, die sich in Eigenschaften wie Länge, Durchmesser und Anzahl der Kapillaren, Art der Beschichtung, sowie Betriebsparameter wie Temperatur und Druck unterscheiden. 
 
-Eine weitere Möglichkeit, das Modell zu verändern, besteht darin, das Gleichgewicht, welches sich zwischen den beiden Phasen aufbaut, zu berücksichtigen. Damit müssten die Wahrscheinlichkeiten, den Zustand zu wechseln, nicht mehr fest vorgegeben sein, sondern sich dynamisch während der Simulation aus der aktuellen Verteilung der Teilchen an einem bestimmten Ort auf die Zustände berechnen.
+Bei einem solchen Vergleich sollte sich dann heraustellen, ob die minimale Breite, die ein mit dem Modell erzeugter Peak hat, ein Problem darstellt, wenn nämlich tatsächlich schmalere Peaks zum gleichen Zeitpunkt existieren. 
 
-Außerdem existieren Idee, noch eine Sättigung der freien Plätze zur Adsorption einzubauen
+Außerdem wurde bisher von einer konstanten Länge der Säule ausgegangen, ein Vergleich verschiedener Längen und die Auswirkungen davon auf die Peaks wäre interessant. Es ist zu erwarten, dass für andere Säulenlängen die Parameter verändert werden müssen, um ähnliche Peaks zu erhalten.
 
-Das ganze auch für spätere Zeitpunkte überprüfen (echte Messlänge, dauert nur halt lange mit der Sim, evtl dafür die eventsim nutzbar?)
+Im Rahmen dieses Vergleiches wird es sicher nötig sein, die bisherige Maximalzeit von $240$ Sekunden anzupassen und zu überprüfen, ob die sich die Ergebnisse auch auf spätere Zeitpunkte übertragen lassen überprüfen. 
 
+Wenn sich bei einem solchen Vergleich mit vielen Messungen und angepasster Säulenlänge herausstellt, dass mit dem Modell einige der Peaks nicht simuliert werden können, kann zunächst das 3-Zustände Modell voll ausgeschöpft werden, indem alle sechs möglichen Parameter berücksichtigt werden. Eventuell ergeben sich dadurch weitere, bisher nicht realisierbare Peaks.
+
+Wenn auch das nicht ausreicht, muss eine erneute Veränderung des Modells erfolgen.
+In Kapitel \ref{chapter:mod} wurden am Ende einige Ideen vorgestellt, wie das Modell verändert werden könnte.
+Sowohl die Berücksichtigung des Gleichgewichts der Phasen als auch eine maximale Kapazität für die Adsorption können für weiteres Tailing sorgen. Dieses neue Tailing könnte sich insbesondere in Bezug auf die im letzten Abschnitt angedachten anderen Beschreibungen der Peaks anders verhalten, als das bisher erzeugte Tailing. 
+Außerdem ist es auch gut vorstellbar, dass so schmalere Peaks zum gleichen Zeitpunkt entstehen, da sich für einige Teilchen die Wahrscheinlichkeit, mobil zu bleiben erhöht und der Teilchenpulk enger beieinander bleibt.
+
+
+% Je nachdem, ob die bisherigen Ergebnisse ausreichen, um eine größere Anzahl im Experiment gefundener Peaks zu simulieren, können die am Ende von Kapitel \ref{chapter:mod} erwähnten Ideen für weitere Modellveränderungen ausprobiert werden. 
+% 
+% Aufgreifen der nicht umgesetzten Modellerweiterungen: Berücksichtigung des Gleichgewichts der Phasen und beschränkte Anzahl freier Plätze bei der Adsorption.
+% 
+% Eine weitere Möglichkeit, das Modell zu verändern, besteht darin, das Gleichgewicht, welches sich zwischen den beiden Phasen aufbaut, zu berücksichtigen. Damit müssten die Wahrscheinlichkeiten, den Zustand zu wechseln, nicht mehr fest vorgegeben sein, sondern sich dynamisch während der Simulation aus der aktuellen Verteilung der Teilchen an einem bestimmten Ort auf die Zustände berechnen.
+% 
+% Das ganze mit existierenden Daten vergleichen, um zu gucken, ob schmalere Peaks notwendig sind und alle realen Peakdatenkombinationen erreicht werden können, dann eventuell noch mal das Modell anpassen:
+
+
+\paragraph{Entsprechung von Simulationsparametern zu Peakcharakteristika}
 Falls Formel für entsprecung nicht gefunden: Das Sekantenverfahren erwähnen?
 Verfahren entwickeln, um gewünschten Peak zu simulieren. Bisher funktioniert das händisch unter Anwendung der Erkenntnisse, wie sich die Parameter auf die Peaks auswirken. Wenn also ein Peak mit bestimmten Eigenschaften gewünscht ist, wird bisher die grobe Umgebung abgesucht. Die Parameter der dort gefundenen Peaks werden in die passende Richtung abgewandelt (zb. er ist etwas zu früh, dann wird pmm verringert oder zu schmal, dann wird pll erhöht). Anschließend wird überprüft, wo der neue Peak liegt und evtl noch mal die Parameter angepasst. 
 Um das zu ersparen müsste entweder der komplette Parameterraum noch besser abgedeckt werden (was uU sehr viel Laufzeit und Speicherplatz kostet) oder die Vorgehensweise automatisiert werden.
 
-Nach einarbeitung der anderen Maße, noch mal gucken, ob alle realen Peaks automatisch angennähert werden können. (Ausgehend von Peaks in der Umgebung Parameter anpassen)
-Im nächsten Schritt dann nicht mehr über die Maße gehen, sondern Funktionswerte der echten Peaks genau simulieren.
+\paragraph{Laufzeit}
 
-Laufzeitvorschläge
 Umsetzung von Modellen mit mehr Zuständen: Simulation als event nicht schwer (und von den Laufzeiten her wohl auch ganz gut) die by-step müsste aber angepasst werden (Schleifen) da sonst wohl zu aufwändig und zu langsam. gleiches gilt für paa, da wäre auch eine neue umsetzung nötig

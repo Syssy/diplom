@@ -27,7 +27,7 @@ Einige Kombinationen würden zwar Peaks erzeugen, diese lägen jedoch teilweise 
 
 \todo{Peaks mit zeitpunkt 0,1 sind kritisch, da teilweise (je nach berechnung/rundung) fehler auftreten, im zweifel: ignorieren}
 
-Auch von den übrigen, innerhalb des Zeitraumes von $240$ Sekunden liegenden Verteilungen, sind nicht alle als Peak zu bezeichnen. Beispielsweise kann eine Verteilung extrem breit sein und über das gesamte Spektrum reichen. Damit würde sie in einer echten Messung wohl eher als Hintergrundrauschen erkannt werden. Ein Beispiel dafür ist in rechts in Abbildung \ref{kein_peak} zu sehen. 
+Auch von den übrigen, innerhalb des Zeitraumes von $240$ Sekunden liegenden Verteilungen, sind nicht alle als Peak zu bezeichnen. Beispielsweise kann eine Verteilung extrem breit sein und über das gesamte Spektrum reichen. Damit würde sie in einer echten Messung wohl eher als Hintergrundrauschen erkannt werden. Ein Beispiel dafür ist in rechts in Abbildung \ref{kein_peak} zu sehen. Derartige Peaks werden nur teilweise in den folgenden Auswertungen erfasst.
 %Für die nachfolgenden Evaluationen wurde eine willkürliche Obergrenze bei einem IQR von $30$ gesetzt. Breitere Peaks können zwar mit den Modellen simuliert, werden aber nicht mehr berücksichtigt.
 
 Für die Schiefe eines Peaks sollen keine Einschränkungen gemacht werden, es werden alle Werte im möglichen Intervall $[0,1]$ für den Quartilskoeffizienten untersucht werden. Um die Schiefe verschiedener Peaks besser einschätzen zu können, sind in Abbildung \ref{diverse_schiefen} Peaks mit verschieder Schiefe gezeigt.
@@ -43,7 +43,7 @@ Für die Schiefe eines Peaks sollen keine Einschränkungen gemacht werden, es we
 
 Beim Peak unten rechts in Abbildung \ref{diverse_schiefen} mit der Schiefe von $0,82$ fällt auf, dass die Breite ebenfalls sehr groß ist, obwohl ein menschlicher Betrachter ihn wohl eher als schmaler als die anderen abgebildeten Peaks bezeichnen würde. Dies liegt an den verwendeten Maßen für Schiefe und Breite. Der Tail des Peaks hat zwar eine sehr niedrige Intensität im Vergleich zum Maximalwert, reicht jedoch über einen Großteil des restlichen Spektrums. Es kommt noch ein großer Teil der Teilchen deutlich nach dem Hauptpulk an, wodurch sich das $Q_{75}$ Quantil deutlich nach hinten verschiebt. Zur Verdeutlichung wurden die Quartile als senkrechte Linien mit in die Plots aufgenommen.
 
-Wenn ein solcher Peak in einer tatsächlichen Messung vorkäme, könnte es gut sein, dass der Tail auf Grund seiner niedrigen Intensität jedoch gar nicht mehr als zum Peak gehörig erkannt würde, sonder eher dem Hintergrundrauschen zugerechnet würde. \todo{Diskussion: Andere Maße testen}
+Wenn ein solcher Peak in einer tatsächlichen Messung vorkäme, könnte es gut sein, dass der Tail auf Grund seiner niedrigen Intensität jedoch gar nicht mehr als zum Peak gehörig erkannt würde, sonder eher dem Hintergrundrauschen zugerechnet würde.
 
 %Wo genau eine sinnvolle Obergrenze für die Breite der Peaks liegt, ist schwer abzugrenzen, dazu wäre eine ausführliche Auswertung  
 
@@ -86,7 +86,30 @@ In Abbildung \ref{2s_t20_change} ist ein Peak zu sehen, der mit den Parametern $
 \end{figure}
 
 In beiden Fällen zeigen sich bei Veränderungen an den Parametern die gleichen Effekte am Peak. Wenn pm größer oder ps kleiner wird, resultiert ein schmalerer und früherer Peak. Umgekehrt bewirkt eine Verkleinerung von pm oder eine Vergrößerung von ps, einen späteren und breiteren Peak. Die Schiefe verändert sich, wenn überhaupt, nur minimal.
-Die Stärke der Veränderung an den Peaks unterscheidet sich jedoch in beiden Fällen. Daher wird im nächsten Abschnitt untersucht, inwiefern der Einfluss eines Parameters größer oder kleiner wird, abhängig davon, welchen Wert der andere Parameter annimmt.
+
+Abbildung \ref{heatmap_lage_breite} zeigt eine Übersicht darüber, welche Peaks sich bei verschiedenen Parameterkombinationen ergeben. Auf den x-Achsen sind jeweils verschiedene Werte für pm und auf der y-Achse für ps aufgetragen. An der Farbe des entsprechenden Feldes ist zu erkennen, welchen Wert die Eigenschaft für die jeweilige Parameterkombination annimmt. Das weiße Feld oben links steht für eine Simulation, die keinen Peak innerhalb der Maximalzeit ergeben hat.
+
+\begin{figure}[h]
+\includegraphics[width=0.49\textwidth]{bilder/erreichbare_Zeiten_2s}
+\includegraphics[width=0.49\textwidth]{bilder/erreichbare_Breiten_2s}
+\caption{Die resultierenden Zeiten und Breiten einiger Parameterkombinationen}
+\label{heatmap_lage_breite}
+\end{figure}
+
+Offensichtlich kann eine bestimmte Retetionszeit durch verschiedene Kombinationen erreicht werden, die sich dann jeweils in der Breite des Peaks unterscheiden. Dies wird in Abbildung \ref{params_at_time} noch einmal deutlich. Abgebildet sind verschiedene Kombinationen aus ps und pm, mit denen ein Peak etwa zum Zeitpunkt $t=100$ erreicht werden kann. In diesem Fall liegen alle Zeitpunkte der Peaks im Intervall $[95, 105]$
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{bilder/paramsfuert100}
+%\includegraphics[width=0.49\textwidth]{bilder/erreichbare_Breiten_2s}
+\caption{Mögliche Parameterkombination für Retentionszeit $t \approx 100$}
+\label{params_at_time}
+\end{figure}
+
+
+
+
+Die Stärke der Veränderung an den Peaks unterscheidet sich für Änderungen an ps oder pm. Daher wird im nächsten Abschnitt untersucht, inwiefern der Einfluss eines Parameters größer oder kleiner wird, abhängig davon, welchen Wert der andere Parameter annimmt.
 
 \subsection{Einfluss abhängig vom anderen Parameter}
 
@@ -246,7 +269,7 @@ Zunächst können jedoch folgenden einfachen Zusammenhänge beobachtet werden:
 
 Im Folgenden ist für jeden der vier Parameter eine detaillierte Übersicht gegeben welche Eigenschaften der Peaks er in Abhängigkeit anderer Parameter beeinflusst. Die zur Verdeutlichung verwendeten Plots sind denen aus der Auswertung des 2-Zustände Modells sehr ähnlich, hier wurden drei der vier Parameter fest gehalten, der vierte wird variiert. Auch diese Plots wurden zur besseren Vergleichbarkeit weiterhin mit der gleichen Achseneinteilung erstellt. 
 
-\todo{Plotbeschriftung (Titel), Plots nachbearbeiten, Achenbeschrifung und überschrift größer}
+\todo{Plotbeschriftung(Titel), Plots bearbeiten, Achenbeschrifung, überschrift größer}
 
 \paragraph*{Einfluss des Parameters $p_{mm}$}
 
@@ -522,8 +545,6 @@ Durch die vielfältigen und unterschiedlich starken Einflüsse der einzelnen Par
 \label{2kombis_2}
 \end{figure}
 
-\todo{Achsenbeschrifung}
-
 In beiden Fällen unterscheiden sich die resultierenden Peaks kaum, sie könnten jedoch durch minimale Parameterveränderungen noch stärker angenähert werden. Die Zuordnung von Simulationsparameter zu Peakcharakteristika ist also nicht eindeutig.
 
 \subsection{Grenzen}
@@ -534,5 +555,8 @@ Das andere Problem jedoch, dass Peaks zu jedem Zeitpunkt eine Minimalbreite habe
 
 \section{Laufzeiten}
 \todo{Wohin mit Laufzeiten? Hier und Implementierung!}
+
+Zur Evaluation der Laufzeiten der verschiedenen Ansätze wurden sowohl für das 2-Zustände Modell als auch für das 3-Zustände Modell ein Satz Parameterkombinationen getestet. Die aus diesen Kombinationen resultierenden Peaks sollten möglichst diverse Eigenschaften aufweisen, also sowohl frühe, als auch späte Peaks, breite, schmale, symmetrische und tailende Peaks enthalten, sowie solche Kombinationen, die nicht innerhalb der Maximalzeit von $240$ Sekunden einen vollständigen Peak bilden.
+Für die Teilchensimulationen wurden darüber hinaus die Laufzeiten für $1000$ und $10000$ verglichen.
 
  
