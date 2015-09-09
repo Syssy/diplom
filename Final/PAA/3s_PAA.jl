@@ -108,12 +108,12 @@ function waitingTimeForValue(params::Array{Float32, 2}, value, maxTime, num_stat
     return result
 end
 
-function combineParams(combination)
+function combineParams(setsize)
     # Verschiedene Parameterkombinationen fuer Modell 3a erstellen
     # Benennung der Wahrscheinlichkeiten: p plus Startzustand, Endzustand, s bei Liste
     # Moegliche Zustaende: m - mobil, a - Adsorbtion, l - Loesung
     #Erstelle zunaechst Listen fuer Einzelwahrscheinlichkeiten, abhaengig von der gewaehlten kombi
-    if combination == "small_set"
+    if setsize == "small"
         #fuer mobilen Ausgangszustand...
         pmms = [0.1f0, 0.5f0, 0.9f0]
         pmls = [0.001f0, 0.005f0, 0.0001f0] 
@@ -122,6 +122,28 @@ function combineParams(combination)
         # ... und fuer geloesten Ausgangszustand
         plls = [0.99995f0, 0.99999f0, 0.999995f0]
     end
+    
+    if setsize == "medium" 
+        pmms = linspace(0.1f0, 0.9f0, 5)
+        pmms = append!(pmms, [0.05f0, 0.95f0])
+        pmls = [0.001f0, 0.0007f0, 0.0005f0, 0.0003f0, 0.0001f0]
+        paas = [0.998f0, 0.999f0, 0.9993f0, 0.9995f0, 0.9996f0]
+        plls = [0.99995f0, 0.99999f0, 0.999995f0, 0.999999f0]
+    end
+    
+    if setsize == "large"
+        pmms = linspace(0.1f0, 0.9f0, 9)
+        pmms = append!(pmms, [0.001f0, 0.01f0, 0.05f0, 0.95f0, 0.99])
+        pmls = [0.003f0, 0.001f0, 0.0007f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.00005f0]
+        paas = linspace(0.999f0, 0.9997f0, 8)
+        paas = append! (paas, [0.997f0, 0.998f0])
+        plls = [0.999925f0, 0.99995f0, 0.999975f0, 0.99999f0, 0.999993f0, 0.999995f0, 0.999999f0]
+    end
+    
+    println (pmms)
+    println (pmls)
+    println (paas)
+    println (plls)
     
     # Kombiniere Einzelwahrscheinlichkeiten zu einer Liste je Ausgangszustand 
     pms = Array(Any, 0)
@@ -150,73 +172,32 @@ function combineParams(combination)
 end    
     
     
-#     #Erstelle zunaechst Listen fuer Einzelwahrscheinlichkeiten fuer mobilen Ausgangszustand...
-#     pmms = [0.005f0, 0.5f0, 0.99f0]
-#     pmms = [0.1f0, 0.2f0, 0.3f0, 0.4f0, 0.5f0, 0.6f0]
-#     #pmms = [0.005f0, 0.01f0, 0.05f0, 0.1f0, 0.15f0, 0.2f0, 0.25f0, 0.3f0, 0.35f0, 0.4f0, 0.45f0, 0.5f0, 0.55f0, 0.6f0, 0.65f0, 0.7f0, 0.75f0, 0.8f0, 0.85f0, 0.9f0]
-#     #pmms = [0.005f0, 0.007f0, 0.01f0, 0.05f0, 0.1f0, 0.15f0, 0.2f0, 0.25f0, 0.3f0, 0.35f0, 0.4f0, 0.45f0, 0.5f0, 0.55f0, 0.6f0, 0.65f0, 0.7f0, 0.75f0, 0.8f0, 0.85f0, 0.9f0, 0.95f0, 0.99f0]
-#     pmls = [0.01f0, 0.001f0, 0.00001f0] 
-#     pmls = [0.005f0, 0.003f0, 0.001f0, 0.0007f0, 0.0006f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.00005f0] 
-#     #pmls = [0.01f0, 0.005f0, 0.003f0, 0.001f0, 0.0007f0, 0.0005f0, 0.0003f0, 0.0001f0, 0.00005f0, 0.00003f0, 0.00001f0] 
-#     pms = Array(Any, 0)
-#     for pmm in pmms
-#         for pml in pmls
-#             pma = 1 - pmm - pml
-#             push!(pms,([pmm pma pml]))
-#         end 
-#     end
-#     # ... fuer adsorbierten Ausgangszustand...  
-#     paas = [0.99f0, 0.9992f0, 0.9999f0]   
-#     paas = [0.999f0, 0.9991f0, 0.9992f0, 0.9993f0, 0.9994f0, 0.9995f0, 0.9996f0]   
-#     #paas = [0.99f0, 0.995f0, 0.997f0, 0.998f0, 0.9985f0, 0.999f0, 0.9991f0, 0.9992f0, 0.9993f0, 0.9994f0, 0.9995f0, 0.9996f0, 0.9999f0]   
-#     pas = Array(Any, 0)
-#     for paa in paas
-#         pam = 1 - paa
-#         push!(pas,([pam paa 0.0f0]))
-#     end
-#     # ... und fuer geloesten Ausgangszustand
-#     plls = [0.9999f0, 0.99999f0, 0.999999f0]
-#     plls = [ 0.999993f0, 0.999995f0]
-#     #0.999999f0 ist zu groß
-#     #plls = [0.9999f0, 0.999925f0, 0.99995f0, 0.999975f0, 0.999985f0, 0.99999f0, 0.999993f0, 0.999995f0, 0.999996f0, 0.999997f0, 0.999999f0]
-#     pls = Array(Any, 0)
-#     for pll in plls
-#         plm = 1 - pll
-#         push!(pls,([plm 0.0f0 pll]))
-#     end
-#     # erstelle Liste aller moeglichen Kombinationen
-#     param_list = Array(Any, 0)
-#     for pm in pms, pa in pas, pl in pls
-#                 push!(param_list,([pm, pa, pl])) 
-#     end
-#     
-# end
-
 # main
-# Rahmenparameter einstellen
-column_length = 1000
-maxtime = 2400000
-
-param_list = combineParams("small_set")
-#reverse!(param_list)
-
-# Simulationen starten, vorher testen, ob diese schon exisitert, dazu den passenden filename aufbauen
-for params in param_list
-    filename = "savedata_julia/l$column_length/3s/Sim"
-    for i in 1:3
-        for j in 1:3
-            filename = filename * "_" * string(params[i, j])
-            #println (filename)
+function main()
+    # Rahmenparameter einstellen
+    column_length = 1000
+    maxtime = 2400000
+    # Parameterkombination wählen
+    param_list = combineParams("large")
+    # Simulationen starten, vorher testen, ob diese schon exisitert, dazu den passenden filename aufbauen
+    for params in param_list
+        filename = "savedata_julia/l$column_length/3s/Sim"
+        for i in 1:3
+            for j in 1:3
+                filename = filename * "_" * string(params[i, j])
+            end
         end
-    end
-   # nur simulieren, falls nicht vorhanden
-   if !isfile(filename)
-        println (strftime(time()), " starte: ")
-        println (params, " ")
-        # Starte Simulation fuer params
-        res = waitingTimeForValue(params, column_length, maxtime)
-        # abspeichern
-        writecsv(filename, res)
-    end
-end  
+    # nur simulieren, falls nicht vorhanden
+    if !isfile(filename)
+            println (strftime(time()), " starte: ")
+            println (params, " ")
+            # Starte Simulation fuer params
+            res = waitingTimeForValue(params, column_length, maxtime)
+            # abspeichern
+            writecsv(filename, res)
+        end
+    end  
+end
+
+main()
 println("fertig")

@@ -77,28 +77,33 @@ function waitingTimeForValue(ps::Float32, pm::Float32, value, maxTime)
     return result
 end
 
-function combineParams()
+function combineParams(setsize)
     # Erstelle Liste von Parameterkombinationen
-    pss = linspace(0.999f0, 0.9999f0, 10)
-    pss2 = linspace(0.99f0, 0.999f0, 10)
-    pss = append!(pss, pss2)
-    pss3 = linspace(0.9f0, 0.99f0, 10)
-    pss = append!(pss, pss3)
-    pss4 = linspace(0.9999f0, 0.99999f0, 10)
-    pss = append!(pss, pss4)
-    pss = append!(pss,[0.999975f0])
-    #pss = [0.99998f0]
+    pss = Array(Any, 0)
+    pms = Array(Any, 0)
     
-    pms = linspace(0.05f0, 0.95f0, 10)
-    pms = append!(pms, [0.00001f0, 0.0001f0, 0.001f0, 0.01f0, 0.99f0, 0.9935f0, 0.995f0, 0.999f0, 0.9999f0])
-    #pms = [0.995f0, 0.999f0, 0.99f0, 0.95f0, 0.97f0]
+    if setsize == "small"
+        pss = [0.998f0, 0.999f0, 0.9993f0, 0.9996f0, 0.9999f0]
+        pms = [0.1f0, 0.3f0, 0.5f0, 0.7f0, 0.9f0]
+    end
     
-    println(pss, pms)
+    if setsize == "medium"
+        pss = [0.997f0, 0.998f0, 0.999f0, 0.9991f0, 0.9992f0, 0.9993f0, 0.9995f0, 0.9996f0]
+        pms = linspace(0.1f0, 0.9f0, 9)
+    end
+    
+    if setsize == "large"
+        pss = linspace(0.999f0, 0.9999f0, 10)
+        pss = append!(pss, [0.99f0, 0.995f0, 0.997f0, 0.998f0])
+        pms = linspace(0.05f0, 0.999999f0, 20)
+        pms = append! (pms, [0.001f0, 0.01f0, 0.99f0, 0.999f0])
+    end
+    
     # erstelle Liste aller moeglichen Kombinationen
     param_list = Array(Any, 0)
     for ps in pss
         for pm in pms
-            params = [round(ps,15), round(pm,15)]
+            params = [round(ps,5), round(pm,5)]
             push!(param_list, params)
         end
     end
@@ -106,23 +111,26 @@ function combineParams()
 end
 
 # main:
-column_length = 1000
-maxtime = 2400000
-param_list = combineParams()
-#param_list = [(0.999f0, 0.9f0)]
-#reverse!(param_list)
-# Simuliere alle Parameterkombinationen
-for (ps, pm) in param_list
-    filename = "savedata_julia/l$column_length/2s/Sim_$ps" * "_$pm"
-    print(filename)
-    if !isfile(filename) 
-        println("ps:", ps, " pm: ", pm)
-        # Simulieren
-        res = waitingTimeForValue(ps, pm, column_length+1, maxtime)
-        #Summe zur Kontrolle
-        println("Sum ", sum(res))
-        #Speichern
-        writecsv(filename, res)
-    end
-end    
+function main()
+    # Simulationseinstellungen
+    column_length = 1000
+    maxtime = 2400000
+    param_list = combineParams("large")
+    # Simuliere alle Parameterkombinationen
+    for (ps, pm) in param_list
+        filename = "savedata_julia/l$column_length/2s/Sim_$ps" * "_$pm"
+        #nur simulieren, wenn nicht schon vorhanden
+        if !isfile(filename) 
+            print("ps:", ps, " pm: ", pm, " ")
+            # Simulieren
+            res = waitingTimeForValue(ps, pm, column_length+1, maxtime)
+            #Summe zur Kontrolle
+            println("Sum ", sum(res))
+            #Speichern
+            writecsv(filename, res)
+        end
+    end   
+end
+
+main()
 println("fertig")
