@@ -118,7 +118,7 @@ function main()
     param_list = combineParams("large")
     # Simuliere alle Parameterkombinationen
     for (ps, pm) in param_list
-        filename = "savedata_julia/l$column_length/2s/Sim_$ps" * "_$pm"
+        filename = "savedata_julia/2s/l$column_length/Sim_$ps" * "_$pm"
         #nur simulieren, wenn nicht schon vorhanden
         if !isfile(filename) 
             print("ps:", ps, " pm: ", pm, " ")

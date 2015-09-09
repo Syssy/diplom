@@ -178,10 +178,11 @@ function main()
     column_length = 1000
     maxtime = 2400000
     # Parameterkombination wählen
-    param_list = combineParams("large")
+    param_list = combineParams("medium")
+    reverse!(param_list)
     # Simulationen starten, vorher testen, ob diese schon exisitert, dazu den passenden filename aufbauen
     for params in param_list
-        filename = "savedata_julia/l$column_length/3s/Sim"
+        filename = "savedata_julia/3a/l$column_length/Sim"
         for i in 1:3
             for j in 1:3
                 filename = filename * "_" * string(params[i, j])

@@ -25,21 +25,23 @@ public class myPAA_3s extends PAA implements DeterministicEmitter{
                 // alle Parameterkombinationen simulieren
                 for (int i = 0; i < parameterliste.length; i++){
                     params = parameterliste[i];
+                    String csvfile = "savedata_java/l" + LENGTH + "/3_states/Sim_" + params[0] + "_"+ params[1] + "_"+ params[2] + "_"+ params[3] + "_"+ params[4] + "_"+ params[5] + "_" + params[6] + "_" + params[7] + "_" + params[8];
+                    System.out.println(csvfile);
                     PAA aPAA = new myPAA_3s();
+                    for (int j = 0; j < 5; j++){
                     // Zeit nur aus Interesse
                     long starttime = System.currentTimeMillis();
                     // mosdi starten
                     arrivals = aPAA.waitingTimeForValue(MAXTIME, LENGTH);
                     long endtime = System.currentTimeMillis();
                     System.out.println("Time: " + (endtime - starttime)/1000 + " seconds");
+                    }
                     double sum = 0.0;
                     for( double num : arrivals) {
                         sum = sum+num;
                     }
                     System.out.println("Sum " + sum);
                     // Ergebnis speichern
-                    String csvfile = "savedata_java/l" + LENGTH + "/3_states/Sim_" + params[0] + "_"+ params[1] + "_"+ params[2] + "_"+ params[3] + "_"+ params[4] + "_"+ params[5] + "_" + params[6] + "_" + params[7] + "_" + params[8];
-                    System.out.println(csvfile);
                     try{
                         FileWriter writer = new FileWriter(csvfile);
                         for (double z : arrivals){
@@ -56,24 +58,40 @@ public class myPAA_3s extends PAA implements DeterministicEmitter{
 
 	public static double[][] combineParams(){
             // Parametereinstellungen
-            double[][] param_list = new double[15][9];
-            param_list[0] = new double[] {0.7, 0.29995, 0.00005, 0.005, 0.995, 0.0, 0.0001, 0.0, 0.9999};
-            param_list[0] = new double[] {0.3, 0.7, 0.0, 0.003, 0.997, 0.0, 0.0001, 0.0, 0.9999};        
-            param_list[1] = new double[] {0.99, 0.005, 0.005, 0.0004, 0.9996, 0.0, 0.000025, 0.0, 0.999975};
-            param_list[2] = new double[] {0.99, 0.0095, 0.0005, 0.005, 0.995, 0.0, 0.000075, 0.0, 0.999925};
-            param_list[3] = new double[] {0.85, 0.1493, 0.0007, 0.003, 0.997, 0.0, 0.000003, 0.0, 0.999997};
-            param_list[4] = new double[] {0.005, 0.99499, 0.00001, 0.0009, 0.9991, 0.0, 0.0001, 0.0, 0.9999};
-            param_list[5] = new double[] {0.6, 0.399, 0.001, 0.0004, 0.9996, 0.0, 0.0001, 0.0, 0.9999};
-            param_list[6] = new double[] {0.005, 0.9947, 0.0003, 0.0009, 0.9991, 0.0, 0.000003, 0.0, 0.999997};
-            param_list[7] = new double[] {0.5, 0.499, 0.001, 0.0005, 0.9995, 0.0, 0.00001, 0.0, 0.99999};
-            param_list[8] = new double[] {0.05, 0.9495, 0.0005, 0.0009, 0.9991, 0.0, 0.000005, 0.0, 0.99995};
-            param_list[9] = new double[] {0.2, 0.7993, 0.0007, 0.0008, 0.9992, 0.0, 0.000004, 0.0, 0.999996};
-            param_list[10] = new double[] {0.005, 0.999499, 0.00001, 0.0005, 0.9995, 0.0, 0.0001, 0.0, 0.9999};
-            param_list[11] = new double[] {0.15, 0.84995, 0.00005, 0.0004, 0.9996, 0.0, 0.0001, 0.0, 0.9999};
-            param_list[12] = new double[] {0.05, 0.9493, 0.0007, 0.0005, 0.9995, 0.0, 0.000025, 0.0, 0.999975};
-            param_list[13] = new double[] {0.15, 0.845, 0.005, 0.0005, 0.9995, 0.0, 0.000025, 0.0, 0.999975};
-            param_list[14] = new double[] {0.1, 0.899, 0.001, 0.0007, 0.9993, 0.0, 0.000001, 0.0, 0.999999};
-          
+            //double[][] param_list = new double[15][9];
+//             param_list[0] = new double[] {0.7, 0.29995, 0.00005, 0.005, 0.995, 0.0, 0.0001, 0.0, 0.9999};
+//             param_list[0] = new double[] {0.3, 0.7, 0.0, 0.003, 0.997, 0.0, 0.0001, 0.0, 0.9999};        
+//             param_list[1] = new double[] {0.99, 0.005, 0.005, 0.0004, 0.9996, 0.0, 0.000025, 0.0, 0.999975};
+//             param_list[2] = new double[] {0.99, 0.0095, 0.0005, 0.005, 0.995, 0.0, 0.000075, 0.0, 0.999925};
+//             param_list[3] = new double[] {0.85, 0.1493, 0.0007, 0.003, 0.997, 0.0, 0.000003, 0.0, 0.999997};
+//             param_list[4] = new double[] {0.005, 0.99499, 0.00001, 0.0009, 0.9991, 0.0, 0.0001, 0.0, 0.9999};
+//             param_list[5] = new double[] {0.6, 0.399, 0.001, 0.0004, 0.9996, 0.0, 0.0001, 0.0, 0.9999};
+//             param_list[6] = new double[] {0.005, 0.9947, 0.0003, 0.0009, 0.9991, 0.0, 0.000003, 0.0, 0.999997};
+//             param_list[7] = new double[] {0.5, 0.499, 0.001, 0.0005, 0.9995, 0.0, 0.00001, 0.0, 0.99999};
+//             param_list[8] = new double[] {0.05, 0.9495, 0.0005, 0.0009, 0.9991, 0.0, 0.000005, 0.0, 0.99995};
+//             param_list[9] = new double[] {0.2, 0.7993, 0.0007, 0.0008, 0.9992, 0.0, 0.000004, 0.0, 0.999996};
+//             param_list[10] = new double[] {0.005, 0.999499, 0.00001, 0.0005, 0.9995, 0.0, 0.0001, 0.0, 0.9999};
+//             param_list[11] = new double[] {0.15, 0.84995, 0.00005, 0.0004, 0.9996, 0.0, 0.0001, 0.0, 0.9999};
+//             param_list[12] = new double[] {0.05, 0.9493, 0.0007, 0.0005, 0.9995, 0.0, 0.000025, 0.0, 0.999975};
+//             param_list[13] = new double[] {0.15, 0.845, 0.005, 0.0005, 0.9995, 0.0, 0.000025, 0.0, 0.999975};
+//             param_list[14] = new double[] {0.1, 0.899, 0.001, 0.0007, 0.9993, 0.0, 0.000001, 0.0, 0.999999};
+//              
+            double[] pmm_list = new double[] {0.01, 0.9};
+            double[] pml_list = new double[] {0.00005, 0.003};
+            double[] paa_list = new double[] {0.997, 0.9996};
+            double[] pll_list = new double[] {0.99995, 0.999995};
+            double[][] param_list = new double[16][2];
+            
+            for (int i = 0; i<pmm_list.length; i++){
+                for (int j = 0; j<pml_list.length; j++){
+                    for (int k = 0; k<paa_list.length; k++){
+                        for (int l = 0; l<pll_list.length; l++){
+                    //       System.out.println(i + " " + j + " " + (i*4+ j));
+                            param_list[i*8 + j*4 +k*2 +l] = new double[]{pmm_list[i], (1-pmm_list[i]-pml_list[j]), pml_list[j], (1-paa_list[k]), paa_list[k], 0.0, (1-pll_list[l]), 0.0, pll_list[l]};
+                        }    
+                    }
+               }
+            }
         return param_list;
 	}
 	

@@ -26,15 +26,18 @@ public class myPAA_2s extends PAA implements DeterministicEmitter{
                 // alle gewaehlten Kombis simulieren
                 for (int i = 0; i < param_list.length; i++){
                     params = param_list[i];
-                    String csvfile = "savedata_java/l" + LENGTH + "/2_states/Sim_" + params[0] + "_"+ params[1];
+                    String csvfile = "savedata_java/l" + LENGTH + "/2s/Sim_" + params[0] + "_"+ params[1];
                     System.out.println(csvfile);
                     PAA aPAA = new myPAA_2s();
                     // Zeiten nur aus Interesse
+                    for (int j = 0; j < 5; j++){
                     long starttime = System.currentTimeMillis();
                     // mosdi starten
                     arrivals = aPAA.waitingTimeForValue(MAXTIME, LENGTH);
                     long endtime = System.currentTimeMillis();
                     System.out.println("Time: " + (endtime - starttime)/1000 + " seconds");
+                    }
+                    
                     // Zur Kontrolle, ob Peak vollständig: Summe berechnen
                     double sum = 0.0;
                     for( double arr : arrivals) {
@@ -59,9 +62,9 @@ public class myPAA_2s extends PAA implements DeterministicEmitter{
 	
         public static double[][] combineParams(){
             // gewuenschte Parametereinstellungen
-            double[] ps_list = new double[] {0.3, 0.997, 0.999, 0.9992, 0.9995};//, 0.9999};
-            double[] pm_list = new double[] {0.000000000000001, 0.01, 0.3, 0.9, 0.99};
-            double[][] param_list = new double[25][2];
+            double[] ps_list = new double[] {0.997, 0.999, 0.9993, 0.9996};//, 0.9999};
+            double[] pm_list = new double[] {0.001, 0.3, 0.6, 0.95};
+            double[][] param_list = new double[16][2];
             
             for (int i = 0; i<ps_list.length; i++){
                 for (int j = 0; j<pm_list.length; j++){
