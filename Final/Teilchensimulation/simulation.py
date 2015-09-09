@@ -22,6 +22,28 @@ class Simulation(metaclass = ABCMeta):
     """Simuliert und speichert Daten einer Simulation
     """
     def __init__(self, params, model, approach = "E", length = 1000, number = 1000, maxtime = 240, times = []):
+        """__init__
+        params - Parameter ps,pm bzw pmm,pml,paa,pll
+        model - 2s/3s 
+        length - Laenge der Säule
+        times - Ankunftszeiten
+        maxtime - Maximale Zeit in Sekunden
+        number - Anzahl simulierter Teilchen
+        approach - Wie wird simuliert, each_timestep (T) oder by_event (E)
+        """
+        self.params = params
+        if model:
+            self.model = model
+        else:
+            self.set_model()
+        self.length = length
+        if times:
+            self.times = times
+            # peakdaten der form (loc, [quartile], iqr, qk) berechnen, valid-flag setzen
+            self.calculate_pd()
+        self.maxtime = maxtime
+        self.number = number
+        self.approach = approach
 
     def set_model(self):
         '''Aus der Anzahl der Parameter das dahinter liegende Modell extrahieren'''
