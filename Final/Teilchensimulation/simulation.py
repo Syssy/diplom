@@ -21,30 +21,7 @@ import matplotlib.pyplot as plt
 class Simulation(metaclass = ABCMeta):
     """Simuliert und speichert Daten einer Simulation
     """
-    def __init__(self, params, model, length = 1000, times = [], maxtime = 240, number = 1000, approach = "E"):
-        """__init__
-        params - Parameter ps,pm bzw pmm,pml,paa,pll
-        model - 2s/3s 
-        length - Laenge der Säule
-        times - Ankunftszeiten
-        maxtime - Maximale Zeit in Sekunden
-        number - Anzahl simulierter Teilchen
-        approach - Wie wird simuliert, each_timestep (T) oder by_event (E)
-        """
-        self.params = params
-        if model:
-            self.model = model
-        else:
-            self.set_model()
-        self.length = length
-        if times:
-            self.times = times
-            # peakdaten der form (loc, [quartile], iqr, qk) berechnen, valid-flag setzen
-            self.calculate_pd()
-        self.maxtime = maxtime
-        self.number = number
-        self.approach = approach
-#TODO Valid Flag. Wo setzen?
+    def __init__(self, params, model, approach = "E", length = 1000, number = 1000, maxtime = 240, times = []):
 
     def set_model(self):
         '''Aus der Anzahl der Parameter das dahinter liegende Modell extrahieren'''
@@ -99,7 +76,7 @@ class Simulation(metaclass = ABCMeta):
         # Anzahl zu simulierender Teilchen
         number = self.number
         self.valid = True
-        self.approach="T"
+        self.approach="S"
         
         # aktuelle Orte der Teilchen
         if self.model == "2s":
@@ -141,7 +118,7 @@ class Simulation(metaclass = ABCMeta):
                 break    
             
             # Damit es schneller geht, nach je x schritten nur testen
-            for x in range (1):
+            for x in range (50):
                 locations, mobile_states = self.simulate_step(locations, mobile_states, number)
                 time_needed+=1
         # durch Schritte pro Sekunde teilen, zur normierung der zeiten
@@ -251,7 +228,7 @@ class Simulation(metaclass = ABCMeta):
         if self.model == "2s" or model == "2s" or self.model == "3s" or model == "3s" or self.model == "3a" or model == "3a" :
             if self.approach == "E" or approach == "E":
                 self.simulate_by_event()
-            elif self.approach == "T" or approach == "T":
+            elif self.approach == "S" or approach == "S":
                 self.simulate_step_by_step()
             else:
                 print ("Bitte gewuenschten Simulationsmodus angeben; ", self.approach, " nicht gueltig")
@@ -308,8 +285,8 @@ class Simulation_2s(Simulation):
         
 
 class Simulation_3s(Simulation):
-    def __init__(self, params, model, length = 1000, times = [], maxtime = 240, number = 1000, approach = "E"):
-        super().__init__(params, model, length, times, maxtime, number, approach)
+    def __init__(self, params, model, approach = "E", length = 1000, number = 1000, maxtime = 240, times = []):
+        super().__init__(params, model, approach, length, number, maxtime, times)
         # das allgemeine 3s nimmt nur [[pmm,pma,pml],[pam,paa,pal],[plm,pla,pll]]
         # 3a kann [pmm,pml,paa,pll] annehmen, das muss entsprechend umgeformt werden
         if self.model == "3a":
@@ -449,12 +426,12 @@ def main():
     logging.log(20, "Eingaben fuer Simulation, %s", args)
     #print ("n", args.number, "l", args.length, "a", args.approach, time.strftime("%d%b%Y_%H:%M:%S"))
     
-    #Parameterübergabe für 3s: Komplett als 3x3 matrix. daher Umformung nötig
+    #Parameterübergabe für 3s: Komplett als 3x3 matrix. daher Umformung der Eingabe 
     if args.model == "3s":
         args.params = [[args.params[0],args.params[1],args.params[2]],[args.params[3],args.params[4],args.params[5]],[args.params[6],args.params[7],args.params[8]]]
  
     if args.model.startswith("3"):
-        testsim3s = Simulation_3s(args.params, args.model, args.length, maxtime=args.maxtime, number=args.number, approach =args.approach)
+        testsim3s = Simulation_3s(args.params, args.model, args.approach, args.length, number=args.number, maxtime=args.maxtime )
         testsim3s.simulate()
         testsim3s.calculate_pd()
         print (testsim3s.pd)
@@ -463,8 +440,8 @@ def main():
         plt.show()
     
     if args.model == "2s":
-        testsim = Simulation_2s((args.params), args.model, args.length, maxtime = args.maxtime, number = args.number, approach = args.approach)
-        #print (testsim)
+        testsim = Simulation_2s((args.params), args.model, args.approach, args.length, number = args.number, maxtime = args.maxtime)
+        #print (testsim.params)
         testsim.simulate()
         testsim.calculate_pd()
         print (testsim.pd)

@@ -38,6 +38,17 @@ def combine_params(args, model, nr_of_choice = 5, params=(0.999, 0,5)):
         p_combinations.append((0.9, 0.0005, 0.9992, 0.999993))
     
     #Kleine Auswahl
+    if args == "laufzeittest":
+        pmm_catalogue = [0.01, 0.9]
+        pml_catalogue = [0.00005, 0.003]
+        paa_catalogue = [0.997, 0.9996]
+        pll_catalogue = [0.99995, 0.999995]
+        for pmm in pmm_catalogue:
+            for pml in pml_catalogue:
+                for paa in paa_catalogue:
+                    for pll in pll_catalogue:
+                        p_combinations.append((pmm, pml, paa, pll))
+                        
     if args == "small_set" and model == "3a":
         pmm_catalogue = [0.1, 0.5, 0.9]
         pml_catalogue = [0.001, 0.0005, 0.0001]
@@ -47,7 +58,7 @@ def combine_params(args, model, nr_of_choice = 5, params=(0.999, 0,5)):
             for pml in pml_catalogue:
                 for paa in paa_catalogue:
                     for pll in pll_catalogue:
-                        p_combinations.append((pmm, pml, paa, pll))
+                        p_combinations.append((pmm, pml, paa, pll))                        
     #Mittlere Auswahl  
     if args == "medium_set" and model == "3a":
         pmm_catalogue = list(np.arange(0.1, 0.95, 0.2))
@@ -97,7 +108,7 @@ def start_simulations(length, number, model, approach, p_combinations):
             # gehe erst mal davon aus, dass Sim vorhanden ist, daher nicht speichern, sondern auf Aktualitaet ueberpruefen
             sim_exists = True
             store = False
-            mySim = simulation.Simulation_3s((params), model, length, number=number, approach=approach)
+            mySim = simulation.Simulation_3s((params), model, approach, length, number)
             filename = 'simulated_data/3s/l' +str(length) + "/n" + str(number) + '/Sim_' + str(mySim) + ".p" 
             try:
                 logging.log(24,"filename: %s", filename)
@@ -190,29 +201,27 @@ def get_argument_parser():
     return p
 
 def main():
+    '''Aufruf der Simulationen und Plottings, gesteuert durch Kommandozeilenparameter'''
     starttime = time.clock()
     logging.log(35, time.strftime("%d%b%Y_%H:%M:%S"))
     p = get_argument_parser()
     args = p.parse_args()
     print (args)  
-    #dic =   'simulated_data/2_states/l1000/n1000/'
-    #filenames = [name for name in os.listdir(dic) if name.startswith("Sim_")]
-    #print (len(filenames))
-    #for filename in filenames:  
-        #aSim = None
-        #with open (dic+filename, "r+b") as data:
-            #aSim = pickle.load(data)
-            #try:
-                #print (filename)
-                #print (filename, aSim.valid)
-            #except AttributeError:
-                #print ("error")
-                #aSim.valid = True
-                #print (filename, aSim.valid)
-                #with open(dic+filename, "wb") as data2:
-                    #pickle.dump(aSim, data2)    
-                ##pickle.dump (aSim, data)   
-                ##time.sleep(1)
+    
+    if args.pcombioption == "laufzeittest":
+        p_combinations = combine_params(args.pcombioption, args.choicenumber, args.plot_peak)
+        for n in [1000, 10000]:
+            for a in ["S", "E"]:
+                print (str(n) + a)          
+                for params in p_combinations:
+                    aSim = simulation.Simulation_3s(params, "3a", a, length = 1000, number = n)
+                    print (aSim)
+                    zeiten = []
+                    for i in range(5):
+                        st = time.time()
+                        aSim.simulate()
+                        zeiten.append(time.time() -st)
+                    print (np.percentile(zeiten,50)) 
             
     if args.plot_peak:
         args.pcombioption = "single"
@@ -235,5 +244,5 @@ if __name__ == "__main__":
     if sys.version_info.major < 3:
         print ("Bitte python3 verwenden")
         exit()
-    logging.basicConfig(level=20)
+    logging.basicConfig(level=25)
     main()
