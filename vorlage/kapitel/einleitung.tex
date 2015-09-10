@@ -3,38 +3,49 @@
 
 \chapter{Einleitung}
 
-\section{Motivation und Hintergrund}
+%\section{Motivation und Hintergrund}
 
+Die Chromatographie ist ein Verfahren in der Chemie, zur Auftrennung von Stoffgemischen. Beispielsweise können diese Stoffgemische dadurch analysiert werden. 
 
-``Multikapillarsäule'', MCC (engl. Multi Capillary Column)
+Kurzbeschreibung: Phasen, Chromatogramm aus Peaks.
 
-Trennsäule in der Gaschromatographie
+Wenn bekannt ist, wie sich unterschiedliche Stoffe bei der Chromatographie verhalten und welche Auswirkungen sie auf das Chromatogramm, das Ergebnis der Chromatographie haben, können daraus Rückschlüsse auf die in einem Stoffgemisch enthaltenen Stoffe gezogen werden. 
 
-%(Kurz anreissen, später mehr)
-``Simulation''
+Praktische Anwendungen finden sich in vielen Bereichen der Chemie und Biochemie. 
+Um nur zwei Beispiele zu nennen, kann in der Analyse von Lebensmitteln: ist Inhaltstoff enthalten, der nicht reingehört? Hinweise darauf im Chromatogramm
+Anderer Bereich: Umweltchemie: Sindd bestimmte (gefährliche) Stoffe in Luft/Wasser enthalten?
+  
+Andere Anwendung der Auftrennung von Stoffen ist die Präparation, wenn die Stoffe nach der Chromatographie weiter verwendet werden sollen, dafür aber aus einem Stoffgemisch nur einige Stoffe genutzt werden sollen.
 
-Keine physikalische Simulation der Moleküle
+Geschichte: Erfindung/erste Erwähnung: durch den russischen Botaniker Tswett. Gaschromatographie in Kapillaren seit den 1970ern
 
- Keine Interpolation vorhandender Messungen
-
- Kein Überlagern verschiedener Kurven, um Gesamt-Spektrum zu erhalten
- 
- sondern: Modell für chromatographischen Prozess
+\todo{Das ist der Hintergrund, aber die Motivation?}
 
 %(Was ich nicht tue, was es schon gibt?, einfaches Modell)
 
-Im Rahmen der Diplomarbeit soll eine Multikapillarsäule simuliert werden. 
 
 Es geht dabei nicht um eine physikalische Simulation auf molekularer Ebene, sondern um die Entwicklung eines abstrakten, probabilistischen Modells, welches mit möglichst wenig Parametern auskommt. 
 
 In der Simulation soll jeweils nur ein Stoff, charakterisiert durch diese Parameter, simuliert werden. Das Resultat einer Simulation ist jeweils ein einzelner Peak, welcher durch seine Lage und Form beschrieben werden kann. Die Lage entspricht dabei der Retentionszeit am Maximum des Peaks. Die Form ist durch seine Breite an einer bestimmten Höhe (zum Beispiel Halbwertsbreite) sowie Schiefe gekennzeichnet.
+Im Rahmen der Diplomarbeit soll eine Multikapillarsäule simuliert werden. Dazu müssen zunächst die beiden Begriffe ``Multikapillarsäule'' und ``Simulation'' geklärt werden.
+\paragraph{Multikapillarsäule} sollte oben schon...
+Eine Multikapillarsäule, kurz MCC (engl. Multi Capillary Column) ist eine Trennsäule in der Gaschromatographie. Eine kurze Einführung zur Chromatographie wird im nächsten Kapitel gegeben. An dieser Stelle sei nur gesagt, dass es sich dabei um ein Verfahren  handelt. Unter anderem kann die Chromatographie in einer MCC statt finden. Eine Kapillare ist dabei eine extrem dünne, innen beschichtete, Röhre, durch die mit Hilfe eines Trägergases das zu trennende Stoffgemisch geleitet wird. Die Analytteilchen interagieren mit der Beschichtung der Röhre und werden dadurch aufgetrennt. Eine Multikapillarsäule besteht aus sehr vielen dieser einzelnen Kapillaren.
+
+Als Resultat einer Chromatogramm entsteht ein blubb TODO %TODO
 
 
 \section{Ziel der Arbeit}
-\todo{Ziel und Vorgehensweise}
-\todo{Aufgabenstellung: Entsprechung zwischen Peakparametern und Sim-Parametern}
 
-Ziel dieser Diplomarbeit ist es, eine Entsprechung von Peakcharakteristika, wie sie in Kapitel \ref{chapter:gru} beschrieben werden, zu den Simulationsparametern, die für das Modell verwendet werden, zu finden, falls es eine solche Entsprechung gibt.
+%(Kurz anreissen, später mehr)
+Ziel dieser Diplomarbeit ist es, mit Hilfe eines Modells den chromatographischen Prozess zu simulieren. Anschließend soll eine Entsprechung von Peakcharakteristika, wie sie in Kapitel \ref{chapter:gru} beschrieben werden, zu den Simulationsparametern, die für das Modell verwendet werden, gefunden werden, falls es eine solche Entsprechung gibt.
+
+Mit dem Begriff Simulation können mehrere Dinge gemeint sein, meist geht es um die Nachahmung realer Phänomene durch Hilfsmittel wie einen Computer. Im Zusammenhang mit der Gaschromatographie könnte man darunter beispielsweise verstehen, den physikalischen Ablauf eines Säulendurchlaufs auf Molekülebene durchzugehen. Dabei müssten Teilchen simuliert werden, die unter Anwendung physikalischer Gesetze miteinander interagieren, beispielweise aneinander anstoßen und dadurch Richtung und Geschwindigkeit ändern oder sich gegenseitig anziehen oder abstoßen und dabei ebenfalls ihre Bewegung ändern. Auch für Interaktionen mit der chromatographischen Apparatur müssten die Auswirkungen auf die Teilchen berechnet und eingebunden werden. 
+
+Doch eine solche physikalische Simulation ist in diesem Fall genausowenig gemeint, wie die beiden Ansätze, die in Abschnitt \ref{chapter:ein_andere} vorgestellt werden.
+
+Statt dessen soll hier mit Hilfe eines Modell für chromatographischen Prozess simuliert werden. Es wird dabei von den Details, die bei einer Simulation auf physikalischer Ebene berücksichtigt werden müsste, abstrahiert und nur das grundlegende Prinzip des Wechsels der Teilchen zwischen zwei Phasen berücksichtigt werden.
+
+
 
 Das heißt es soll sowohl möglich sein, aus den Simulationsparametern vorherzusagen, welche Eigenschaften ein damit simulierter Peak haben wird. Umgekehrt soll aber auch zu einem vorgegebenen Peak bestimmt werden können, welche Parameter nötig sind, um mit einer Simulation einen möglichst ähnlichen Peak zu erzeugen.
 
@@ -49,9 +60,8 @@ Das Problem kann daher als unbekannte Funktion : $F: [0,1] ^ x \rightarrow \math
 %\todo{Umformulierung auf hypothetische Peaks}
 %Zum Vergleich liegen einige MCC-IMS-Messungen von Mischungen sieben bekannter Stoffe vor. Diese Datensätze wurden zur Verfügung gestellt von der Firma B \& S Analytik  (\mbox{\url{http://www.bs-analytik.de/}}). Zu den dadurch gegebenen Peaks sollen Parameter für die Simulation ermittelt und diese Peaks simuliert werden.
 
-
-
-Um dieses Ziel zu erreichen, wird zunächst mit einem sehr einfachen Modell begonnen, welches nach und nach angepasst werden muss, bis die durch die Referenzdatensätze vorgegebenen Peaks ausreichend angenähert werden können.
+Um dieses Ziel zu erreichen, wird zunächst mit einem sehr einfachen Modell begonnen. Es werden Simulationen mit diesem Modell durchgeführt und evaluiert. Anschließend wird das Modell nach Bedarf angepasst zu werden, falls die damit erzeugbaren Peaks, einige Eigenschaften realer Peaks nicht ausreichend annähern können. Auch das neue Modell wird getestet und evaluiert.
+%welches nach und nach angepasst werden muss, bis die durch die Referenzdatensätze vorgegebenen Peaks ausreichend angenähert werden können.
 
 \todo{Vorgehensweise graphisch darstellen!} 
 \begin{enumerate}
@@ -64,6 +74,7 @@ Um dieses Ziel zu erreichen, wird zunächst mit einem sehr einfachen Modell bego
 
 
 \section{Andere Arbeiten}
+\label{chapter:ein_andere}
 
 Es existieren bereits Simulatoren für die Chromatographie, welche jedoch Daten auf eine andere Art erzeugen als eine Simulation des chromatographischen Prozesses erzeugen.
 
