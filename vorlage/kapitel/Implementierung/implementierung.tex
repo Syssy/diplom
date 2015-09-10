@@ -1,14 +1,10 @@
-%implementierung.tex
-
 \chapter{Implementierung}
 \label{chapter:imp}
-\todo{Kapitel Implementierung schreiben}
-\todo{Soll hier auch erwähnt werden, wie die verschiedenen Auswertungen gemacht wurden? Plots etc}
-
-Aufrufe der wichtigen Funktionen (der Simulationen) Kommandozeilenparameter mit angeben. 
-
+\todo{Quellen/Links für Python/Julia/mosdi?}
 
 \section{Teilchensimulation}
+
+\subsection{Umsetzung der Algorithmen}
 Für die Teilchensimulation wurden die Algorithmen \ref{algo_by_Step} und \ref{algo_by_event} jeweils für zwei und drei Zustände implementiert. Dafür wurde Python 3.4 verwendet. 
 Um insbesondere bei der Step-by-Step Implementierung eine schnelle Verarbeitung der Zustands- und Ortsarrays zu gewährleisten, wurden dafür NumPy-Arrays verwendet. Außerdem stellt NumPy Methoden zur Berechnung von Percentilen, geometrisch verteilte Zufallszahlen und Bestimmung der Position des größten Wertes einer Liste zur Verfügung, welche für die Implementierung genutzt wurden.
 Für die graphische Ausgabe der Peaks und weitere geplottete Darstellungen im Bereich der Auswertung der Simulationen wurde PyPlot genutzt.
@@ -18,40 +14,45 @@ Für die graphische Ausgabe der Peaks und weitere geplottete Darstellungen im Be
 Die Datei \texttt{simulation.py} enthält alle Funktionen zur Simulation und Berechnung der Peakdaten. Wichtigster Bestandteil ist die abstrakte Klasse \texttt{Simulation} und die zwei Unterklassen \texttt{Simulation\_2s} und \texttt{Simulation\_3s}. Wie im vorherigen Kapitel gesehen, unterscheiden sich sowohl bei der Step-by-Step, als auch bei der By-Event Variante die Algorithmen nur durch die Umsetzung eines Berechnungsschrittes, sodass die Methoden zur Simulation eines Berechnungsschrittes bzw. Events in der Superklasse abstrakt sind und jeweils für das Modell passend in den Unterklassen implementiert wurden. In der Klasse \verb!Simulation_3s! sind zusätzlich auch die Vorberechnungen für die kumulierte Parametermatrix der Step-by-Step Simulation und die Wechselmatrix der By-Event Simulation zu finden.
 
 Um eine Simulation zu starten, wird zunächst eine Instanz der Simulationsklasse erstellt
+\begin{verbatim}
+__init__(self, params, model, approach = "E",
+	length = 1000, number = 1000, maxtime = 240, times = [])
+\end{verbatim}                                                                                                  
+Für das 2-Zustände Modell sind die Parameter \verb!params! ein Tupel aus $(p_\text{s}, p_\text{m})$. Für das allgemeine 3-Zustände Modell wird die Übergangsmatrix \ref{3s_Transit} als Matrix \\ \verb![[pmm, pma, pml],[pam,paa,pal],[plm,pla,pll]]! übergeben. Wird als \verb!model! das Modell 3a ausgewählt, können die vier nötigen Parameter auch als Liste \verb![pmm,pml,paa,pll]! übergeben werden.
+Zulässige Eingaben für \verb!model! sind ``2s'', ``3s'' und ``3a'', womit das entsprechende Modell ausgewählt wird. Über \verb!approach! kann zwischen ``S'' und ``E'' als Eingabe gewählt werden, wodurch der Simulationsansatz gewählt wird.
+Mit \verb!length!, \verb!number! und \verb!maxtime! können die entsprechenden Rahmenbedingungen für die Simulation gesetzt werden. Zusätzlich ist es möglich, eine bereits vorhandene Liste von Ankunftszeiten mit zu übergeben, aus der beispielsweise die Maße des Peaks berechnet werden sollen.
+Nach der Initialisierung wird mit \verb!simulate()! die Simulation gestartet. Anhand des gesetzten \verb!model! und \verb!approach! entscheidet sich, welche Funktionen zur Simulation aufgerufen werden. Die Peakdaten werden anschließend mittels \verb!calculate_pd()! berechnet.
 
-TODO
+\subsection{Aufruf aus der Kommandozeile}
+Um eine Simulation zu starten, kann das Programm auch mittels Kommandozeilenparameter gestartet werden. Der Aufruf
+\begin{verbatim}
+python3 simulation.py -a=E -m="2s" -l=1000 -n=10000 -mt=400  -p 0.999 0.5
+\end{verbatim}
+startet eine ereignisbasierte Simulation des 2-Zustände Modells bei einer Säulenlänge von $1000$, mit $10.000$ Teilchen und einer maximalen Wartezeit von $400$. Die Simulationsparameter sind $p_\text{s} = 0,999$ und $p_\text{m} = 0,5$. Anschließend wird das Ergebnis als einfaches Histogramm graphisch dargestellt.
 
-In der Datei \texttt{plottings} sind mehrere verschiedene Möglichkeiten zur Auswertungen der Simulation enthalten, die unter Anderem auch verwendet wurden, um die Darstellungen in Kapitel \ref{chapter:eva} zu erstellen. 
+Um jedoch mehr als eine Parameterkombination zu simulieren und auszuwerten, wird die Benutzung der Dateien \verb!2s_simulate_and_plot.py! sowie  \verb!3s_simulate_and_plot.py! empfohlen. Sie sind für das Starten der Simulationen und Plotten der Ergebnisse durch den Benutzer gedacht. Durch den Aufruf mit einigen Kommandozeilenparametern kann zunächst ein vordefinierte Menge an Parameterkombinationen zur Simulation ausgewählt und anschließend ausgewertet werden.
 
-Die Dateien \verb!2s_simulate_and_plot.py! sowie  \verb!3s_simulate_and_plot.py! sind für das Starten der Simulationen und Plotten der Ergebnisse durch den Benutzer gedacht. Durch den Aufruf mit einigen Kommandozeilenparametern kann zunächst ein vordefinierte Menge an Parameterkombinationen zur Simulation ausgewählt werden. 
 Mit dem Parameter \texttt{-p} wird eine Menge von Parameterkombinationen ausgewählt. Zur Verfügung stehen dabei für das 2-Zustände Modell und das 3-Zustände Modell 3a jeweils \textit{small\_set}, \textit{medium\_set} und \textit{large\_set}, außerdem können mittels \textit{random} zufällige Kombinationen erstellt werden, die Anzahl dieser zufälligen Kombinationen wird über den Parameter \texttt{-cn} festgelegt. Außerdem steht für das 2-Zustände Modell noch die Kombination \textit{skew} zur Verfügung, die tailing erzeugende Parameter enthält.
 
 Der Parameter \texttt{-a} wählt den gewünschten Ansatz, also \texttt{-a=S} für die Step-by-Step Simulation und \texttt{-a=E} für die By-Event Simulation.
 
 Mit den Parametern \texttt{-n} und \texttt{-l} können Anzahl der Teilchen und Länge der Säule eingegeben werden. Als Default-Werte dafür sind $1000$ Teilchen und eine Länge von $1000$ Schritten vorgesehen.
 
-Um einen einzelnen Peak zu Plotten, kann mittels \texttt{-pp} die gewünschte Parameterkombination aus $ps$ und $pm$ eingegeben werden. Für die 2-Zustände Simulation würde beispielsweise der Aufruf \verb!python3 2s_simulate_and_plot.py -pp 0.999 0.5! eine Simulation mit den Parametern $ps = 0.999$ und $pm = 0.5$ erstellen, diese simulieren, falls sie noch nicht vorhanden ist und anschließend eine graphische Darstellung des Peaks ausgeben. 
-Für die 3-Zustände Simulation ist das Modell 3a als Voreinstellung gewählt, damit kann eine Parameterkombination aus pmm, pml, paa und pll eingegeben werden. Um das gesamte 3-Zustände Modell auszunutzen, ist die Auswahl \texttt{-m=3s} nötig, und die Eingabe aller neun Parameter. 
+Um einen einzelnen Peak zu Plotten, kann mittels \texttt{-pp} die gewünschte Parameterkombination aus $p_\text{s}$ und $p_\text{m}$ eingegeben werden. Für die 2-Zustände Simulation würde beispielsweise der Aufruf \verb!python3 2s_simulate_and_plot.py -pp 0.999 0.5! eine Simulation mit den Parametern $p_\text{s} = 0,999$ und $p_\text{m} = 0,5$ erstellen, diese simulieren, falls sie noch nicht vorhanden ist und anschließend eine graphische Darstellung des Peaks ausgeben. 
+Für die 3-Zustände Simulation ist das Modell 3a als Voreinstellung gewählt, damit kann eine Parameterkombination aus $p_\text{mm}$, $p_\text{ml}$, $p_\text{aa}$ und $p_\text{ll}$ eingegeben werden. Um das gesamte 3-Zustände Modell auszunutzen, ist die Auswahl \texttt{-m=3s} nötig, und die Eingabe aller neun Parameter. 
 
-Weitere Kommandozeilenparameter erlauben die Auswahl der gewünschten Plots.
+Weitere Kommandozeilenparameter erlauben die Auswahl der gewünschten Plots. Dadurch werden die Plotfunktionen der Datei \texttt{plottings.py} aufgerufen. Dort sind mehrere verschiedene Möglichkeiten zur Auswertungen der Simulation enthalten, die unter Anderem auch verwendet wurden, um die Darstellungen in Kapitel \ref{chapter:eva} zu erstellen.  \todo{noch mehr hierzu?}
 
 
+\subsection{Weiteres} \todo{Überschrift}
 Sowohl bei der Umsetzung der Step-by-Step Methode als auch By-Event kann mit der Implementierung des 3-Zustände Modells auch das 2-Zustände Modell simuliert werden, indem nicht benötigte Übergangswahrscheinlichkeiten auf einen Wert von $0$ gesetzt werden. Die 2-Zustände Simulation ist aber vor allem bei der Step-by-Step Implementierung deutlich schneller, da nur auf boolschen Werten gearbeitet werden muss und deutlich weniger ungenutzte Information in den Zwischenschritten berechnet wird.
 
 
-\subsection{Step-by-step}
-
-Im Laborexperiment wird nur in gewissen Intervallen die Ankunft von Teilchen detektiert, bei der MCC-IMS-Kopplung wird beispielsweise nur zwei Mal pro Sekunde eine Messung durchgeführt. Daher genügt es auch in der Simulation, wenn nicht nach jedem Simulationsschritt die Orte aller Teilchen getestet werden, um ein ausreichend exaktes Ergebnis zu erhalten.
+Im Laborexperiment wird nur in gewissen Intervallen die Ankunft von Teilchen detektiert, bei der MCC-IMS-Kopplung wird beispielsweise nur zwei Mal pro Sekunde eine Messung durchgeführt. Daher genügt es auch in der schrittweisen Simulation, wenn nicht nach jedem Simulationsschritt die Orte aller Teilchen getestet werden, um ein ausreichend exaktes Ergebnis zu erhalten.
 Es können also zunächst viele Simulationsschritte durchgeführt werden, bevor getestet wird, ob Teilchen die Länge $l$ erreicht haben. Nach den oben angegebenen Einheiten können so zwischen jedem Test $50$ Simulationsschritte erfolgen, was $0,5 s$ entspricht. Dadurch entfallen viele Abfragen und es kann Simulationszeit eingespart werden. 
 
 Da außerdem klar ist, dass frühestens nach $l$ Schritten Teilchen überhaupt die Säule durchlaufen haben können, muss vor diesem Zeitpunkt auch kein Test auf Erreichen der Länge durchgeführt werden, wodurch weitere Zeit eingespart werden kann.
-\todo{wie viel Zeit ist das jeweils? ist das interssant?}
 
-
-\subsection{By-Event}
-%Bei Übergangswahrscheinlichkeiten, die sehr groß oder klein sind, kommt es selten zu Zustandsänderungen, sodass es in diesem Fall effizienter ist, eine Wartezeitmethode zu nutzen: Es wird für jedes Teilchen entschieden, wann es den Zustand wechselt und, falls es mobil ist, wie weit es bis dahin weiter wandert. Es werden also nur die tatsächlichen Ereignisse simuliert, Schritte für Zeitpunkte, zu denen nichts passiert, entfallen.
-%\todo{by event-simulation beschreiben -> Methoden}
-???
 
 \subsection{Laufzeitvergleich von Step-by-Step und By-Event}
 
@@ -60,14 +61,15 @@ Die Laufzeit einer Simulation hängt stark von den gewählten Parametern ab, au�
 In Tabelle \ref{2s_laufzeit} ist eine Übersicht über die Laufzeiten der verschiedenen Simulationsarten gegeben. 
 Jede Zeile enthält die Zeiten für die gegebenen Parameter, jede Spalte entspricht einer Simulationsart. Dabei steht ``S'' für die schrittweise und ``E'' für die ereignisbasierte Simulation, die Zahl dahinter gibt die Anzahl der simulierten Teilchen an.
 
-Die Zeiten wurden unter jeweils gleichen Bedingungen gemessen und sind in Sekunden angegeben. Mit einem $*$ gekennzeichnete Zeiten deuten an, dass die Simulationen nach Erreichen der maximalen Anzahl Simulationsschritte beendet wurden, also keinen vollständigen Peak innerhalb dieses Zeitraumes liefern.
+Die Zeiten wurden unter jeweils gleichen Bedingungen gemessen und sind in Sekunden angegeben. \todo{Hinweise, was für nen PC ich habe oder reicht das?}
+Mit einem $*$ gekennzeichnete Zeiten deuten an, dass die Simulationen nach Erreichen der maximalen Anzahl Simulationsschritte beendet wurden, also keinen vollständigen Peak innerhalb dieses Zeitraumes liefern.
 
 \begin{table}[h]
 \centering
 \caption{Laufzeitvergleich für die 2-Zustände Simulation}
 \label{2s_laufzeit}
 \begin{tabular}{|l|l||l|l|l|l|l|l|l|} \hline
-ps     & pm   & S,$1000$ & E,$1000$ & S,$10.000$ & E,$10.000$ & PAA & PAA* & MoSDi \\ \hline \hline
+$p_\text{s}$     & $p_\text{m}$   & S,$1000$ & E,$1000$ & S,$10.000$ & E,$10.000$ & PAA & PAA* & MoSDi \\ \hline \hline
 $0,997  $ & $ 0,01 $ & $ 8,4  $ & $ 20,9  $ & $ 47,4  $ & $98,2  $ & $  $ & $ $ & $  $\\ \hline
 $0,997  $ & $ 0,3  $ & $ 6,1  $ & $ 15,4  $ & $ 33,7  $ & $69,3  $ & $  $ & $ $ & $  $\\ \hline
 $0,997  $ & $ 0,6  $ & $ 3,6  $ & $ 8,9   $  & $ 19,4 $ & $40,1  $ & $  $ & $ $ & $  $\\ \hline
@@ -87,40 +89,44 @@ $0,9996 $ & $ 0,95 $ & $ 4,1  $ & $ 3,0   $ & $ 18,8  $ & $10,2  $ & $  $ & $ $ 
 \end{tabular}
 \end{table}
 
-Wie zu erwarten war, steigt die Laufzeit an, je größer ps und je kleiner pm ist. Das liegt offensichtlich an der Abbruchbedingung des Algorithmus, der terminiert, wenn alle Teilchen über die gesamte Strecke von $\ell$ Schritten simuliert wurden. Simulationsparameter mit kleinem ps oder großem pm sorgen für weniger Verweilen der Teilchen im stationären Zustand und damit eine schnelle Passage der Strecke, wodurch die die Simulationsdauer kürzer wird. 
+Wie zu erwarten war, steigt die Laufzeit an, je größer $p_\text{s}$ und je kleiner $p_\text{m}$ ist. Das liegt offensichtlich an der Abbruchbedingung des Algorithmus, der terminiert, wenn alle Teilchen über die gesamte Strecke von $\ell$ Schritten simuliert wurden. Simulationsparameter mit kleinem $p_\text{s}$ oder großem $p_\text{m}$ sorgen für weniger Verweilen der Teilchen im stationären Zustand und damit eine schnelle Passage der Strecke, wodurch die die Simulationsdauer kürzer wird. 
 
-Bei der Simulation den 2-Zustände Modells ist die Step-by-Step Variante für die meisten Parameterkombinationen deutlich schneller, als die By-Event Implementierung. Der große Vorteil von Step-by-Step liegt hier in der Verwendung von booleschen Werten und Nutzung von NumPy-Arrays, auf welchen die Ausführung logischer Operationen sehr schnell erfolgen kann. 
-Mit größer werdendem pm verringert sich der Unterschied zwischen den beiden Simulationsarten, ab einem sehr großen Wert für $p_{\text{m}}$, ab etwa $0,99$ ist die By-Event Variante geringfügig schneller. Das liegt daran, dass in diesen Fällen besonders selten Ereignisse erzeugt werden müssen und sich die Teilchen in großen Sprüngen forbewegen können. 
+Bei der Simulation den 2-Zustände Modells ist die Step-by-Step Variante für die meisten Parameterkombinationen deutlich schneller, als die By-Event Implementierung. Der große Vorteil von Step-by-Step liegt hier in der Verwendung von booleschen Werten und Nutzung von NumPy-Arrays, auf welchen die Ausführung logischer Operationen sehr schnell erfolgen kann. Diese Zeiten der Step-by-Step Implementierung würden sich allerdings fast verdoppeln, wenn tatsächlich nach jedem Simulationsschritt eine Abfrage auf Erreichen der Säulenlänge und entsprechende Bearbeitung der fertigen Teilchen erfolgen würde und nicht erst nach den oben erwähnten $50$ Schritten.
 
-\todo{stand bis hier irgendwas davon, dass ich 3a verwende?}
-Anders sieht die Situation bei der Simulation des 3-Zustände Modells aus. Tabelle \ref{3s_laufzeit} bietet eine Übersicht über die Laufzeiten mit verschiedenen Parametern.
+Mit größer werdendem $p_\text{m}$ verringert sich der Unterschied zwischen den beiden Simulationsarten, ab einem sehr großen Wert für $p_{\text{m}}$, ab etwa $0,99$ ist die By-Event Variante geringfügig schneller. Das liegt daran, dass in diesen Fällen besonders selten Ereignisse erzeugt werden müssen und sich die Teilchen in großen Sprüngen forbewegen können. 
+
+Anders sieht die Situation bei der Simulation des 3-Zustände Modells 3a aus. Tabelle \ref{3s_laufzeit} bietet eine Übersicht über die Laufzeiten mit verschiedenen Parametern.
+In der Spalte */** ist gekennzeichnet, ob die Parameter einen Peak innerhalb der Retentionszeit von $240$ Sekunden erzeugen. Bei mit einem * markierten Zeilen erreichen nur einige Teilchen ($<20\%$) innerhalb der Zeit das Säulenende. Zwei ** stehen für eine Simulation, in der fast alle ($> 95\%$) der Teilchen das Ziel erreichen.
 
 \begin{table}[h]
-\centering
+\centering 
 \caption{Laufzeitvergleich für die 3-Zustände Simulation}
 \label{3s_laufzeit}
-\begin{tabular}{|l|l|l|l||l|l|l|l|l|l|l|}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
 \hline
-pmm & pml & paa & pll & S, $1000$ & E, $1000$ & S, $10.000$ & E, $10.000$ \\ \hline \hline
-$ 0,01 $ & $0,00005$ & $0,997$  & $0,99995$  & $26,2   $ & $23,9  $ & $123,7 $ & $ $  \\ \hline
-$ 0,01 $ & $0,00005$ & $0,997$  & $0,999995$ & $47,4   $ & $24,4  $ & $150 $ & $ $  \\ \hline
-$ 0,01 $ & $0,00005$ & $0,9996$ & $0,99995$  & $170,8* $ & $35,9* $ & $870* $ & $ $  \\ \hline
-$ 0,01 $ & $0,00005$ & $0,9996$ & $0,999995$ & $169,7* $ & $35,4* $ & $869* $ & $ $  \\ \hline
-$ 0,01 $ & $0,003 $  & $0,997$  & $0,99995$  & $36,2   $ & $25,2  $ & $150,6 $ & $ $  \\ \hline
-$ 0,01 $ & $0,003 $  & $0,997$  & $0,999995$ & $118,8**$ & $31,5**$ & $390,7**$ & $ $  \\ \hline
-$ 0,01 $ & $0,003 $  & $0,9996$ & $0,99995$  & $170*   $ & $34,8* $ & $870* $ & $ $  \\ \hline
-$ 0,01 $ & $0,003 $  & $0,9996$ & $0,999995$ & $170*   $ & $29,9* $ & $871* $ & $ $  \\ \hline
-$ 0,9  $ & $0,00005$ & $0,997$  & $0,99995$  & $5      $ & $2,6 $   & $15,5 $ & $ $  \\ \hline
-$ 0,9  $ & $0,00005$ & $0,997$  & $0,999995$ & $28,4   $ & $2,7 $   & $44,3 $ & $ $  \\ \hline
-$ 0,9  $ & $0,00005$ & $0,9996$ & $0,99995$  & $22,5   $ & $3,9 $   & $98 $ & $ $  \\ \hline
-$ 0,9  $ & $0,00005$ & $0,9996$ & $0,999995$ & $49,9   $ & $4 $     & $126,1 $ & $ $  \\ \hline
-$ 0,9  $ & $0,003 $  & $0,997$  & $0,99995$  & $16,9   $ & $3,3 $   & $43 $ & $ $  \\ \hline
-$ 0,9  $ & $0,003 $  & $0,997$  & $0,999995$ & $108,3**$ & $4,3** $ & $294,2* $ & $ $  \\ \hline
-$ 0,9  $ & $0,003 $  & $0,9996$ & $0,99995$  & $30,1   $ & $4,0 $   & $120 $ & $ $  \\ \hline
-$ 0,9  $ & $0,003 $  & $0,9996$ & $0,999995$ & $115,6**$ & $4,7** $ & $ $ & $ $  \\ \hline
+$p_\text{mm}$ & $p_\text{ml}$ & $p_\text{aa}$ & $p_\text{ll}$ &*/**& S, $1000$ & E, $1000$ & S, $10.000$ & E, $10.000$ \\ \hline \hline
+$ 0,01 $ & $0,00005$ & $0,997$  & $0,99995$  && $26,2   $ & $23,9  $ & $123,7 $ & $196,1 $  \\ \hline
+$ 0,01 $ & $0,00005$ & $0,997$  & $0,999995$ && $47,4   $ & $24,4  $ & $150   $ & $198,9 $  \\ \hline
+$ 0,01 $ & $0,00005$ & $0,9996$ & $0,99995$  &*& $170,8 $ & $35,9  $ & $870   $ & $219,4 $  \\ \hline
+$ 0,01 $ & $0,00005$ & $0,9996$ & $0,999995$ &*& $169,7 $ & $35,4  $ & $869   $ & $220,5 $  \\ \hline
+$ 0,01 $ & $0,003 $  & $0,997$  & $0,99995$  && $36,2   $ & $25,2  $ & $150,6 $ & $199,4 $  \\ \hline
+$ 0,01 $ & $0,003 $  & $0,997$  & $0,999995$ &**& $118,8$ & $31,5  $ & $390,7 $ & $218,3 $  \\ \hline
+$ 0,01 $ & $0,003 $  & $0,9996$ & $0,99995$  &*& $170   $ & $34,8  $ & $870   $ & $217,5 $  \\ \hline
+$ 0,01 $ & $0,003 $  & $0,9996$ & $0,999995$ &*& $170   $ & $29,9  $ & $871   $ & $188,5 $  \\ \hline
+$ 0,9  $ & $0,00005$ & $0,997$  & $0,99995$  && $5      $ & $2,6 $   & $15,5  $ & $20,7 $  \\ \hline
+$ 0,9  $ & $0,00005$ & $0,997$  & $0,999995$ && $28,4   $ & $2,7 $   & $44,3  $ & $21,4 $  \\ \hline
+$ 0,9  $ & $0,00005$ & $0,9996$ & $0,99995$  && $22,5   $ & $3,9 $   & $98    $ & $24,3 $  \\ \hline
+$ 0,9  $ & $0,00005$ & $0,9996$ & $0,999995$ && $49,9   $ & $4 $     & $126,1 $ & $24,9 $  \\ \hline
+$ 0,9  $ & $0,003 $  & $0,997$  & $0,99995$  && $16,9   $ & $3,3 $   & $43    $ & $22,6 $  \\ \hline
+$ 0,9  $ & $0,003 $  & $0,997$  & $0,999995$ &**& $108,3$ & $4,3   $ & $294,2 $ & $30,6 $  \\ \hline
+$ 0,9  $ & $0,003 $  & $0,9996$ & $0,99995$  && $30,1   $ & $4,0 $   & $120 $   & $25,3 $  \\ \hline
+$ 0,9  $ & $0,003 $  & $0,9996$ & $0,999995$ &**& $115,6$ & $4,7   $ & $370,6 $ & $32,4*** $  \\ \hline
 \end{tabular}
 \end{table}
-Für die 3-Zustände Simulation müssen in der Step-by-Step Implementierung sehr viele Einträge für die Hilfsarrays erzeugt werden, die jedoch für die Berechnung der neuen Arrays nicht benötigt werden. Durch diese überflüssigen Berechnungen verliert die Step-by-Step Implementierung ihren Vorteil gegen über der By-Event Variante, sodass diese schneller wird. Dies wird noch deutlicher, je größer $p_{\text{mm}}$ wird.
+Auch hier ist für beide Simulationsarten zu erkennen, dass bei größerem $p_\text{mm}$ oder kleineren Werten für die anderen Parametern deutlich geringere Laufzeiten erreicht werden.
+
+Jedoch müssen bei der Step-by-Step Implementierung sehr viele Einträge für die Hilfsarrays erzeugt werden, die für die Berechnung der neuen Arrays nicht benötigt werden. Durch diese überflüssigen Berechnungen verliert die Step-by-Step Implementierung ihren Vorteil gegen über der By-Event Variante, sodass diese schneller wird. Besonders bei denjenigen Simulationen, die einen sehr späten Peak erzeugen oder gar keinen vollständigen Peak innerhalb der $240$ Sekunden erzeugen, wird der Vorteil der By-Event Simulation deutlicher. In diesen Fällen finden meist seltener Wechsel von der stationären in die mobile Phase statt. Bei der Step-by-Step Variante wird dennoch jeder Schritt simuliert, ohne dass sich die Teilchen bewegen. By-Event lässt diese Schritte einfach aus, wodurch deutlich Simulationszeit gespart wird. 
+%Dies wird noch deutlicher, je größer $p_{\text{mm}}$ wird.
 
 %Bei Parametern nah an $1$ lohnt meist die Nutzung der By-Event Implementierung, da dann nur seltener Ereignisse erzeugt werden und viele Schritte in denen nichts passiert, also kein Zustandswechsel stattfindet, übersprungen werden können.
 %Bei sehr vielen Teilchen lohnt sich eher die Step-by-Step Variante, da die Teilchen, die in NumPy-Arrays als boolesche Werte vorliegen, sehr viel schneller verarbeitet werden können, als die Listen, die bei der Event -Variante verwendet werden. Eine weitere Parallelisierung scheint hier aber nicht zu lohnen
@@ -131,16 +137,19 @@ Für die 3-Zustände Simulation müssen in der Step-by-Step Implementierung sehr
 % -> Algorithmen?
 
 \section{Simulation des PAA}
+TODO
 Die Berechnung des PAA existiert in Java, dabei Referenz auf mosdi (Zitiere Paper, in dem das vorgestellt wird und sage, dass ich das verwende)
 
 In der Hoffnung, Laufzeit einzusparen durch eine eingeschränkte Version des PAA und Nutzung von Julia, wurde eine eigene Implementierung entwickelt.
 
 %(laufzeit linear/quadratisch oder so in irgendwas? noch mal bei mosdi nachgucken) länge sowieso beschränkt durch länge der säule (?????) und nicht durch maximale wartezeit
 
-Warum Julia? 
+%Warum Julia? 
 
-Laufzeitvergleich bei gleichen Ergebnissen
+Laufzeitvergleich
 
 Die Nachbearbeitung der Ergebnisse des PAA wurde wiederum in Python implementiert.
+
+TODO TODO TODO
 
 
