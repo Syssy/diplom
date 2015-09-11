@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 import plottings
 import simulation
 
-def combine_params(args, nr_of_choice = 5, params=(0.999, 0,5)):
+def combine_params(args, nr_of_choice=5, params=(0.999, 0,5)):
     """Kombiniere Wahrscheinlichkeiten als ps- und pm-Parameter fuer die Simulation"""
     p_combinations = []
     if not args:

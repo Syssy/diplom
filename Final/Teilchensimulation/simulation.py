@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 class Simulation(metaclass = ABCMeta):
     """Simuliert und speichert Daten einer Simulation
     """
-    def __init__(self, params, model, approach = "E", length = 1000, number = 1000, maxtime = 240, times = []):
+    def __init__(self, params, model, approach="E", length=1000, number=1000, maxtime=240, times=[]):
         """__init__
         params - Parameter ps,pm bzw pmm,pml,paa,pll
         model - 2s/3s 
@@ -244,7 +244,7 @@ class Simulation(metaclass = ABCMeta):
             return result
         return (self.model + "_" + str(self.params))# + "_" + self.approach)
               
-    def simulate(self, model = None, approach = None):
+    def simulate(self, model=None, approach=None):
         '''Simuliert je nach Modell und Modus'''
         #TODO Abfragen, dass Anzahl der Params und Modell zusammen passen
         if self.model == "2s" or model == "2s" or self.model == "3s" or model == "3s" or self.model == "3a" or model == "3a" :
@@ -259,6 +259,7 @@ class Simulation(metaclass = ABCMeta):
     
     
 class Simulation_2s(Simulation):    
+    '''Unterklasse für 2-Zustände Modell'''
     def simulate_step(self, locations, mobile_states, number):
         """Simuliere einen Schritt für alle Teilchen innerhalb der each_timestep-Simulation
         Wahrscheinlichkeit stationaer/mobil zu bleiben, Zugriff über self.params
@@ -307,7 +308,9 @@ class Simulation_2s(Simulation):
         
 
 class Simulation_3s(Simulation):
-    def __init__(self, params, model, approach = "E", length = 1000, number = 1000, maxtime = 240, times = []):
+    '''Unterklasse für 3-Zustände Modell'''
+    def __init__(self, params, model, approach="E", length=1000, number=1000, maxtime=240, times=[]):
+        '''Muss beim initialisieren zusätzliche Informationen berechnen'''
         super().__init__(params, model, approach, length, number, maxtime, times)
         # das allgemeine 3s nimmt nur [[pmm,pma,pml],[pam,paa,pal],[plm,pla,pll]]
         # 3a kann [pmm,pml,paa,pll] annehmen, das muss entsprechend umgeformt werden

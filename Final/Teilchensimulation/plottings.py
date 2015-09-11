@@ -15,7 +15,7 @@ import numpy as np
 
 import simulation
 
-def plot_single_peak(data, histogram = False, peak=True, quartiles= True, num_bins = 50):
+def plot_single_peak(data, histogram=False, peak=True, quartiles=True, num_bins=50):
     '''Plotte fuer einen Peak Histogramm oder Peakkurve mit/ohne Quartile nach Wahl'''
     if peak:    
         fig, ax = plt.subplots()
@@ -44,7 +44,7 @@ def plot_single_peak(data, histogram = False, peak=True, quartiles= True, num_bi
         plt.ylabel("Anzahl Teilchen")
         plt.show()
 
-def plot_spectrum(sims, noise = False, maxtime=240): 
+def plot_spectrum(sims, noise=False, maxtime=240): 
     """Plottet ein Spektrum aus maximal 30 Peaks bis zu Retentionszeit maxtime, wahlweise mit oder ohne Rauschen"""
     logging.log(15, "starte plotting")
     #ein Spektrum mit max 30 Chroms, gemeinsame Zeitenliste erstellen
@@ -71,7 +71,7 @@ def plot_spectrum(sims, noise = False, maxtime=240):
         plt.suptitle(title)
         plt.show()
 
-def plot_trait(sim_array, trait = "loc"):
+def plot_trait(sim_array, trait="loc"):
     '''Erstelle Heatmap ueber die Eigenschaft der Peaks, nur sinnvoll für systematische Simulationenliste'''
     # traitdict enhält die Positionen der gewählten Eigenschaft in den pd
     if sim_array[0].model != "2s":
@@ -104,7 +104,7 @@ def plot_trait(sim_array, trait = "loc"):
     cbar = fig.colorbar(cax)
     plt.show()
             
-def plot_reachable(folder, show_params = False):
+def plot_reachable(folder, show_params=False):
     '''Erstelle Scatterplots, mit jeder Punkt ist eine Sim, beschriftet evtl mit seinen Params, Koords aus Zeitpunkt und IQR'''
     #logging.log(22, "plotte Groessenverhaeltnisse")
     if "2s" not in folder:
@@ -126,7 +126,7 @@ def plot_reachable(folder, show_params = False):
                     t = plt.text(sim.pd[0], sim.pd[2], str(sim.params[0])+'\n'+str(sim.params[1]), size= "small")#oder xx-small
     plt.show()
      
-def plot_params_at_time(folder, t, epsilon = 0.1, show_params = False):
+def plot_params_at_time(folder, t, epsilon=0.1, show_params=False):
     """plotte Parameterkombinationen zu Zeit t, mit erlaubter Abweichung von t um epsilon"""
     # Plot erstellen und beschriften
     if "2s" not in folder:
@@ -155,7 +155,7 @@ def plot_params_at_time(folder, t, epsilon = 0.1, show_params = False):
     plt.legend(title = "Breite,   Retentionszeit", numpoints = 1, loc = 2)
     plt.show()    
     
-def plot_time(folder, t, epsilon = 1, show_params = False):
+def plot_time(folder, t, epsilon=1, show_params=False):
     '''Erreichbare Breiten und Schiefen fuer Zeit t plotten'''
     if "3s" not in folder:
         logging.log(40, "Plot nicht verfuegbar fuer 2-Zustaende Modell, bitte plot_reachable verwenden")
