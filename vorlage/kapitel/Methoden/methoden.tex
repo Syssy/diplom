@@ -20,29 +20,30 @@ Wenn Zustandswechsel jedoch nicht sehr häufig vorkommen, kann es viel Zeit eins
 %Für das 2-Zustände Modell wurden zwei verschiedene Möglichkeiten der Simulation entworfen. Die erste, ``Step-by-Step'', simuliert schrittweise alle Zeitpunkte eines Säulendurchlaufs. Die zweite, ``By-Event'' verwaltet eine Liste relevanter Zeitpunkte, an denen Ereignisse - im konkreten Fall: Zustandswechsel - statt finden.
 \subsection{Step-by-Step}
 
+\todo{einrückung vergrößern}
+
 \begin{algorithm}
 \caption{Ablauf der Step-by-Step Simulation}
 \label{algo_by_Step}
-\begin{algorithmic}
-\REQUIRE Zustandsliste $z= [z_1 , \ldots, z_n]$, Ortsliste $o=[o_1, \ldots , o_n]$, Zeit $t=0$, Maximalzeit $t_{max}$, Transitionen $T$
-\ENSURE Ankuftszeiten $r$ oder FAIL
-\WHILE{$t < t_{max}$ \AND $len(z) > 0$}
+\begin{algorithmic}[1]
+\REQUIRE Anzahl der Teilchen $n$, Länge der Säule $\ell$, Zustandsliste $z= [z_1 , \ldots, z_n]$, Ortsliste $o=[o_1, \ldots , o_n]$, Zeit $t=0$, Maximalzeit $t_{\text{max}}$, Transitionen $T$
+\ENSURE Liste von Ankunftszeiten $r$
+\STATE $r$ = list()
+\WHILE{$t < t_{\text{max}}$ \AND $len(z) > 0$}
 \FORALL {Teilchen $p$}
-\STATE Simuliere $p(T)$
+\STATE Akutalisiere $z_p$ und $o_p$ anhand von $T$
+%\STATE Simuliere $p$ (anhand von T$(T)$)
 \IF {$o_p >l$}
-\STATE $r \leftarrow t$
+\STATE $r$.append($t$)
 \STATE Lösche $z_p$ und $o_p$
 \ENDIF
 \ENDFOR
-\STATE $t +=1$
+\STATE $t \leftarrow t+1$%t +=1$
 \ENDWHILE
-\IF {$len(z) > 0$}
-\RETURN FAIL
-\ELSE
 \RETURN $r$
-\ENDIF
 \end{algorithmic}
 \end{algorithm}
+\todo{Text anpassen, wegen änderungen?}
 
 %\todo{Hinweis auf Parallelisierbarkeit und andere Zeitverbesserungen hier oder in Implementierung}
 
@@ -58,7 +59,8 @@ Als alternative Abbruchbedingung kann eine maximale Anzahl von Simulationsschrit
 
 Es wird nun jeweils ein Zeitschritt für alle Teilchen simuliert. Nach jedem solchen Simulationsschritt wird getestet, ob Teilchen bereits den Wert von $\ell$ erreicht und damit die ganze Säule durchlaufen haben. Die entsprechende Anzahl dafür benötigter Schritte entspricht der Ankunftszeit der Teilchen und wird festgehalten, sodass als Ergebnis am Ende der Simulation eine Liste von Ankunftszeiten aller Teilchen entsteht. Teilchen, die angekommen sind, werden aus beiden Vektoren gelöscht.
 
-Wenn die Simulation für alle Teilchen zu Ende geführt wurde, ist die Rückgabe die Liste der Ankunftszeiten aller Teilchen. Ansonsten gilt die Simulation als gescheitert, die Parameter $p_{\text{s}}$ und $p_{\text{m}}$ sorgen offenbar nicht für einen vollständigen Peak innerhalb des simulierten Zeitraumes.
+Wenn die Simulation für alle Teilchen zu Ende geführt wurde, ist die Rückgabe die Liste $r$ der Ankunftszeiten aller Teilchen, die das Säulenende erreicht haben. Anhand der Länge von $r$ kann leicht festgestellt werden, ob die Parameter $p_{\text{s}}$ und $p_{\text{m}}$ einen vollständigen Peak innerhalb des Maximalzeitraumes erzeugt haben. 
+
 
 \subsubsection{Simulation des 2-Zustände Modells}
 
@@ -69,6 +71,7 @@ Die Berechnung eines Simulationsschrittes läuft wie folgt: Die Teilchen wechsel
 Zum Ablauf der Simulation wurde entschieden, dass zunächst die Entscheidung über die Phase gefällt wird und sich die Teilchen anschließend gemäß ihres neuen Zustandes bewegen. Alle Teilchen starten ganz zu Beginn in der mobilen Phase, da sie nur so in das System eintreten können. Außerdem beginnen sie an Ort $1$, da sie bereits als in der Säule befindlich angenommen werden. Das heißt, die Eingaben für Algorithmus \ref{algo_by_Step} sind $z= [z_1 = 1, \ldots, z_n=1]$ für die Zustände und $o= [o_1 = 1, \ldots, o_n=1]$ für die Orte.
 
 \begin{figure}
+\centering
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\fseries}]
 \tikzstyle{feld}=[draw,minimum width=1.5cm,minimum height=0.7cm,font=\sffamily\footnotesize]
@@ -151,7 +154,7 @@ Zum Ablauf der Simulation wurde entschieden, dass zunächst die Entscheidung üb
 \end{scope}
 
 \end{tikzpicture}
-\caption{Prinzip der schrittweisen Simulation mit den Parametern $p_s=0,8$, $p_{\text{m}}=0,5$}
+\caption[Prinzip der schrittweisen Simulation]{Prinzip der schrittweisen Simulation mit den Parametern $p_s=0,8$, $p_{\text{m}}=0,5$. Beispiel anhand eines Schrittes: Ausgehend von dem Zustandvektor$z$ und Ortsvektor $o$ mit den gezogenen Zufallszahlen ZV, werden zunächst Hilfvektoren $s$ und $m$ berechnet und anhand des Ausgangszustandes die neuen Zustands- und Ortsvektoren $z'$ und $o'$ berechnet. Farblich markiert sind alle vier Möglichkeiten, die es zum Phasenübergang gibt.}
 \label{2p_by_step}
 \end{figure}
 
@@ -196,6 +199,7 @@ Dadurch entsteht pro Zustand ein Array, welches für jedes in diesem Zustand bef
 %\todo{Formulierung}
 
 \begin{figure}
+\centering
  \begin{tabular}{ l || l | l | l | l | l | l | l | l | l }
   \hline
   Startzustände & \cellcolor{orange!25}0 & \cellcolor{blue!25} 1 & \cellcolor{orange!25}0 & \cellcolor{green!25}2 & \cellcolor{green!25}2 & \cellcolor{blue!25} 1 & \cellcolor{orange!25}0 & \cellcolor{green!25}2 & \cellcolor{blue!25} 1 \\ \hline \hline 
@@ -214,9 +218,11 @@ Dadurch entsteht pro Zustand ein Array, welches für jedes in diesem Zustand bef
   $M_2\cdot (U_{20}+U_{21}$) & 0 & 0 & 0 & \cellcolor{green!25}2 & \cellcolor{green!25}1 & 0 & 0 & \cellcolor{green!25}0 & 0 \\ \hline \hline
   Endzustände & \cellcolor{orange!25}0 & \cellcolor{blue!25}2 & \cellcolor{orange!25}1 & \cellcolor{green!25}2 & \cellcolor{green!25}1 & \cellcolor{blue!25}0 & \cellcolor{orange!25}2 & \cellcolor{green!25}0 & \cellcolor{blue!25}1 \\ \hline
  \end{tabular}
-\caption{Berechnung eines Zustandswechsels bei der schrittweisen Simulation im 3-Zustände Modell}
+\caption[Berechnung eines Zustandswechsels bei der schrittweisen Simulation im 3-Zustände Modell]{Berechnung eines Zustandswechsels bei der schrittweisen Simulation im 3-Zustände Modell. 
+Farblich gleich markierte Felder zeigen einen gemeinsamen Ausgangszustand mit den drei Möglichkeiten zum Phasenübergang.}
 \label{3s_by_step_tabelle}
 \end{figure}
+\todo{Mehr Bildunterschrift}
 
 Die Berechnung der neuen Orte der Teilchen ist dann wiederum einfach. Da die Maske für den mobilen Zustand bereits alle mobilen Teilchen markiert, kann diese auf den Ortsvektor addiert werden. Um $M_0$ nicht nach den Zustandswechseln neu berechnen zu müssen, findet das Fortbewegen im Simulationschritt vor dem Zustandswechsel statt und die Teilchen starten dafür an Position $0$ statt an $1$ wie es bei der 2-Zustände Simulation der Fall war. Die Eingabe der Orte für Algorithmus \ref{algo_by_Step} ist also $o= [o_1 = 0, \ldots, o_n=0]$.
 
@@ -233,28 +239,35 @@ Der Ablauf der ereignisbasierten Simulation ist in \ref{algo_by_event} angegeben
 \begin{algorithm}
 \caption{Ablauf der by-Event Simulation}
 \label{algo_by_event}
-\begin{algorithmic}
-\REQUIRE Eventliste $e= [e_0 = [(z_0, o_0), \ldots, (z_n, o_n)]]$ mit $z_p = 0, o_p = 0$ $\forall p$ , Zeit $t=0$, Maximalzeit $t_{max}$, Transitionen $T$
-\ENSURE Ankuftszeiten $r$ oder FAIL
-\WHILE{$t<t_{max}$ \AND Länge $e> 0$}
+\begin{algorithmic}[1]
+\REQUIRE Anzahl der Teilchen $n$, Länge der Säule $\ell$, Zeit $t=0$, Maximalzeit $t_{\text{max}}$, Eventliste $e= [e_0 = [(z_0, o_0), \ldots, (z_n, o_n)]]$ mit $z_p = 0, o_p = 0$ $\forall p$ , Transitionen $T$
+\ENSURE Ankuftszeiten $r$
+\STATE $r$ = list()
+\WHILE{$t<t_{\text{max}}$ \AND Länge $e> 0$}
 \FORALL {$(z_p, o_p)$ in $e[t]$}
 \IF {$o_p > \ell$}
-\STATE Berechne $t_a(p)$ 
-\STATE $r \leftarrow t_a(p)$
+\STATE Berechne Ankunftszeit $t_a(p)$ 
+\STATE $r$.append($t_a(p)$)
 \STATE Lösche $(z_p, o_p)$
 \ELSE
 \STATE Simuliere $(z_p, o_p)$
 \STATE Aktualisiere $e$
 \ENDIF
 \ENDFOR
-\STATE $t+=1$
+\STATE $t \leftarrow t+1$
 \ENDWHILE
 \IF {$len(e) > 0$}
-\STATE Teste ausstehende Events
-\STATE Entferne angekommene Teilchen
-\IF {$len(e) > 0$}
-\RETURN FAIL
+\FORALL {Event $e[t]$ in $e$}
+\FORALL {$(z_p, o_p)$ in $ev$}
+\IF {$o_p > \ell$}
+\STATE Berechne Ankunftszeit $t_a(p)$ 
+\STATE $r$.append($t_a(p)$)
+%\STATE Teste ausstehende Events
+%TODO: Anders machen, gleicher test wie oben
+%\STATE Entferne angekommene Teilchen
 \ENDIF
+\ENDFOR
+\ENDFOR
 \ENDIF
 \RETURN $r$
 \end{algorithmic}
@@ -266,7 +279,7 @@ Wie bei der schrittweisen Simulation werden hier $n$ Teilchen simuliert. Jedes d
 Zunächst starten alle Teilchen bei Zeitpunkt $0$, an Ort $0$ und stationär. Dadurch werden sie im ersten Simulationsschritt mobil und bewegen sich direkt fort. 
 Im Gegensatz zur schrittweisen Simulation wird nun eine Liste mit Zeitpunkten verwaltet. Jeder Zeitpunkt beinhaltet eine Liste von Teilchen, die zu diesem Zeitpunkt simuliert werden müssen. Nach erfolger Simulation aller Teilchen der Liste, wird der Zeitpunkt gelöscht und der nächste Zeitpunkt, an dem etwas passieren soll, bearbeitet.
 
-Simuliert wird auch hier bis entweder eine maximale Zeit erreicht ist oder alle Teilchen die gesamte Säule durchlaufen haben. Auch das Ergebnis ist wie bei der schrittweisen Simulation entweder eine Liste mit Ankunftszeiten aller Teilchen oder die Information, dass kein vollständiger Peak erreicht werden konnte.
+Simuliert wird auch hier bis entweder eine maximale Zeit erreicht ist oder alle Teilchen die gesamte Säule durchlaufen haben. Auch das Ergebnis ist wie bei der schrittweisen Simulation eine Liste mit Ankunftszeiten aller Teilchen, die das Säulenende erreicht haben.
 
 % Ein Simulationsschritt behandelt dann alle Teilchen die zu einem Zeitpunkt ihren Zustand wecheln. 
 % Ein solches Event beinhaltet den Wechsel des Zustands, die Bestimmung des Zeitpunkts des nächsten Zustandswechsels sowie bei mobilen Teilchen eine Änderung des Ortes. 
@@ -281,6 +294,7 @@ Allerdings gestaltet sich das Testen auf Erreichen der Säulenlänge bei dieser 
 Ob diese Berechnung nach jedem Simulationsschritt, also vor Neueintragung in die Liste geschieht, oder vor jedem Schritt, ist egal. Allerdings muss im zweiten Fall beachtet werden, dass, falls als Abbruchbedingung eine Maximalzeit gewählt wurde, sichergestellt sein muss, dass alle übrigen Teilchen noch einmal auf Erreichen von $\ell$ getestet werden.
 
 \begin{figure}
+\centering
 \begin{subfigure}[t]{\textwidth}
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries}]
@@ -293,6 +307,12 @@ Ob diese Berechnung nach jedem Simulationsschritt, also vor Neueintragung in die
 	\node [on chain=1, feld,minimum width=2cm] (p5) {$e_5$};
 	\node [on chain=1, feld,minimum width=2cm] (p7) {$e_7$};
 	\node [on chain=1, feld,minimum width=2cm] (p12) {$e_{12}$};
+\end{scope}
+
+\begin{scope}[start chain = 1 going below,shift={(0.5cm, -2cm)}, node distance=0.5cm]
+	\node[on chain = 1, feld, draw = none] (2x1) {ZV:$2$};
+	\node[on chain = 1, feld, draw = none] (2x2) {ZV:$13$};
+	\node[on chain = 1, feld, draw = none] (2x2) {ZV:$6$};
 \end{scope}
 
 \begin{scope}[start chain = 1 going below,shift={(2cm, -2cm)}, node distance=0.5cm]
@@ -336,7 +356,7 @@ Ob diese Berechnung nach jedem Simulationsschritt, also vor Neueintragung in die
 \path [line width=1.4pt, line cap=rect, draw](p12) edge (5x1) ;
 
 \end{tikzpicture}
-\caption{Vor der Simulation des Events $e_3$}
+\caption{Eventliste vor der Simulation des Events $e_3$, für welches $3$ Teilchen simuliert werden müssen}
 \label{2p_by_event_a}
 \vspace*{5mm}
 \end{subfigure}
@@ -354,7 +374,6 @@ Ob diese Berechnung nach jedem Simulationsschritt, also vor Neueintragung in die
 	\node [on chain=1, feld,minimum width=2cm] (p12) {$e_{12}$};
 	\node [on chain=1, feld,minimum width=2cm] (p16) {$e_{16}$};
 \end{scope}
-
 
 \begin{scope}[start chain = 1 going below,shift={(2cm, -2cm)}, node distance=0.5cm]
 	\node[on chain = 1, feld] (2x1) {($z_0, o_0$)};
@@ -404,10 +423,10 @@ Ob diese Berechnung nach jedem Simulationsschritt, also vor Neueintragung in die
 
 \end{tikzpicture}
 
-\caption{Nach der Simulation}
+\caption{Eventliste nach der Simulation, Event $e_3$ wurde abgearbeitet und gelöscht, die Teilchen entsprechend der gezogenen Zufallszahlen simuliert und den passenden Events neu zugeordnet, bzw neue Events angelegt}
 \label{2p_by_event_b}
 \end{subfigure}
-\caption{Prinzip der ergeignisbasierten Simulation bei zwei Zuständen} 
+\caption[Prinzip der ergeignisbasierten Simulation bei zwei Zuständen]{Prinzip der ergeignisbasierten Simulation bei zwei Zuständen, am Beispiel eines Events} 
 \label{2p_by_event}
 \end{figure}
 
@@ -429,9 +448,9 @@ Dafür kann vorab eine Hilfsmatrix berechnet werden, in der sich die Wahrscheinl
 \begin{equation}
 \text{Wechselmatrix } W = 
 \begin{pmatrix}
-0 &  p_{ma}/1-p_{mm} & p_{ml}/1-p_{mm} \\
-p_{am}/1- p_{aa} & 0 & p_{al}/1- p_{aa} \\
-p_{lm}/1-p_{ll} &  p_{la}/1-p_{ll} & 0 
+0 &  p_{ma}/(1-p_{mm}) & p_{ml}/(1-p_{mm}) \\
+p_{am}/(1- p_{aa}) & 0 & p_{al}/(1- p_{aa}) \\
+p_{lm}/(1-p_{ll}) &  p_{la}/(1-p_{ll}) & 0 
 \end{pmatrix}  
 \end{equation}
 
@@ -481,10 +500,10 @@ Zusätzlich werden Werte sehr nah bei $0$ ignoriert. Solche Werte werden aus der
 \caption{Berechnung der Wartezeit}
 \label{algo_paa}
 \begin{algorithmic}[1]
-\REQUIRE Startverteilungen $s$ und $m$, Maximalzeit $t_{max}$, Zielwert $\ell$, Parameter $T$, Startzeit $t=0$
+\REQUIRE Startverteilungen $s$ und $m$, Maximalzeit $t_{\text{max}}$, Zielwert $\ell$, Parameter $T$, Startzeit $t=0$
 \ENSURE Verteilung der Wartezeit
 %\STATE{index = 1}
-\WHILE{$t < t_{max}$}
+\WHILE{$t < t_{\text{max}}$}
 \STATE{Akutalisiere $s$ und $m$}
 \IF{length($m$) $> \ell$}
 \STATE{$r \leftarrow (s[\ell] +m[\ell])$}
@@ -504,6 +523,7 @@ Beispielsweise steht in $s_t[0]$ bezeichnet die Wahrscheinlichkeit, mit der sich
 Die Simulation beginnt mit $s_0 = [0]$ und $m_0 = [1]$. Alle Teilchen befinden sich zunächst im mobilen Zustand und am Beginn der Säule. Weitere Einträge würden nur aus Wahrscheinlichkeiten von $0$ bestehen und werden daher ausgelassen.
 
 \begin{figure}[H]
+\centering
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries}]
 \tikzstyle{feld}=[draw,minimum width=2cm,minimum height=1cm,font=\sffamily\scriptsize]
@@ -610,10 +630,10 @@ Die Simulation beginnt mit $s_0 = [0]$ und $m_0 = [1]$. Alle Teilchen befinden s
 \path [line width=1.4pt, line cap=rect, draw=green!40!yellow, bend right=40](sm2) edge (m'2) ;
 
 \end{tikzpicture}
-\caption{Berechnung der neuen Zustände des PAA im 2-Zustände Modell}
+\caption[Berechnung der neuen Zustände des PAA im 2-Zustände Modell]{Berechnung der neuen Zustände des PAA im 2-Zustände Modell, Entstehung der neuen Wahrscheinlichkeit für den stationären Zustand durch blaue Pfeile gekennzeichnet. Diese setzt sich zusammen aus stationär bleibenden (dunkelblau) und vorher mobilen (hellblau) Anteilen. Analog die Berechnung für mobile Wahrscheinlichkeiten, gekennzeichnet durch grüne Pfeile, unter Berücksichtigung der Ortsänderung}
+%Eintrag für jede neue Wahrscheinlichkeit des stationären Zustands }
 \label{paa2p_prinzip}
 \end{figure}
-
 In jedem Schritt werden die beiden Verteilungen aktualisiert. Diese Berechnung ist in Abbildung \ref{paa2p_prinzip} exemplarisch dargestellt. 
 
 Gegeben sind die alten Wahrscheinlichkeitsverteilungen $s_{t-1}$ und $m_{t-1}$.
@@ -624,7 +644,7 @@ Daher vergrößern sich die beiden Verteilungsvektoren um jeweils ein Feld pro S
 
 Eine Berechnung der Zustands-Werte Verteilung würde nur aus dieser schrittweisen Akualisierung entstehen. Um die Verteilung der Wartezeiten zu berechnen, wird nach jedem solchen Berechnungsschritt getestet, ob Anteile der Teilchenmasse bereits den Zielwert $\ell$ erreicht haben. Dies ist der Fall, wenn sich ein Eintrag an Position $\ell$ befindet, also kann einfach auf die Länge der Verteilungsvektoren getestet werden. Im positiven Fall würde der theoretische PAA in Zustand $\bullet$ übergehen. Hier wird die Wahrscheinlichkeit an Stelle $\ell$ ins Ergebnis geschrieben. Außerdem wird der nächste Übergang in den theoretischen Zustand $\circ$, aus dem kein Übergang wieder heraus führt, dadurch realisiert, dass die Werte an Position $\ell$ gelöscht werden.
 Im negativen Fall sind keine Anteile der Teilchenmasse angekommen und es wird entsprechend eine Wahrscheinlichkeit von $0$ ins Ergebnis geschrieben.
-Dadurch entsteht letztendlich eine Liste von Ankuftswahrscheinlichkeiten für jeden Zeitpunkt.
+Dadurch entsteht letztendlich eine Liste von Ankunftswahrscheinlichkeiten für jeden Zeitpunkt.
 
 Bei Erreichen der maximalen Wartezeit wird die Berechnung beendet. Ob die gesamte Wahrscheinlichkeitsmasse erreicht wurde kann anschließend berechnet werden, um herauszufinden, ob mit den getesteten Parametern ein Ergebnis innerhalb der vorgegebenen Wartezeit erzielt werden konnte. 
 
@@ -666,7 +686,7 @@ Nach jedem Schritt werden auch hier zu kleine Werte entfernt, wobei natürlich j
 \section{Berechnung der Peakdaten}
 Sowohl für die Simulation vieler Teilchen als auch bei der Verwendung eines PAA müssen nach der Simulation noch die Eigenschaften der Peaks berechnet werden. 
 
-Bei den Teilchensimulationen liegen die Peaks als Liste von Ankuftszeiten vor, beim PAA hingegen als Anteil der Gesamtwahrscheinlichkeit zu jedem Zeitpunkt. 
+Bei den Teilchensimulationen liegen die Peaks als Liste von Ankunftszeiten vor, beim PAA hingegen als Anteil der Gesamtwahrscheinlichkeit zu jedem Zeitpunkt. 
 
 Besonders bei den Teilchensimulationen ist es vorteilhaft, jeweils mehrere Zeitpunkte zusammen zu fassen, um die Peaks zu glätten. Durch die zufälligen Bewegungen der Teilchen kann es sonst vorkommen, dass die Peaks sehr verrauscht sind. Außerdem erfassen Detektoren im Experiment auch nur in gewissen Zeitintervallen die ankommenden Stoffe, sodass dadurch kein Nachteil der Simulation entsteht.
 Werden die Datenpunkte nicht zusammengefasst, kann es insbesondere bei der Bestimmung des Maximalwertes eines Peaks, zu deutlichen Verschiebungen kommen, wenn zu einem beliebigen Zeitpunkt zufällig mehr Teilchen den Säulendurchlauf beenden, als am Maximalpunkt des zusammengefassten Peaks.

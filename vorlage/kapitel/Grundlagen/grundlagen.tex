@@ -27,15 +27,21 @@ Beispielsweise kann die GC in einer Multikapillarsäule (MCC, engl. Multi Capill
 
 \subsection{Der chromatograpische Prozess}
 Die nachfolgende Beschreibung des chromatographischen Prozesses bezieht sich auf die Gaschromatographie in Kapillarsäulen. Die prinzipielle Auftrennung der Stoffe durch häufigen Wechsel zwischen den beiden Phasen, ist aber allen Arten der Chromatographie gemein.
-\todo{weitere Quelle zum ausführlichen Nachlesen}
-Ausführlich beschrieben wurde der chromatograpische Prozess beispielsweise von \cite {kolb2003}.
+Ausführlich beschrieben wurde der chromatograpische Prozess beispielsweise von \cite{kolb2003} oder \cite{kaltenboeck2008}.
 Die für diese Arbeit wesentlichen Punkte sind hier kurz zusammengefasst:
 
 Die Substanzen unterscheiden sich vor allem durch ihre Wechselwirkungen mit der stationären Phase. Während dieser Wechselwirkungen haften die Teilchen an der stationären Phase, bewegen sich also nicht fort. Finden verhältnismäßig wenig Wechselwirkungen statt, passieren die Teilchen die Säule schneller, als wenn viele Wechselwirkungen stattfinden. Dies beeinflusst die so genannte Retentionszeit, also die Zeit, die zum Durchlaufen der Säule gebraucht wird.
 
-Dabei existieren verschiedene Arten von Wechselwirkungen zwischen den Analytteilchen und der stationären Phase. Zum Einen die Adsorption, bei der die Teilchen mit der Oberfläche der stationären Phase in Kontakt kommen und sich dort anreichern. Die Adsorption findet dabei auf Grund von physikalischen Kräften wie der Van-Der-Waals-Kräften statt. Dadurch ist die Bindung der Stoffe an die stationäre Phase nicht sehr fest und die Teilchen können sich leicht wieder daraus lösen.
+Dabei existieren verschiedene Arten von Wechselwirkungen zwischen den Analytteilchen und der stationären Phase und anderen Einfüssen, die sich auf die Retentionszeit auswirken. Dies sind unter anderem:
+\begin{itemize}
+ \item Molekülgröße: Besonders bei der Chromatographie in gepackten Säulen spielt die Molekülgröße eine wichtige Rolle. Kleine Moleküle werden weniger stark zurück gehalten, als große.
+ \item Adsorption: Dabei kommen die Teilchen mit der Oberfläche der stationären Phase in Kontakt und reichern sich dort an. Die Adsorption findet dabei auf Grund von physikalischen Kräften wie der Van-Der-Waals-Kräften statt. Dadurch ist die Bindung der Stoffe an die stationäre Phase nicht sehr fest und die Teilchen können sich leicht wieder daraus lösen.
+ \item Löslichkeit: Die Analyte können sich auch in einer flüssigen stationären Phase lösen. Diese Art der Chromatographie wird auch Verteilungschromatographie genannt.
+ \item Ladung: Bei der Ionenaustauschchromatographie ist die stationäre Phase elektrisch geladen, sodass entgegengesetzt geladene Teilchen dort gebunden werden und dadurch länger für den Durchlauf der Trennstrecke brauchen.
+\end{itemize}
 
-Zum Anderen können sich die Analyte aber auch in der stationären Phase lösen. Gelöste Teilchen trennen sich schwerer als adsorbierte Teilchen von der stationären Phase. Die Stoffe verweilen dadurch durchschnittlich länger in der stationären Phase und ihre Durchschnittsgewschindigkeit sinkt.
+
+Bei der Gaschromatographie in Multikapillarsäulen haben sowohl die Adsorption- als auch die Verteilungschromatographie einen Einfluss auf den Ablauf des Prozesses. Dabei trennen sich gelöste Teilchen schwerer als adsorbierte Teilchen von der stationären Phase. Die Stoffe verweilen dadurch durchschnittlich länger in der stationären Phase und ihre Durchschnittsgewschindigkeit sinkt stärker.
 
 Auf die eine oder andere Weise diffundieren die Teilchen nun zwischen den beiden Phasen hin und her, wodurch sich ein Gleichgewicht zwischen den Phasen einstellt. Durch dieses Gleichgewicht wandern die Teilchen eines Stoffes als Pulk durch die Säule, bis sie diese verlassen. Für Teilchen vorne im Pulk besteht nur die Möglichkeit, in Wechselwirkung mit der stationären Phase zu treten, bis sich eine Sättigung einstellt. Später ankommmende Teilchen können nur dann in Wechselwirkung treten, wenn bereits wieder Teilchen mobil geworden sind, wodurch sich das Gleichgewicht aufrecht erhält. 
 Je nach Verweildauer der einzelnen Teilchen in der stationären Phase, ergibt sich eine für diesen Stoff charakteristische Durchschnittsgeschwindigkeit.%TODO, die den Zeitpunkt der höchsten Austrittsintensität bestimmt.
@@ -48,7 +54,6 @@ Zur Detektion existieren mehrere Möglichkeiten. Zum Einen kann ein Detektor wie
 %Beispielhaft ist ein Chromatogramm in Abbildung \ref{chromatogramm} zu sehen. 
 In Abbildung \ref{chromatogramm} ist ein Beispiel für ein Chromatogramm zu sehen, welches aus mehreren simulierten Daten und Hintergrundrauschen erstellt wurde.
 Typischerweise sind zu Beginn einer Messung die Peaks sehr schmal und werden mit zunehmender Retentionszeit eher breiter.
-\todo{neues chroma mit breiter werdenden peaks}
 %\todo{Bild Chromatogramm (zb ein verrauschter plot 2-3 stoffe, dabei unterschiedlichen pd)}
 
 \begin{figure}
@@ -172,8 +177,10 @@ Ein PAA ist zu jedem Zeitpunkt mit einer bestimmten Wahrscheinlichkeit in jedem 
 
 Neben der eben vorgestellten schrittweisen Berechnung der Zustand-Werte Verteilung kann es von Interesse sein, die Verteilung der Wartezeit auf einen bestimmten Wert $v^*$ zu kennen. Für die Teilchen in der MCC entspricht dieser Zielwert der Länge der Säule und man ist interessiert in der Verteilung der Anzahl der Schritte die zum Durchlaufen dieser Strecke benötigt werden. 
 
-Da es sein kann, dass in einigen Abfolgen von Zuständen, der Wert $v^*$ erst sehr spät oder gar nicht erreicht werden kann, wird eine maximale Wartezeit $t_{max}$ gesetzt. Zwar können dann Wartezeiten für $v^*$ größer als $t_{max}$ auftreten, deren genaue Verteilung unbekannt ist, Gesamtwahrscheinlichkeit dieser Zeitpunkte kann jedoch berechnet werden.
-% TODO Wohin damit? Es kann sein, dass Wartezeiten für $v^*$ größer als $t_{max}$ auftreten. Dann ist die Verteilung der Wahrscheinlichkeiten für diese Zeitpunkte zwar unbekannt, aber die Gesamtwahrscheinlichkeit für solche Wartezeiten kann berechnet werden.% (teilchen bleiben ewig stecken) aber uns interessiert nur bis zeitpunkt y. (y=240s). Dann kennt man die verteilung darüber hinaus nicht, aber die gesamtwkeit dafür schon.
+Da es sein kann, dass in einigen Abfolgen von Zuständen, der Wert $v^*$ erst sehr spät oder gar nicht erreicht werden kann, wird eine maximale Wartezeit $t_{\text{max}}$ gesetzt. Zwar können dann Wartezeiten für $v^*$ größer als $t_{\text{max}}$ auftreten, deren genaue Verteilung unbekannt ist, Gesamtwahrscheinlichkeit dieser Zeitpunkte kann jedoch berechnet werden.
+% TODO Wohin damit? Es kann sein, dass Wartezeiten für $v^*$ größer als $t_{\text{max}}$ auftreten. Dann ist die Verteilung der Wahrscheinlichkeiten für diese Zeitpunkte zwar unbekannt, aber die Gesamtwahrscheinlichkeit für solche Wartezeiten kann berechnet werden.% (teilchen bleiben ewig stecken) aber uns interessiert nur bis zeitpunkt y. (y=240s). Dann kennt man die verteilung darüber hinaus nicht, aber die gesamtwkeit dafür schon.
+
+brauche für groß W muss auch groß V rein (paper) da V Zufallsvariable, die verteilung haben kann
 
 Außerdem können innerhalb eines Prozesses mehrere Zeitpunkte existieren, an denen der Wert $v^*$ angenommen werden kann, gesucht ist der kleineste dieser Zeitpunkte. %(bspw, wenn Teilchen grad stecken geblieben ist, rein theoretisch) 
 Daher kann die Wartezeit auch als Zufallsvariable aufgefasst werden, die definiert als: $W_{v^*} = \min\{t \in \mathbb{N}\mid v_t = v^*\}$.
@@ -181,8 +188,8 @@ Daher kann die Wartezeit auch als Zufallsvariable aufgefasst werden, die definie
 %Gesucht ist der minimale Zeitpunkt $t$, an dem $v_t$ den Wert $v^*$ angenommen hat. 
 %Die Wartezeit ist eine Zufallsvariable, definiert als: $W_{v^*} = \min\{t \in \mathbb{N}\mid v_t = v^*\}$
 
-Wie oben beschrieben, existiert die Möglichkeit, die Zustands-Werte Verteilung schrittweise für alle Zeitpunkte bis zu einem gewünschten Maximalzeitpunkt $t_{max}$ zu berechnen.
-Gesucht ist nun die Verteilung über die Zeitpunkte $t < t_{max}$ für einen Zielwert $v^*$. $P(v_{t} = v^*)$ ist die Wahrscheinlichkeit für jeden solchen Zeitpunkt $t$, $v^*$  zu erreichen. Dies entspricht der Summe über alle Zuständen, die zu Zeitpunkt $t$ den Wert $v^*$ erreichen können. Also ist $P(v_t = v^*)  = \sum_{q \in \mathcal{Q}} P(q_{t} = q, v_{t} = v^*)$
+Wie oben beschrieben, existiert die Möglichkeit, die Zustands-Werte Verteilung schrittweise für alle Zeitpunkte bis zu einem gewünschten Maximalzeitpunkt $t_{\text{max}}$ zu berechnen.
+Gesucht ist nun die Verteilung über die Zeitpunkte $t < t_{\text{max}}$ für einen Zielwert $v^*$. $P(v_{t} = v^*)$ ist die Wahrscheinlichkeit für jeden solchen Zeitpunkt $t$, $v^*$  zu erreichen. Dies entspricht der Summe über alle Zuständen, die zu Zeitpunkt $t$ den Wert $v^*$ erreichen können. Also ist $P(v_t = v^*)  = \sum_{q \in \mathcal{Q}} P(q_{t} = q, v_{t} = v^*)$
 
 
 Zur Berechnung der Verteilung der Wartezeit auf $v^*$ wird ein modifizierter PAA konstruiert. Hierbei werden zwei neue Zustände eingeführt, $\bullet$ und $\circ$, sodass der neue PAA die Zustände $\mathcal{V}' = \mathcal{V} \cup \{\bullet, \circ\}$ hat. Außerdem werden die Operationen angepasst auf
@@ -194,11 +201,11 @@ $ \theta'_q(v,e)=
 \circ, 		& \text{wenn } v \in \{\bullet, \circ\}
 \end{cases}$.
 
-Der Wert $\bullet$ wird also genau dann erreicht, wenn im aktuellen Berechnungsschritt die ursprüngliche Operation den Zielwert $v^*$ erreicht. Also gilt für alle Zeiten $t < t_{max}$: $P(W_{v^*} = t) = P(v'_t = \bullet)$.
+Der Wert $\bullet$ wird also genau dann erreicht, wenn im aktuellen Berechnungsschritt die ursprüngliche Operation den Zielwert $v^*$ erreicht. Also gilt für alle Zeiten $t < t_{\text{max}}$: $P(W_{v^*} = t) = P(v'_t = \bullet)$.
 
-Die Verteilung für $P(v'_{t} = \bullet)$ kann wie oben angegeben schrittweise für alle Zeitpunkte $t$ ausgehend von der Startverteilung bis zu $t_{max}$ berechnet werden. Dadurch, dass im jeweils nächsten Berechnungsschritt der PAA in Zustand $\circ$ gelangt, wird jeweils nur das erste Erreichen von $v^*$ berücksichtigt.
+Die Verteilung für $P(v'_{t} = \bullet)$ kann wie oben angegeben schrittweise für alle Zeitpunkte $t$ ausgehend von der Startverteilung bis zu $t_{\text{max}}$ berechnet werden. Dadurch, dass im jeweils nächsten Berechnungsschritt der PAA in Zustand $\circ$ gelangt, wird jeweils nur das erste Erreichen von $v^*$ berücksichtigt.
 
-Durch Berechnung der Wahrsscheinlichkeiten $P(v'_{t} = \bullet)$ für alle $t < t_{max}$ erhält man die Verteilung der Wartezeiten auf $v^*$.
+Durch Berechnung der Wahrsscheinlichkeiten $P(v'_{t} = \bullet)$ für alle $t < t_{\text{max}}$ erhält man die Verteilung der Wartezeiten auf $v^*$.
 
 %Offensichtlich entspricht die Wartezeit auf den Wert $v^*$ der Wahrscheinlichkeit von Wert $\bullet$
 %Es kann also für alle Zeitpunkte $t$ die Wahrscheinlichkeit für den neuen Wert $\bullet$ berechnet werden.

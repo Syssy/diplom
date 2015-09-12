@@ -20,15 +20,15 @@ Die gemachten Vorgaben sind in Tabelle \ref{einheiten} zusammengefasst.
 
 \begin{table}[H]
 \centering
-\caption{Entsprechung der Einheiten}
+\caption[Entsprechung der Einheiten]{Festsetzung der Entsprechung der Einheiten zwischen realem Experiment und Simulation}
 \label{einheiten}
 \begin{tabular}{|l||l|l|}
 \hline
 			  & MCC                 			& Simulation              \\ \hline \hline
 Länge der Säule           & $20$ cm               		& $1000$ Raumschritte       \\ \hline
-			  & \multicolumn{2}{l|}{1 Zeitschritt $\equiv 0,2$ mm} \\ \hline
+			  & \multicolumn{2}{l|}{1 Raumschritt $\equiv 0,2$ mm} \\ \hline
 Durchlaufzeit Trägergas   & $0,1$ s $\equiv$ $2$ m/s       	& $1000$ Zeitschritte       \\ \hline
-			  & \multicolumn{2}{l|}{1 Raumschritt $\equiv 0,1$ ms} \\ \hline
+			  & \multicolumn{2}{l|}{1 Zeitschritt $\equiv 0,1$ ms} \\ \hline
 Geschwindigkeit Trägergas & $2$ m/s 				& 1 Raumschritt / Zeitschritt \\ \hline
 \end{tabular}
 \end{table}
@@ -265,8 +265,12 @@ p_{\text{lm}} &  p_{\text{la}} & p_{\text{ll}}
   
 In Modell 3a sind die Wahrscheinlichkeiten für $p_{\text{al}}$ und $p_{\text{la}}$ immer $0$ und in 3b gilt dies entsprechend für $p_{\text{ml}}$ und $p_{\text{lm}}$.
 
-\subsection{PAA}
+In den späteren Abschnitten der Arbeit ist mit dem 3-Zustände Modell oft das Modell 3a gemeint, da sich in ersten Auswertungen der beiden Modelle ergeben hat, dass sich damit tailende Peaks erzeugen lassen, für das Modell 3b wurden bei diesen oberflächlichen Untersuchungen keine solche Peaks gefunden. Die später vorgestellten Methoden und deren Implementierungen können aber alle Varianten des 3-Zustände Modells simulieren.
 
+Die Parameter, die für das Modell 3a betrachtet werden, sind pmm, pml, paa und pll, die übrigen drei Parameter lassen sich aus diesen berechnen.
+
+
+\subsection{PAA}
 Analog zum PAA für nur zwei Zustände kann für drei Zustände ein PAA definiert werden. Aus Gründen der Übersicht wird hier nur das Gesamtmodell mit drei Zuständen und allen dazwischen möglichen Übergängen berücksichtigt. Für die Modelle 3a und 3b müssen auch für den PAA nur die entsprechenden Wahrscheinlichkeiten angepasst werden.
 
 \begin{figure}

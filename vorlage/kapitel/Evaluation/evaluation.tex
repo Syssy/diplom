@@ -21,7 +21,7 @@ Einige Kombinationen würden zwar Peaks erzeugen, diese lägen jedoch teilweise 
 \begin{figure}[H]
 \includegraphics[width=0.49\textwidth]{bilder/outof240}
 \includegraphics[width=0.49\textwidth]{bilder/huegel}
-\caption[Nicht berücksichtigte Verteilungen]{Nicht berücksichtigte Verteilungen, links teilweise außerhalb des Chromatogramms, rechts zu breit}
+\caption[Nicht berücksichtigte Verteilungen]{Nicht berücksichtigte Verteilungen, links teilweise außerhalb des Chromatogramms, daher Breite und Schiefe nicht berechnenbar, rechts zu breit}
 \label{kein_peak}
 \end{figure}
 
@@ -62,12 +62,15 @@ Es wird an zwei einzelnen Peaks gezeigt, wie sich die Veränderung von jeweils e
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[width=0.49\textwidth]{bilder/2s_t20}
+\includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t20}
 \end{center}
-\includegraphics[width=0.49\textwidth]{bilder/2s_t20_pmp}
-\includegraphics[width=0.49\textwidth]{bilder/2s_t20_pmm}
-\includegraphics[width=0.49\textwidth]{bilder/2s_t20_psp}
-\includegraphics[width=0.49\textwidth]{bilder/2s_t20_psm}
+\includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t20_pmp}
+\includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t20_pmm}
+
+\vspace*{5pt}
+
+\includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t20_psp}
+\includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t20_psm}
 \caption[Einfluss von pm und ps auf einen Peak]{Einfluss von pm und ps auf einen Peak, oben der Ausgangspeak mit $pm = 0,8$ und $ps = 0,9991$, veränderte Parameter: in der Mitte links $pm = 0,9$, rechts $pm = 0,7$, unten links $ps = 0,999$, rechts $ps = 0,9992$ }
 \label{2s_t20_change}
 \end{figure}
@@ -75,12 +78,15 @@ Es wird an zwei einzelnen Peaks gezeigt, wie sich die Veränderung von jeweils e
 In Abbildung \ref{2s_t20_change} ist ein Peak zu sehen, der mit den Parametern $pm = 0,8$ und $ps = 0,9991$ simuliert wurde. Sein Maximalwert liegt bei etwa $t = 22$ s und er hat eine Breite von etwa $2,8$. Abbildung \ref{2s_t100_change} zeigt einen Peak, dessen Maximalwert bei $t=100$ s liegt und der einen Interquartilsabstand von $7,4$ hat. Er wurde mit den Parametern $pm = 0,5$ und $ps = 0,9995$ simuliert.
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=0.49\textwidth]{bilder/2s_t100}
+\includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t100}
 \end{center}
-\includegraphics[width=0.49\textwidth]{bilder/2s_t100_pmp}
-\includegraphics[width=0.49\textwidth]{bilder/2s_t100_pmm}
-\includegraphics[width=0.49\textwidth]{bilder/2s_t100_psp}
-\includegraphics[width=0.49\textwidth]{bilder/2s_t100_psm}
+\includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t100_pmp}
+\includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t100_pmm}
+
+\vspace*{5pt}
+
+\includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t100_psp}
+\includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t100_psm}
 \caption[Einfluss von pm und ps auf einen Peak]{Einfluss von pm und ps auf einen Peak, oben der Ausgangspeak mit $pm = 0,5$ und $ps = 0,9995$, veränderte Parameter: in der Mitte links $pm = 0,6$, rechts $pm = 0,4$, unten links $ps = 0,9993$, rechts $ps = 0,9997$ }
 \label{2s_t100_change}
 \end{figure}
@@ -96,13 +102,15 @@ Abbildung \ref{heatmap_lage_breite} zeigt eine Übersicht darüber, welche Peaks
 \label{heatmap_lage_breite}
 \end{figure}
 
-Offensichtlich kann eine bestimmte Retetionszeit durch verschiedene Kombinationen erreicht werden, die sich dann jeweils in der Breite des Peaks unterscheiden. Dies wird in Abbildung \ref{params_at_time} noch einmal deutlich. Abgebildet sind verschiedene Kombinationen aus ps und pm, mit denen ein Peak etwa zum Zeitpunkt $t=100$ erreicht werden kann. In diesem Fall liegen alle Zeitpunkte der Peaks im Intervall $[95, 105]$
+Offensichtlich kann eine bestimmte Retetionszeit durch verschiedene Kombinationen erreicht werden, die sich dann jeweils in der Breite des Peaks unterscheiden. Dies wird in Abbildung \ref{params_at_time} noch einmal deutlich. Abgebildet sind verschiedene Kombinationen aus ps und pm, mit denen ein Peak etwa zum Zeitpunkt $t=100$ erreicht werden kann. In diesem Fall liegen alle Zeitpunkte der Peaks im Intervall $[72, 78]$. Für den Parameter $ps = 0,9996$ gibt es offenbar zwei Möglichkeiten, pm zu wählen, um einen Peak in der Nähe von $t = 75$ zu erzeugen. Eine weitere Simulation mit dem Parameter $ps = 0,9996$ und einem Wert für pm, der zwischen diesen Möglichkeiten liegt, beispielsweise $pm = 0,73$ würde einen Peak näher an der gewünschten Retentionszeit liefern. Die Breite des neuen Peaks liegt dann auch zwischen den Breiten der beiden vorhandenen Peaks.
+
+Auf diese Weise ist es möglich, Peaks mit gewünschter Retentionszeit und Breite schrittweise anzunähern. 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.6\textwidth]{bilder/paramsfuert100}
+\includegraphics[width=0.6\textwidth]{bilder/paramsfuert75}
 %\includegraphics[width=0.49\textwidth]{bilder/erreichbare_Breiten_2s}
-\caption{Mögliche Parameterkombination für Retentionszeit $t \approx 100$}
+\caption{Mögliche Parameterkombination für Retentionszeit $t \approx 75$}
 \label{params_at_time}
 \end{figure}
 
@@ -306,7 +314,7 @@ Wie in Abbildung \ref{einfluss_pmm_1} zu sehen, ist der Einfluss von $p_{mm}$ au
 
 Der Einfluss von $p_{mm}$ auf die Breite ebenfalls von $p_{aa}$ abhängig. Bei größerem $p_{aa}$ steigt dieser Einfluss etwas, wie ebenfalls in Abbildung \ref{einfluss_pmm_1} zu erkennen ist.
 
-\todo{Noch mal den kleinen Bereich untersuchen, wo die Schiefe negativ beeinflusst wird. Das ist ein Bereich, in dem die Peaks zwar eher früh, aber dafür fast zu breit sind. Vielleicht hängt das damit zusammen? siehe: $p_{mm}$0.001 0.998 0.99999}
+%\todo{Noch mal den kleinen Bereich untersuchen, wo die Schiefe negativ beeinflusst wird. Das ist ein Bereich, in dem die Peaks zwar eher früh, aber dafür fast zu breit sind. Vielleicht hängt das damit zusammen? siehe: $p_{mm}$0.001 0.998 0.99999}
 
 Außer in einem sehr kleinen Parameterbereich, steigt die Schiefe mit steigendem $p_{mm}$. Dieser Einfluss hängt noch von $p_{aa}$ ab, bei kleinem $p_{aa}$ hat $p_{mm}$ einen größeren Einfluss auf die Schiefe.
 
@@ -554,9 +562,8 @@ Mit dem 2-Zustände Modell war es nur eingeschränkt möglich, Tailing zu erzeug
 Das andere Problem jedoch, dass Peaks zu jedem Zeitpunkt eine Minimalbreite haben, konnte dadurch jedoch nicht gelöst werden. Die Peaks können durch Hinzunahme eines weiteren stationären Zustandes höchstens breiter werden. 
 
 \section{Laufzeiten}
-\todo{Wohin mit Laufzeiten? Hier und Implementierung!}
 
 Zur Evaluation der Laufzeiten der verschiedenen Ansätze wurden sowohl für das 2-Zustände Modell als auch für das 3-Zustände Modell ein Satz Parameterkombinationen getestet. Die aus diesen Kombinationen resultierenden Peaks sollten möglichst diverse Eigenschaften aufweisen, also sowohl frühe, als auch späte Peaks, breite, schmale, symmetrische und tailende Peaks enthalten, sowie solche Kombinationen, die nicht innerhalb der Maximalzeit von $240$ Sekunden einen vollständigen Peak bilden.
-Für die Teilchensimulationen wurden darüber hinaus die Laufzeiten für $1000$ und $10000$ verglichen.
+Für die Teilchensimulationen wurden darüber hinaus die Laufzeiten für $1000$ und $10.000$ verglichen.
 
  
