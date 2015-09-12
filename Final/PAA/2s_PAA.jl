@@ -7,21 +7,22 @@ function updateDistributions!(ps::Float32, pm::Float32, stationaryVector, mobile
        index: zur spaeteren Verschiebung des Arrays
        return: Neue stationaryVector, mobileVector, index
     =#
-    # rs/m1/2 sind hilfsarrays, aus denen die neuen stationaryVector und mobileVector berechnet werden
-    rs1 = stationaryVector * ps
-    rs2 = mobileVector * (1.0f0-pm)
+    # ss,ms,sm,mm sind hilfsarrays, aus denen die neuen stationaryVector und mobileVector berechnet werden
+    ss = stationaryVector * ps
+    ms = mobileVector * (1.0f0-pm)
     # unshift! fuegt am Anfang ein
-    unshift!(rs2, 0.0f0)
+    unshift!(ms, 0.0f0)
     # push! fuegt am Ende ein
-    push!(rs1, 0.0f0)
+    push!(ss, 0.0f0)
         
-    rm1 = stationaryVector * (1.0f0-ps)
-    rm2 = mobileVector * pm
-    unshift!(rm2, 0.0f0)
-    push!(rm1, 0.0f0)
-        
-    stationaryVector = rs1 + rs2
-    mobileVector = rm1 + rm2
+    sm = stationaryVector * (1.0f0-ps)
+    mm = mobileVector * pm
+    unshift!(mm, 0.0f0)
+    push!(sm, 0.0f0)
+       
+    stationaryVector = ss + ms
+    mobileVector = sm + mm
+    #println (length(stationaryVector))
     #zu kleine Werte am Anfang rausschmeissen, damit das array nicht zu gross wird
     # Dann auch passend den Index verschieben
     if (stationaryVector[1] < 1.0f-17)  & (mobileVector[1] < 1.0f-17)
@@ -53,11 +54,12 @@ function waitingTimeForValue(ps::Float32, pm::Float32, value, maxTime)
     index = 1  
     # Hauptschleife: Betrachte jeden Zeitpunkt bis maxTime
     for i = 1:maxTime
+        #println (i)
         # Vorzeitiger Abbruch möglich?
         if !(value>index)
             # break, sonst Fehler (Bounds Exception) beim push ins result, da Laenge der mobileVector zu kurz ist
             # Ausserdem ist halt das Ziel erreicht
-            println ("break, fertig")
+            print ("break, fertig ")
             break
         end
         # Einen Schritt simulieren: Verteilungen aktualisieren
@@ -65,15 +67,15 @@ function waitingTimeForValue(ps::Float32, pm::Float32, value, maxTime)
         # Wenn Bedingung erfüllt, hat Teil der Masse die Ziellänge erreicht
         if (length(mobileVector) > value-index)
             # Angekommene Wahrscheinlichkeiten ins Ergebnis
-            push!(result, (stationaryVector[value-index+1]+mobileVector[value-index+1]))
-            mobileVector[value-index+1] = 0
-            stationaryVector[value-index+1] = 0
+            push!(result, (pop!(stationaryVector) + pop!(mobileVector)))
+            #println (i, length(mobileVector), value, index)
         else
             # Sonst keine Teilchen angekommen, 0 ins Ergebnis
             push!(result, 0.0f0)
         end
     end
-    #println(result)
+#    println(result)
+    #sleep(5)
     return result
 end
 
@@ -99,6 +101,18 @@ function combineParams(setsize)
         pms = append! (pms, [0.001f0, 0.01f0, 0.99f0, 0.999f0])
     end
     
+    if setsize == "laufzeit"
+        pss = [0.997f0, 0.999f0, 0.9993f0, 0.9996f0]
+        #pss = [0.9996f0]
+        pms = [0.001f0, 0.3f0, 0.6f0, 0.95f0]
+        #pms = [0.1f0]
+    end
+    
+    if setsize == "elly"
+        pss = [0.99998f0]
+        pms = [0.98f0]
+    end
+    
     # erstelle Liste aller moeglichen Kombinationen
     param_list = Array(Any, 0)
     for ps in pss
@@ -111,26 +125,29 @@ function combineParams(setsize)
 end
 
 # main:
-function main()
-    # Simulationseinstellungen
-    column_length = 1000
-    maxtime = 2400000
-    param_list = combineParams("large")
-    # Simuliere alle Parameterkombinationen
-    for (ps, pm) in param_list
-        filename = "savedata_julia/2s/l$column_length/Sim_$ps" * "_$pm"
-        #nur simulieren, wenn nicht schon vorhanden
-        if !isfile(filename) 
-            print("ps:", ps, " pm: ", pm, " ")
-            # Simulieren
-            res = waitingTimeForValue(ps, pm, column_length+1, maxtime)
-            #Summe zur Kontrolle
-            println("Sum ", sum(res))
-            #Speichern
-            writecsv(filename, res)
+# Simulationseinstellungen
+column_length = 1000
+maxtime = 2400000
+param_list = combineParams("elly")
+# Simuliere alle Parameterkombinationen
+for (ps, pm) in param_list
+    filename = "savedata_julia/2s/l$column_length/Sim_$ps" * "_$pm"
+    #nur simulieren, wenn nicht schon vorhanden
+#    if !isfile(filename) 
+        println("ps:", ps, " pm: ", pm, " ")
+        # Simulieren
+        res = []
+        for i in 1:5
+            res = @time(waitingTimeForValue(ps, pm, column_length+1, maxtime))
+            #sleep(5)
         end
-    end   
-end
+        #Summe zur Kontrolle
+        println("Sum ", sum(res))
+        #Speichern
+        writecsv(filename, res)
+#    end
+end   
 
-main()
-println("fertig")
+println("Fertig, zum Anschauen der Ergebnisse bitte \n python3 process_simulations.py -l", column_length, " -o -m 2s aufrufen und anschließend mit \n python3 plottigs_PAA.py die gewünschten Plots erzeugen")
+
+

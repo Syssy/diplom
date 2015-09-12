@@ -25,7 +25,7 @@ public class myPAA_3s extends PAA implements DeterministicEmitter{
                 // alle Parameterkombinationen simulieren
                 for (int i = 0; i < parameterliste.length; i++){
                     params = parameterliste[i];
-                    String csvfile = "savedata_java/l" + LENGTH + "/3_states/Sim_" + params[0] + "_"+ params[1] + "_"+ params[2] + "_"+ params[3] + "_"+ params[4] + "_"+ params[5] + "_" + params[6] + "_" + params[7] + "_" + params[8];
+                    String csvfile = "savedata_java/3a/l" + LENGTH + "/Sim_" + params[0] + "_"+ params[1] + "_"+ params[2] + "_"+ params[3] + "_"+ params[4] + "_"+ params[5] + "_" + params[6] + "_" + params[7] + "_" + params[8];
                     System.out.println(csvfile);
                     PAA aPAA = new myPAA_3s();
                     for (int j = 0; j < 5; j++){

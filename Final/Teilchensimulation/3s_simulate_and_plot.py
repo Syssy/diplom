@@ -26,6 +26,12 @@ def combine_params(args, model, nr_of_choice=5, params=(0.999, 0,5)):
     logging.log(20, "args" + args + "nr_of_choice" + str(nr_of_choice))
     p_combinations = []
     
+    if args == "elly":
+        p_combinations.append([0.5, 0.002, 0.997, 0.9999])
+        p_combinations.append([0.5, 0.0001, 0.9991, 0.99999])
+        p_combinations.append([0.1, 0.001, 0.9992, 0.99999])
+        return p_combinations
+    
     if args == "single" and model == "3s":
         p_combinations = [([params[0], params[1], params[2]], [params[3], params[4], params[5]], [params[6], params[7], params[8]])]
         return (p_combinations)
@@ -88,10 +94,11 @@ def combine_params(args, model, nr_of_choice=5, params=(0.999, 0,5)):
     if args == "random":
         while len(p_combinations) < nr_of_choice:
             pmm = np.random.random()
-            pml = random.uniform(0.00005, 0.005)
-            pml = random.uniform(0.997, 0.9999)
-            pml = random.uniform(0.9999, 0.999999)
+            pml = np.random.uniform(0.00005, 0.005)
+            paa = np.random.uniform(0.997, 0.9999)
+            pll = np.random.uniform(0.9999, 0.999999)
             p_combinations.append((round(pmm, 10), round(pml, 10), round(paa, 10), round(pll, 10)))
+        logging.log(25, "zufaellige Kombinationen: %s ", p_combinations)    
             
     logging.log(20, "p_combinations %s, anzahl: %s", p_combinations, len(p_combinations))    
     return (sorted(list(set(p_combinations))))
@@ -156,7 +163,7 @@ def start_simulations(length, number, model, approach, p_combinations):
             if store:    
                 try:
                     #filename ='simulated_data/l' + str(length) + "/n" + str(number) + '/Sim_' + str(round(ps,10)) + '_' + str(round(pm,10)) + ".p" 
-                    logging.log(25, "Speichern, %s, %s", time.strftime("%d%b%Y_%H:%M:%S"), mySim)
+                    logging.log(20, "Speichern, %s, %s", time.strftime("%d%b%Y_%H:%M:%S"), mySim)
                     with open(filename, 'wb') as data:
                         pickle.dump(mySim, data)
                 # Ornder existieren nicht, daher neu anlegen        
@@ -176,7 +183,7 @@ def get_argument_parser():
     '''Kommandozeilenparameter'''
     p = argparse.ArgumentParser(
         description = "Ruft Simulation und Plotfunktionen auf") 
-    p.add_argument("--choicenumber", "-cn", type = int, default = "5",
+    p.add_argument("--choicenumber", "--cn", type = int, default = "5",
                    help = "bei zufaelliger Parameterwahl: Wie viele Kombinationen sollen gewaehlt werden")
     p.add_argument("--pcombioption", "-p",  
                    help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: small_set, medium_set, large_set, random")
@@ -190,14 +197,14 @@ def get_argument_parser():
                    help = "Anzahl zu simulierender Teilchen")
     p.add_argument("--approach", "-a", default = "E", 
                    help = "Art der Simulation; E = by-event, S = step-by-step")
-    p.add_argument("--plot_peak", "-pp", nargs = '+', type = float,
+    p.add_argument("--plot_peak", "--pp", nargs = '+', type = float,
                    help = "Einzelne Parameterkombi eingeben, deren Peak dann geplottet wird" )
-    p.add_argument("--plot_spectrum", "-ps", action = "store_true",
-                   help = "Auswahl ob Spektrum geplottet werden soll fuer Rauschen zusaetzlich -an")
-    p.add_argument("--addnoise", "-an", action= "store_true",
+    p.add_argument("--plot_chromatogram", "-c", action = "store_true",
+                   help = "Auswahl ob Chromatogramm geplottet werden soll fuer Rauschen zusaetzlich --an")
+    p.add_argument("--addnoise", "--an", action= "store_true",
                    help = "Rauschen hinzufuegen")
-    p.add_argument("--show_params", "-sp", action = "store_true",
-                   help = "Wenn gewählt, werden im Plot Parameter angezeigt, Option verfuegbar fuer -ppt, -pr")
+    p.add_argument("--show_params", "-s", action = "store_true",
+                   help = "Wenn gewählt, werden im Plot Parameter angezeigt, Option verfuegbar fuer -z")
     return p
 
 def main():
@@ -227,7 +234,7 @@ def main():
     if args.plot_peak:
         args.pcombioption = "single"
     #liste aller zu simulierenden kombis erstellen
-    if (args.pcombioption or args.plot_spectrum or args.plot_trait):
+    if (args.pcombioption or args.plot_chromatogram):
         p_combinations = combine_params(args.pcombioption, args.model, args.choicenumber, args.plot_peak)
         if args.reverse:
             p_combinations.reverse()
@@ -235,8 +242,10 @@ def main():
         simlist = start_simulations(args.length, args.number, args.model, args.approach, p_combinations)
         if args.plot_peak:
             plottings.plot_single_peak(simlist[0])
-        if args.plot_spectrum:
+        if args.plot_chromatogram:
             plottings.plot_spectrum(simlist, noise=args.addnoise)
+            for s in simlist:
+                print (s, " ", s.pd)
     
     # Ende :)
     print ("Zeit " + str(time.clock()-starttime))

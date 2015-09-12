@@ -71,7 +71,7 @@ function updateDistributions!(params::Array{Float32,2}, distributions, index, nu
         end
     end
     # Zu kleine Werte wegwerfen, um Groesse der Arrays zu beschraenken
-    new_dist, index = cut_Distributions(new_dist, index)
+    #new_dist, index = cut_Distributions(new_dist, index)
     return new_dist, index        
 end
 
@@ -87,7 +87,7 @@ function waitingTimeForValue(params::Array{Float32, 2}, value, maxTime, num_stat
     for i = 1:maxTime
         # Ziel vorzeitig erreicht
         if  !(value > index)
-            println ("break, fertig nach $i Schritten")
+            print ("break, fertig nach $i Schritten ")
             break
         end 
         # Ein Berechungsschritt
@@ -140,6 +140,13 @@ function combineParams(setsize)
         plls = [0.999925f0, 0.99995f0, 0.999975f0, 0.99999f0, 0.999993f0, 0.999995f0, 0.999999f0]
     end
     
+    if setsize == "laufzeit"
+       pmms = [0.01f0, 0.9f0]
+       pmls = [0.00005f0, 0.003f0]
+       paas = [0.997f0, 0.9996f0]
+       plls = [0.99995f0, 0.999995f0]    
+    end
+    
     println (pmms)
     println (pmls)
     println (paas)
@@ -173,32 +180,37 @@ end
     
     
 # main
-function main()
-    # Rahmenparameter einstellen
-    column_length = 1000
-    maxtime = 2400000
-    # Parameterkombination wählen
-    param_list = combineParams("medium")
-    reverse!(param_list)
-    # Simulationen starten, vorher testen, ob diese schon exisitert, dazu den passenden filename aufbauen
-    for params in param_list
-        filename = "savedata_julia/3a/l$column_length/Sim"
-        for i in 1:3
-            for j in 1:3
-                filename = filename * "_" * string(params[i, j])
-            end
+# Rahmenparameter einstellen
+column_length = 1000
+maxtime = 2400000
+# Parameterkombination wählen
+param_list = combineParams("laufzeit")
+#reverse!(param_list)
+# Simulationen starten, vorher testen, ob diese schon exisitert, dazu den passenden filename aufbauen
+for params in param_list
+    filename = "savedata_julia/3a/l$column_length/Sim"
+    for i in 1:3
+        for j in 1:3
+            filename = filename * "_" * string(params[i, j])
         end
-    # nur simulieren, falls nicht vorhanden
-    if !isfile(filename)
-            println (strftime(time()), " starte: ")
-            println (params, " ")
-            # Starte Simulation fuer params
-            res = waitingTimeForValue(params, column_length, maxtime)
-            # abspeichern
-            writecsv(filename, res)
+    end
+# nur simulieren, falls nicht vorhanden
+#if !isfile(filename)
+        println (strftime(time()), " starte: ")
+        println (params, " ")
+        # Starte Simulation fuer params
+        res = []
+        for i in 1:1
+            res = @time(waitingTimeForValue(params, column_length, maxtime))
         end
-    end  
-end
+        # summe zur kontrolle
+        println("summe ", sum(res))
+        # abspeichern
+        writecsv(filename, res)
+    end
+#end  
 
-main()
-println("fertig")
+println("Fertig, zum Anzeigen der Ergebnisse bitte \n python3 process_simulations.py -l", column_length, " -m 3a -o  aufrufen und evtl. anschließend mit \n python3 plottigs_PAA.py und die gewünschten Plots erzeugen")
+
+
+

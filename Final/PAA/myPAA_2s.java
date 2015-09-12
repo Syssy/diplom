@@ -26,7 +26,7 @@ public class myPAA_2s extends PAA implements DeterministicEmitter{
                 // alle gewaehlten Kombis simulieren
                 for (int i = 0; i < param_list.length; i++){
                     params = param_list[i];
-                    String csvfile = "savedata_java/l" + LENGTH + "/2s/Sim_" + params[0] + "_"+ params[1];
+                    String csvfile = "savedata_java/2s/l" + LENGTH + "/Sim_" + params[0] + "_"+ params[1];
                     System.out.println(csvfile);
                     PAA aPAA = new myPAA_2s();
                     // Zeiten nur aus Interesse

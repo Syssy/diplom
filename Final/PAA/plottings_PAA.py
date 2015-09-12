@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 from process_simulations import PAA
        
-def erzeuge_Tabelle(directory, csv_name, time_range = [0,240], iqr_range = [0,150], qk_range = [0,1]):
+def erzeuge_Tabelle(directory, csv_name, time_range=[0,240], iqr_range=[0,150], qk_range=[0,1]):
     '''Tabelle anlegen mit allen Peaks (Sim-Parameter) die die gegebenen Vorgaben (range) erfuellen'''
     filenames = [name for name in os.listdir(directory) if name.startswith("Sim_")]
     starttime = time.clock()
@@ -44,7 +44,7 @@ def erzeuge_Tabelle(directory, csv_name, time_range = [0,240], iqr_range = [0,15
     print ("fertig mit Tabelle") 
     return peaks_found
 
-def plotte_Zeitpunkt(directory, time_range = [1,240], iqr_range = [0,100], iqk_range = [0,1]):
+def plotte_Zeitpunkt(directory, time_range=[1,240], iqr_range=[0,100], iqk_range=[0,1]):
     '''Alle zu geg Zeit/IQR/IQK gefundenen Peaks plotten'''
     filenames = [name for name in os.listdir(directory) if name.startswith("Sim_")]
     tabellenname = "xy_" + str(time_range[0]) + "_" + str(time_range[1]) + "_" + str(iqr_range[0]) + "_" + str(iqr_range[1]) + "_"+  str(iqk_range[0]) + "_" + str(iqk_range[1]) + ".csv"
@@ -91,14 +91,15 @@ def plotte_Zeitpunkt(directory, time_range = [1,240], iqr_range = [0,100], iqk_r
             t = ax[i].text(peak[10], peak[11], str(peak[j]), size= "small")
     plt.show()
 
-def plot_single_peak(filename, model, quartiles = False):
+def plot_single_peak(filename, model, quartiles=False):
     '''Einzelnen Peak und seine Quartile plotten'''
     with open (filename, "rb") as data:
         aPeak = pickle.load(data)
         fig, ax = plt.subplots()
-        #print (aPeak.times)
-        plt.plot(aPeak.times, label = " ")
-        hoehe = np.max(aPeak.times)
+        #print (aPeak.distribution)
+        #plt.tight_layout()
+        plt.plot(aPeak.distribution, label = " ")
+        hoehe = np.max(aPeak.distribution)
         logging.log(20, aPeak.pd)
         # Quartile mitplotten
         if quartiles:
@@ -110,6 +111,8 @@ def plot_single_peak(filename, model, quartiles = False):
             plt.title("ps: " + str(aPeak.params[0]) +" pm: " + str(aPeak.params[1])) 
         if model == "3a":
             plt.title("pmm: " + str(aPeak.params[0]) +" pml: " + str(aPeak.params[2]) + " paa: " + str(aPeak.params[4]) +" pll: " + str(aPeak.params[8])) 
+        plt.xlabel("Retentionszeit / s")
+        plt.ylabel("Signalintensität")    
         ax.set_xticklabels([0, 50, 100, 150, 200])
         plt.legend(title = "Lage " + str(round(aPeak.pd[0],4))+ " Breite "+str(round(aPeak.pd[2],2)) + " Schiefe " +str(round(aPeak.pd[3],2)))
         plt.show()
@@ -133,13 +136,13 @@ def plot_festen_param(directory, ps, pm, fest):
         for p1 in pm:
             filename = "Sim_" + str(p0) + "_"+ str(p1) + ".p"
             myPAA_list.append(filename)
-    #print (myPAA_list)
+    print (myPAA_list)
         
     for filename in myPAA_list:
         if os.path.exists(directory + filename):
             with open (directory + filename , "rb" ) as data:
                 myPAA = pickle.load(data)
-                print("pd, params", myPAA.pd, myPAA.params)
+                logging.log(20, "pd %s, params %s", myPAA.pd, myPAA.params)
                 if myPAA.pd[2] == myPAA.pd[2]:
                     #plt.plot([myPAA.pd[0]],[myPAA.pd[2]], "o", markersize = (myPAA.pd[3])*500, label=str(myPAA.params[vp]) +"  "+ str(round(myPAA.pd[3],3)) )
                     #plt.text(myPAA.pd[0], myPAA.pd[2], str(myPAA.params[vp]))
@@ -154,11 +157,11 @@ def plot_festen_param(directory, ps, pm, fest):
     
     plt.suptitle("Fester Parameter: " + fest + " = " + str(fester_param[0]))
     figname = variabel + "_fest_" + fest + "_"+ str(fester_param[0]) + ".png"
-    plt.savefig(figname, bbox_inches = 'tight')                
+    #plt.savefig(figname, bbox_inches = 'tight')                
     plt.show()
     return
 
-def plot_3feste_Params(directory, pmm = [], pml = [], paa =[], pll=[], variabel = "pmm"):
+def plot_3feste_Params(directory, pmm=[], pml=[], paa=[], pll=[], variabel="pmm"):
     '''drei Parameter bleiben fest, einer wird verändert (im sinnvollen bereich), alle Params werden als Liste übergeben, die festen halt mit nur einem Element, der veränderliche mit mehreren
     evtl: erzeuge Liste mit noch nicht für diesen Plot vorhandenen Simulationen'''
         #TODO TODO
@@ -231,7 +234,7 @@ def plot_erreichbare_regionen(directory, show_params):
     plt.show()
     return
 
-def plot_params_at_time(folder, t, epsilon = 0.1, show_params = False):
+def plot_params_at_time(folder, t, epsilon=0.1, show_params=False):
     """plotte Parameterkombinationen zu Zeit t, mit erlaubter Abweichung von t um epsilon"""
     # Plot erstellen und beschriften
     if "2s" not in folder:
@@ -338,7 +341,7 @@ def main():
                 pms = [0.1, 0.3, 0.5, 0.7, 0.9]
             else :
                 pss = [0.998, 0.999, 0.9992, 0.9994, 0.9996, 0.9999]
-                pms = args.plot_festen_param[1]
+                pms = [args.plot_festen_param[1]]
             #TODO: Liste der variablen flexibel einlesbar machen
             plot_festen_param(directory, pss, pms, args.plot_festen_param[0])
     

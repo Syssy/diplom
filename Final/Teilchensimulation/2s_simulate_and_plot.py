@@ -169,13 +169,13 @@ def get_argument_parser():
                    help = "Laenge der Saeule")
     p.add_argument("--number", "-n", type = int, default = "1000",
                    help = "Anzahl zu simulierender Teilchen")
-    p.add_argument("--approach", "-a", default = "E", 
+    p.add_argument("--approach", "-a", default = "S", 
                    help = "Art der Simulation; E = by-event, S = step_by_step")
-    p.add_argument("--plot_peak", "-pp", nargs = '+', type = float,
-                   help = "Einzelne Parameterkombi eingeben, deren Peak dann geplottet wird" )
+    p.add_argument("--plot_peak", "--pp", nargs = '+', type = float,
+                   help = "Einzelne Parameterkombi eingeben, deren Peak dann geplottet wird")
     p.add_argument("--plot_spectrum", "-ps", action = "store_true",
-                   help = "Auswahl ob Spektrum geplottet werden soll fuer Rauschen zusaetzlich -an")
-    p.add_argument("--addnoise", "-an", action= "store_true",
+                   help = "Auswahl ob Spektrum für maximal 30 Peaks geplottet werden soll, fuer Rauschen zusaetzlich --addnoise")
+    p.add_argument("--addnoise", action= "store_true",
                    help = "Rauschen hinzufuegen")
     p.add_argument("--plot_params_at_time", "-ppt", action = "store_true",
                    help = "Auswahl ob Parameter für Retentionszeit -rt und Abweichung -e geplottet werden soll")

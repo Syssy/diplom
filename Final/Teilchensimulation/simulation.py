@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 class Simulation(metaclass = ABCMeta):
     """Simuliert und speichert Daten einer Simulation
     """
-    def __init__(self, params, model, approach="E", length=1000, number=1000, maxtime=240, times=[]):
+    def __init__(self, params, model, approach, length=1000, number=1000, maxtime=240, times=[]):
         """__init__
         params - Parameter ps,pm bzw pmm,pml,paa,pll
         model - 2s/3s 
@@ -223,7 +223,7 @@ class Simulation(metaclass = ABCMeta):
                 nr_failed += len(particle_list)
             if nr_failed > 0.001*self.number:
                 self.valid = False
-                print (nr_failed)
+                logging.log (25, "Kein vollständiger Peak, Anzahl verweilender Teilchen: %s", nr_failed)
         # Zeitpunkte normalisieren  
         # Dabei wegen Konstistenz mit step-by-step und Zusammenlegen von Messzeitpunkten runden
         self.times = [round(date/10000, 2) for date in arrival_counter]
@@ -429,18 +429,22 @@ class Simulation_3s(Simulation):
 def get_argument_parser():
     p = argparse.ArgumentParser(
     description = "Simuliert nach den vorgegebenen Parametern")  
+    p.add_argument("model", choices=["2s", "3s", "3a"],
+                   help = "Modell: 2 oder 3 Zustände (2s/3s/3a)")
+    p.add_argument("params", nargs = '+', type = float,
+                   help = "Parameter fuer die Simulation")
+    p.add_argument("--quiet", "-q", action= "store_true",
+                   help = "Wenn gewählt, wird keine Ausgabe der Zeiten in der Kommandozeilen angezeigt")
     p.add_argument("--length", "-l", type = int, default = "1000",
                    help = "Laenge der Saeule")
     p.add_argument("--number", "-n", type = int, default = "1000",
                    help = "Anzahl zu simulierender Teilchen")
-    p.add_argument("--maxtime", "-mt", type = int, default = "240",
+    p.add_argument("--maxtime", "--mt", type = int, default = "240",
                    help = "Maximale Retentionszeit in Sekunden")
-    p.add_argument("--approach", "-a", default = "E", 
+    p.add_argument("--approach", "-a", default = "E", choices=["E", "S"],
                    help = "Art der Simulation; E = by-event, S = step-by-step")
-    p.add_argument("--model", "-m", default = "",
-                   help = "Modell: 2 oder 3 Zustände (2s/3s/3a)")
-    p.add_argument("--params", "-p", nargs = '+', type = float,
-                   help = "Parameter fuer die Simulation")
+    p.add_argument("--plot", "-p", action = "store_true",
+                   help = "Wenn ausgewählt, wird zusätzlich zur Kommandozeilenausgabe ein Plot erzeugt")
     #TODO: Jeden Param eingeben?
     return p
 
@@ -448,32 +452,41 @@ def get_argument_parser():
 def main():
     p = get_argument_parser()
     args = p.parse_args()
+    print (args)
     logging.log(20, "Eingaben fuer Simulation, %s", args)
     #print ("n", args.number, "l", args.length, "a", args.approach, time.strftime("%d%b%Y_%H:%M:%S"))
     
-    #Parameterübergabe für 3s: Komplett als 3x3 matrix. daher Umformung der Eingabe 
+    #Parameterübergabe für 3s an die Simulationsklasse: Komplett als 3x3 matrix. daher Umformung der Eingabe 
     if args.model == "3s":
         args.params = [[args.params[0],args.params[1],args.params[2]],[args.params[3],args.params[4],args.params[5]],[args.params[6],args.params[7],args.params[8]]]
  
     if args.model.startswith("3"):
+        #print ("Starte Simulation")
         testsim3s = Simulation_3s(args.params, args.model, args.approach, args.length, number=args.number, maxtime=args.maxtime )
         testsim3s.simulate()
+        if  not args.quiet:
+            print ("Ankunftszeiten der Teilchen: ", testsim3s.times)
         testsim3s.calculate_pd()
-        print (testsim3s.pd)
-        n, bins, patches = plt.hist(testsim3s.times, 50)
-        plt.title(args.model + args.approach)
-        plt.show()
+        print ("Peakdaten: ", testsim3s.pd)
+        if args.plot:
+            n, bins, patches = plt.hist(testsim3s.times, 50)
+            plt.title(str(args.params) + " " + args.approach)
+            plt.show()
     
     if args.model == "2s":
+        #print ("Starte Simulation")
         testsim = Simulation_2s((args.params), args.model, args.approach, args.length, number = args.number, maxtime = args.maxtime)
         #print (testsim.params)
         testsim.simulate()
+        if not args.quiet:
+            print ("Ankunftszeiten der Teilchen: ", testsim.times)
         testsim.calculate_pd()
-        print (testsim.pd)
-        n, bins, patches = plt.hist(testsim.times, 50)
-        plt.title(args.model + args.approach)
-        plt.show()
+        print ("Peakdaten: (Lage, (Quartile), Breite, Schiefe)", testsim.pd)
+        if args.plot:
+            n, bins, patches = plt.hist(testsim.times, 50)
+            plt.title(str(args.params) + " " + args.approach)
+            plt.show()
        
 if __name__ == "__main__":
-    logging.basicConfig(level=35)
+    logging.basicConfig(level=25)
     main()

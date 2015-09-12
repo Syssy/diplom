@@ -30,10 +30,10 @@ def plot_single_peak(data, histogram=False, peak=True, quartiles=True, num_bins=
             plt.plot([data.pd[1][0], data.pd[1][0]], [0, hoehe], color="lightblue")
             plt.plot([data.pd[1][1], data.pd[1][1]], [0, hoehe], color="lightblue")
             plt.plot([data.pd[1][2], data.pd[1][2]], [0, hoehe], color="lightblue")
-        plt.xlabel("Retentionszeit")
-        plt.ylabel("Anteil Teilchen")
+        plt.xlabel("Retentionszeit/s")
+        plt.ylabel("Signalintensität")
         plt.title("Parameter:" + str(data.params))
-        plt.suptitle("loc " + str(round(data.pd[0],2))+ " iqr "+str(round(data.pd[2],2)) + " skew " +str(round(data.pd[3],2)))
+        plt.suptitle("Lage " + str(round(data.pd[0],2))+ " Breite "+str(round(data.pd[2],2)) + " Schiefe " +str(round(data.pd[3],2)))
         plt.annotate(str(data.pd[0])+str(data.pd[2])+str(data.pd[3]),(data.pd[1][2] * 10, data.pd[1][2] * 10))
         plt.show()
     #Normales Histogramm plotten
@@ -60,10 +60,10 @@ def plot_spectrum(sims, noise=False, maxtime=240):
                     spectrum.append(t)
         hist, bins = np.histogram(spectrum, bins= maxtime, normed = True)
         offset = bins[1:]-bins[:-1]
-        plt.plot(bins[:-1]+offset, hist)
+        plt.plot(bins[:-1]+offset, hist, "k")
         #plt.ylim((0, 0.3))
         plt.xlim((0, maxtime))
-        plt.xlabel("Retentionszeit")
+        plt.xlabel("Retentionszeit/s")
         plt.ylabel("Intensität")
         title = "Spektrum"
         if noise:
@@ -137,7 +137,9 @@ def plot_params_at_time(folder, t, epsilon=0.1, show_params=False):
     plt.xlabel("ps")
     plt.ylabel("pm")
     filenames = [name for name in os.listdir(folder) if name.startswith("Sim_")]
+    filenames.sort()
     # Alle Sim durchgehen, wenn Bedingung erfuellt, plotten
+    dots = iter(["r^", "co", "ks", "g^", "yo", "ms", "b^", "ko", "gs", "m^", "ro", "ys", "c^", "bo", "ws"])
     for filename in filenames:  
         with open (folder+filename, "r+b") as data:
             sim = pickle.load(data)
@@ -147,7 +149,7 @@ def plot_params_at_time(folder, t, epsilon=0.1, show_params=False):
                 else:
                     #Groesse der Punkte zeigt Breite(IQR) des Peaks    
                     logging.log(20, "Gefunden: %s", sim.pd)
-                    ax.plot(sim.params[0], sim.params[1], "o", markersize = 2+(sim.pd[2]), label = (str(round(sim.pd[2],2)) + "  " +  str(round(sim.pd[0], 2))))
+                    ax.plot(sim.params[0], sim.params[1], dots.__next__(), markersize = 2+(sim.pd[2]), label = (str(round(sim.pd[2],2)) + "  " +  str(round(sim.pd[0], 2))))
                     if show_params:
                         ax.text(sim.params[0], sim.params[1], str(round(sim.params[0],8)) +"_" + str(round(sim.params[1],5)))
         logging.log(21, sim.pd[3])
