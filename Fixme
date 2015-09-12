@@ -27,6 +27,17 @@ Besprechung 3.9.
     
     Auf die CD: Einige (wenige) Rohdatensätze von Julia/Java. Eine sinnvolle Auswahl komprimierter Daten. Datensätze (mit gleichen Params) für die teilchensimulationen. 
  
+ 
+ mosdi-> zitat phd tobias
+ keine leerzeichen in methodendekl
+ umstrukturierung: erst die module erklären, hnterhier die interna der simulations-klasse
+ programm braucht namen mcc-sim
+ für jedes programm die ein und ausgabeoptionen
+ laufzeiten: prozessor, kerne (aber nur einer genutzt), ram
+ 
+ für literatur: plainnat.bst editieren
+ 
+ 
     
 Sim, allgemein:
  * Sinnvoller Einsatz der Invalid-Flags, bei den Sims sowie PAA

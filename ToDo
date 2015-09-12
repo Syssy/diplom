@@ -500,3 +500,8 @@ Simulation einer Multikapillarsäule bei der Ionenmobilitätspektrometrie
  * Zentralbibliothek / Freihand ; Location guide  M 31678  (statistikbuch), ansonsten salome noch mal anschreiben wegen quelle qk
  * Dringend sims für 2p machen und zu plots verarbeiten
  * ERGEBNISSE ÜBERPRÜFEN, WENN NICHT MEDIAN, SONDERN MAXIMUM. ok, leicht verschoben, aber keine änderung der tatsachen
+ 
+ 
+Endspurt:
+ commandlineopts: choices = [a,b,c]
+ plot_time für teilchenbasierte 3s sim
