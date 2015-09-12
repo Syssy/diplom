@@ -14,16 +14,19 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
+% Damit copy&paste funktioniert
+\usepackage{mmap}
+
 % Algorithmen
 \usepackage[plain,chapter]{algorithm}
-\usepackage{algorithmic}
+%\usepackage[ruled,chapter]{algorithm}
+\usepackage[noend]{algorithmic}
 
 \usepackage{enumerate}
 
-
-
 % Bibtex deutsch
-\usepackage{bibgerm}
+%\usepackage{bibgerm}
+\usepackage[round]{natbib}
 
 % URLs
 \usepackage{url}
@@ -54,8 +57,11 @@
 \usepackage{ziffer}
 % fuer das mu im text
 \usepackage{textcomp}
-
+% subfigures
 \usepackage{subcaption}
+% bunte Zellen in Tabellen
+\usepackage[table]{colortbl}
+
 
 % Theorem-Optionen %
 \theoremseparator{.}
@@ -103,9 +109,10 @@
 \floatname{algorithm}{Algorithmus}
 \renewcommand{\listalgorithmname}{Algorithmenverzeichnis}
 \renewcommand{\algorithmiccomment}[1]{\color{grau}{// #1}}
+\newcommand{\INDSTATE}[1][1]{\STATE\hspace{#1\algorithmicindent}}
 
 % Zeilenabstand einstellen %
-\renewcommand{\baselinestretch}{1.25}
+%\renewcommand{\baselinestretch}{1.25}
 % Floating-Umgebungen anpassen %
 \renewcommand{\topfraction}{0.9}
 \renewcommand{\bottomfraction}{0.8}
