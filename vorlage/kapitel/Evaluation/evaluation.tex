@@ -25,16 +25,20 @@ Einige Kombinationen würden zwar Peaks erzeugen, diese lägen jedoch teilweise 
 \label{kein_peak}
 \end{figure}
 
-\todo{Peaks mit zeitpunkt 0,1 sind kritisch, da teilweise (je nach berechnung/rundung) fehler auftreten, im zweifel: ignorieren}
+%\todo{Peaks mit zeitpunkt 0,1 sind kritisch, da teilweise (je nach berechnung/rundung) fehler auftreten, im zweifel: ignorieren}
 
 Auch von den übrigen, innerhalb des Zeitraumes von $240$ Sekunden liegenden Verteilungen, sind nicht alle als Peak zu bezeichnen. Beispielsweise kann eine Verteilung extrem breit sein und über das gesamte Spektrum reichen. Damit würde sie in einer echten Messung wohl eher als Hintergrundrauschen erkannt werden. Ein Beispiel dafür ist in rechts in Abbildung \ref{kein_peak} zu sehen. Derartige Peaks werden nur teilweise in den folgenden Auswertungen erfasst.
 %Für die nachfolgenden Evaluationen wurde eine willkürliche Obergrenze bei einem IQR von $30$ gesetzt. Breitere Peaks können zwar mit den Modellen simuliert, werden aber nicht mehr berücksichtigt.
+Ähnliches gilt für extrem frühe Peaks, die ihren Maximalzeitpunkt bei einer Retentionszeit von $t \approx 0,1$ s haben. Diese dienen zwar im als Anhaltspunkt für die Entstehung von Schiefe, da hierbei allerdings nur wenige Teilchen überhaupt in Kontakt mit der stationären Phase treten, können die Ergebnisse insbesondere bei der Teilchensimulationen auch leicht verfälscht werden.
 
 Für die Schiefe eines Peaks sollen keine Einschränkungen gemacht werden, es werden alle Werte im möglichen Intervall $[0,1]$ für den Quartilskoeffizienten untersucht werden. Um die Schiefe verschiedener Peaks besser einschätzen zu können, sind in Abbildung \ref{diverse_schiefen} Peaks mit verschieder Schiefe gezeigt.
 
 \begin{figure}
  \includegraphics[width=0.49\textwidth]{bilder/Schiefe/001_q}
  \includegraphics[width=0.49\textwidth]{bilder/Schiefe/025_q}
+
+ \vspace{5pt}
+ 
  \includegraphics[width=0.49\textwidth]{bilder/Schiefe/05_q}
  \includegraphics[width=0.49\textwidth]{bilder/Schiefe/08_q}
 \caption{Peaks mit verschiedenen Schiefen}
@@ -164,17 +168,25 @@ Zu sehen ist, dass es zu jedem Zeitpunkt möglich ist, Peaks mit dem Modell zu e
 \label{Grenzen_2p_ohnep}
 \end{figure}
 
-Dass die untere Kante der Punktewolke jedoch eine Grenze für die Breite darstellt, ist in Abbildung \ref{Grenzen_2p_ausschnitt} zu sehen. Zu sehen sind zwei Reihen von Peaks, die mit jeweils dem gleichen Parameter ps erzeugt wurden, die Breite nimmt mit fallendem pm zu. Diese Beobachtung wurde bereits im letzten Abschnitt gemacht. Jedoch ist hier zu sehen, dass sich bei einer Annäherung von pm an $0$ keine deutlich späteren Peaks ergeben, sondern der Zeitpunkt auf einem Wert stagniert. Das liegt daran, dass bei so kleinen Werten für pm in fast jedem Schritt, der in der mobilen Phase startet, ein Wechsel zur stationären Phase statt findet. Der Zeitpunkt wird dann also maßgeblich durch ps beeinflusst. Da höhere Werte für ps nicht nur für einen späteren Zeitpunkt sorgen, sondern auch für eine größere Breite, ergibt sich dadurch eine Minimalbreite für alle Zeitpunkte.
+Dass die untere Kante der Punktewolke jedoch eine Grenze für die Breite darstellt, ist in Abbildung \ref{Grenzen_2p_ausschnitt} zu sehen, die einen Ausschnitt aus Abbildung \ref{Grenzen_2p_ohnep} darstellt. Zu sehen sind drei Reihen von simulierten Daten, die mit jeweils dem gleichen Parameter ps erzeugt wurden, die Breite nimmt mit fallendem pm zu. Diese Beobachtung wurde bereits im letzten Abschnitt gemacht. Jedoch ist hier zu sehen, dass sich bei einer Annäherung von pm an $0$ keine deutlich späteren Peaks ergeben, sondern der Zeitpunkt auf einem Wert stagniert. Das liegt daran, dass bei so kleinen Werten für pm in fast jedem Schritt, der in der mobilen Phase startet, ein Wechsel zur stationären Phase statt findet. Der Zeitpunkt wird dann also maßgeblich durch ps beeinflusst. Da höhere Werte für ps nicht nur für einen späteren Zeitpunkt sorgen, sondern auch für eine größere Breite, ergibt sich dadurch eine Minimalbreite für alle Zeitpunkte.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.75\textwidth]{bilder/2s_zeitbreiten_ausschnitt.pdf}
+\includegraphics[width=0.85\textwidth]{bilder/2s_zeitbreiten_ausschnitt.pdf}
 \caption{Ausschnitt der erreichbaren Zeiten und Breiten}
 \label{Grenzen_2p_ausschnitt}
 \end{figure}
 
-Auch die obere Kante der Punktewolke aus Abbildung \ref{Grenzen_2p_ohnep} stellt gewissermaßen eine Grenze für die mit diesem Modell erreichbaren Zeit-Breiten Kombinationen dar. Zwar können in dem Bereich, der Tailing aufweist, fast beliebig breite Peaks erzeugt werden, wenn ps sehr groß gewählt wird. \todo{obergrenze?}
+Auch die obere Kante der Punktewolke aus Abbildung \ref{Grenzen_2p_ohnep} stellt gewissermaßen eine Grenze für die mit diesem Modell erreichbaren Zeit-Breiten Kombinationen dar. 
+Einen passenden Ausschnitt zeigt Abbildung \ref{Grenzen_2p_ausschnitt_o}. Zwar können in diesem Bereich ganz zu Beginn des Spektrums, der Bereich, der Tailing aufweist, fast beliebig breite Peaks erzeugt werden. Dazu muss pm sehr groß gewählt werden. Wird jedoch bei gleichem ps der Wert für pm noch ein wenig erhöht, ist der Maximalzeitpunkt des Peaks bei $t=0,1$, da nicht mehr ausreichend Teilchen überhaupt in Kontakt mit der stationären Phase kommen.
+%Die Breite und das Tailing entstehen durch den sehr großen Wert für ps, da allerdings auch pm sehr groß sein muss, gelangen viele Teilchen gar nicht in den stationären Zustand und wandern mit Trägergasgeschwindigkeit.  \todo{obergrenze?}
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\textwidth]{bilder/2s_zeitbreiten_ausschnitt_o.pdf}
+\caption{Ausschnitt der erreichbaren Zeiten und Breiten}
+\label{Grenzen_2p_ausschnitt_o}
+\end{figure}
 
 \section{3-Zustände Modell}
 Die wenigen Peaks, die beim 2-Zustände Modell Schiefe aufweisen dienen als Hinweis darauf, wie das Tailing entsteht: Einige wenige Teilchen kommen deutlich nach dem Hauptpulk an, da sie in der stationären Phase verweilen, während die Teilchen des Pulks ohne Interaktion die Säule durchqueren. 
@@ -220,7 +232,7 @@ Die für die beiden Peaks verwendeten Simulationsparameter wurden dann nur wenig
 
 \begin{table}[h]
 \centering
-\caption{Einfluss auf einen Peak (1)}
+\caption[Einfluss auf einen Peak (1)]{Einfluss der Parameter auf einen Peak, ausgehend von den Parametern der ersten Zeile wurde jeweils ein Parameter verändert (gelb markiert) und die daraus resultierenden Peakdaten berechnet.}
 \label{einfluss_t50}
 \begin{tabular}{|l|l|l|l||l|l|l|}
 \hline
@@ -239,7 +251,7 @@ $0,6$ & $0,0006$ & $0,9992$ & \cellcolor{yellow} $0,999995$ & $50,05$ & $16,66$ 
 
 \begin{table}[h]
 \centering
-\caption{Einfluss auf einen Peak (2)}
+\caption[Einfluss auf einen Peak (2)]{Einfluss der Parameter auf einen Peak, ausgehend von den Parametern der ersten Zeile wurde jeweils ein Parameter verändert (gelb markiert) und die daraus resultierenden Peakdaten berechnet.}
 \label{einfluss_t100}
 \begin{tabular}{|l|l|l|l||l|l|l|}
 \hline
@@ -319,21 +331,12 @@ Der Einfluss von $p_{mm}$ auf die Breite ebenfalls von $p_{aa}$ abhängig. Bei g
 Außer in einem sehr kleinen Parameterbereich, steigt die Schiefe mit steigendem $p_{mm}$. Dieser Einfluss hängt noch von $p_{aa}$ ab, bei kleinem $p_{aa}$ hat $p_{mm}$ einen größeren Einfluss auf die Schiefe.
 
 \begin{figure}
-\begin{subfigure}{0.6\textwidth}
-\includegraphics[width=\textwidth]{bilder/pmm/3fest_p_00001_09992_099999}
-\caption{$p_{ml}$ klein}
-\end{subfigure}
+\includegraphics[width=0.49\textwidth]{bilder/pmm/3fest_p_00001_09992_099999}
+\includegraphics[width=0.49\textwidth]{bilder/pmm/3fest_p_00005_09992_099999}
 
-\begin{subfigure}{0.6\textwidth}
-\includegraphics[width=\textwidth]{bilder/pmm/3fest_p_00005_09992_099999}
-\caption{$p_{ml}$ mittel}
-\end{subfigure}
-
-\begin{subfigure}{0.6\textwidth}
-\includegraphics[width=\textwidth]{bilder/pmm/3fest_p_0001_09992_099999}
-\caption{$p_{ml}$ groß}
-\end{subfigure}
-\caption{Der Einfluss von $p_{mm}$ auf die Peaks abhängig von $p_{ml}$}
+\includegraphics[width=0.49\textwidth]{bilder/pmm/3fest_p_0001_09992_099999}
+%\includegraphics[width=0.49\textwidth]{bilder/pmm/3fest_p_00001_09996_09995}
+\caption[Der Einfluss von $p_{mm}$ auf die Peaks abhängig von $p_{ml}$]{Der Einfluss von $p_{mm}$ auf die Peaks abhängig von $p_{ml}$, welches von oben links nach unten rechts größer wird}
 \label{einfluss_pmm_2}
 \end{figure}
 
@@ -434,21 +437,12 @@ Wie in Abbildung \ref{einfluss_pml_2} gezeigt, spielen auch $p_{mm}$ und $p_{aa}
 In Abbildung \ref{einfluss_paa} ist beispielhaft der Einfluss von Parameter $p_{aa}$ in Abhängigkeit von $p_{mm}$ auf die Peaks gezeigt. Der Einfluss von $p_{aa}$ auf den Zeitpunkt wird mit steigendem $p_{mm}$ immer kleiner und reicht dadurch von minimalem Einfluss und recht frühen Peaks bei jeder Wahl von $p_{aa}$ bis zu sehr großem Einfluss und Peaks, die je nach $p_{aa}$ über das ganze Spektrum verteilt sind. Damit hat $p_{aa}$ einen ähnlichen Einfluss wie $p_{mm}$.
 
 \begin{figure}
-\begin{subfigure}{0.6\textwidth}
-\includegraphics[width=\textwidth]{bilder/paa/3fest_05_00001_p_099995}
-\caption{$p_{ml}$ klein}
-\end{subfigure}
+\includegraphics[width=0.49\textwidth]{bilder/paa/3fest_05_00001_p_099995}
+\includegraphics[width=0.49\textwidth]{bilder/paa/3fest_05_0001_p_099995}
 
-\begin{subfigure}{0.6\textwidth}
-\includegraphics[width=\textwidth]{bilder/paa/3fest_05_0001_p_099995}
-\caption{$p_{ml}$ mittel}
-\end{subfigure}
-
-\begin{subfigure}{0.6\textwidth}
-\includegraphics[width=\textwidth]{bilder/paa/3fest_05_0005_p_099995}
-\caption{$p_{ml}$ groß}
-\end{subfigure}
-\caption{Der Einfluss von $p_{aa}$ auf die Peaks abhängig von $p_{ml}$}
+\includegraphics[width=0.49\textwidth]{bilder/paa/3fest_05_0005_p_099995}
+%\includegraphics[width=0.49\textwidth]{bilder/pmm/3fest_p_00001_09996_09995}
+\caption[Der Einfluss von $p_{aa}$ auf die Peaks abhängig von $p_{ml}$]{Der Einfluss von $p_{aa}$ auf die Peaks abhängig von $p_{ml}$, welches von links oben nach rechts unten kleiner wird}
 \label{einfluss_paa_pml}
 \end{figure}
 
@@ -456,7 +450,7 @@ Wie in \ref{einfluss_paa_pml} zu sehen $p_{aa}$ hat nur dann einen relevanten Ei
 
 Der Einfluss auf die Breite ist mäßig und wird größer, wenn $p_{ml}$ und $p_{ll}$ klein sind, für $p_{ml}$ ist dies ebenfalls in Abbildung \ref{einfluss_paa_pml} zu erkennen.
 
-TODO: $p_{ll}$ verändert auch den Einfluss von $p_{aa}$, das hängt aber von $p_{mm}$ und $p_{ml}$ ab und sämtlichen konkreten Werten ab.
+%TODO: $p_{ll}$ verändert auch den Einfluss von $p_{aa}$, das hängt aber von $p_{mm}$ und $p_{ml}$ ab und sämtlichen konkreten Werten ab.
 
 \paragraph*{Einfluss des Parameters $p_{ll}$}
 
@@ -525,13 +519,13 @@ Zusammengefasst:
 TODO: Das folgende ist zwar interssant, aber eher so eine Zusammenfassung
 Da bei einem Wert von $0$ für $p_{ml}$ effektiv das 2-Zustände Modell zum Einsatz kommt, ist hier fast nie Schiefe zu beobachten, außerdem hat der Parameter $p_{ll}$ keinen Einfluss. 
 
-$p_{aa}$ hat einen stärkeren Einfluss auf den Zeitpunkt als $p_{ll}$ und $p_{ml}$. Dieser wird noch stärker, wenn $p_{mm}$ klein ist
+$p_{aa}$ hat einen stärkeren Einfluss auf den Zeitpunkt als $p_{ll}$ und $p_{ml}$. Dieser wird noch stärker, wenn $p_{mm}$ klein ist.
 
 $p_{mm}$ hat einen großen Einfluss auf den Zeitpunkt und nur einen minimalen Einfluss auf die Breite.
 
-$p_{ml}$ und $p_{ll}$ haben zunächst beide einen proportionalen Einfluss auf die Schiefe. Erst, wenn beide sehr groß sind, sinkt die Schiefe wieder (und die Breite steigt extrem an) Das ist wohl dadurch zu erklären, dass sich nicht mehr genügend Teilchen im mobil-adsorbierten System befinden, wodurch ein normaler Peak entstehen kann. Statt dass die Lösung Schiefe an diesem einfachen Peak verursacht, sorgt sie nunmehr für Breite
+$p_{ml}$ und $p_{ll}$ haben zunächst beide einen proportionalen Einfluss auf die Schiefe. Erst, wenn beide sehr groß sind, sinkt die Schiefe wieder (und die Breite steigt extrem an) Das ist wohl dadurch zu erklären, dass sich nicht mehr genügend Teilchen im mobil-adsorbierten System befinden, wodurch ein normaler Peak entstehen kann. Statt dass die Lösung Schiefe an diesem einfachen Peak verursacht, sorgt sie nunmehr für Breite.
 
-Tailing/Schiefe entsteht immer da, wo nur wenige Teilchen langsamer sind, als die große Masse. Sind viele Teilchen lange stationär, werden die Peaks statt dessen breit. Der Maximalzeitpunkt ist hauptsächlich durch die Durchschnittsgeschwindigkeit der Teilchen bestimmt, sind sie hauptsächlich mobil, entstehen frühe Peaks, sind sie oft und lange stationär, wandern die Peaks nach hinten.
+Tailing und damit Schiefe entsteht immer da, wo nur wenige Teilchen langsamer sind, als die große Masse. Sind viele Teilchen lange stationär, werden die Peaks statt dessen breit. Der Maximalzeitpunkt ist zum großen Teil durch die Durchschnittsgeschwindigkeit der Teilchen bestimmt, sind sie hauptsächlich mobil, entstehen frühe Peaks, sind sie oft und lange stationär, wandern die Peaks nach hinten. 
 
 
 \subsection{Parameter für ähnliche Peaks}
@@ -561,9 +555,9 @@ Mit dem 2-Zustände Modell war es nur eingeschränkt möglich, Tailing zu erzeug
 
 Das andere Problem jedoch, dass Peaks zu jedem Zeitpunkt eine Minimalbreite haben, konnte dadurch jedoch nicht gelöst werden. Die Peaks können durch Hinzunahme eines weiteren stationären Zustandes höchstens breiter werden. 
 
-\section{Laufzeiten}
-
-Zur Evaluation der Laufzeiten der verschiedenen Ansätze wurden sowohl für das 2-Zustände Modell als auch für das 3-Zustände Modell ein Satz Parameterkombinationen getestet. Die aus diesen Kombinationen resultierenden Peaks sollten möglichst diverse Eigenschaften aufweisen, also sowohl frühe, als auch späte Peaks, breite, schmale, symmetrische und tailende Peaks enthalten, sowie solche Kombinationen, die nicht innerhalb der Maximalzeit von $240$ Sekunden einen vollständigen Peak bilden.
-Für die Teilchensimulationen wurden darüber hinaus die Laufzeiten für $1000$ und $10.000$ verglichen.
+% \section{Laufzeiten}
+% 
+% Zur Evaluation der Laufzeiten der verschiedenen Ansätze wurden sowohl für das 2-Zustände Modell als auch für das 3-Zustände Modell ein Satz Parameterkombinationen getestet. Die aus diesen Kombinationen resultierenden Peaks sollten möglichst diverse Eigenschaften aufweisen, also sowohl frühe, als auch späte Peaks, breite, schmale, symmetrische und tailende Peaks enthalten, sowie solche Kombinationen, die nicht innerhalb der Maximalzeit von $240$ Sekunden einen vollständigen Peak bilden.
+% Für die Teilchensimulationen wurden darüber hinaus die Laufzeiten für $1000$ und $10.000$ verglichen.
 
  
