@@ -6,7 +6,9 @@
 \section{Chromatographie}
 
 Die Chromatographie ist ein Verfahren zur Auftrennung von Stoffgemischen. 
-Die Auftrennung erfolgt dabei zwischen zwei sogenannten Phasen, der stationären und der mobilen Phase, welche sich in unterschiedlichen Aggregatzuständen befinden und untereinander nicht mischen. Die Analyte werden bewegen sich dabei durch die chromatographische Apparatur, ndem sie von der mobilen Phase mitgenommen werden. Immer wieder geraten sie dabei in Kontakt zur stationären Phase und interagieren mit dieser. Abhängig von den Eigenschaften der verschiedenen Stoffe, werden sie dadurch kürzer oder länger aufgehalten, sodass sich verschiedene Stoffe von einander trennen.
+%Die Auftrennung erfolgt dabei zwischen zwei sogenannten Phasen, der stationären und der mobilen Phase, welche sich in unterschiedlichen Aggregatzuständen befinden und untereinander nicht mischen. 
+\todo{einleitung nicht doppeln}
+Die Analyte werden bewegen sich dabei durch die chromatographische Apparatur, indem sie von der mobilen Phase mitgenommen werden. Immer wieder geraten sie dabei in Kontakt zur stationären Phase und interagieren mit dieser. Abhängig von den Eigenschaften der verschiedenen Stoffe, werden sie dadurch kürzer oder länger aufgehalten, sodass sich verschiedene Stoffe von einander trennen.
 
 Es existieren viele Varianten der Chromatographie. Eine mögliche Unterscheidung findet durch die dabei verwendeten Aggregatzustände der beiden Phasen statt. Zum einen gibt es die Flüssigchromatographie (LC, engl. Liquid Chromatography),
 %\todo{Muss englische Worterklärung kursiv oä?}
@@ -23,28 +25,37 @@ Bei der Gaschromatographie (GC) ist die mobile Phase ein Gas und es wird zusätz
 % Verwandte Arbeiten?
 % Wo kommt das mit den Referenzdatensätzen rein?
 
-Beispielsweise kann die GC in einer Multikapillarsäule (MCC, engl. Multi Capillary Colum) stattfinden. Sie besteht aus ca. 1000 bis 2000 einzelnen Kapillaren \cite{obinski1999, Baumbach2009}. Jede davon ist innen mit der stationären Phase beschichtet. Außerdem kommt ein Trägergas, die mobile Phase, zum Einsatz, welches die Analyte durch die Säule transportiert. Dieses kann beispielsweise Stickstoff, Helium \cite{obinski1999} oder Luft sein \cite{Baumbach2009}.
+Beispielsweise kann die GC in einer Multikapillarsäule (MCC, engl. Multi Capillary Colum) stattfinden. Sie besteht aus ca. 1000 bis 2000 einzelnen Kapillaren \citep{obinski1999, Baumbach2009}. Jede davon ist innen mit der stationären Phase beschichtet. Außerdem kommt ein Trägergas, die mobile Phase, zum Einsatz, welches die Analyte durch die Säule transportiert. Dieses kann beispielsweise Stickstoff, Helium \citep{obinski1999} oder Luft sein \citep{Baumbach2009}.
 
 \subsection{Der chromatograpische Prozess}
 Die nachfolgende Beschreibung des chromatographischen Prozesses bezieht sich auf die Gaschromatographie in Kapillarsäulen. Die prinzipielle Auftrennung der Stoffe durch häufigen Wechsel zwischen den beiden Phasen, ist aber allen Arten der Chromatographie gemein.
-\todo{weitere Quelle zum ausführlichen Nachlesen}
-Ausführlich beschrieben ist der chromatograpische Prozess beispielsweise in \cite{kolb2003}.
-Die für diese Arbeit wesentlichen Punkte seien hier kurz zusammengefasst:
+Ausführlich beschrieben wurde der chromatograpische Prozess beispielsweise von \cite{kolb2003} oder \cite{kaltenboeck2008}.
+Die für diese Arbeit wesentlichen Punkte sind hier kurz zusammengefasst:
 
 Die Substanzen unterscheiden sich vor allem durch ihre Wechselwirkungen mit der stationären Phase. Während dieser Wechselwirkungen haften die Teilchen an der stationären Phase, bewegen sich also nicht fort. Finden verhältnismäßig wenig Wechselwirkungen statt, passieren die Teilchen die Säule schneller, als wenn viele Wechselwirkungen stattfinden. Dies beeinflusst die so genannte Retentionszeit, also die Zeit, die zum Durchlaufen der Säule gebraucht wird.
 
-Dabei existieren verschiedene Arten von Wechselwirkungen zwischen den Analytteilchen und der stationären Phase. Zum Einen die Adsorption, bei der die Teilchen mit der Oberfläche der stationären Phase in Kontakt kommen und sich dort anreichern. Die Adsorption findet dabei auf Grund von physikalischen Kräften wie der Van-Der-Waals-Kräften statt. Dadurch ist die Bindung der Stoffe an die stationäre Phase nicht sehr fest und die Teilchen können sich leicht wieder daraus lösen.
+Dabei existieren verschiedene Arten von Wechselwirkungen zwischen den Analytteilchen und der stationären Phase und anderen Einfüssen, die sich auf die Retentionszeit auswirken. Dies sind unter anderem:
+\begin{itemize}
+ \item Molekülgröße: Besonders bei der Chromatographie in gepackten Säulen spielt die Molekülgröße eine wichtige Rolle. Kleine Moleküle werden weniger stark zurück gehalten, als große.
+ \item Adsorption: Dabei kommen die Teilchen mit der Oberfläche der stationären Phase in Kontakt und reichern sich dort an. Die Adsorption findet dabei auf Grund von physikalischen Kräften wie der Van-Der-Waals-Kräften statt. Dadurch ist die Bindung der Stoffe an die stationäre Phase nicht sehr fest und die Teilchen können sich leicht wieder daraus lösen.
+ \item Löslichkeit: Die Analyte können sich auch in einer flüssigen stationären Phase lösen. Diese Art der Chromatographie wird auch Verteilungschromatographie genannt.
+ \item Ladung: Bei der Ionenaustauschchromatographie ist die stationäre Phase elektrisch geladen, sodass entgegengesetzt geladene Teilchen dort gebunden werden und dadurch länger für den Durchlauf der Trennstrecke brauchen.
+\end{itemize}
 
-Zum Anderen können sich die Analyte aber auch in der stationären Phase lösen. Da sie dabei eine chemische Bindung eingehen, sind sie schwerer als bei der Adsorption wieder voneinander zu trennen. Die Stoffe verweilen dadurch durchschnittlich länger in der stationären Phase und ihre Durchschnittsgewschindigkeit sinkt.
+
+Bei der Gaschromatographie in Multikapillarsäulen haben sowohl die Adsorption- als auch die Verteilungschromatographie einen Einfluss auf den Ablauf des Prozesses. Dabei trennen sich gelöste Teilchen schwerer als adsorbierte Teilchen von der stationären Phase. Die Stoffe verweilen dadurch durchschnittlich länger in der stationären Phase und ihre Durchschnittsgewschindigkeit sinkt stärker.
 
 Auf die eine oder andere Weise diffundieren die Teilchen nun zwischen den beiden Phasen hin und her, wodurch sich ein Gleichgewicht zwischen den Phasen einstellt. Durch dieses Gleichgewicht wandern die Teilchen eines Stoffes als Pulk durch die Säule, bis sie diese verlassen. Für Teilchen vorne im Pulk besteht nur die Möglichkeit, in Wechselwirkung mit der stationären Phase zu treten, bis sich eine Sättigung einstellt. Später ankommmende Teilchen können nur dann in Wechselwirkung treten, wenn bereits wieder Teilchen mobil geworden sind, wodurch sich das Gleichgewicht aufrecht erhält. 
-Je nach Verweildauer der einzelnen Teilchen in der stationären Phase, ergibt sich eine für diesen Stoff charakteristische Durchschnittsgeschwindigkeit, die den Zeitpunkt der höchsten Austrittsintensität bestimmt.
+Je nach Verweildauer der einzelnen Teilchen in der stationären Phase, ergibt sich eine für diesen Stoff charakteristische Durchschnittsgeschwindigkeit.%TODO, die den Zeitpunkt der höchsten Austrittsintensität bestimmt.
 
 
 \subsection{Detektion}
 Nach Durchlaufen der Säule wird detektiert, welche Menge an Substanzen austritt. Dabei wird nicht die Art des Analyts festgestellt, sondern nur die Menge der zum jeweiligen Zeitpunkt austretenden Stoffe. Während sich die meisten Stoffe ausreichend in ihrem Verhalten zur stationären Phase unterscheiden und dadurch aufgetrennt die Säule verlassen, kann es aber durchaus vorkommen, dass sich zwei Stoffe hinreichend ähnlich sind und  zumindest teilweise überlappend austreten.
 
-Zur Detektion existieren mehrere Möglichkeiten. Zum Einen kann ein Detektor wie beispielsweise ein Wärmeleitfähigkeitsdetektor oder Flammenionisationsdetektor ein Chromatogramm aufzeichen. Dabei wird in bestimmten Zeitintervallen die austretende Menge Analyte festgestellt. Beispielhaft ist ein Chromatogramm in Abbildung \ref{chromatogramm} zu sehen. 
+Zur Detektion existieren mehrere Möglichkeiten. Zum Einen kann ein Detektor wie beispielsweise ein Wärmeleitfähigkeitsdetektor oder Flammenionisationsdetektor ein Chromatogramm aufzeichen. Dabei wird in bestimmten Zeitintervallen die austretende Menge Analyte festgestellt. 
+%Beispielhaft ist ein Chromatogramm in Abbildung \ref{chromatogramm} zu sehen. 
+In Abbildung \ref{chromatogramm} ist ein Beispiel für ein Chromatogramm zu sehen, welches aus mehreren simulierten Daten und Hintergrundrauschen erstellt wurde.
+Typischerweise sind zu Beginn einer Messung die Peaks sehr schmal und werden mit zunehmender Retentionszeit eher breiter.
 %\todo{Bild Chromatogramm (zb ein verrauschter plot 2-3 stoffe, dabei unterschiedlichen pd)}
 
 \begin{figure}
@@ -54,32 +65,30 @@ Zur Detektion existieren mehrere Möglichkeiten. Zum Einen kann ein Detektor wie
   \label{chromatogramm}
 \end{figure}
 
-Alternativ kann die Gaschromatographie auch als Vorverarbeitung für Verfahren wie Massenspektrometrie (MS) oder Ionen-Mobilitäts-Spektrometrie (IMS) dienen. Auch bei diesen Technologien können nicht in jedem Fall alle Stoffe unterschieden werden, bei beispielsweise gleicher Masse aber unterschiedlicher Molekülstruktur bei der MS ist das der Fall. Durch zuvor statt findende GC jedoch wird nach einer weiteren Stoffeigenschaft unterschieden, sodass diese ähnlichen Stoffe durch die Vortrennung zu verschiedenen Zeitpunkten mit dem zweiten Analyseverfahren beginnen und so doch getrennt im resultierenden Spektrum erscheinen. Wenn eine solche Weiterverarbeitung statt finden soll, werden die aus der MCC austretenden Moleküle direkt ionisiert und in den entsprechenden Geräten weiter analysiert.
-Die Kopplung von GC und MS ist beispielsweise in \cite{Hubschmann2009} ausführlich beschrieben, näheres zur Kopplung von GC und IMS findet sich zum Beispiel in \cite{Baumbach2009}. 
+Alternativ kann die Gaschromatographie auch als Vorverarbeitung für Verfahren wie Massenspektrometrie (MS) oder Ionen-Mobilitäts-Spektrometrie (IMS) dienen. Auch bei diesen Technologien können nicht in jedem Fall alle Stoffe voneinander unterschieden werden. Zum Beispiel existieren Isomere, also Moleküle gleicher Masse aber unterschiedlicher Struktur, die von der MS nicht unterschieden werden können. Durch zuvor statt findende GC jedoch wird nach einer weiteren Stoffeigenschaft unterschieden, sodass diese ähnlichen Stoffe durch die Vortrennung zu verschiedenen Zeitpunkten mit dem zweiten Analyseverfahren beginnen und so doch getrennt im resultierenden Spektrum erscheinen. Wenn eine solche Weiterverarbeitung statt finden soll, werden die aus der MCC austretenden Moleküle direkt ionisiert und in den entsprechenden Geräten weiter analysiert.
+Die Kopplung von GC und MS ist beispielsweise von \cite{Hubschmann2009} ausführlich beschrieben worden, näheres zur Kopplung von GC und IMS findet sich zum Beispiel bei \citep{Baumbach2009}. 
 
 %\todo{Wo kann ich sonst Peaks beobachten?}
 
 \subsection{Technische Daten}
-TODO
 
-Eine MCC besteht aus ca. $1000 - 2000$ Kapillaren mit je
-\begin{itemize}
- \item $20\,-\,80$\,\textmu m Durchmesser
- \item Stationäre Phase ist ein Flüssigkeitsfilm, als ca. $0,1\,-\,0,8$\,\textmu m dicke Beschichtung
-\end{itemize}
-Insgesamt ist eine MCC damit etwa $2\,-6$\,mm dick und $20$\,cm lang
+Es gibt verschiedene Multikapillarsäulen, die sich in der Anzahl und Größe ihrer Kapillaren, ihrer Länge, ihrer stationären Phase oder der maximalen Temperatur und Druck mit denen sie betrieben werden können, unterscheiden können. Dadurch können sie auch ein unterschiedliches Gasvolumen aufnehmen und trennen und die Durchlaufzeiten für eine Analyse variieren entsprechend. Außerdem können mit ein und derselbsen Säule verschiedene Betriebsmodi verwendet werden, die sich beispielsweise durch verwendetem Druck und damit in der Geschwindigkeit des Trägergases oder der Temperatur unterscheiden. Damit können bei gleichen Analyten sehr unterschiedlich aussehende Chromatogramme erzeugt werden, da die Stoffe auch unterschiedlich auf solche Veränderungen reagieren.
 
-\todo{Technische Daten belegen, soll das überhaupt rein, gibt so viele verschiedene und ohne referenzdaten ist das blöd}
+Um eine Einschätzung für eine MCC zu geben, sind hier einige mögliche Daten angegeben. Weitere Spezifikationen finden sich beispielsweise auf der Webseite des Herstellers Multichrom Ltd. \footnote[1]{http://www.mcc-chrom.com/catalogue} \footnote[2]{http://www.mcc-chrom.com/species} 
+
+
+Eine MCC besteht aus ca. $1000\,$--$\,2000$ Kapillaren mit je $20\,$--$\,80$\,\textmu m Durchmesser. Damit ist sie etwa $2\,$--$\,6$\,mm dick. Die Länge beträgt etwa  $20\,$--$\,40 $\,cm. Die stationäre Phase ist ein Flüssigkeitsfilm, der als ca. $0,1\,$--$\,0,8$\,\textmu m dicke Beschichtung auf die Innenseite der Kapillaren aufgebracht ist. 
 
 Der Querschnitt einer MCC ist in Abbildung \ref{MCC} zu sehen.
 
-\begin{figure}
+\begin{figure}[h]
  \centering
   \includegraphics[width = 0.5\textwidth]{bilder/MultiCapillaryColumn}\\
-  \caption[Querschnitt einer MCC]{Querschnitt einer MCC \protect\footnotemark}
+  %\caption[Querschnitt einer MCC]{Querschnitt einer MCC \protect\footnotemark}
+  \caption[Querschnitt einer MCC]{Querschnitt einer MCC, Quelle: http://yas.yanaco.co.jp/products/import-gc-ims.html}
   \label{MCC}
 \end{figure}
-\footnotetext{http://yas.yanaco.co.jp/products/import-gc-ims.html}
+%\footnotetext{http://yas.yanaco.co.jp/products/import-gc-ims.html}
 
 \section{Peakcharakteristika}
 Die im gaschromatographischen Experiment gewonnenen, sowie später auch die simulierten Peaks müssen durch einige Eigenschaften beschrieben werden, um sie vergleichbar zu machen. Dafür seien hier drei solcher Eigenschaften beschrieben, die Lage, Breite und Form eines Peaks.
@@ -92,23 +101,33 @@ Allerdings gibt es immer einen minimalen Zeitraum der nach Start der Chromatogra
 Für die Gaschromatographie in Multikapillarsäulen liegen die Retentionszeiten typischerweise bei wenigen Sekunden bis Minuten.
 %\todo{Ende der Simulation hier festlegen?}
 
-\subsection{Form}
-Außerdem können die Peaks verschiedene Formen haben. Im theoretischen Idealfall haben sie die Form einer Gaußkurve. %\todo{Quelle}
-Abweichend davon treten in echten Messungen häufig asymmetrische Peaks auf, die dann ein Tailing aufweisen, auch rechtsschiefe genannt. Dabei steigt die Kurve zunächst stark an, sinkt jedoch nach Erreichen des Maximalwerts deutlich langsamer ab, es entsteht ein Schwanz (engl. Tail).
-Ursachen für solche schiefen Peaks gibt es viele und werden beispielsweise in \cite{kolb2003, Moretti2004, Giddings1963} beschrieben. Einige Beispiele für Ursachen sind zusätzliche Adsorptionseffekte, die beim Altern einer Säule auftreten, technische Ursachen wie kleinste Hohlräume zwischen der Säule und dem Gaseinlass bzw. -austritt, sowie einige Stoffe, die generell zu Tailing neigen. %\todo{Zitat, dass einige Stoffe gererell tailen}. 
-
-Als Maß für die Schiefe bietet sich der Quartilskoeffizient nach Yule-Bowley an. Dieser berechnet sich aus den Quartilen einer Verteilung und ist definiert als: 
-\begin{equation*}
-\frac{Q_{25} + Q_{75} -2\cdot Q_{50} }{ Q_{75} - Q_{25}}
-\end{equation*}
-\todo{Salome nach zitierwürdiger Quelle fragen}
 
 \subsection{Breite}
-Als drittes können Peaks unterschiedlich breit sein. Dabei ist zu beobachten, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden.
+Peaks können unterschiedlich breit sein. Dabei ist zu beobachten, dass schnelle Teilchen Peaks zu frühen Zeitpunkten erzeugen, die eine relativ geringe Varianz aufweisen, hingegen spätere Peaks tendenziell breiter werden.
 % 10% der peakhöhe: kolb, s33. allerdings als tailingfaktor, entspricht eher der schiefemessung
-Da jedoch ein Peak mit größerer Intensität, also möglicherweise größerer Stoffmenge, automatisch auch einen höheren und damit breiteren Peak erzeugt, kann die Halbwertsbreite als Maß für die Peakbreite herangezogen werden. Die Halbwertsbreite wird auf halber Maximalhöhe des Peaks gemessen. Im Fall von auftretendem Tailing ist dieser Wert jedoch wahrscheinlich nicht mehr aussagekräftig. Außerdem ist die Halbwertsbreite kein robustes Maß für die Breite, sodass statt dessen der Interquartilsabstand (IQR, engl. interquartile range) als Maß für die Breite verwendet werden kann. Auch dieses Maß ist unabhängig von der Stoffmenge, die den Peak verursacht hat. Der IQR ist entspricht der Differenz zwischen den Quartilen $Q_{25}$ und $Q_{75}$.
+Da jedoch ein Peak mit größerer Intensität, also möglicherweise größerer Stoffmenge, automatisch auch einen höheren und damit breiteren Peak erzeugt, kann die Halbwertsbreite als Maß für die Peakbreite herangezogen werden. Die Halbwertsbreite wird auf halber Maximalhöhe des Peaks gemessen. Im Fall von auftretendem Tailing ist dieser Wert jedoch wahrscheinlich nicht mehr aussagekräftig. Außerdem ist die Halbwertsbreite kein robustes Maß für die Breite, sodass statt dessen der Interquartilsabstand (IQR, engl. interquartile range) als Maß für die Breite verwendet werden kann. Auch dieses Maß ist unabhängig von der Stoffmenge, die den Peak verursacht hat. 
+\todo{Quantil, $Q_p$, Quartil definieren}
+
+Der IQR ist entspricht der Differenz zwischen den Quartilen $Q_{25}$ und $Q_{75}$:
+\begin{equation}
+IQR = Q_{75} -Q_{25}
+\end{equation}
+
+ 
 
  % \todo{Zitat IQR, diesen erkären, warum dieses Mass}
+\subsection{Form}
+Als dritte Eigenschaft können sich Peaks in ihrer Form unterscheiden. Im theoretischen Idealfall haben sie die Form einer Gaußkurve. %\todo{Quelle}
+Abweichend davon treten in echten Messungen häufig asymmetrische Peaks auf, die dann ein Tailing aufweisen, diese Eigenschaft wird auch Rechtsschiefe genannt. Dabei steigt die Kurve zunächst stark an, sinkt jedoch nach Erreichen des Maximalwerts deutlich langsamer ab, es entsteht ein Schwanz (engl. Tail).
+Ursachen für solche schiefen Peaks gibt es viele \citep{kolb2003, Moretti2004, Giddings1963}. Einige Beispiele für Ursachen sind zusätzliche Adsorptionseffekte, die beim Altern einer Säule auftreten, technische Ursachen wie kleinste Hohlräume zwischen der Säule und dem Gaseinlass bzw. -austritt, sowie einige Stoffe, die generell zu Tailing neigen. %\todo{Zitat, dass einige Stoffe gererell tailen}. 
+
+Als Maß für die Schiefe bietet sich der Quantilskoeffizient \citep{johnson1994} an.
+Dieser berechnet sich, aus den Quantilen einer Verteilung und ist definiert als: 
+\begin{equation}
+\frac{Q_{\alpha} + Q_{1-\alpha} -2\cdot Q_{50} }{ Q_{1-\alpha} - Q_{\alpha}}
+\end{equation}
+
+Für $\alpha = 25$ spricht man auch vom Quartilskoeffizienten nach Yule-Bowley und dieser soll später als Maß für die Schiefe der Peaks verwendet werden.
 
 
 \section{Probabilistische Arithmetische Automaten}
@@ -151,12 +170,47 @@ Ein PAA ist zu jedem Zeitpunkt mit einer bestimmten Wahrscheinlichkeit in jedem 
 % 
 % wahrscheinlichkeit für neuen Zustand $q'$ ausgehend von allen Zuständen $q$
 % 
-% $ P(q_n'| q_{n-1} ) = (T_{q, q'} \cdot  P(q_{n-1}))$
+% $ P(q_n'\mid q_{n-1} ) = (T_{q, q'} \cdot  P(q_{n-1}))$
 % 
 % $ P(q_n' ) = \sum_q (T_{q, q'} \cdot  P(q_{n-1})$
 % Gebe eher p(Q) an
 
-\todo{Algos für die Verteilung und Wartezeit-Berechnung vorstellen}
 \subsection{Algorithmus zur Berechnung der Wartezeit}
 
-TODO
+Neben der eben vorgestellten schrittweisen Berechnung der Zustand-Werte Verteilung kann es von Interesse sein, die Verteilung der Wartezeit auf einen bestimmten Wert $v^*$ zu kennen. Für die Teilchen in der MCC entspricht dieser Zielwert der Länge der Säule und man ist interessiert in der Verteilung der Anzahl der Schritte die zum Durchlaufen dieser Strecke benötigt werden. 
+
+Da es sein kann, dass in einigen Abfolgen von Zuständen, der Wert $v^*$ erst sehr spät oder gar nicht erreicht werden kann, wird eine maximale Wartezeit $t_{\text{max}}$ gesetzt. Zwar können dann Wartezeiten für $v^*$ größer als $t_{\text{max}}$ auftreten, deren genaue Verteilung unbekannt ist, Gesamtwahrscheinlichkeit dieser Zeitpunkte kann jedoch berechnet werden.
+% TODO Wohin damit? Es kann sein, dass Wartezeiten für $v^*$ größer als $t_{\text{max}}$ auftreten. Dann ist die Verteilung der Wahrscheinlichkeiten für diese Zeitpunkte zwar unbekannt, aber die Gesamtwahrscheinlichkeit für solche Wartezeiten kann berechnet werden.% (teilchen bleiben ewig stecken) aber uns interessiert nur bis zeitpunkt y. (y=240s). Dann kennt man die verteilung darüber hinaus nicht, aber die gesamtwkeit dafür schon.
+
+\todo{Überarbeiten, groß V}
+brauche für groß W muss auch groß V rein (paper) da V Zufallsvariable, die verteilung haben kann
+
+Außerdem können innerhalb eines Prozesses mehrere Zeitpunkte existieren, an denen der Wert $v^*$ angenommen werden kann, gesucht ist der kleineste dieser Zeitpunkte. %(bspw, wenn Teilchen grad stecken geblieben ist, rein theoretisch) 
+Daher kann die Wartezeit auch als Zufallsvariable aufgefasst werden, die definiert als: $W_{v^*} = \min\{t \in \mathbb{N}\mid v_t = v^*\}$.
+%Warte auf Wert $v^*$: 
+%Gesucht ist der minimale Zeitpunkt $t$, an dem $v_t$ den Wert $v^*$ angenommen hat. 
+%Die Wartezeit ist eine Zufallsvariable, definiert als: $W_{v^*} = \min\{t \in \mathbb{N}\mid v_t = v^*\}$
+
+Wie oben beschrieben, existiert die Möglichkeit, die Zustands-Werte Verteilung schrittweise für alle Zeitpunkte bis zu einem gewünschten Maximalzeitpunkt $t_{\text{max}}$ zu berechnen.
+Gesucht ist nun die Verteilung über die Zeitpunkte $t < t_{\text{max}}$ für einen Zielwert $v^*$. $P(v_{t} = v^*)$ ist die Wahrscheinlichkeit für jeden solchen Zeitpunkt $t$, $v^*$  zu erreichen. Dies entspricht der Summe über alle Zuständen, die zu Zeitpunkt $t$ den Wert $v^*$ erreichen können. Also ist $P(v_t = v^*)  = \sum_{q \in \mathcal{Q}} P(q_{t} = q, v_{t} = v^*)$
+
+
+Zur Berechnung der Verteilung der Wartezeit auf $v^*$ wird ein modifizierter PAA konstruiert. Hierbei werden zwei neue Zustände eingeführt, $\bullet$ und $\circ$, sodass der neue PAA die Zustände $\mathcal{V}' = \mathcal{V} \cup \{\bullet, \circ\}$ hat. Außerdem werden die Operationen angepasst auf
+
+$ \theta'_q(v,e)=
+\begin{cases}
+\theta_q(v,e), 	& \text{wenn } v \notin \{\bullet, \circ\} \text{ und } \theta_q(v,e) \neq v^* ,\\
+\bullet,	& \text{wenn } v \notin \{\bullet, \circ\} \text{ und } \theta_q(v,e) = v^* ,  \\
+\circ, 		& \text{wenn } v \in \{\bullet, \circ\}
+\end{cases}$.
+
+Der Wert $\bullet$ wird also genau dann erreicht, wenn im aktuellen Berechnungsschritt die ursprüngliche Operation den Zielwert $v^*$ erreicht. Also gilt für alle Zeiten $t < t_{\text{max}}$: $P(W_{v^*} = t) = P(v'_t = \bullet)$.
+
+Die Verteilung für $P(v'_{t} = \bullet)$ kann wie oben angegeben schrittweise für alle Zeitpunkte $t$ ausgehend von der Startverteilung bis zu $t_{\text{max}}$ berechnet werden. Dadurch, dass im jeweils nächsten Berechnungsschritt der PAA in Zustand $\circ$ gelangt, wird jeweils nur das erste Erreichen von $v^*$ berücksichtigt.
+
+Durch Berechnung der Wahrsscheinlichkeiten $P(v'_{t} = \bullet)$ für alle $t < t_{\text{max}}$ erhält man die Verteilung der Wartezeiten auf $v^*$.
+
+
+%Offensichtlich entspricht die Wartezeit auf den Wert $v^*$ der Wahrscheinlichkeit von Wert $\bullet$
+%Es kann also für alle Zeitpunkte $t$ die Wahrscheinlichkeit für den neuen Wert $\bullet$ berechnet werden.
+%TODO

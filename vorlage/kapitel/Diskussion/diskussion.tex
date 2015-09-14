@@ -7,7 +7,7 @@ Es wurden zwei aufeinander aufbauende Modelle vorgestellt, mit denen der chromat
 
 Um auch Peaks mit Schiefe simulieren zu können, wurde das einfache Modell erweitert und dadurch eine Unterscheidung zwischen Adsorption an und Lösung der Teilchen in der stationären Phase eingeführt. Auch mit diesem Modell wurde ein Zusammenhang zwischen den Simulationsparametern und Peakdaten gefunden. 
 
-Da, wie in Kapitel 
+%Da, wie in Kapitel 
 Es existiert zwar noch keine Formel, die eine exakte Entsprechung beschreibt, jedoch ist der Einfluss der Parameter auf die untersuchten Peakcharakteristika bekannt. 
 
 Aktuell kann für die in der Einleitung erwähnte, unbekannte Funktion  $F: [0,1] ^ x \rightarrow \mathbb{R}^y$ gesagt werden, dass für $x = 4$ und $y = 3$ schon gute Annäherungen an reale Peaks erreicht werden können.
@@ -64,10 +64,14 @@ Außerdem ist es auch gut vorstellbar, dass so schmalere Peaks zum gleichen Zeit
 
 
 \paragraph{Entsprechung von Simulationsparametern zu Peakcharakteristika}
-Falls Formel für entsprecung nicht gefunden: Das Sekantenverfahren erwähnen?
-Verfahren entwickeln, um gewünschten Peak zu simulieren. Bisher funktioniert das händisch unter Anwendung der Erkenntnisse, wie sich die Parameter auf die Peaks auswirken. Wenn also ein Peak mit bestimmten Eigenschaften gewünscht ist, wird bisher die grobe Umgebung abgesucht. Die Parameter der dort gefundenen Peaks werden in die passende Richtung abgewandelt (zb. er ist etwas zu früh, dann wird pmm verringert oder zu schmal, dann wird pll erhöht). Anschließend wird überprüft, wo der neue Peak liegt und evtl noch mal die Parameter angepasst. 
-Um das zu ersparen müsste entweder der komplette Parameterraum noch besser abgedeckt werden (was uU sehr viel Laufzeit und Speicherplatz kostet) oder die Vorgehensweise automatisiert werden.
+%Falls Formel für entsprecung nicht gefunden: Das Sekantenverfahren erwähnen?
+Bisher ist der Einfluss der Parameter auf die Peakcharakteristika bekannt, es fehlt aber noch eine genaue Formel, mit der diese aus den Simulationsparametern berechnet werden können. 
+
+Vorteilhaft wäre es daher, ein Verfahren zu entwickeln, um einen Peak mit bestimmten, vorgegebenen Eigenschaften zu simulieren. Bisher funktioniert das händisch unter Anwendung der Erkenntnisse, wie sich die Parameter auf die Peaks auswirken. Wenn also ein Peak mit bestimmten Eigenschaften gewünscht ist, wird bisher die grobe Umgebung abgesucht. Die Parameter der dort gefundenen Peaks werden in die passende Richtung abgewandelt (zb. er ist etwas zu früh, dann wird pmm verringert oder zu schmal, dann wird pll erhöht). Anschließend wird überprüft, wo der neue Peak liegt, um eventuell in einer weiteren Iteration die Parameter anzupassen. 
+Um das zu ersparen, müsste entweder der komplette Parameterraum noch besser abgedeckt werden, was sehr viel Laufzeit und Speicherplatz kostet, oder die Vorgehensweise automatisiert werden.
 
 \paragraph{Laufzeit}
 
-Umsetzung von Modellen mit mehr Zuständen: Simulation als event nicht schwer (und von den Laufzeiten her wohl auch ganz gut) die by-step müsste aber angepasst werden (Schleifen) da sonst wohl zu aufwändig und zu langsam. gleiches gilt für paa, da wäre auch eine neue umsetzung nötig
+Da sich die Umsetzung der schrittweisen Simulation für mehr als zwei Zustände als eher Laufzeitintensiv erwiesen hat, könnte eine neue Methode zur Simulation eines Einzelschrittes entwickelt werden. Bei der bisherigen Vorgehensweise werden sehr viele, danach nicht mehr benötigte Zwischeninformationen berechnet. Möglicherweise wäre daher ein Ansatz, der schleifenbasiert jedes Feld der neuen Zustandsvektoren berechnet, lohnenswert.
+
+%Umsetzung von Modellen mit mehr Zuständen: Simulation als event nicht schwer (und von den Laufzeiten her wohl auch ganz gut) die by-step müsste aber angepasst werden (Schleifen) da sonst wohl zu aufwändig und zu langsam. gleiches gilt für paa, da wäre auch eine neue umsetzung nötig

@@ -3,7 +3,7 @@
 \chapter{Evaluation}
 \label{chapter:eva}
 \todo{pmm = $p_\text{mm}$ etc}
-\todo{Durchschnittsgeschwindigkeit: Achtung mean!=mode. s. grundlagen }
+%\todo{Durchschnittsgeschwindigkeit: Achtung mean!=mode. s. grundlagen }
 Im folgenden Kapitel wird betrachtet, was mit den vorgestellten Modellen simuliert werden kann. Es werden die Einflüsse der Simulationsparameter auf die Peakcharakteristika beschrieben, Zusammenhänge zwischen den verschiedenen Parametern untersucht und Grenzen der einzelnen Modelle aufgezeigt.
 
 % Was kann ich mit meinem Modell?
@@ -16,7 +16,7 @@ Im folgenden Kapitel wird betrachtet, was mit den vorgestellten Modellen simulie
 Mit den beiden vorgestellten Modellen ist es möglich, eine Vielzahl verschiedener Verteilungen der Ankunftszeiten von Teilchen zu simulieren. 
 Dazu wurden zunächst im gesamten Parameterraum Simulationen durchgeführt und die aus den verschiedenen Kombinationen resultierenden Verteilungen betrachtet.
 
-Einige Kombinationen würden zwar Peaks erzeugen, diese lägen jedoch teilweise oder vollständig jenseits der $240$ Sekunden, die als Maximalzeit gesetzt wurden. Diese Verteilungen werden in den nicht Evaluationen weiter berücksichtigt, da die Simulationen vorher abgebrochen wurden und daher auch die Eigenschaften der Peaks nicht oder nur teilweise berechnet wurden. Insbesondere betrifft dies Simulationen, in denen die Wahrscheinlichkeit mobil zu bleiben ($p_m$ bzw. $pmm$) sehr gering ist und die Wahrscheinlichkeit(en) stationär zu bleiben sehr hoch ist. Ein Beispiel für eine Parameterkombination im 2-Zustände Modell, die einen Peak erzeugt, der teilweise außerhalb des Chromatogramms liegt ist links in Abbildung \ref{kein_peak} gezeigt.
+Einige Kombinationen würden zwar Peaks erzeugen, diese lägen jedoch teilweise oder vollständig jenseits der $240$ Sekunden, die als Maximalzeit gesetzt wurden. Diese Verteilungen werden in den nicht Evaluationen weiter berücksichtigt, da die Simulationen vorher abgebrochen wurden und daher auch die Eigenschaften der Peaks nicht oder nur teilweise berechnet wurden. Insbesondere betrifft dies Simulationen, in denen die Wahrscheinlichkeit mobil zu bleiben ($p_m$ bzw. $p_{\text{mm}}$) sehr gering ist und die Wahrscheinlichkeit(en) stationär zu bleiben sehr hoch ist. Ein Beispiel für eine Parameterkombination im 2-Zustände Modell, die einen Peak erzeugt, der teilweise außerhalb des Chromatogramms liegt ist links in Abbildung \ref{kein_peak} gezeigt.
 
 \begin{figure}[H]
 \includegraphics[width=0.49\textwidth]{bilder/outof240}
@@ -75,11 +75,11 @@ Es wird an zwei einzelnen Peaks gezeigt, wie sich die Veränderung von jeweils e
 
 \includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t20_psp}
 \includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t20_psm}
-\caption[Einfluss von pm und ps auf einen Peak]{Einfluss von pm und ps auf einen Peak, oben der Ausgangspeak mit $pm = 0,8$ und $ps = 0,9991$, veränderte Parameter: in der Mitte links $pm = 0,9$, rechts $pm = 0,7$, unten links $ps = 0,999$, rechts $ps = 0,9992$ }
+\caption[Einfluss von $p_{\text{m}}$ und $p_{\text{s}}$ auf einen Peak]{Einfluss von $p_{\text{m}}$ und $p_{\text{s}}$ auf einen Peak, oben der Ausgangspeak mit $p_{\text{m}} = 0,8$ und $p_{\text{s}} = 0,9991$, veränderte Parameter: in der Mitte links $p_{\text{m}} = 0,9$, rechts $p_{\text{m}} = 0,7$, unten links $p_{\text{s}} = 0,999$, rechts $p_{\text{s}} = 0,9992$ }
 \label{2s_t20_change}
 \end{figure}
 
-In Abbildung \ref{2s_t20_change} ist ein Peak zu sehen, der mit den Parametern $pm = 0,8$ und $ps = 0,9991$ simuliert wurde. Sein Maximalwert liegt bei etwa $t = 22$ s und er hat eine Breite von etwa $2,8$. Abbildung \ref{2s_t100_change} zeigt einen Peak, dessen Maximalwert bei $t=100$ s liegt und der einen Interquartilsabstand von $7,4$ hat. Er wurde mit den Parametern $pm = 0,5$ und $ps = 0,9995$ simuliert.
+In Abbildung \ref{2s_t20_change} ist ein Peak zu sehen, der mit den Parametern $p_{\text{m}} = 0,8$ und $p_{\text{s}} = 0,9991$ simuliert wurde. Sein Maximalwert liegt bei etwa $t = 22$ s und er hat eine Breite von etwa $2,8$. Abbildung \ref{2s_t100_change} zeigt einen Peak, dessen Maximalwert bei $t=100$ s liegt und der einen Interquartilsabstand von $7,4$ hat. Er wurde mit den Parametern $p_{\text{m}} = 0,5$ und $p_{\text{s}} = 0,9995$ simuliert.
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t100}
@@ -91,13 +91,13 @@ In Abbildung \ref{2s_t20_change} ist ein Peak zu sehen, der mit den Parametern $
 
 \includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t100_psp}
 \includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t100_psm}
-\caption[Einfluss von pm und ps auf einen Peak]{Einfluss von pm und ps auf einen Peak, oben der Ausgangspeak mit $pm = 0,5$ und $ps = 0,9995$, veränderte Parameter: in der Mitte links $pm = 0,6$, rechts $pm = 0,4$, unten links $ps = 0,9993$, rechts $ps = 0,9997$ }
+\caption[Einfluss von $p_{\text{m}}$ und $p_{\text{s}}$ auf einen Peak]{Einfluss von $p_{\text{m}}$ und $p_{\text{s}}$ auf einen Peak, oben der Ausgangspeak mit $p_{\text{m}} = 0,5$ und $p_{\text{s}} = 0,9995$, veränderte Parameter: in der Mitte links $p_{\text{m}} = 0,6$, rechts $p_{\text{m}} = 0,4$, unten links $p_{\text{s}} = 0,9993$, rechts $p_{\text{s}} = 0,9997$ }
 \label{2s_t100_change}
 \end{figure}
 
-In beiden Fällen zeigen sich bei Veränderungen an den Parametern die gleichen Effekte am Peak. Wenn pm größer oder ps kleiner wird, resultiert ein schmalerer und früherer Peak. Umgekehrt bewirkt eine Verkleinerung von pm oder eine Vergrößerung von ps, einen späteren und breiteren Peak. Die Schiefe verändert sich, wenn überhaupt, nur minimal.
+In beiden Fällen zeigen sich bei Veränderungen an den Parametern die gleichen Effekte am Peak. Wenn $p_{\text{m}}$ größer oder $p_{\text{s}}$ kleiner wird, resultiert ein schmalerer und früherer Peak. Umgekehrt bewirkt eine Verkleinerung von $p_{\text{m}}$ oder eine Vergrößerung von ps, einen späteren und breiteren Peak. Die Schiefe verändert sich, wenn überhaupt, nur minimal.
 
-Abbildung \ref{heatmap_lage_breite} zeigt eine Übersicht darüber, welche Peaks sich bei verschiedenen Parameterkombinationen ergeben. Auf den x-Achsen sind jeweils verschiedene Werte für pm und auf der y-Achse für ps aufgetragen. An der Farbe des entsprechenden Feldes ist zu erkennen, welchen Wert die Eigenschaft für die jeweilige Parameterkombination annimmt. Das weiße Feld oben links steht für eine Simulation, die keinen Peak innerhalb der Maximalzeit ergeben hat.
+Abbildung \ref{heatmap_lage_breite} zeigt eine Übersicht darüber, welche Peaks sich bei verschiedenen Parameterkombinationen ergeben. Auf den x-Achsen sind jeweils verschiedene Werte für $p_{\text{m}}$ und auf der y-Achse für $p_{\text{s}}$ aufgetragen. An der Farbe des entsprechenden Feldes ist zu erkennen, welchen Wert die Eigenschaft für die jeweilige Parameterkombination annimmt. Das weiße Feld oben links steht für eine Simulation, die keinen Peak innerhalb der Maximalzeit ergeben hat.
 
 \begin{figure}[h]
 \includegraphics[width=0.49\textwidth]{bilder/erreichbare_Zeiten_2s}
@@ -106,7 +106,7 @@ Abbildung \ref{heatmap_lage_breite} zeigt eine Übersicht darüber, welche Peaks
 \label{heatmap_lage_breite}
 \end{figure}
 
-Offensichtlich kann eine bestimmte Retetionszeit durch verschiedene Kombinationen erreicht werden, die sich dann jeweils in der Breite des Peaks unterscheiden. Dies wird in Abbildung \ref{params_at_time} noch einmal deutlich. Abgebildet sind verschiedene Kombinationen aus ps und pm, mit denen ein Peak etwa zum Zeitpunkt $t=100$ erreicht werden kann. In diesem Fall liegen alle Zeitpunkte der Peaks im Intervall $[72, 78]$. Für den Parameter $ps = 0,9996$ gibt es offenbar zwei Möglichkeiten, pm zu wählen, um einen Peak in der Nähe von $t = 75$ zu erzeugen. Eine weitere Simulation mit dem Parameter $ps = 0,9996$ und einem Wert für pm, der zwischen diesen Möglichkeiten liegt, beispielsweise $pm = 0,73$ würde einen Peak näher an der gewünschten Retentionszeit liefern. Die Breite des neuen Peaks liegt dann auch zwischen den Breiten der beiden vorhandenen Peaks.
+Offensichtlich kann eine bestimmte Retetionszeit durch verschiedene Kombinationen erreicht werden, die sich dann jeweils in der Breite des Peaks unterscheiden. Dies wird in Abbildung \ref{params_at_time} noch einmal deutlich. Abgebildet sind verschiedene Kombinationen aus $p_{\text{s}}$ und pm, mit denen ein Peak etwa zum Zeitpunkt $t=100$ erreicht werden kann. In diesem Fall liegen alle Zeitpunkte der Peaks im Intervall $[72, 78]$. Für den Parameter $p_{\text{s}} = 0,9996$ gibt es offenbar zwei Möglichkeiten, $p_{\text{m}}$ zu wählen, um einen Peak in der Nähe von $t = 75$ zu erzeugen. Eine weitere Simulation mit dem Parameter $p_{\text{s}} = 0,9996$ und einem Wert für pm, der zwischen diesen Möglichkeiten liegt, beispielsweise $p_{\text{m}} = 0,73$ würde einen Peak näher an der gewünschten Retentionszeit liefern. Die Breite des neuen Peaks liegt dann auch zwischen den Breiten der beiden vorhandenen Peaks.
 
 Auf diese Weise ist es möglich, Peaks mit gewünschter Retentionszeit und Breite schrittweise anzunähern. 
 
@@ -121,7 +121,7 @@ Auf diese Weise ist es möglich, Peaks mit gewünschter Retentionszeit und Breit
 
 
 
-Die Stärke der Veränderung an den Peaks unterscheidet sich für Änderungen an ps oder pm. Daher wird im nächsten Abschnitt untersucht, inwiefern der Einfluss eines Parameters größer oder kleiner wird, abhängig davon, welchen Wert der andere Parameter annimmt.
+Die Stärke der Veränderung an den Peaks unterscheidet sich für Änderungen an $p_{\text{s}}$ oder pm. Daher wird im nächsten Abschnitt untersucht, inwiefern der Einfluss eines Parameters größer oder kleiner wird, abhängig davon, welchen Wert der andere Parameter annimmt.
 
 \subsection{Einfluss abhängig vom anderen Parameter}
 
@@ -135,7 +135,7 @@ Um den Einfluss der Parameter in Abhängigkeit vom anderen Parameter zu untersuc
 \label{einfluss_ps_1}
 \end{figure}
 
-In Abbildung \ref{einfluss_ps_1} ist der Einfluss des Parameters ps in Abhängigkeit von pm gezeigt. Neben der bereits im letzten Abschnitt gewonnenen Erkenntnis, dass die Peaks mit zunehmendem ps breiter werden und später erscheinen, ist zu sehen, dass der Einfluss von ps größer wird, wenn pm kleiner ist. Dies gilt sowohl für den Zeitpunkt, als auch die Breite des Peaks. Die Schiefe wird in beiden Fällen nicht wahrnehmbar beeinflusst.
+In Abbildung \ref{einfluss_ps_1} ist der Einfluss des Parameters $p_{\text{s}}$ in Abhängigkeit von $p_{\text{m}}$ gezeigt. Neben der bereits im letzten Abschnitt gewonnenen Erkenntnis, dass die Peaks mit zunehmendem $p_{\text{s}}$ breiter werden und später erscheinen, ist zu sehen, dass der Einfluss von $p_{\text{s}}$ größer wird, wenn $p_{\text{m}}$ kleiner ist. Dies gilt sowohl für den Zeitpunkt, als auch die Breite des Peaks. Die Schiefe wird in beiden Fällen nicht wahrnehmbar beeinflusst.
 
 \begin{figure}[h]
 \includegraphics[width=0.49\textwidth]{bilder/pm/pmfest_ps0999}
@@ -144,16 +144,16 @@ In Abbildung \ref{einfluss_ps_1} ist der Einfluss des Parameters ps in Abhängig
 \label{einfluss_pm_1}
 \end{figure}
 
-Der Einfluss des Parameters pm in Abhängigkeit von ps ist in Abbildung \ref{einfluss_pm_1} zu dargestellt. In beiden Fällen werden die Peaks mit zunehmendem pm schmaler und erscheinen zu einem früheren Zeitpunkt. Dies verstärkt sich bei größerem ps. 
+Der Einfluss des Parameters $p_{\text{m}}$ in Abhängigkeit von $p_{\text{s}}$ ist in Abbildung \ref{einfluss_pm_1} zu dargestellt. In beiden Fällen werden die Peaks mit zunehmendem $p_{\text{m}}$ schmaler und erscheinen zu einem früheren Zeitpunkt. Dies verstärkt sich bei größerem ps. 
 Zu erkennen ist hier auch eine geringe Zunahme der Schiefe mit steigendem pm. Diese Veränderung ist jedoch nicht abhängig von ps.
 
 
 
-%Auch hier ist der Einfluss von pm auf Breite und Lage der Peaks erkennbar, der stärker ist bei größerem ps. 
+%Auch hier ist der Einfluss von $p_{\text{m}}$ auf Breite und Lage der Peaks erkennbar, der stärker ist bei größerem ps. 
 TODO wohin?: Unter anderen ergibt sich dieser Zusammenhang sich daraus, dass sich in diesem Fall auch der Maximalzeitpunkt nach hinten verschiebt und spätere Peaks generell breiter sind, als frühe Peaks. Durch mehr Interaktionen, deren Länge jeweils zufällig ist, wird der Pulk breiter.
 
 
-%Schiefe nur von pmm beeinflusst. Auch wenn pm auf den Wert von 0.999 gesetzt ist, was ja schiefe verursacht, ergeben alle ps's gleiche schiefe. Umgekehrt erzeugen bei festem ps jeweils die pm von ca 0.999 schiefe peaks bei sehr kleinen zeitpunkten (loc = 0.1, also minimalzeitpunkt) Das sieht so aus, als würde der direkt am beginn starten, aber das ist der kompression geschuldet, wenn ich nur ein zehntel komprimiere, hat der peak vorlauf
+%Schiefe nur von $p_{\text{mm}}$ beeinflusst. Auch wenn $p_{\text{m}}$ auf den Wert von 0.999 gesetzt ist, was ja schiefe verursacht, ergeben alle ps's gleiche schiefe. Umgekehrt erzeugen bei festem $p_{\text{s}}$ jeweils die $p_{\text{m}}$ von ca 0.999 schiefe peaks bei sehr kleinen zeitpunkten (loc = 0.1, also minimalzeitpunkt) Das sieht so aus, als würde der direkt am beginn starten, aber das ist der kompression geschuldet, wenn ich nur ein zehntel komprimiere, hat der peak vorlauf
 
 \subsection{Grenzen}
 Mit diesem Modell sind kaum tailende Peaks erzeugbar. Schiefe von mehr als $0,05$ tritt nur selten auf und immer bei Peaks, die ihren Maximalzeitpunkt ganz am Anfang des Spektrums, knapp über der Trägergaszeit von $0,1$ Sekunden haben. Der Effekt wird verursacht durch einen sehr großen Wert für pm, der bei ungefähr $0,999$ liegt. Dadurch gibt es viele Teilchen die (bei einer Säulenlänge von $1000$ Schritten) gar nicht in Wechselwirkung mit der stationären Phase geraten und dadurch mit Trägergasgeschwindigkeit durch die Säule wandern. Die wenigen Teilchen, die doch in die stationäre Phase eintreten, verursachen den Tail, da sie deutlich später als der Pulk die Säule verlassen.
@@ -168,7 +168,7 @@ Zu sehen ist, dass es zu jedem Zeitpunkt möglich ist, Peaks mit dem Modell zu e
 \label{Grenzen_2p_ohnep}
 \end{figure}
 
-Dass die untere Kante der Punktewolke jedoch eine Grenze für die Breite darstellt, ist in Abbildung \ref{Grenzen_2p_ausschnitt} zu sehen, die einen Ausschnitt aus Abbildung \ref{Grenzen_2p_ohnep} darstellt. Zu sehen sind drei Reihen von simulierten Daten, die mit jeweils dem gleichen Parameter ps erzeugt wurden, die Breite nimmt mit fallendem pm zu. Diese Beobachtung wurde bereits im letzten Abschnitt gemacht. Jedoch ist hier zu sehen, dass sich bei einer Annäherung von pm an $0$ keine deutlich späteren Peaks ergeben, sondern der Zeitpunkt auf einem Wert stagniert. Das liegt daran, dass bei so kleinen Werten für pm in fast jedem Schritt, der in der mobilen Phase startet, ein Wechsel zur stationären Phase statt findet. Der Zeitpunkt wird dann also maßgeblich durch ps beeinflusst. Da höhere Werte für ps nicht nur für einen späteren Zeitpunkt sorgen, sondern auch für eine größere Breite, ergibt sich dadurch eine Minimalbreite für alle Zeitpunkte.
+Dass die untere Kante der Punktewolke jedoch eine Grenze für die Breite darstellt, ist in Abbildung \ref{Grenzen_2p_ausschnitt} zu sehen, die einen Ausschnitt aus Abbildung \ref{Grenzen_2p_ohnep} darstellt. Zu sehen sind drei Reihen von simulierten Daten, die mit jeweils dem gleichen Parameter $p_{\text{s}}$ erzeugt wurden, die Breite nimmt mit fallendem $p_{\text{m}}$ zu. Diese Beobachtung wurde bereits im letzten Abschnitt gemacht. Jedoch ist hier zu sehen, dass sich bei einer Annäherung von $p_{\text{m}}$ an $0$ keine deutlich späteren Peaks ergeben, sondern der Zeitpunkt auf einem Wert stagniert. Das liegt daran, dass bei so kleinen Werten für $p_{\text{m}}$ in fast jedem Schritt, der in der mobilen Phase startet, ein Wechsel zur stationären Phase statt findet. Der Zeitpunkt wird dann also maßgeblich durch $p_{\text{s}}$ beeinflusst. Da höhere Werte für $p_{\text{s}}$ nicht nur für einen späteren Zeitpunkt sorgen, sondern auch für eine größere Breite, ergibt sich dadurch eine Minimalbreite für alle Zeitpunkte.
 
 \begin{figure}[h]
 \centering
@@ -178,8 +178,8 @@ Dass die untere Kante der Punktewolke jedoch eine Grenze für die Breite darstel
 \end{figure}
 
 Auch die obere Kante der Punktewolke aus Abbildung \ref{Grenzen_2p_ohnep} stellt gewissermaßen eine Grenze für die mit diesem Modell erreichbaren Zeit-Breiten Kombinationen dar. 
-Einen passenden Ausschnitt zeigt Abbildung \ref{Grenzen_2p_ausschnitt_o}. Zwar können in diesem Bereich ganz zu Beginn des Spektrums, der Bereich, der Tailing aufweist, fast beliebig breite Peaks erzeugt werden. Dazu muss pm sehr groß gewählt werden. Wird jedoch bei gleichem ps der Wert für pm noch ein wenig erhöht, ist der Maximalzeitpunkt des Peaks bei $t=0,1$, da nicht mehr ausreichend Teilchen überhaupt in Kontakt mit der stationären Phase kommen.
-%Die Breite und das Tailing entstehen durch den sehr großen Wert für ps, da allerdings auch pm sehr groß sein muss, gelangen viele Teilchen gar nicht in den stationären Zustand und wandern mit Trägergasgeschwindigkeit.  \todo{obergrenze?}
+Einen passenden Ausschnitt zeigt Abbildung \ref{Grenzen_2p_ausschnitt_o}. Zwar können in diesem Bereich ganz zu Beginn des Spektrums, der Bereich, der Tailing aufweist, fast beliebig breite Peaks erzeugt werden. Dazu muss $p_{\text{m}}$ sehr groß gewählt werden. Wird jedoch bei gleichem $p_{\text{s}}$ der Wert für $p_{\text{m}}$ noch ein wenig erhöht, ist der Maximalzeitpunkt des Peaks bei $t=0,1$, da nicht mehr ausreichend Teilchen überhaupt in Kontakt mit der stationären Phase kommen.
+%Die Breite und das Tailing entstehen durch den sehr großen Wert für ps, da allerdings auch $p_{\text{m}}$ sehr groß sein muss, gelangen viele Teilchen gar nicht in den stationären Zustand und wandern mit Trägergasgeschwindigkeit.  \todo{obergrenze?}
 
 \begin{figure}[h]
 \centering
@@ -194,7 +194,7 @@ Wenn nun bei einer beliebigen, nicht-tailenden Verteilung, die dadurch entsteht,
 
 Genau dieser Zustand steht im 3-Zustände Modell zur Verfügung. Untersucht wurde vor allem das Modell aus Abbildung \ref{tikz:4p_Mod_a}, bei dem die beiden stationären Zustände getrennt sind.
 
-Im Folgenden werden die Einflüsse der Parameter dieses Modells untersucht, dabei beschränkt sich diese Untersuchung auf pmm, pml, paa und pll. Die anderen Parameter pma, pam und plm können daraus berechnet werden.
+Im Folgenden werden die Einflüsse der Parameter dieses Modells untersucht, dabei beschränkt sich diese Untersuchung auf $p_{\text{mm}}$, $p_{\text{ml}}$, $p_{\text{aa}}$ und $p_{\text{ll}}$. Die anderen Parameter pma, pam und plm können daraus berechnet werden.
 
 
 % \subsection{Relevanter Parameterbereich / relevante Peaks}
@@ -236,7 +236,7 @@ Die für die beiden Peaks verwendeten Simulationsparameter wurden dann nur wenig
 \label{einfluss_t50}
 \begin{tabular}{|l|l|l|l||l|l|l|}
 \hline
-pmm & pml    & paa    & pll      & Lage  & Breite & Schiefe \\ \hline \hline
+pmm & $p_{\text{ml}}$    & $p_{\text{aa}}$    & $p_{\text{ll}}$      & Lage  & Breite & Schiefe \\ \hline \hline
 $$0,6$$ & $0,0006$ & $0,9992$ & $0,999993$ & $50,14$ & $12,34$  & $0,46$    \\ \hline \hline
 \cellcolor{yellow} $0,5$ & $0,0006$ & $0,9992$ & $0,999993$ & $62,69$ & $12,45$  & $0,43$    \\ \hline
 \cellcolor{yellow} $0,7$ & $0,0006$ & $0,9992$ & $0,999993$ & $37,59$ & $12,2$   & $0,5$     \\ \hline
@@ -255,7 +255,7 @@ $0,6$ & $0,0006$ & $0,9992$ & \cellcolor{yellow} $0,999995$ & $50,05$ & $16,66$ 
 \label{einfluss_t100}
 \begin{tabular}{|l|l|l|l||l|l|l|}
 \hline
-pmm & pml    & paa    & pll      & Lage  & Breite & Schiefe \\ \hline \hline
+pmm & $p_{\text{ml}}$    & $p_{\text{aa}}$    & $p_{\text{ll}}$      & Lage  & Breite & Schiefe \\ \hline \hline
  $0,1$ & $0,0005$  & $0.9991$  & $0.99999$  & $100,22$  & $8,1$  & $0,23$ \\ \hline
 \cellcolor{yellow} $0,05$ & $0,0005$  & $0.9991$  & $0.99999$  & $105,76$  & $8,11$  & $0,229$ \\ \hline
 \cellcolor{yellow} $0,2$ & $0,0003$  & $0.9991$  & $0.99999$  & $89,1$  & $8,05$  & $0,235$ \\ \hline
@@ -268,11 +268,11 @@ pmm & pml    & paa    & pll      & Lage  & Breite & Schiefe \\ \hline \hline
 \end{tabular}
 \end{table}
 
-Zu erkennen ist, dass eine Veränderung von pmm und paa jeweils die Lage des Peaks deutlich beeinflusst, hingegen eine Änderung von pml oder pll kaum einen Einfluss auf die Lage hat. Umgekehrt wird die Breite viel deutlicher durch pml und pll verändert, pmm und paa haben hier auch einen Einfluss, der jedoch viel geringer erscheint. 
+Zu erkennen ist, dass eine Veränderung von $p_{\text{mm}}$ und $p_{\text{aa}}$ jeweils die Lage des Peaks deutlich beeinflusst, hingegen eine Änderung von $p_{\text{ml}}$ oder $p_{\text{ll}}$ kaum einen Einfluss auf die Lage hat. Umgekehrt wird die Breite viel deutlicher durch $p_{\text{ml}}$ und $p_{\text{ll}}$ verändert, $p_{\text{mm}}$ und $p_{\text{aa}}$ haben hier auch einen Einfluss, der jedoch viel geringer erscheint. 
 
-Dabei ist deutlich, dass pmm die gleichen Auswirkungen auf die Peaks bezüglich Lage und Breite hat, wie pm im 2-Zustände Modell. Die gleiche Entsprechung findet sich für paa und ps.
+Dabei ist deutlich, dass $p_{\text{mm}}$ die gleichen Auswirkungen auf die Peaks bezüglich Lage und Breite hat, wie $p_{\text{m}}$ im 2-Zustände Modell. Die gleiche Entsprechung findet sich für $p_{\text{aa}}$ und ps.
 
-Die Schiefe wird, von allen Parametern zumindest geringfügig beeinflusst. Dabei wird die Schiefe größer, wenn pmm, pml oder pll größer oder paa kleiner werden.
+Die Schiefe wird, von allen Parametern zumindest geringfügig beeinflusst. Dabei wird die Schiefe größer, wenn $p_{\text{mm}}$, $p_{\text{ml}}$ oder $p_{\text{ll}}$ größer oder $p_{\text{aa}}$ kleiner werden.
 
 Für den Maximalzeitpunkt des Peaks sowie seine Breite gilt, dass beide größer werden, wenn die Parameter $p_{ml}$, $p_{aa}$ und $p_{ll}$ größer werden oder $p_{mm}$ kleiner wird. 
 Die Schiefe steigt mit fallendem $p_{aa}$ und in den meisten Fällen mit steigendem $p_{mm}$. Für $p_{ml}$, $p_{ll}$ und in wenigen Fällen auch $p_{mm}$ ist zu beobachten, dass bei größer werdenden Parametern die Schiefe zunächst auch ansteigt, ab einem gewissen Wert jedoch sinkt.
@@ -288,10 +288,12 @@ Zunächst können jedoch folgenden einfachen Zusammenhänge beobachtet werden:
 
 Im Folgenden ist für jeden der vier Parameter eine detaillierte Übersicht gegeben welche Eigenschaften der Peaks er in Abhängigkeit anderer Parameter beeinflusst. Die zur Verdeutlichung verwendeten Plots sind denen aus der Auswertung des 2-Zustände Modells sehr ähnlich, hier wurden drei der vier Parameter fest gehalten, der vierte wird variiert. Auch diese Plots wurden zur besseren Vergleichbarkeit weiterhin mit der gleichen Achseneinteilung erstellt. 
 
+\clearpage
+
 \paragraph*{Einfluss des Parameters $p_{mm}$}
 Wie in Abbildung \ref{einfluss_pmm_1} zu sehen, ist der Einfluss von $p_{mm}$ auf den Zeitpunkt von $p_{aa}$ abhängig: Je größer $p_{aa}$ ist, desto stärker wird der Zeitpunkt von $p_{mm}$ beeinflusst. Wenn $p_{mm}$ und $p_{aa}$ klein sind, entstehen nur Peaks zu Beginn des Spektrums, unabhängig von $p_{ml}$ oder $p_{ll}$.
 
-\begin{figure}[h]
+\begin{figure}[]
 \includegraphics[width=0.49\textwidth]{bilder/pmm/3fest_p_00001_0997_099995}
 \includegraphics[width=0.49\textwidth]{bilder/pmm/3fest_p_00001_0999_099995}
 
@@ -310,6 +312,7 @@ Der Einfluss von $p_{mm}$ auf die Breite ebenfalls von $p_{aa}$ abhängig. Bei g
 
 Außer in einem sehr kleinen Parameterbereich, steigt die Schiefe mit steigendem $p_{mm}$. Dieser Einfluss hängt noch von $p_{aa}$ ab, bei kleinem $p_{aa}$ hat $p_{mm}$ einen größeren Einfluss auf die Schiefe.
 
+
 \begin{figure}[h]
 \includegraphics[width=0.49\textwidth]{bilder/pmm/3fest_p_00001_09992_099999}
 \includegraphics[width=0.49\textwidth]{bilder/pmm/3fest_p_00003_09992_099999}
@@ -323,6 +326,7 @@ Außer in einem sehr kleinen Parameterbereich, steigt die Schiefe mit steigendem
 \end{figure}
 
 Außerdem ist der Einfluss von $p_{mm}$ auf die Schiefe am größten bei mittlerem $p_{ml}$ und (etwa im Intervall $[0,0001, 0,0005]$) und mittlerem $p_{ll}$ (etwa bei $[0,99995; 0,99999]$). Dieser Zusammenhang ist für $p_{ml}$ in Abbildung \ref{einfluss_pmm_2} dargestellt.
+
 Zusätzlich wird der Einfluss von $p_{ml}$ und $p_{ll}$ auf die Abhängigkeit der Schiefe von $p_{mm}$ größer, wenn $p_{aa}$ klein ist.
 
 %Dieser Zusammenhang kann wie folgt erklärt werden. Das Tailing entsteht, wie oben erwähnt, durch seltenes aber sehr langes Verweilen im gelösten Zustand. Bei großem $p_{mm}$ oder kleinem $p_{aa}$ haben die Teilchen die größte Durchschittsgeschwindigkeit, wodurch sie sich im Gesamtverlauf der Säulendurchquerung seltener lösen. Bei langsamerer Durchschittsgeschwindigkeit 
@@ -334,10 +338,12 @@ Ist $p_{aa}$ jedoch zu klein und $p_{ll}$ zu groß entstehen Peaks, die einen ex
 % Wenn $p_{ml}$ und $p_{ll}$ jedoch zu groß werden, 
 %  ist $p_{ml}$ zu groß, werden die Peaks wieder nur breit, aber nicht so schiefa die Teilchen, die nicht in den gelösten Zustand kommen, sich recht schnell fortbewegen (daher auch besonders bei kleinem $p_{aa}$ zu beobachten) und dadurch nur wenige Teilchen langsamer sind und dadurch den Tail verursachen. Ist $p_{aa}$ kleiner, lösen sich die Teilchen häufiger und statt der schiefen entstehen breite Peaks.
 
+\clearpage
 
 \paragraph*{Einfluss des Parameters $p_{ml}$}
+Der Einfluss von $p_{ml}$ auf die Peakdaten ist in den Abbildungen \ref{einfluss_pml_1} und \ref{einfluss_pml_2} gezeigt. Schiefe und Breite sind häufig deutlich von $p_{ml}$ beeinflusst, der Zeitpunkt hingegen kaum. Allenfalls sehr große Werte für $p_{ml}$ sorgen für einen erkennbar höheren Zeitpunkt, dann aber auch für deutlich mehr Breite und weniger Schiefe.
 
-\begin{figure}[h]
+\begin{figure}[]
 \includegraphics[width=0.49\textwidth]{bilder/pml/3fest_07_p_0999_0999995}
 \includegraphics[width=0.49\textwidth]{bilder/pml/3fest_07_p_0999_099999}
 
@@ -349,9 +355,10 @@ Ist $p_{aa}$ jedoch zu klein und $p_{ll}$ zu groß entstehen Peaks, die einen ex
 \label{einfluss_pml_1}
 \end{figure}
 
-Der Einfluss von $p_{ml}$ auf die Peakdaten ist in den Abbildungen \ref{einfluss_pml_1} und \ref{einfluss_pml_2} gezeigt. Schiefe und Breite sind häufig deutlich von $p_{ml}$ beeinflusst, der Zeitpunkt hingegen kaum. Allenfalls sehr große Werte für $p_{ml}$ sorgen für einen erkennbar höheren Zeitpunkt, dann aber auch für deutlich mehr Breite und weniger Schiefe.
 
-\begin{figure}[h]
+Auf die Schiefe und Breite ist der Einfluss von $p_{ml}$ sehr groß, wenn auch $p_{ll}$ groß ist, wie in Abbildung \ref{einfluss_pml_1} zu erkennen. Hier sind $p_{mm}$ und $p_{aa}$ auf allen vier Plots gleich gewählt, nur $p_{ll}$ nimmt von oben links über oben rechts und unten links bis zu unten rechts immer weiter ab und damit schwindet auch der Einfluss von $p_{ml}$ auf Schiefe und Breite.
+
+\begin{figure}[]
 \includegraphics[width=0.49\textwidth]{bilder/pml/3fest_09_p_09994_099995}
 \includegraphics[width=0.49\textwidth]{bilder/pml/3fest_09_p_0997_099995}
 
@@ -359,27 +366,27 @@ Der Einfluss von $p_{ml}$ auf die Peakdaten ist in den Abbildungen \ref{einfluss
 
 \includegraphics[width=0.49\textwidth]{bilder/pml/3fest_01_p_09994_099995}
 \includegraphics[width=0.49\textwidth]{bilder/pml/3fest_01_p_0997_099995}
-\caption[Der Einfluss von $p_{ml}$ auf die Schiefe und Breite abhängig von $p_{mm}$ und $p_{aa}$]{Der Einfluss von $p_{ml}$ auf die Schiefe und Breite abhängig von $p_{mm}$ und $p_{aa}$, pmm ist oben klein und unten groß, paa ist links groß und rechts klein.}
+\caption[Der Einfluss von $p_{ml}$ auf die Schiefe und Breite abhängig von $p_{mm}$ und $p_{aa}$]{Der Einfluss von $p_{ml}$ auf die Schiefe und Breite abhängig von $p_{mm}$ und $p_{aa}$, $p_{\text{mm}}$ ist oben klein und unten groß, $p_{\text{aa}}$ ist links groß und rechts klein.}
 \label{einfluss_pml_2}
 \end{figure}
 
-Auf die Schiefe und Breite ist der Einfluss von $p_{ml}$ sehr groß, wenn auch $p_{ll}$ groß ist, wie in Abbildung \ref{einfluss_pml_1} zu erkennen. Hier sind $p_{mm}$ und $p_{aa}$ auf allen vier Plots gleich gewählt, nur $p_{ll}$ nimmt von \ref{einfluss_pml_pll++} nach \ref{einfluss_pml_pll--} ab und damit schwindet auch der Einfluss von $p_{ml}$ auf Schiefe und Breite.
 
 Wie in Abbildung \ref{einfluss_pml_2} gezeigt, spielen auch $p_{mm}$ und $p_{aa}$ für den Einfluss von $p_{ml}$ auf Schiefe und Breite eine Rolle. Hier ist $p_{ll}$ in allen vier Plots konstant, $p_{mm}$ und $p_{aa}$ werden variiert. Zu erkennen ist, dass bei kleinem $p_{aa}$, der Einfluss von $p_{ml}$ auf Schiefe und Breite größer wird, ist $p_{mm}$ jedoch klein, wird auch der Einfluss von $p_{ml}$ kleiner.
 
+\clearpage
 
 \paragraph*{Einfluss des Parameters $p_{aa}$}
 
-\begin{figure}[h]
+In Abbildung \ref{einfluss_paa} ist beispielhaft der Einfluss von Parameter $p_{aa}$ in Abhängigkeit von $p_{mm}$ auf die Peaks gezeigt. Der Einfluss von $p_{aa}$ auf den Zeitpunkt wird mit steigendem $p_{mm}$ immer kleiner und reicht dadurch von minimalem Einfluss und recht frühen Peaks bei jeder Wahl von $p_{aa}$ bis zu sehr großem Einfluss und Peaks, die je nach $p_{aa}$ über das ganze Spektrum verteilt sind. Damit hat $p_{aa}$ einen ähnlichen Einfluss wie $p_{mm}$.
+\begin{figure}[]
 \includegraphics[width=0.49\textwidth]{bilder/paa/3fest_01_00001_p_099995}
 \includegraphics[width=0.49\textwidth]{bilder/paa/3fest_08_00001_p_099995}
 \caption[Der Einfluss von $p_{aa}$ auf die Peaks abhängig von $p_{mm}$]{Der Einfluss von $p_{aa}$ auf die Peaks abhängig von $p_{mm}$, welches links klein und rechts groß ist}
 \label{einfluss_paa}
 \end{figure}
 
-In Abbildung \ref{einfluss_paa} ist beispielhaft der Einfluss von Parameter $p_{aa}$ in Abhängigkeit von $p_{mm}$ auf die Peaks gezeigt. Der Einfluss von $p_{aa}$ auf den Zeitpunkt wird mit steigendem $p_{mm}$ immer kleiner und reicht dadurch von minimalem Einfluss und recht frühen Peaks bei jeder Wahl von $p_{aa}$ bis zu sehr großem Einfluss und Peaks, die je nach $p_{aa}$ über das ganze Spektrum verteilt sind. Damit hat $p_{aa}$ einen ähnlichen Einfluss wie $p_{mm}$.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \includegraphics[width=0.49\textwidth]{bilder/paa/3fest_05_0005_p_099995}
 \includegraphics[width=0.49\textwidth]{bilder/paa/3fest_05_0001_p_099995}
 
@@ -402,7 +409,7 @@ Der Einfluss auf die Breite ist mäßig und wird größer, wenn $p_{ml}$ und $p_
 
 Der Einfluss von $p_{ll}$ auf den Zeitpunkt ist ähnlich wie bei $p_{ml}$ nur minimal.
 
-\begin{figure}[h]
+\begin{figure}[]
 
 \includegraphics[width=0.49\textwidth]{bilder/pll/3fest_07_0001_0998_p}
 \includegraphics[width=0.49\textwidth]{bilder/pll/3fest_07_00007_0998_p}
@@ -417,7 +424,7 @@ Der Einfluss von $p_{ll}$ auf den Zeitpunkt ist ähnlich wie bei $p_{ml}$ nur mi
 
 Auf Breite und Schiefe hat $p_{ll}$ einen von $p_{ml}$ abhängigen Einfluss: Wenn $p_{ml}$ mittelgroß ist, ist die Wirkung von $p_{ll}$ am größten. Das ist in Abbildung \ref{einfluss_pll_pml} gezeigt.
 
-\begin{figure}[h]
+\begin{figure}[]
 
 \includegraphics[width=0.49\textwidth]{bilder/pll/3fest_01_00005_09992_p}
 \includegraphics[width=0.49\textwidth]{bilder/pll/3fest_09_00005_09992_p}

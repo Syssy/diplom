@@ -1,16 +1,8 @@
 \chapter{Implementierung}
 \label{chapter:imp}
 
-Zur Simulation der Modelle wurde die Software MCC-Sim entwickelt. \todo{Hinweis auf CD?}
+Zur Simulation der Modelle wurde die Software MCC-Sim entwickelt, die auf der beigelegten CD zu finden ist.
 Sie ist unterteilt in zwei Bereiche, die Teilchensimulation und die Simulation des PAA und setzt jeweils die im Kapitel \ref{chapter:meth} beschriebenen Ansätze zur Simulation um.
-% 
-% struktur:
-% Software: MCC-Sim 
-% Unterteilung in Teilchen/Paa (?)
-% 
-% Teilchen: erst benutzersicht:
-% die drei dateien simulation.py, sim2s sim3s getrennt, wobei das zweite dann halt kürzer wird
-% anschließend internes wie die Sim -Klasse
 
 
 \section{Teilchensimulation/MCC-Sim}
@@ -22,7 +14,7 @@ Die für die Teilchensimulation zur Verfügung stehenden Anwendungen sind \textt
 \paragraph{\texttt{simulation.py}}
 
 Durch den Aufruf von \texttt{simulation.py} können einzelne Simulationen gestartet und deren Ergebnisse angezeigt werden.
-Die Parameter für die Simulation werden dabei über Kommandozeilenparameter eingegeben. Erster Parameter ist dabei das gewünschte Modell, es besteht die Auswahl zwischen \texttt{2s}, \texttt{3s} und \texttt{3a}, danach müssen Simulationsparameter eingegeben werden. Für das 2-Zustände Modell sind dies ps und pm. Für das allgemeine 3-Zustände Modell wird die Übergangsmatrix \ref{3s_Transit} als Liste der neun Parameter \verb!pmm,pma,pml,pam,paa,pal,plm,pla,pll! übergeben. Wird das Modell 3a ausgewählt, können auch nur die vier nötigen Parameter \verb!pmm,pml,paa,pll! übergeben werden.
+Die Parameter für die Simulation werden dabei über Kommandozeilenparameter eingegeben. Erster Parameter ist dabei das gewünschte Modell, es besteht die Auswahl zwischen \texttt{2s}, \texttt{3s} und \texttt{3a}, danach müssen Simulationsparameter eingegeben werden. Für das 2-Zustände Modell sind dies \ps und \pm. Für das allgemeine 3-Zustände Modell wird die Übergangsmatrix \ref{3s_Transit} als Liste der neun Parameter \verb!pmm,pma,pml,pam,paa,pal,plm,pla,pll! übergeben. Wird das Modell 3a ausgewählt, können auch nur die vier nötigen Parameter \verb!pmm,pml,paa,pll! übergeben werden.
 Die Simulationsart wird über den Kommandozeilenparameter \texttt{-a} ausgewählt, dabei stehen \texttt{E} für die By-Event Simulation und \texttt{S} für die Step-by-Step Simulation zur Auswahl.
 Ein Aufruf
 \begin{verbatim}
@@ -46,13 +38,31 @@ Diese Anwendung erlaubt es für das Modell mit zwei Zuständen, viele Simulation
 Mit dem Parameter \texttt{-p} wird eine Menge von Parameterkombinationen ausgewählt. Zur Verfügung stehen dabei \textit{small\_set}, \textit{medium\_set} und \textit{large\_set}, außerdem können mittels \textit{random} zufällige Kombinationen erstellt werden, die Anzahl dieser zufälligen Kombinationen wird über den Parameter \texttt{--cn} festgelegt. % Die Kombination \textit{skew} zur Verfügung, die tailing erzeugende Parameter enthält.
 Darüber hinaus können die Parameter \texttt{-n}, \texttt{-l}, \texttt{-m} und \texttt{-a} mit der gleichen Funktion wie bei der Anwendung \texttt{simulation.py} benutzt werden, um Einstellungen an den Simulationen vorzunehmen. Dabei ist für den Ansatz \texttt{-a} die schrittweise Simulation als Standard gesetzt, da diese sich für das 2-Zustände Modell als weniger laufzeitintensiv erwiesen hat, siehe auch (Abschnitt \ref{chapter:imp_laufzeit_sim})
 
-\todo{Beschreibung der Plots}
+Geplottet werden kann auch hier ein einzelner Peak zu gegebenen Parametern, der Aufruf dafür ist
+\begin{verbatim}
+python3 2s_simulate_and_plot.py -pp 0.999 0.5 
+\end{verbatim}
+Mit der zusätzlichen Option \verb!-q! werden außerdem die Quartile der Verteilung angezeigt.
+
+Zusätzlich möglich sind ein Chromatogramm für das gewählte Set, allerdings nur bis maximal 30 Peaks. Der Befehl dafür ist \verb!--pc! und mit \verb!--an! wird diesem Chromatogramm zusätzlich Rauschen hinzugefügt.
+Es können auch alle mit dem gewählten Set erreichten Werte für eine Peakeigenschaft dargestellt werden (Abbildung \ref{heatmap_lage_breite}). Ein Beispiel für einen solchen Aufruf ist
+\begin{verbatim}
+python3 2s_simulate_and_plot.py -p medium_set --pt loc
+\end{verbatim}
+um die Lage der resultierenden Peaks anzuzeigen. Alternativ kann statt \texttt{loc} auch \texttt{iqr} für die Breite oder \texttt{qk} für die Schiefe ausgewählt werden. Des Weiteren können auch mögliche Parameterkombinationen für einen Peak mit gegebener Retentionszeit \texttt{-r} und davon erlaubter Abweichung \texttt{-e} ausgegeben werden.
+\begin{verbatim}
+python3 2s_simulate_and_plot.py --ppt -r 50 -e 2
+\end{verbatim}
+Erzeugt einen Plot, der alle Parameterkombinationen für Peaks mit Maximalzeitpunkten im Intervall $[48, 52]$ enthält.
+Zuletzt ist mit der Option \verb!--pr! eine Übersicht über alle erreichbaren Zeit-Breiten-Kombinationen verfügbar.
+Für die beiden letzten Plots werden jeweils nicht nur eine bestimmte Auswahl an Parameterkombinationen, sondern alle vorhandenen Simulationen verwendet.
+
 
 \paragraph{\texttt{3s\_simulate\_and\_plot.py}}
 Analog zur \texttt{2s\_simulate\_and\_plot.py} können mit dieser Anwendungen Simulationen des 3-Zustände Modells gestartet und die Ergebnisse davon geplottet werden. Es gibt ebefalls die vier beschriebenen Möglichkeiten, Parameterkombinationen auszuwählen und die Einstellung an den Simulationen vorzunehmen. Allerdings ist hier der ereignisbasierte Ansatz für \texttt{-a} voreingestellt.
 Es können auch für das 3-Zustände Modell Einzelpeaks mit oder ohne Quartile, sowie Spektren mit oder ohne Rauschen erstellt werden. Die anderen Plots der 2-Zustände Simulation stehen auf Grund der höheren Parameteranzahl nicht zur Verfügung.
 
-\todo{plot\_zeitpunkt}
+%\todo{plot\_zeitpunkt}
 
 
 \subsection{Umsetzung der Algorithmen}
@@ -82,26 +92,6 @@ wird beispielsweise eine Simulationsinstanz mit den Parametern $pmm = 0,5$, $pml
 
 Anschließend wird mit \verb!newSim.simulate()! die Simulation gestartet. Anhand des gesetzten \verb!model! und \verb!approach! entscheidet sich, welche Funktionen zur Simulation aufgerufen werden. Die Peakdaten werden anschließend mittels \verb!newSim.calculate()! berechnet.
 
-% %\subsection{Aufruf aus der Kommandozeile} 
-% Um eine Simulation zu starten, kann das Programm auch mittels Kommandozeilenparameter gestartet werden. Der Aufruf
-% \begin{verbatim}
-% python3 simulation.py -a E -m 2s -l 1000 -n 10000 -mt 400  -p 0.999 0.5
-% \end{verbatim}
-% startet eine ereignisbasierte Simulation des 2-Zustände Modells bei einer Säulenlänge von $1000$, mit $10.000$ Teilchen und einer maximalen Wartezeit von $400$. Die Simulationsparameter sind $p_\text{s} = 0,999$ und $p_\text{m} = 0,5$. Anschließend wird das Ergebnis als einfaches Histogramm graphisch dargestellt.
-% 
-% Um jedoch mehr als eine Parameterkombination zu simulieren und auszuwerten, wird die Benutzung der Dateien \verb!2s_simulate_and_plot.py! sowie  \verb!3s_simulate_and_plot.py! empfohlen. Sie sind für das Starten der Simulationen und Plotten der Ergebnisse durch den Benutzer gedacht. Durch den Aufruf mit einigen Kommandozeilenparametern kann zunächst ein vordefinierte Menge an Parameterkombinationen zur Simulation ausgewählt und anschließend ausgewertet werden.
-% 
-% Mit dem Parameter \texttt{-p} wird eine Menge von Parameterkombinationen ausgewählt. Zur Verfügung stehen dabei für das 2-Zustände Modell und das 3-Zustände Modell 3a jeweils \textit{small\_set}, \textit{medium\_set} und \textit{large\_set}, außerdem können mittels \textit{random} zufällige Kombinationen erstellt werden, die Anzahl dieser zufälligen Kombinationen wird über den Parameter \texttt{-cn} festgelegt. Außerdem steht für das 2-Zustände Modell noch die Kombination \textit{skew} zur Verfügung, die tailing erzeugende Parameter enthält.
-% 
-% Der Parameter \texttt{-a} wählt den gewünschten Ansatz, also \texttt{-a=S} für die Step-by-Step Simulation und \texttt{-a=E} für die By-Event Simulation.
-% 
-% Mit den Parametern \texttt{-n} und \texttt{-l} können Anzahl der Teilchen und Länge der Säule eingegeben werden. Als Default-Werte dafür sind $1000$ Teilchen und eine Länge von $1000$ Schritten vorgesehen.
-% 
-% Um einen einzelnen Peak zu Plotten, kann mittels \texttt{-pp} die gewünschte Parameterkombination aus $p_\text{s}$ und $p_\text{m}$ eingegeben werden. Für die 2-Zustände Simulation würde beispielsweise der Aufruf \verb!python3 2s_simulate_and_plot.py -pp 0.999 0.5! eine Simulation mit den Parametern $p_\text{s} = 0,999$ und $p_\text{m} = 0,5$ erstellen, diese simulieren, falls sie noch nicht vorhanden ist und anschließend eine graphische Darstellung des Peaks ausgeben. 
-% Für die 3-Zustände Simulation ist das Modell 3a als Voreinstellung gewählt, damit kann eine Parameterkombination aus $p_\text{mm}$, $p_\text{ml}$, $p_\text{aa}$ und $p_\text{ll}$ eingegeben werden. Um das gesamte 3-Zustände Modell auszunutzen, ist die Auswahl \texttt{-m=3s} nötig, und die Eingabe aller neun Parameter. 
-% 
-% Weitere Kommandozeilenparameter erlauben die Auswahl der gewünschten Plots. Dadurch werden die Plotfunktionen der Datei \texttt{plottings.py} aufgerufen. Dort sind mehrere verschiedene Möglichkeiten zur Auswertungen der Simulation enthalten, die unter Anderem auch verwendet wurden, um die Darstellungen in Kapitel \ref{chapter:eva} zu erstellen.  \todo{noch mehr hierzu?}
-% 
 
 \subsection{Optimierungen}
 Sowohl bei der Umsetzung der Step-by-Step als auch der By-Event Methode kann mit der Implementierung des 3-Zustände Modells auch das 2-Zustände Modell simuliert werden, indem nicht benötigte Übergangswahrscheinlichkeiten auf einen Wert von $0$ gesetzt werden. Die 2-Zustände Simulation ist aber vor allem bei der Step-by-Step Implementierung deutlich schneller, da nur auf boolschen Werten gearbeitet werden muss und deutlich weniger ungenutzte Information in den Zwischenschritten berechnet wird.
@@ -127,7 +117,7 @@ Grau hinterlegte Parameter deuten an, dass diese Simulationen keinen vollständi
 
 \begin{table}[h]
 \centering
-\caption[Laufzeitvergleich für die 2-Zustände Simulation]{Laufzeitvergleich für die 2-Zustände Simulation mit den Parametern $ps$ und $pm$ für $n$ Teilchen, Zeitangaben in Sekunden. Grau hinterlegte Parameter zeigen einen Peak innerhalb von $240$ Sekunden an.}
+\caption[Laufzeitvergleich für die 2-Zustände Simulation]{Laufzeitvergleich für die 2-Zustände Simulation mit den Parametern \ps und \pm für $n$ Teilchen, Zeitangaben in Sekunden. Grau hinterlegte Parameter zeigen einen Peak innerhalb von $240$ Sekunden an.}
 \label{2s_laufzeit}
 \begin{tabular}{|l|l||l|l|l|l|} \hline
 $p_\text{s}$ & $p_\text{m}$  & Step-by-Step & By-Event & Step-by-Step & By-Event \\ 
@@ -190,19 +180,11 @@ Auch hier ist für beide Simulationsarten zu erkennen, dass bei größerem $p_\t
 Jedoch müssen bei der Step-by-Step Implementierung sehr viele Einträge für die Hilfsarrays erzeugt werden, die für die Berechnung der neuen Arrays nicht benötigt werden. Durch diese überflüssigen Berechnungen verliert die Step-by-Step Implementierung ihren Vorteil gegen über der By-Event Variante, sodass diese schneller wird. Besonders bei denjenigen Simulationen, die einen sehr späten Peak erzeugen oder gar keinen vollständigen Peak innerhalb der $240$ Sekunden erzeugen, wird der Vorteil der By-Event Simulation deutlicher. In diesen Fällen finden meist seltener Wechsel von der stationären in die mobile Phase statt. Bei der Step-by-Step Variante wird dennoch jeder Schritt simuliert, ohne dass sich die Teilchen bewegen. By-Event lässt diese Schritte einfach aus, wodurch deutlich Simulationszeit gespart wird. 
 %Dies wird noch deutlicher, je größer $p_{\text{mm}}$ wird.
 
-%Bei Parametern nah an $1$ lohnt meist die Nutzung der By-Event Implementierung, da dann nur seltener Ereignisse erzeugt werden und viele Schritte in denen nichts passiert, also kein Zustandswechsel stattfindet, übersprungen werden können.
-%Bei sehr vielen Teilchen lohnt sich eher die Step-by-Step Variante, da die Teilchen, die in NumPy-Arrays als boolesche Werte vorliegen, sehr viel schneller verarbeitet werden können, als die Listen, die bei der Event -Variante verwendet werden. Eine weitere Parallelisierung scheint hier aber nicht zu lohnen
-%Zumindest bei Parametern extrem nah bei 1 kann sich die Laufzeit der By-Event stark vergrößern, wenn die Säule zu kurz ist, da die Teilchen ``viel zu weit über das Ziel hinausschiessen'', aber das erst später festgestellt wird, wenn das Teilchen wieder betrachtet wird und schon entsprechend viele Zeitschritte vergangen sind. 
-
-% Generelles: Welche Sprachen, warum (?)
-% Die Simulation in Python, beide Varianten (Also by-event und step-by-step) 
-% -> Algorithmen?
-
 \section{Simulation des PAA}
 TODO
 
 \subsection{Nutzung von MoSDi}
-Es existiert bereits eine Implementierung für PAA. Diese wurde innerhalb der Software \texttt{MoSDi} \footnote{https://bitbucket.org/tobiasmarschall/mosdi} realisiert, eine Beschreibung findet sich in \cite{Marschall2011}. Um eine Simulation eines PAA mit \texttt{MoSDi} zu starten, muss für die darin enthaltene abstrake Klasse \texttt{PAA} eine Unterklasse geschrieben werden, welche die Zustände, Werte, Operationen und Transitionswahrscheinlichkeiten für den konkreten PAA enthält. In der mitglieferten CD finden sich für beide Modelle jeweils eine solche Unterklasse \texttt{myPAA\_2s} und \texttt{myPAA\_3s}. 
+Es existiert bereits eine Implementierung für PAA. Diese wurde innerhalb der Software \texttt{MoSDi} \footnote{https://bitbucket.org/tobiasmarschall/mosdi} realisiert, eine Beschreibung findet sich in \cite{Marschall2011}. Um eine Simulation eines PAA mit \texttt{MoSDi} zu starten, muss für die darin enthaltene abstrake Klasse \texttt{PAA} eine Unterklasse geschrieben werden, welche die Zustände, Werte, Operationen und Transitionswahrscheinlichkeiten für den konkreten PAA enthält. In der beigelegten CD finden sich für beide Modelle jeweils eine solche Unterklasse \texttt{myPAA\_2s} und \texttt{myPAA\_3s}. 
 Zum Starten müssen in der Kommandozeile nacheinander die Befehle
 \begin{verbatim}
 javac -classpath mosdi-1.3.jar myPAA_2s.java
@@ -236,7 +218,7 @@ In Tabelle \ref{2s_laufzeit_paa} ist eine Übersicht über die Laufzeiten wie in
 
 \begin{table}[h]
 \centering
-\caption[Laufzeitvergleich für die Simulation des PAA mit zwei Zuständen]{Laufzeitvergleich für die Simulation des PAA mit zwei Zuständen, mit den Parametern $ps$ und $pm$, Zeitangaben in Sekunden. Grau hinterlegte Parameter zeigen unvollständigen Peak innerhalb von $240$ Sekunden an. Verglichen werden MoSDi und zwei Varianten der eigenen Implementierung des PAA, in der ersten Spalte wurden Wahrscheinlichkeiten unter dem Schwellwert von $10^{-17}$ abgeschnitten, in der zweiten nicht. Mit $*$ gekennzeichnete Zeiten deuten auf vorzeitiges Abbrechen auf Grund eines vollständigen Peaks hin.}
+\caption[Laufzeitvergleich für die Simulation des PAA mit zwei Zuständen]{Laufzeitvergleich für die Simulation des PAA mit zwei Zuständen, mit den Parametern \ps und \pm, Zeitangaben in Sekunden. Grau hinterlegte Parameter zeigen unvollständigen Peak innerhalb von $240$ Sekunden an. Verglichen werden MoSDi und zwei Varianten der eigenen Implementierung des PAA, in der ersten Spalte wurden Wahrscheinlichkeiten unter dem Schwellwert von $10^{-17}$ abgeschnitten, in der zweiten nicht. Mit $*$ gekennzeichnete Zeiten deuten auf vorzeitiges Abbrechen auf Grund eines vollständigen Peaks hin.}
 \label{2s_laufzeit_paa}
 \begin{tabular}{|l|l||l|l|l|l|} \hline
 $p_\text{s}$ & $p_\text{m}$  & PAA & PAA & MoSDi \\
