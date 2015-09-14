@@ -28,12 +28,12 @@ Ein Aufruf
 \begin{verbatim}
 python3 simulation.py 3a 0.5 0.0001 0.9993 0.99999 -a S
 \end{verbatim}
-startet beispielsweise eine schrittweise Simulation des 3-Zustände Modells 3a mit den Parametern $pmm = 0,5$, $pml = 0,0001$, $paa = 0,9993$ und $pll = 0,99999$. Als Ergebnis der Simulation wird anschließend eine Liste von Ankunftszeiten der simulierten Teilchen, sowie die daraus berechneten Peakdaten angezeigt. Eine weitere Ausgabeoptionen ist \texttt{-p}, womit zusätzlich eine graphische Darstellung der Ankunftszeiten in Form eines Histogramms angezeigt wird.
+startet beispielsweise eine schrittweise Simulation des 3-Zustände Modells 3a mit den Parametern $pmm = 0,5$, $pml = 0,0001$, $paa = 0,9993$ und $pll = 0,99999$. Als Ergebnis der Simulation wird anschließend eine Liste von Ankunftszeiten der simulierten Teilchen, sowie die daraus berechneten Peakdaten angezeigt. Eine weitere Ausgabeoptionen ist \texttt{-p}, womit zusätzlich eine graphische Darstellung der Ankunftszeiten in Form eines Histogramms angezeigt wird, -q unterdrückt die textuelle Ausgabe.
 
-Als Standard für die Simulationen werden eine Säulenlänge von $1000$ Einheiten, ein Zeitraum von $240$s und $1000$ zu simulierende Teilchen angenommen. Diese Einstellungen können über die Parameter \texttt{-n} (Anzahl der Teilchen), \texttt{-l} (Länge der Säule) und \texttt{--mt} (Maximalzeit) verändert werden.
+Als Standard für die Simulationen werden eine Säulenlänge von $1000$ Einheiten, ein Zeitraum von $240$s und $1000$ zu simulierende Teilchen angenommen. Diese Einstellungen können über die Parameter \texttt{-n} (Anzahl der Teilchen), \texttt{-l} (Länge der Säule) und \verb!-m! (Maximalzeit) verändert werden.
 Der Aufruf
 \begin{verbatim}
-python3 simulation.py 2s 0.9999 0.01 -a E -n 10000 --mt 400
+python3 simulation.py 2s 0.9999 0.01 -a E -n 10000 -m 400
 \end{verbatim}
 startet daher eine ereignisbasierte Simulation im 2-Zustände Modell, bei der $10.000$ Teilchen über einen Maximalzeitraum von $400$ Sekunden simuliert werden.
 
@@ -41,10 +41,10 @@ startet daher eine ereignisbasierte Simulation im 2-Zustände Modell, bei der $1
 %Um es zusätzlich zu dieser Möglichkeit, jeweils eine Simulation zu starten, zu ermöglichen, die Ergebnisse aus vielen Simulationen 
 
 \paragraph{\texttt{2s\_simulate\_and\_plot.py}}
-Diese Anwendung erlaubt es für das Modell mit zwei Zuständen, viele Simulationen zu starten und deren Ergebnisse durch verschiedene Plots darzustellen. Die Ergebnisse der einzelnen Simulationen werden dafür abgespeichert und stehen damit auch späteren Auswertungen zur Verfügung.
+Diese Anwendung erlaubt es für das Modell mit zwei Zuständen, viele Simulationen zu starten und deren Ergebnisse durch verschiedene Plots darzustellen. Die Ergebnisse der einzelnen Simulationen werden dafür abgespeichert und stehen damit auch späteren Auswertungen zur Verfügung. Bereits vorhandene Simulationen werden daher auch nicht neu simuliert.
 
 Mit dem Parameter \texttt{-p} wird eine Menge von Parameterkombinationen ausgewählt. Zur Verfügung stehen dabei \textit{small\_set}, \textit{medium\_set} und \textit{large\_set}, außerdem können mittels \textit{random} zufällige Kombinationen erstellt werden, die Anzahl dieser zufälligen Kombinationen wird über den Parameter \texttt{--cn} festgelegt. % Die Kombination \textit{skew} zur Verfügung, die tailing erzeugende Parameter enthält.
-Darüber hinaus können die Parameter \texttt{-n}, \texttt{-l}, \texttt{--mt} und \texttt{-a} mit der gleichen Funktion wie bei der Anwendung \texttt{simulation.py} benutzt werden, um Einstellungen an den Simulationen vorzunehmen. Dabei ist für den Ansatz \texttt{-a} die schrittweise Simulation als Standard gesetzt, da diese sich für das 2-Zustände Modell als weniger laufzeitintensiv erwiesen hat, siehe auch (Abschnitt \ref{chapter:imp_laufzeit_sim})
+Darüber hinaus können die Parameter \texttt{-n}, \texttt{-l}, \texttt{-m} und \texttt{-a} mit der gleichen Funktion wie bei der Anwendung \texttt{simulation.py} benutzt werden, um Einstellungen an den Simulationen vorzunehmen. Dabei ist für den Ansatz \texttt{-a} die schrittweise Simulation als Standard gesetzt, da diese sich für das 2-Zustände Modell als weniger laufzeitintensiv erwiesen hat, siehe auch (Abschnitt \ref{chapter:imp_laufzeit_sim})
 
 \todo{Beschreibung der Plots}
 
@@ -63,15 +63,15 @@ Für die graphische Ausgabe der Peaks und weitere geplottete Darstellungen im Be
 
 % Zur Simulation der beiden Modelle wurde Python 3.4 verwendet. Dabei existieren Abhängigkeiten von NumPy (Arrays zur schnellen Verarbeitung), SciPy (Berechnung von Peakdaten) und PyPlot (graphische Darstellung)
 
-Die Datei \texttt{simulation.py} enthält alle Funktionen zur Simulation und Berechnung der Peakdaten. Wichtigster Bestandteil ist die abstrakte Klasse \texttt{Simulation} und die zwei Unterklassen \texttt{Simulation\_2s} und \texttt{Simulation\_3s}. Wie im vorherigen Kapitel gesehen, unterscheiden sich sowohl bei der Step-by-Step, als auch bei der By-Event Variante die Algorithmen nur durch die Umsetzung eines Berechnungsschrittes, sodass die Methoden zur Simulation eines Berechnungsschrittes bzw. Events in der Superklasse abstrakt sind und jeweils für das Modell passend in den Unterklassen implementiert wurden. In der Klasse \verb!Simulation_3s! sind zusätzlich auch die Vorberechnungen für die kumulierte Parametermatrix der Step-by-Step Simulation und die Wechselmatrix der By-Event Simulation zu finden.
+Die Datei \texttt{simulation.py} enthält alle Funktionen zur Simulation und Berechnung der Peakdaten. Wichtigster Bestandteil ist die abstrakte Klasse \texttt{Simulation} und die zwei Unterklassen \texttt{Simulation\_2s} und \texttt{Simulation\_3s}. Wie im vorherigen Kapitel gesehen, unterscheiden sich sowohl bei der Step-by-Step, als auch bei der By-Event Variante die Algorithmen nur durch die Umsetzung eines Berechnungsschrittes, sodass die Methoden zur Simulation eines Einzelschrittes bzw. Events in der Superklasse abstrakt sind und jeweils für das Modell passend in den Unterklassen implementiert wurden. In der Klasse \verb!Simulation_3s! sind zusätzlich auch die Vorberechnungen für die kumulierte Parametermatrix der Step-by-Step Simulation und die Wechselmatrix der By-Event Simulation zu finden.
 
 Um eine Simulation zu starten, wird zunächst eine Instanz der Simulationsklasse erstellt:
 \begin{verbatim}
 new_Sim = (params, model, approach, length, number, maxtime, times)
 \end{verbatim}                                                                                                  
-Für das 2-Zustände Modell sind die Parameter \verb!params! ein Tupel aus $(p_\text{s}, p_\text{m})$. Für das allgemeine 3-Zustände Modell wird die Übergangsmatrix \ref{3s_Transit} als Liste von Listen \\ \verb![[pmm, pma, pml],[pam,paa,pal],[plm,pla,pll]]! übergeben. Wird als \verb!model! das Modell 3a ausgewählt, können die vier nötigen Parameter auch als Liste \verb![pmm,pml,paa,pll]! übergeben werden.
+Für das 2-Zustände Modell sind die Parameter \verb!params! ein Tupel aus $(p_\text{s}, p_\text{m})$. Für das allgemeine 3-Zustände Modell wird die Übergangsmatrix \ref{3s_Transit} als Liste von Listen \\ \verb![[pmm, pma, pml],[pam,paa,pal],[plm,pla,pll]]! übergeben. Wird als \verb!model! das Modell 3a ausgewählt, können die vier nötigen Parameter auch als Liste \verb![pmm,pml,paa,pll]! übergeben werden, die dann passend umgewandelt werden.
 Zulässige Eingaben für \verb!model! sind \texttt{2s}, \texttt{3s} und \texttt{3a}, womit das entsprechende Modell ausgewählt wird. Über \verb!approach! kann zwischen \texttt{S} und \texttt{E} gewählt werden, wodurch der Simulationsansatz gewählt wird.
-Mit \verb!length!, \verb!number! und \verb!maxtime! können die Rahmenparameter für die Simulation gesetzt werden, diese entsprechen $\ell$, $n$ und $t_{\text{max}}$ in den Algorithmen \ref{algo_by_Step} und \ref{algo_by_event}. Als Defaultwerte auch hier eine Länge von $1000$, sowie $1000$ Teilchen und eine maximale Zeit von $240$ Sekunden gesetzt.
+Mit \verb!length!, \verb!number! und \verb!maxtime! können die Rahmenparameter für die Simulation gesetzt werden, diese entsprechen $\ell$, $n$ und $t_{\text{max}}$ in den Algorithmen \ref{algo_by_Step} und \ref{algo_by_event}. Als Defaultwerte sind auch hier eine Länge von $1000$, sowie $1000$ Teilchen und eine maximale Zeit von $240$ Sekunden gesetzt.
 
 Zusätzlich ist es möglich, eine bereits vorhandene Liste von Ankunftszeiten mit zu übergeben, aus der beispielsweise die Maße des Peaks berechnet werden sollen.
 
@@ -104,12 +104,12 @@ Anschließend wird mit \verb!newSim.simulate()! die Simulation gestartet. Anhand
 % 
 
 \subsection{Optimierungen}
-Sowohl bei der Umsetzung der Step-by-Step Methode als auch By-Event kann mit der Implementierung des 3-Zustände Modells auch das 2-Zustände Modell simuliert werden, indem nicht benötigte Übergangswahrscheinlichkeiten auf einen Wert von $0$ gesetzt werden. Die 2-Zustände Simulation ist aber vor allem bei der Step-by-Step Implementierung deutlich schneller, da nur auf boolschen Werten gearbeitet werden muss und deutlich weniger ungenutzte Information in den Zwischenschritten berechnet wird.
+Sowohl bei der Umsetzung der Step-by-Step als auch der By-Event Methode kann mit der Implementierung des 3-Zustände Modells auch das 2-Zustände Modell simuliert werden, indem nicht benötigte Übergangswahrscheinlichkeiten auf einen Wert von $0$ gesetzt werden. Die 2-Zustände Simulation ist aber vor allem bei der Step-by-Step Implementierung deutlich schneller, da nur auf boolschen Werten gearbeitet werden muss und deutlich weniger ungenutzte Information in den Zwischenschritten berechnet wird.
 
 Im Laborexperiment wird nur in gewissen Intervallen die Ankunft von Teilchen detektiert, bei der MCC-IMS-Kopplung wird beispielsweise nur zwei Mal pro Sekunde eine Messung durchgeführt. Daher genügt es auch in der schrittweisen Simulation, wenn nicht nach jedem Simulationsschritt die Orte aller Teilchen getestet werden, um ein ausreichend exaktes Ergebnis zu erhalten.
-Es können also zunächst viele Simulationsschritte durchgeführt werden, bevor getestet wird, ob Teilchen die Säulenlänge $\ell$ erreicht haben. Nach den oben angegebenen Einheiten können so zwischen jedem Test $50$ Simulationsschritte erfolgen, was $0,5$s entspricht. Dadurch entfallen viele Abfragen und es kann Simulationszeit eingespart werden. 
+Es können also zunächst viele Simulationsschritte durchgeführt werden, bevor getestet wird, ob Teilchen die Säulenlänge $\ell$ erreicht haben. Nach den oben angegebenen Einheiten können so zwischen jedem Test $50$ Simulationsschritte erfolgen, was $0,5$ s entspricht. Dadurch entfallen viele Abfragen und es kann Simulationszeit eingespart werden. 
 
-Da außerdem klar ist, dass Teilchen eine Säule der Länge $\ell$ frühestens nach $l$ Schritten überhaupt durchlaufen haben können, muss vor diesem Zeitpunkt auch kein Test auf Erreichen der Länge durchgeführt werden, wodurch weitere Zeit eingespart werden kann.
+Da außerdem klar ist, dass Teilchen eine Säule der Länge $\ell$ frühestens nach $\ell$ Schritten überhaupt durchlaufen haben können, muss vor diesem Zeitpunkt auch kein Test auf Erreichen der Länge durchgeführt werden, wodurch weitere Zeit eingespart werden kann.
 
 Diese Optimierungen wurden im Laufzeitvergleich im folgenden Abschnitt bereits berücksichtigt.
 
@@ -120,14 +120,14 @@ Die Laufzeit einer Simulation hängt stark von den gewählten Parametern ab, au�
 In Tabelle \ref{2s_laufzeit} ist eine Übersicht über die Laufzeiten der verschiedenen Simulationsarten gegeben. 
 Jede Zeile enthält die Zeiten für die gegebenen Parameter, jede Spalte entspricht einer Kombination aus Simulationsart und Teilchenanzahl $n$.
 
-Die Zeiten wurden auf einem Rechner mit Intel® Core™ i7-4500U Processor 
-unter jeweils gleichen Bedingungen gemessen und sind in Sekunden angegeben. \todo{Hinweise, was für nen PC ich habe}
-Mit einem $*$ gekennzeichnete Zeiten deuten an, dass die Simulationen nach Erreichen der maximalen Anzahl Simulationsschritte beendet wurden, also keinen vollständigen Peak innerhalb dieses Zeitraumes liefern.
+Die Zeiten wurden auf einem Rechner mit einem Intel® Core™ i7-4500U Prozessor und $8$ GB RAM 
+unter jeweils gleichen Bedingungen gemessen und sind in Sekunden angegeben. %\todo{Hinweise, was für nen PC ich habe}
+Grau hinterlegte Parameter deuten an, dass diese Simulationen keinen vollständigen Peak innerhalb des Zeitraumes von $240$ s liefern und daher nach Ablauf der maximalen Anzahl an Simulationsschritten beendet werden.
 
 
 \begin{table}[h]
 \centering
-\caption[Laufzeitvergleich für die 2-Zustände Simulation]{Laufzeitvergleich für die 2-Zustände Simulation mit den Parametern $ps$ und $pm$ für $n$ Teilchen, Zeitangaben in Sekunden. Grau hinterlegte Parameter zeigen unvollständigen Peak innerhalb von $240$ Sekunden an.}
+\caption[Laufzeitvergleich für die 2-Zustände Simulation]{Laufzeitvergleich für die 2-Zustände Simulation mit den Parametern $ps$ und $pm$ für $n$ Teilchen, Zeitangaben in Sekunden. Grau hinterlegte Parameter zeigen einen Peak innerhalb von $240$ Sekunden an.}
 \label{2s_laufzeit}
 \begin{tabular}{|l|l||l|l|l|l|} \hline
 $p_\text{s}$ & $p_\text{m}$  & Step-by-Step & By-Event & Step-by-Step & By-Event \\ 
@@ -153,12 +153,12 @@ $0,9996 $ & $ 0,95 $ & $ 4,1  $ & $ 3,0   $ & $ 18,8  $ & $10,2  $\\ \hline
 
 Wie zu erwarten war, steigt die Laufzeit an, je größer $p_\text{s}$ und je kleiner $p_\text{m}$ ist. Das liegt offensichtlich an der Abbruchbedingung des Algorithmus, der terminiert, wenn alle Teilchen über die gesamte Strecke von $\ell$ Schritten simuliert wurden. Simulationsparameter mit kleinem $p_\text{s}$ oder großem $p_\text{m}$ sorgen für weniger Verweilen der Teilchen im stationären Zustand und damit eine schnelle Passage der Strecke, wodurch die Simulationsdauer kürzer wird. 
 
-Bei der Simulation den 2-Zustände Modells ist die Step-by-Step Variante für die meisten Parameterkombinationen deutlich schneller, als die By-Event Implementierung. Der große Vorteil von Step-by-Step liegt hier in der Verwendung von booleschen Werten und Nutzung von NumPy-Arrays, auf welchen die Ausführung logischer Operationen sehr schnell erfolgen kann. Diese Zeiten der Step-by-Step Implementierung würden sich allerdings fast verdoppeln, wenn tatsächlich nach jedem Simulationsschritt eine Abfrage auf Erreichen der Säulenlänge und entsprechende Bearbeitung der fertigen Teilchen erfolgen würde und nicht erst nach den oben erwähnten $50$ Schritten.
+Bei der Simulation des 2-Zustände Modells ist die Step-by-Step Variante für die meisten Parameterkombinationen deutlich schneller, als die By-Event Implementierung. Der große Vorteil von Step-by-Step liegt hier in der Verwendung von booleschen Werten und Nutzung von NumPy-Arrays, auf welchen die Ausführung logischer Operationen sehr schnell erfolgen kann. Diese Zeiten der Step-by-Step Implementierung würden sich allerdings fast verdoppeln, wenn tatsächlich nach jedem Simulationsschritt eine Abfrage auf Erreichen der Säulenlänge und entsprechende Bearbeitung der fertigen Teilchen erfolgen würde und nicht erst nach den oben erwähnten $50$ Schritten.
 
 Mit größer werdendem $p_\text{m}$ verringert sich der Unterschied zwischen den beiden Simulationsarten, ab einem sehr großen Wert für $p_{\text{m}}$, ab etwa $0,99$ ist die By-Event Variante geringfügig schneller. Das liegt daran, dass in diesen Fällen besonders selten Ereignisse erzeugt werden müssen und sich die Teilchen in großen Sprüngen forbewegen können. 
 
 Anders sieht die Situation bei der Simulation des 3-Zustände Modells 3a aus. Tabelle \ref{3s_laufzeit} bietet eine Übersicht über die Laufzeiten mit verschiedenen Parametern.
-In der Spalte */** ist gekennzeichnet, ob die Parameter einen Peak innerhalb der Retentionszeit von $240$ Sekunden erzeugen. Bei mit einem * markierten Zeilen erreichen nur einige Teilchen ($<20\%$) innerhalb der Zeit das Säulenende. Zwei ** stehen für eine Simulation, in der fast alle ($> 95\%$) der Teilchen das Ziel erreichen.
+Grau hinterlegte Parameter zeigen auch hier an, dass kein vollständiger Peak innerhalb der Retentionszeit von $240$ Sekunden erzeugt werden kann, in der Spalte \% ist in diesem Fall ist der Prozentsatz der angekommenen Teilchen angegeben. 
 
 \begin{table}[h]
 \centering 
@@ -202,8 +202,8 @@ Jedoch müssen bei der Step-by-Step Implementierung sehr viele Einträge für di
 TODO
 
 \subsection{Nutzung von MoSDi}
-Es existiert bereits eine Implementierung für PAA. Diese wurde innerhalb der Software \texttt{MoSDi} \footnote{https://bitbucket.org/tobiasmarschall/mosdi} realisiert und ist in \cite{Marschall2011} beschrieben. Um eine Simulation eines PAA mit \texttt{MoSDi} zu starten, muss für die darin enthaltene abstrake Klasse \texttt{PAA} eine Unterklasse geschrieben werden, welche die Zustände, Werte, Operationen und Transitionswahrscheinlichkeiten für den konkreten PAA enthält. In der mitglieferten CD finden sich für beide Modelle jeweils eine solche Unterklasse \texttt{myPAA\_2s} und \texttt{myPAA\_3s}. 
-Zum starten muss in der Kommandozeile nacheinander die Befehle
+Es existiert bereits eine Implementierung für PAA. Diese wurde innerhalb der Software \texttt{MoSDi} \footnote{https://bitbucket.org/tobiasmarschall/mosdi} realisiert, eine Beschreibung findet sich in \cite{Marschall2011}. Um eine Simulation eines PAA mit \texttt{MoSDi} zu starten, muss für die darin enthaltene abstrake Klasse \texttt{PAA} eine Unterklasse geschrieben werden, welche die Zustände, Werte, Operationen und Transitionswahrscheinlichkeiten für den konkreten PAA enthält. In der mitglieferten CD finden sich für beide Modelle jeweils eine solche Unterklasse \texttt{myPAA\_2s} und \texttt{myPAA\_3s}. 
+Zum Starten müssen in der Kommandozeile nacheinander die Befehle
 \begin{verbatim}
 javac -classpath mosdi-1.3.jar myPAA_2s.java
 java -classpath .:mosdi-1.3.jar myPAA_2s 
@@ -211,7 +211,7 @@ java -classpath .:mosdi-1.3.jar myPAA_2s
 eingegeben werden. Dabei ist darauf zu achten, dass sich \texttt{mosdi.jar} im gleichen Verzeichnis wie \texttt{myPAA\_2s.java} befindet. 
 
 \subsection{PAA-Sim}
-Wie im Kapitel \ref{chapter:meth} erwähnt, werden für die Modelle der Multikapillarsäule jedoch nicht alle Funktionalitäten benötigt, sodass zusätzlich noch eine eigene Implementierung erstellt wurde. Diese wurde in Julia \footnote{julialang.org} implementiert und sind in den Programmen \verb!2s_PAA.jl! und \verb!3s_PAA.jl! zu finden.
+Wie im Kapitel \ref{chapter:meth} erwähnt, werden für die Modelle der Multikapillarsäule jedoch nicht alle Funktionalitäten eines PAA benötigt, sodass zusätzlich noch eine eigene Implementierung erstellt wurde. Diese wurde in Julia \footnote{julialang.org} implementiert und ist in den Programmen \verb!2s_PAA.jl! und \verb!3s_PAA.jl! zu finden.
 
 
 \subsection{Verwertung der Verteilungen}
@@ -232,11 +232,11 @@ Für das Plotten der Ergebnisse der PAA Simulationen existieren ähnliche Mögli
 \subsection{Laufzeiten}
 Die Laufzeiten von PAA-Sim hängen, wie bei der Teilchensimulation auch, unter anderem von den Simulationsparametern ab. Erheblich zur Verkürzung der Laufzeit trägt hier das Entfernen von Wahrscheinlichkeiten, die unter einem bestimmten Schwellwert liegen, bei. Dadurch werden die verwendeten Arrays kürzer und es müssen deutlich weniger Berechnungen angestellt werden. Außerdem kann mit dem zusätzlich eingeführten Index ein vorzeitiger Abbruch der Simulation erfolgen, wenn die gesamte Wahrscheinlichkeitsmasse die Strecke durchlaufen hat. Anderenfalls werden auf jeden Fall alle Schritte bis zum Erreichen der Maximalzeit simuliert, auch wenn der Peak bereits vollständig wäre.
 
-In Tabelle \ref{2s_laufzeit_paa} ist eine Übersicht über die Laufzeiten wie in Abschnitt \ref{chapter:imp_laufzeit_sim} gegeben. Darin werden die Laufzeiten von PAA-Sim einmal mit dem Abschneiden kleiner Wahrscheinlichkeiten und einmal ohne dieses Vorgehen, sowie MoSDi verglichen.
+In Tabelle \ref{2s_laufzeit_paa} ist eine Übersicht über die Laufzeiten wie in Abschnitt \ref{chapter:imp_laufzeit_sim} gegeben. Darin werden die Laufzeiten von PAA-Sim einmal mit dem Abschneiden kleiner Wahrscheinlichkeiten und einmal ohne dieses Vorgehen, sowie MoSDi verglichen. Bei Zeiten, die mit einem $*$ gekennzeichnet sind, konnte die Simulation vorzeitig beendet werden, da bereits die gesamte Wahrscheinlichkeitsmasse den Zielwert erreicht hat.
 
 \begin{table}[h]
 \centering
-\caption[Laufzeitvergleich für die Simulation des PAA mit zwei Zuständen]{Laufzeitvergleich für die Simulation des PAA mit zwei Zuständen, mit den Parametern $ps$ und $pm$, Zeitangaben in Sekunden. Grau hinterlegte Parameter zeigen unvollständigen Peak innerhalb von $240$ Sekunden an. Verglichen werden MoSDi und zwei Varianten der eigenen Implementierung des PAA, in der ersten Spalte wurden Wahrscheinlichkeiten unter dem Schwellwert von $10^{-17}$ abgeschnitten, in der zweiten nicht. Mit $*$ gekennzeichnete Zeiten deuten auf vorzeitiges Abbrechen, auf Grund eines vollständigen Peaks hin.}
+\caption[Laufzeitvergleich für die Simulation des PAA mit zwei Zuständen]{Laufzeitvergleich für die Simulation des PAA mit zwei Zuständen, mit den Parametern $ps$ und $pm$, Zeitangaben in Sekunden. Grau hinterlegte Parameter zeigen unvollständigen Peak innerhalb von $240$ Sekunden an. Verglichen werden MoSDi und zwei Varianten der eigenen Implementierung des PAA, in der ersten Spalte wurden Wahrscheinlichkeiten unter dem Schwellwert von $10^{-17}$ abgeschnitten, in der zweiten nicht. Mit $*$ gekennzeichnete Zeiten deuten auf vorzeitiges Abbrechen auf Grund eines vollständigen Peaks hin.}
 \label{2s_laufzeit_paa}
 \begin{tabular}{|l|l||l|l|l|l|} \hline
 $p_\text{s}$ & $p_\text{m}$  & PAA & PAA & MoSDi \\
@@ -265,7 +265,7 @@ Auch im 3-Zustände Modell hängen die Laufzeiten von den verwendeten Parametern
 
 \begin{table}[h]
 \centering 
-\caption[Laufzeitvergleich für die Simulation des PAA mit drei Zuständen]{Laufzeitvergleich für die Simulation des PAA mit drei Zuständen, mit den Parametern $pmm$, $pml$, $paa$ und $pll$, Zeitangaben in Sekunden. Grau hinterlegte Parameter zeigen unvollständigen Peak innerhalb von $240$ Sekunden an. Verglichen werden MoSDi und zwei Varianten der eigenen Implementierung des PAA, in der ersten Spalte wurden Wahrscheinlichkeiten unter dem Schwellwert von $10^{-17}$ abgeschnitten, in der zweiten nicht. Mit $*$ gekennzeichnete Zeiten deuten auf vorzeitiges Abbrechen, auf Grund eines vollständigen Peaks hin.}
+\caption[Laufzeitvergleich für die Simulation des PAA mit drei Zuständen]{Laufzeitvergleich für die Simulation des PAA mit drei Zuständen, mit den Parametern $pmm$, $pml$, $paa$ und $pll$, Zeitangaben in Sekunden. Grau hinterlegte Parameter zeigen unvollständigen Peak innerhalb von $240$ Sekunden an. Verglichen werden MoSDi und zwei Varianten der eigenen Implementierung des PAA, in der ersten Spalte wurden Wahrscheinlichkeiten unter dem Schwellwert von $10^{-17}$ abgeschnitten, in der zweiten nicht. Mit $*$ gekennzeichnete Zeiten deuten auf vorzeitiges Abbrechen auf Grund eines vollständigen Peaks hin.}
 \label{3s_laufzeit_paa}
 \begin{tabular}{|l|l|l|l||l||l|l|l|l|l|l|l|}
 \hline

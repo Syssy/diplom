@@ -5,8 +5,8 @@
 
 \section{Chromatographie}
 
-Die Chromatographie ist ein Verfahren zur Auftrennung von Stoffgemischen. 
-Die Auftrennung erfolgt dabei zwischen zwei sogenannten Phasen, der stationären und der mobilen Phase, welche sich in unterschiedlichen Aggregatzuständen befinden und untereinander nicht mischen. Die Analyte werden bewegen sich dabei durch die chromatographische Apparatur, indem sie von der mobilen Phase mitgenommen werden. Immer wieder geraten sie dabei in Kontakt zur stationären Phase und interagieren mit dieser. Abhängig von den Eigenschaften der verschiedenen Stoffe, werden sie dadurch kürzer oder länger aufgehalten, sodass sich verschiedene Stoffe von einander trennen.
+Die Chromatographie ist ein Verfahren zur Auftrennung und Analyse von Stoffgemischen. Die Auftrennung eines Gemisches geschieht dabei zwischen zwei sogenannten Phasen, der stationären und der mobilen Phase. Diese befinden sich in unterschiedlichen Aggregatzuständen. 
+Die Analyte werden bewegen sich durch die chromatographische Apparatur, indem sie von der mobilen Phase mitgenommen werden. Immer wieder geraten sie dabei in Kontakt zur stationären Phase und interagieren mit dieser, indem sie die Phase wechseln. Abhängig von den Eigenschaften der verschiedenen Stoffe, werden sie dadurch kürzer oder länger aufgehalten, sodass sich verschiedene Stoffe von einander trennen.
 
 Es existieren viele Varianten der Chromatographie. Eine mögliche Unterscheidung findet durch die dabei verwendeten Aggregatzustände der beiden Phasen statt. Zum einen gibt es die Flüssigchromatographie (LC, engl. Liquid Chromatography),
 %\todo{Muss englische Worterklärung kursiv oä?}
@@ -180,6 +180,7 @@ Neben der eben vorgestellten schrittweisen Berechnung der Zustand-Werte Verteilu
 Da es sein kann, dass in einigen Abfolgen von Zuständen, der Wert $v^*$ erst sehr spät oder gar nicht erreicht werden kann, wird eine maximale Wartezeit $t_{\text{max}}$ gesetzt. Zwar können dann Wartezeiten für $v^*$ größer als $t_{\text{max}}$ auftreten, deren genaue Verteilung unbekannt ist, Gesamtwahrscheinlichkeit dieser Zeitpunkte kann jedoch berechnet werden.
 % TODO Wohin damit? Es kann sein, dass Wartezeiten für $v^*$ größer als $t_{\text{max}}$ auftreten. Dann ist die Verteilung der Wahrscheinlichkeiten für diese Zeitpunkte zwar unbekannt, aber die Gesamtwahrscheinlichkeit für solche Wartezeiten kann berechnet werden.% (teilchen bleiben ewig stecken) aber uns interessiert nur bis zeitpunkt y. (y=240s). Dann kennt man die verteilung darüber hinaus nicht, aber die gesamtwkeit dafür schon.
 
+\todo{Überarbeiten, groß V}
 brauche für groß W muss auch groß V rein (paper) da V Zufallsvariable, die verteilung haben kann
 
 Außerdem können innerhalb eines Prozesses mehrere Zeitpunkte existieren, an denen der Wert $v^*$ angenommen werden kann, gesucht ist der kleineste dieser Zeitpunkte. %(bspw, wenn Teilchen grad stecken geblieben ist, rein theoretisch) 
@@ -206,6 +207,7 @@ Der Wert $\bullet$ wird also genau dann erreicht, wenn im aktuellen Berechnungss
 Die Verteilung für $P(v'_{t} = \bullet)$ kann wie oben angegeben schrittweise für alle Zeitpunkte $t$ ausgehend von der Startverteilung bis zu $t_{\text{max}}$ berechnet werden. Dadurch, dass im jeweils nächsten Berechnungsschritt der PAA in Zustand $\circ$ gelangt, wird jeweils nur das erste Erreichen von $v^*$ berücksichtigt.
 
 Durch Berechnung der Wahrsscheinlichkeiten $P(v'_{t} = \bullet)$ für alle $t < t_{\text{max}}$ erhält man die Verteilung der Wartezeiten auf $v^*$.
+
 
 %Offensichtlich entspricht die Wartezeit auf den Wert $v^*$ der Wahrscheinlichkeit von Wert $\bullet$
 %Es kann also für alle Zeitpunkte $t$ die Wahrscheinlichkeit für den neuen Wert $\bullet$ berechnet werden.
