@@ -183,18 +183,20 @@ def get_argument_parser():
     '''Kommandozeilenparameter'''
     p = argparse.ArgumentParser(
         description = "Ruft Simulation und Plotfunktionen auf") 
+    p.add_argument("model",choices=["3s", "3a"],
+                   help = "Auswahl, welches Modell (3s/3a)")
+    p.add_argument("--length", "-l", type = int, default = "1000",
+                   help = "Laenge der Saeule")
+    p.add_argument("--number", "-n", type = int, default = "1000",
+                   help = "Anzahl zu simulierender Teilchen")
+    p.add_argument("--maxtime", "-m", type = int, default = "240",
+                   help = "Maximale Simulationszeit")
     p.add_argument("--choicenumber", "--cn", type = int, default = "5",
                    help = "bei zufaelliger Parameterwahl: Wie viele Kombinationen sollen gewaehlt werden")
     p.add_argument("--pcombioption", "-p",  
                    help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: small_set, medium_set, large_set, random")
     p.add_argument("--reverse", "-r", action = "store_true",
                    help = "Reihenfolge der p_combinations invertieren")
-    p.add_argument("--model", "-m", default = "3a",
-                   help = "Auswahl, welches Modell (3s/3a)")
-    p.add_argument("--length", "-l", type = int, default = "1000",
-                   help = "Laenge der Saeule")
-    p.add_argument("--number", "-n", type = int, default = "1000",
-                   help = "Anzahl zu simulierender Teilchen")
     p.add_argument("--approach", "-a", default = "E", 
                    help = "Art der Simulation; E = by-event, S = step-by-step")
     p.add_argument("--plot_peak", "--pp", nargs = '+', type = float,

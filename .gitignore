@@ -16,6 +16,7 @@
 *.mem
 *.loa
 *.lod
+*.svg
 Programmierung/PAA/savedata_julia
 Programmierung/PAA/savefigs_julia
 Programmierung/PAA/savedata_python

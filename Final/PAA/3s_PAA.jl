@@ -147,6 +147,14 @@ function combineParams(setsize)
        plls = [0.99995f0, 0.999995f0]    
     end
     
+    
+    if setsize == "elly"
+       pmms = [0.5f0]
+       pmls = [0.007f0]
+       paas = [0.9985f0, 0.999f0, 0.9992f0, 0.9993f0, 0.9995f0, 0.9994f0]
+       plls = [0.99995f0]    
+    end
+    
     println (pmms)
     println (pmls)
     println (paas)
@@ -184,7 +192,7 @@ end
 column_length = 1000
 maxtime = 2400000
 # Parameterkombination wählen
-param_list = combineParams("laufzeit")
+param_list = combineParams("elly")
 #reverse!(param_list)
 # Simulationen starten, vorher testen, ob diese schon exisitert, dazu den passenden filename aufbauen
 for params in param_list
@@ -195,20 +203,20 @@ for params in param_list
         end
     end
 # nur simulieren, falls nicht vorhanden
-#if !isfile(filename)
+if !isfile(filename)
         println (strftime(time()), " starte: ")
         println (params, " ")
         # Starte Simulation fuer params
         res = []
-        for i in 1:1
+        #for i in 1:1
             res = @time(waitingTimeForValue(params, column_length, maxtime))
-        end
+        #end
         # summe zur kontrolle
         println("summe ", sum(res))
         # abspeichern
         writecsv(filename, res)
     end
-#end  
+end  
 
 println("Fertig, zum Anzeigen der Ergebnisse bitte \n python3 process_simulations.py -l", column_length, " -m 3a -o  aufrufen und evtl. anschließend mit \n python3 plottigs_PAA.py und die gewünschten Plots erzeugen")
 

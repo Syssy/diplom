@@ -109,15 +109,15 @@ function combineParams(setsize)
     end
     
     if setsize == "elly"
-        pss = [0.99998f0]
-        pms = [0.98f0]
+        pss = [0.99997f0, 0.99998f0, 0.999985f0]
+        pms = [0.993f0, 0.9932f0, 0.9935f0, 0.9936f0]
     end
     
     # erstelle Liste aller moeglichen Kombinationen
     param_list = Array(Any, 0)
     for ps in pss
         for pm in pms
-            params = [round(ps,5), round(pm,5)]
+            params = [round(ps,6), round(pm,6)]
             push!(param_list, params)
         end
     end
@@ -128,16 +128,17 @@ end
 # Simulationseinstellungen
 column_length = 1000
 maxtime = 2400000
-param_list = combineParams("elly")
+param_list = combineParams("laufzeit")
+#reverse!(param_list)
 # Simuliere alle Parameterkombinationen
 for (ps, pm) in param_list
-    filename = "savedata_julia/2s/l$column_length/Sim_$ps" * "_$pm"
+    filename = "savedata_julia3/2s/l$column_length/Sim_$ps" * "_$pm"
     #nur simulieren, wenn nicht schon vorhanden
 #    if !isfile(filename) 
         println("ps:", ps, " pm: ", pm, " ")
         # Simulieren
         res = []
-        for i in 1:5
+        for i in 1:1
             res = @time(waitingTimeForValue(ps, pm, column_length+1, maxtime))
             #sleep(5)
         end
@@ -145,7 +146,7 @@ for (ps, pm) in param_list
         println("Sum ", sum(res))
         #Speichern
         writecsv(filename, res)
-#    end
+    end
 end   
 
 println("Fertig, zum Anschauen der Ergebnisse bitte \n python3 process_simulations.py -l", column_length, " -o -m 2s aufrufen und anschließend mit \n python3 plottigs_PAA.py die gewünschten Plots erzeugen")

@@ -205,14 +205,17 @@ def plot_3feste_Params(directory, pmm=[], pml=[], paa=[], pll=[], variabel="pmm"
     #plt.xlabel("Breite (IQR)")
     plt.xlabel("Zeitpunkt")
     #plt.ylabel("Breite (IQR)")
-    plt.ylabel("Schiefe (QK)")
+    plt.ylabel("Schiefe")
+    plt.xlim([0, 200])
+    plt.ylim([0, 0.9])
     print ("todolist", todolist)
     del mydict[variabel]
     title = ""
-    for key in mydict:
-        title += (" " + key + "="+ str(mydict[key][0]))
-    plt.suptitle("fest:" + title+ "\n variabel: " + variabel)
-    plt.legend(title= variabel+ ",  breite", numpoints = 1, loc = 1)
+    for key in ["pmm", "pml", "paa", "pll"]:
+        if key in mydict:
+            title += (" " + key + "="+ str(mydict[key][0]))
+    plt.suptitle("fest:" + title)#+ "\n variabel: " + variabel)
+    plt.legend(title= variabel+ ",  Breite", numpoints = 1, loc = 1)
     #print ("3fest_" +  str(mydict["pmm"][0])+"_" +  str(mydict["pml"][0])+"_" +  str(mydict["paa"][0])+"_" +  str(mydict["pll"][0]))# + mydict[pml] + mydict[paa] + mydic[pll])
     #plt.savefig(figname)
     plt.show()    
@@ -227,7 +230,7 @@ def plot_erreichbare_regionen(directory, show_params):
             if myPAA.pd[0] < 240 and myPAA.pd[0] > 0.1 and myPAA.pd[2] == myPAA.pd[2]:
                 point = plt.plot([myPAA.pd[0]], myPAA.pd[2], "ro-")
                 if show_params:
-                    t = plt.text(myPAA.pd[0], myPAA.pd[2], str(round(myPAA.params[0],6))+'\n'+str(round(myPAA.params[1],3)), size= "small")
+                    t = plt.text(myPAA.pd[0], myPAA.pd[2], str(round(myPAA.params[0],6))+'\n'+str(round(myPAA.params[1],4)), size= "small")
     plt.suptitle("Erreichbare Zeit-Breiten-Kombinationen")
     plt.xlabel("Zeitpunkt")
     plt.ylabel("Breite")
@@ -267,10 +270,10 @@ def get_argument_parser():
     '''Kommandozeilenparameter'''
     p = argparse.ArgumentParser(
         description = "Ruft Plotfunktionen auf")
+    p.add_argument("model", choices = ["2s", "3a"],
+                   help = "Modell: 2 oder 3 Zustände (2s/3a)")  
     p.add_argument("--length", "-l", type = int, default = "1000",
                    help = "Laenge der Saeule")
-    p.add_argument("--model", "-m", default = "",
-                   help = "Modell: 2 oder 3 Zustände (2s/3a)")  
     p.add_argument("--source", "-s", default = "julia",
                    help = "Quelle der PAA-Daten")
     p.add_argument("--plot_peak", "-pp", nargs = '+', type = float,
@@ -297,11 +300,11 @@ def get_argument_parser():
                   help = "QK-Intervall fuer plot_pd")
     p.add_argument("-plot_3fest", "-p3", action = "store_true",
                    help = "Plottet Peakdaten für drei feste und einen variablen Parameter, Wert der drei festen Parameter mit -pmm/-pml/-paa/-pll angeben")
-    p.add_argument("-pmm", "--pmm", type=float, nargs='+',default = [float(0.1), float(0.3), float(0.5), float(0.7), float(0.9)],
+    p.add_argument("-pmm", "--pmm", type=float, nargs='+',default = [float(0.1), float(0.2), float(0.3), float(0.4), float(0.5), float(0.6), float(0.7), float(0.8), float(0.9)],
                    help = "Wert als festen Parameter im 3_fest-Plot")
-    p.add_argument("-pml", "--pml", type=float, nargs='+', default = [float(0.005), float(0.001), float(0.0007), float(0.0005), float(0.0003)],
+    p.add_argument("-pml", "--pml", type=float, nargs='+', default = [float(0.0001), float(0.0003), float(0.0005), float(0.0007), float(0.001), float(0.003), float(0.005)],
                    help = "Wert als festen Parameter im 3_fest-Plot")
-    p.add_argument("-paa", "--paa", type=float, nargs='+', default = [float(0.997), float(0.999), float(0.9992), float(0.9994), float(0.9996)],
+    p.add_argument("-paa", "--paa", type=float, nargs='+', default = [float(0.997), float(0.998), (0.9985), float(0.999), float(0.9992), 1 float(0.9994), float(0.9995), float(0.9996)],
                    help = "Wert als festen Parameter im 3_fest-Plot")
     p.add_argument("-pll","--pll",type=float, nargs='+',default = [float(0.9999),float(0.99995),float(0.999975), float(0.99999), float(0.999995)],
                    help = "Wert als festen Parameter im 3_fest-Plot")

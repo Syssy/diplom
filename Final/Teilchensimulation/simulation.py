@@ -439,7 +439,7 @@ def get_argument_parser():
                    help = "Laenge der Saeule")
     p.add_argument("--number", "-n", type = int, default = "1000",
                    help = "Anzahl zu simulierender Teilchen")
-    p.add_argument("--maxtime", "--mt", type = int, default = "240",
+    p.add_argument("--maxtime", "-m", type = int, default = "240",
                    help = "Maximale Retentionszeit in Sekunden")
     p.add_argument("--approach", "-a", default = "E", choices=["E", "S"],
                    help = "Art der Simulation; E = by-event, S = step-by-step")

@@ -15,6 +15,8 @@ import csv
 import numpy as np
 import matplotlib.pyplot as plt
 
+#TODO source PAA-Sim bzw MoSDi wäre schöner
+
 class PAA():
     def __init__(self, params, model, length, distribution, maxtime=240, source="julia", comp_factor=1000):
         self.params = params
@@ -89,12 +91,14 @@ class PAA():
 def get_argument_parser():
     p = argparse.ArgumentParser(
         description = "Wandelt Wahrscheinlichkeitslisten (csv) vom PAA in Simulationsobjekte um, komprimiert die Daten") 
+    p.add_argument("model", choices = ["2s", "3a"],
+                   help = "Modell: 2 oder 3 Zustände (2s/3a)")
     p.add_argument("--length", "-l", type = int, default = "1000",
                    help = "Laenge der Saeule")
+    p.add_argument("--maxtime", "-m", type = int, default = "240",
+                   help = "Maximale Retentionszeit in Sekunden")
     p.add_argument("--source", "-s", default = "julia",
                    help = "Quelle der PAA-Daten")
-    p.add_argument("--model", "-m", default = "",
-                   help = "Modell: 2 oder 3 Zustände (2s/3a)")
     p.add_argument("--output", "-o", action = "store_true",
                    help = "Wenn gewählt, wird zu jeder verarbeiteten Simulation die komprimierte Wahrscheinlichkeitsverteilung ausgegeben")
     return p
@@ -110,6 +114,7 @@ def main():
     
     # Alle Dateien im Quellordner durchgehen
     filenames = [name for name in os.listdir(source_directory) if name.startswith("Sim_")]
+    filenames.reverse()
     print ("Anzahl Files: ", str(len(filenames)))
     for filename in filenames:
         params = [float(p) for p in filename[4:].strip(".p").split("_")]   
