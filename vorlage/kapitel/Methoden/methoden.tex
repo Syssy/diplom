@@ -43,13 +43,11 @@ Wenn Zustandswechsel jedoch nicht sehr häufig vorkommen, kann es viel Zeit eins
 \RETURN $r$
 \end{algorithmic}
 \end{algorithm}
-\todo{Text anpassen, wegen änderungen?}
-
 %\todo{Hinweis auf Parallelisierbarkeit und andere Zeitverbesserungen hier oder in Implementierung}
 
 Der Ablauf einer schrittweisen Simulation ist in Algorithmus \ref{algo_by_Step} gegeben und unterscheidet sich zunächst nicht für das 2-Zustände und 3-Zustände Modell.
 
-Simuliert werden $n$ Teilchen. Für jedes Teilchen $p$ muss jeweils der aktuelle Zustand $z_p$ und Ort $o_p$ festgehalten werden, außerdem muss in jedem Schritt der aktuelle Zeitpunkt $t$ vermerkt werden. Die Zustände $z_p$ und Orte der Teilchen $o_p$ %\in \{0, \ldots, \ell\}$ 
+Simuliert werden $n$ Teilchen. Für jedes Teilchen $p$ muss jeweils der aktuelle Zustand $z_p$ und Ort $o_p$ festgehalten werden, außerdem muss in jedem Schritt der aktuelle Zeitpunkt $t$ vermerkt werden. Die Zustände $z_p$ und Orte $o_p$ der Teilchen  %\in \{0, \ldots, \ell\}$ 
 werden jeweils in einem Array festgehalten. Die Identifikation der Teilchen geschieht dabei über ihre Postition, die in beiden Arrays identisch ist.
 %\todo{Array oder Vektor, bzw ohne Parallelisierbarkeit, da ja eigentlich nicht nötig?}
 %Für jedes Teilchen wird in einem zweiten Array an gleicher Position sein aktueller Ort gespeichert. 
@@ -59,7 +57,7 @@ Als alternative Abbruchbedingung kann eine maximale Anzahl von Simulationsschrit
 
 Es wird nun jeweils ein Zeitschritt für alle Teilchen simuliert. Nach jedem solchen Simulationsschritt wird getestet, ob Teilchen bereits den Wert von $\ell$ erreicht und damit die ganze Säule durchlaufen haben. Die entsprechende Anzahl dafür benötigter Schritte entspricht der Ankunftszeit der Teilchen und wird festgehalten, sodass als Ergebnis am Ende der Simulation eine Liste von Ankunftszeiten aller Teilchen entsteht. Teilchen, die angekommen sind, werden aus beiden Vektoren gelöscht.
 
-Wenn die Simulation für alle Teilchen zu Ende geführt wurde, ist die Rückgabe die Liste $r$ der Ankunftszeiten aller Teilchen, die das Säulenende erreicht haben. Anhand der Länge von $r$ kann leicht festgestellt werden, ob die Parameter $p_{\text{s}}$ und $p_{\text{m}}$ einen vollständigen Peak innerhalb des Maximalzeitraumes erzeugt haben. 
+Nach Beendigung der Simulation, ist die Rückgabe die Liste $r$ der Ankunftszeiten aller Teilchen, die das Säulenende erreicht haben. Anhand der Länge von $r$ kann leicht festgestellt werden, ob die Parameter $p_{\text{s}}$ und $p_{\text{m}}$ einen vollständigen Peak innerhalb des Maximalzeitraumes erzeugt haben. 
 
 
 \subsubsection{Simulation des 2-Zustände Modells}
@@ -161,7 +159,7 @@ Zum Ablauf der Simulation wurde entschieden, dass zunächst die Entscheidung üb
 In Abbildung \ref{2p_by_step} ist eine schematische Darstellung eines Simulationsschritts zu finden. Die angenommenen Wahrscheinlichkeiten für das Verweilen in den Zuständen sind hier $p_{\text{s}} = 0,8$ und $p_{\text{m}} = 0,5$.
 
 Um eine parallele Bearbeitung aller Teilchen zu ermöglichen, soll nicht jeweils eine explizite Zustandsabfrage gemacht werden. Statt dessen werden für alle $n$ gezogenen Zufallszahlen die daraus resultierenden Übergänge für beide Zustände berechnet und in zwei Hilfsvektoren gespeichert, in $s$ wird jeweils vermerkt, ob ein Teilchen stationär bleibt und in $m$, ob es mobil bleibt, so es denn im jeweiligen Zustand war. Beispielsweise wurde für die violett und orange markierten Teilchen eine $0,7$ gezogen, was für mobile Teilchen wie das Violette bedeutet, dass sie den Zustand wechseln müssen, für stationäre Teilchen wie das Orangene jedoch, dass sie stationär bleiben. 
-Dadurch, dass alle Übergänge vorberechnet wurden, werden die neuen Zustände über die Formel: $(z_p \land m_p) \lor (\lnot z_p \land \lnot s_p)$ berechnet. 
+Dadurch, dass alle Übergänge vorberechnet wurden, werden die neuen Zustände für alle Teilchen $p$ über die Formel: $(z_p \land m_p) \lor (\lnot z_p \land \lnot s_p)$ berechnet. 
 
 Für die neuen Orte kann einfach der neue Zustandsvektor auf den alten Ortsvektor addiert werden.
 
@@ -170,7 +168,7 @@ Für die neuen Orte kann einfach der neue Zustandsvektor auf den alten Ortsvekto
 
 Durch die Hinzunahme eines weiteren Zustandes können nun nicht mehr boolesche Werte zur Zustandsbeschreibung herangezogen werden. Nun gilt Zustand $z \in \{0, 1, 2\}$  wobei $0$ für den mobilen Zustand steht, $1$ für die Adsorption und $2$ für die Lösung. Außerdem werden die Wahrscheinlichkeiten entsprechend auf eine Transitionsmatrix wie in Definition \ref{3s_Transit} angepasst.
 
-Damit weiterhin eine logische Formel für die Zustandsberechnung genutzt werden kann und so die neuen Zustände parallel berechnen zu können, sind einige Hilfsarrays nötig.%, die entsprechend viel überflüssige Information enthalten.
+Damit weiterhin eine logische Formel für die Zustandsberechnung genutzt werden kann und so die neuen Zustände parallel berechnen können, sind einige Hilfsarrays nötig. %, die entsprechend viel überflüssige Information enthalten.
 Um aus den gezogenen Zufallszahlen die passenden Arrays zu erstellen, aus denen die neuen Zustände berechnet werden können, wird zunächst eine Hilfstabelle mit den kumulierten Wahrscheinlichkeiten erstellt. %erstelle kumulierte Wahrscheinlichkeiten (ein mal zu beginn)
 
 Beispiel:
@@ -222,7 +220,6 @@ Dadurch entsteht pro Zustand ein Array, welches für jedes in diesem Zustand bef
 Farblich gleich markierte Felder zeigen einen gemeinsamen Ausgangszustand mit den drei Möglichkeiten zum Phasenübergang.}
 \label{3s_by_step_tabelle}
 \end{figure}
-\todo{Mehr Bildunterschrift}
 
 Die Berechnung der neuen Orte der Teilchen ist dann wiederum einfach. Da die Maske für den mobilen Zustand bereits alle mobilen Teilchen markiert, kann diese auf den Ortsvektor addiert werden. Um $M_0$ nicht nach den Zustandswechseln neu berechnen zu müssen, findet das Fortbewegen im Simulationschritt vor dem Zustandswechsel statt und die Teilchen starten dafür an Position $0$ statt an $1$ wie es bei der 2-Zustände Simulation der Fall war. Die Eingabe der Orte für Algorithmus \ref{algo_by_Step} ist also $o= [o_1 = 0, \ldots, o_n=0]$.
 
@@ -243,7 +240,7 @@ Der Ablauf der ereignisbasierten Simulation ist in \ref{algo_by_event} angegeben
 \REQUIRE Anzahl der Teilchen $n$, Länge der Säule $\ell$, Zeit $t=0$, Maximalzeit $t_{\text{max}}$, Eventliste $e= [e_0 = [(z_0, o_0), \ldots, (z_n, o_n)]]$ mit $z_p = 0, o_p = 0$ $\forall p$ , Transitionen $T$
 \ENSURE Ankuftszeiten $r$
 \STATE $r$ = list()
-\WHILE{$t<t_{\text{max}}$ \AND Länge $e> 0$}
+\WHILE{$t<t_{\text{max}}$ \AND Länge $(e)> 0$}
 \FORALL {$(z_p, o_p)$ in $e[t]$}
 \IF {$o_p > \ell$}
 \STATE Berechne Ankunftszeit $t_a(p)$ 
@@ -256,7 +253,7 @@ Der Ablauf der ereignisbasierten Simulation ist in \ref{algo_by_event} angegeben
 \ENDFOR
 \STATE $t \leftarrow t+1$
 \ENDWHILE
-\IF {$len(e) > 0$}
+\IF { Länge $(e) > 0$}
 \FORALL {Event $e[t]$ in $e$}
 \FORALL {$(z_p, o_p)$ in $ev$}
 \IF {$o_p > \ell$}
@@ -277,20 +274,22 @@ Der Ablauf der ereignisbasierten Simulation ist in \ref{algo_by_event} angegeben
 % Dabei muss für jeden Zeitpunkt $t$ verwaltet werden, welche Teilchen zu diesem Zeitpunkt ihren Zustand wechseln. 
 Wie bei der schrittweisen Simulation werden hier $n$ Teilchen simuliert. Jedes davon besteht dabei aus seinem Ort und seinem Zustand. 
 Zunächst starten alle Teilchen bei Zeitpunkt $0$, an Ort $0$ und stationär. Dadurch werden sie im ersten Simulationsschritt mobil und bewegen sich direkt fort. 
-Im Gegensatz zur schrittweisen Simulation wird nun eine Liste mit Zeitpunkten verwaltet. Jeder Zeitpunkt beinhaltet eine Liste von Teilchen, die zu diesem Zeitpunkt simuliert werden müssen. Nach erfolger Simulation aller Teilchen der Liste, wird der Zeitpunkt gelöscht und der nächste Zeitpunkt, an dem etwas passieren soll, bearbeitet.
+Im Gegensatz zur schrittweisen Simulation wird nun eine Liste mit Zeitpunkten verwaltet. Jeder Zeitpunkt beinhaltet eine Liste von Teilchen, die zu diesem Zeitpunkt simuliert werden müssen. Nach erfolgter Simulation aller Teilchen der Liste, wird der Zeitpunkt gelöscht und der nächste Zeitpunkt, an dem etwas passieren soll, bearbeitet.
 
 Simuliert wird auch hier bis entweder eine maximale Zeit erreicht ist oder alle Teilchen die gesamte Säule durchlaufen haben. Auch das Ergebnis ist wie bei der schrittweisen Simulation eine Liste mit Ankunftszeiten aller Teilchen, die das Säulenende erreicht haben.
 
 % Ein Simulationsschritt behandelt dann alle Teilchen die zu einem Zeitpunkt ihren Zustand wecheln. 
 % Ein solches Event beinhaltet den Wechsel des Zustands, die Bestimmung des Zeitpunkts des nächsten Zustandswechsels sowie bei mobilen Teilchen eine Änderung des Ortes. 
 
-Ein Event beinhaltet alle Teilchen eines Zeitpunktes. Für jedes wird zunächst getestet, wo sich das Teilchen befindet. Falls es noch nicht das Säulenende erreicht hat, es simuliert. Diese Simulation umfasst den Wechsel des Zustands, die Bestimmung des Zeitpunkts des nächsten Zustandswechsels sowie bei mobilen Teilchen eine Änderung des Ortes um eine entsprechende Anzahl Schritte. Anschließend wird das Teilchen der Zeitpunkteliste seines nächsten Aktionszeitpunktes hinzugefügt.
+Ein Event beinhaltet alle Teilchen eines Zeitpunktes. Für jedes wird zunächst getestet, wo sich das Teilchen befindet. Falls es noch nicht das Säulenende erreicht hat, wird es simuliert. Diese Simulation umfasst den Wechsel des Zustands, die Bestimmung des Zeitpunkts des nächsten Zustandswechsels sowie bei mobilen Teilchen eine Änderung des Ortes um eine entsprechende Anzahl Schritte. Anschließend wird das Teilchen der Liste seines nächsten Aktionszeitpunktes hinzugefügt.
 
-Wann ein Teilchen das nächste Mal seinen Zustand wechselt, wird mit Hilfe einer geometrisch verteilten Zufallszahl mit Parameter $p=1-p_\text{s}$ bestimmt: Der nächste Zufallswechsel von Zustand $z$ nach $\neg z$ findet statt an Zeitpunkt $t= geom(1-p_{\text{s}})$ %\todo{ZZ ordentlich aufschreiben}.
+\subsubsection{2-Zustände Modell}
+
+Wann ein Teilchen das nächste Mal seinen Zustand wechselt, wird mit Hilfe einer geometrisch verteilten Zufallszahl mit Parameter $p=1-p_\text{s}$ \todo{beide Wechsel} bestimmt: Der nächste Zufallswechsel von Zustand $z$ nach $\neg z$ findet statt an Zeitpunkt $t= geom(1-p_{\text{s}})$ %\todo{ZZ ordentlich aufschreiben}.
 Daher lohnt sich diese Art der Simulation insbesondere bei Parametern nahe 1. 
-Wenn ein Teilchen im aktuellen Schritt in den mobilen Zustand gewechsel hat, muss auch sein Ort angepasst werden. Da sich Teilchen eine Raumeinheit pro Zeitschritt bewegen, wird der Ort entsprechend der gezogenen Zufallszahl erhöht.
+Wenn ein Teilchen im aktuellen Schritt in den mobilen Zustand gewechselt hat, muss auch sein Ort angepasst werden. Da sich Teilchen eine Raumeinheit pro Zeitschritt bewegen, wird der Ort entsprechend der gezogenen Zufallszahl erhöht.
 
-Allerdings gestaltet sich das Testen auf Erreichen der Säulenlänge bei dieser Methode etwas schwieriger, da $\ell$ nur sehr selten genau getroffen wird. In vielen Fällen wird ein Teilchen von einem Ort kleiner $\ell$ direkt auf einen viel größeren Ort befördert. Daher muss zwischen jedem Simulationsschritt getestet werden, ob ein Teilchen bereits $\ell$ überschritten hat. Wenn das der Fall ist, muss mit Hilfe der Differenz zum aktuellen Simulationszeitpunkt die korrekte Ankunftszeit des Teilchens berechet werden.
+Allerdings gestaltet sich das Testen auf Erreichen der Säulenlänge bei dieser Methode etwas schwieriger, da $\ell$ nur sehr selten genau getroffen wird. In vielen Fällen wird ein Teilchen von einem Ort kleiner $\ell$ direkt auf einen viel größeren Ort befördert. Daher muss zwischen allen Simulationsschritten getestet werden, ob ein Teilchen bereits $\ell$ überschritten hat. Wenn das der Fall ist, muss mit Hilfe der Differenz zum aktuellen Simulationszeitpunkt die korrekte Ankunftszeit des Teilchens berechnet werden.
 Ob diese Berechnung nach jedem Simulationsschritt, also vor Neueintragung in die Liste geschieht, oder vor jedem Schritt, ist egal. Allerdings muss im zweiten Fall beachtet werden, dass, falls als Abbruchbedingung eine Maximalzeit gewählt wurde, sichergestellt sein muss, dass alle übrigen Teilchen noch einmal auf Erreichen von $\ell$ getestet werden.
 
 \begin{figure}
@@ -441,16 +440,16 @@ Bei dieser Simulationsart sind nur minimale Anpassungen notwendig. Wie in der St
 
 Die Berechnung, wann ein Teilchen von Zustand $z$ in einen neuen Zustand $z'$ mit $z' \neq $ z wechselt, bleibt gleich, da sie nur vom aktuellen Zustand bzw. der Wahrscheinlichkeit in diesem Zustand zu bleiben abhängt. Unverändert bleibt auch die Bestimmung des neuen Ortes sowie der Test, ob ein Teilchen die Säule vollständig durchquert hat. 
 
-Es muss lediglich eine Entscheidung, in welchen der beiden anderen Zustände das Teilchen wechselt, eingeführt werden. Ein Ereignis beinhaltet stets einen Zustandswechsel, also hat das Teilchen jeweils zwei mögliche Folgezustände. Die Übergangswahrscheinlichkeit von $z$ nach $z$ ist also immer $0$. Die Wahrscheinlichkeiten für die Wechsel in anderen beiden Zustände müssen entsprechend ihres Anteils an der Restwahrscheinlichkeit angepasst werden.
+Es muss lediglich eine Entscheidung, in welchen der beiden anderen Zustände das Teilchen wechselt, eingeführt werden. Ein Ereignis beinhaltet stets einen Zustandswechsel, also hat das Teilchen jeweils zwei mögliche Folgezustände. Die Übergangswahrscheinlichkeit von $z$ nach $z$ ist also immer $0$. Die Wahrscheinlichkeiten für die Wechsel in einen anderen der beiden Zustände müssen entsprechend ihres Anteils an der Restwahrscheinlichkeit angepasst werden.
 
-Dafür kann vorab eine Hilfsmatrix berechnet werden, in der sich die Wahrscheinlichkeiten für Folgezustände ablesen lassen.
+Dafür kann vorab eine Wechselmatrix berechnet werden, in der sich die Wahrscheinlichkeiten für Folgezustände ablesen lassen.
 
 \begin{equation}
 \text{Wechselmatrix } W = 
 \begin{pmatrix}
-0 &  p_{ma}/(1-p_{mm}) & p_{ml}/(1-p_{mm}) \\
-p_{am}/(1- p_{aa}) & 0 & p_{al}/(1- p_{aa}) \\
-p_{lm}/(1-p_{ll}) &  p_{la}/(1-p_{ll}) & 0 
+0 &  p_{\text{ma}}/(1-p_{\text{mm}}) & p_{\text{ml}}/(1-p_{\text{mm}}) \\
+p_{\text{am}}/(1- p_{\text{aa}}) & 0 & p_{\text{al}}/(1- p_{\text{aa}}) \\
+p_{\text{lm}}/(1-p_{\text{ll}}) &  p_{\text{la}}/(1-p_{ll}) & 0 
 \end{pmatrix}  
 \end{equation}
 
@@ -497,7 +496,7 @@ Zusätzlich werden Werte sehr nah bei $0$ ignoriert. Solche Werte werden aus der
 \subsection{PAA für das 2-Zustände Modell}
 
 \begin{algorithm}
-\caption{Berechnung der Wartezeit}
+\caption{Berechnung der Wartezeit für den PAA im 2-Zustände Modell}
 \label{algo_paa}
 \begin{algorithmic}[1]
 \REQUIRE Startverteilungen $s$ und $m$, Maximalzeit $t_{\text{max}}$, Zielwert $\ell$, Parameter $T$, Startzeit $t=0$
@@ -518,7 +517,7 @@ Zusätzlich werden Werte sehr nah bei $0$ ignoriert. Solche Werte werden aus der
 \end{algorithm}
 
 In Algorithmus \ref{algo_paa} ist der Ablauf der Simulation mit einem PAA beschrieben. Die Verteilungen werden in jedem Schritt in $s$ und $m$ gespeichert. Die Position im Array entspricht dabei dem Wert und damit der Position in der Säule. 
-Beispielsweise steht in $s_t[0]$ bezeichnet die Wahrscheinlichkeit, mit der sich zum Zeitpunkt $t$ Teilchen im stationären Zustände und an Position $0$ in der Säule befinden.
+Beispielsweise bezeichnet $s_t[0]$ die Wahrscheinlichkeit, mit der sich zum Zeitpunkt $t$ Teilchen im stationären Zustand und an Position $0$ in der Säule befinden.
 
 Die Simulation beginnt mit $s_0 = [0]$ und $m_0 = [1]$. Alle Teilchen befinden sich zunächst im mobilen Zustand und am Beginn der Säule. Weitere Einträge würden nur aus Wahrscheinlichkeiten von $0$ bestehen und werden daher ausgelassen.
 
@@ -637,18 +636,18 @@ Die Simulation beginnt mit $s_0 = [0]$ und $m_0 = [1]$. Alle Teilchen befinden s
 In jedem Schritt werden die beiden Verteilungen aktualisiert. Diese Berechnung ist in Abbildung \ref{paa2p_prinzip} exemplarisch dargestellt. 
 
 Gegeben sind die alten Wahrscheinlichkeitsverteilungen $s_{t-1}$ und $m_{t-1}$.
-Um auf die neue Verteilung für den stationären Zustand zu kommen, muss für jede Position berechnet werden und jeden möglichen Ausgangs- und Folgezustand berechnet werden, welchen Anteil an Teilchen er enthält. 
-In $ss$ sind diejenigen Anteile enthalten, die stationär waren und es bleiben, in $ms$ diejenigen, die aus dem mobilen Zustand in den stationären Zustand wechseln. In Summe ergeben die beiden die neuen Verteilungen für den stationären Zustand.
-In $sm$ und $mm$ sind dann die Anteile enthalten, die vom stationären Zustand mobil werden beziehungsweise mobil bleiben. Da in diesen Fällen die Teilchen anschließend mobil sind, müssen die Felder um eine Postition verschoben werden. Zum Ausgleich werden den neu stationären Verteilungen jeweils ein Feld mit der Wahrscheinlichkeit von $0$ angehängt.
+Um auf die neue Verteilung für den stationären Zustand zu kommen, muss für jede Position und jeden möglichen Ausgangs- und Folgezustand berechnet werden, welchen Anteil an Teilchen er enthält. 
+In $ss$ sind diejenigen Anteile enthalten, die stationär waren und es bleiben, in $ms$ diejenigen, die aus dem mobilen Zustand in den stationären Zustand wechseln. In Summe ergeben $ss$ und $sm$ die neuen Verteilungen für den stationären Zustand.
+In $sm$ und $mm$ sind dann die Anteile enthalten, die vom stationären Zustand mobil werden, beziehungsweise mobil bleiben. Da in diesen Fällen die Teilchen anschließend mobil sind, müssen die Felder um eine Postition verschoben werden. Zum Ausgleich werden den neu stationären Verteilungen jeweils ein Feld mit der Wahrscheinlichkeit von $0$ angehängt.
 Daher vergrößern sich die beiden Verteilungsvektoren um jeweils ein Feld pro Schritt.
 
 Eine Berechnung der Zustands-Werte Verteilung würde nur aus dieser schrittweisen Akualisierung entstehen. Um die Verteilung der Wartezeiten zu berechnen, wird nach jedem solchen Berechnungsschritt getestet, ob Anteile der Teilchenmasse bereits den Zielwert $\ell$ erreicht haben. Dies ist der Fall, wenn sich ein Eintrag an Position $\ell$ befindet, also kann einfach auf die Länge der Verteilungsvektoren getestet werden. Im positiven Fall würde der theoretische PAA in Zustand $\bullet$ übergehen. Hier wird die Wahrscheinlichkeit an Stelle $\ell$ ins Ergebnis geschrieben. Außerdem wird der nächste Übergang in den theoretischen Zustand $\circ$, aus dem kein Übergang wieder heraus führt, dadurch realisiert, dass die Werte an Position $\ell$ gelöscht werden.
-Im negativen Fall sind keine Anteile der Teilchenmasse angekommen und es wird entsprechend eine Wahrscheinlichkeit von $0$ ins Ergebnis geschrieben.
+Ist die Länge der Verteilungsvektoren kürzer als $\ell$, sind keine Anteile der Teilchenmasse angekommen und es wird entsprechend eine Wahrscheinlichkeit von $0$ ins Ergebnis geschrieben.
 Dadurch entsteht letztendlich eine Liste von Ankunftswahrscheinlichkeiten für jeden Zeitpunkt.
 
 Bei Erreichen der maximalen Wartezeit wird die Berechnung beendet. Ob die gesamte Wahrscheinlichkeitsmasse erreicht wurde kann anschließend berechnet werden, um herauszufinden, ob mit den getesteten Parametern ein Ergebnis innerhalb der vorgegebenen Wartezeit erzielt werden konnte. 
 
-Wie bereits erwähnt, sollen zu kleine Wahrscheinlichkeiten ignoriert werden. Daher wird nach jedem Schritt getestet, ob an der ersten oder letzten Position von $s$ und $m$ Werte unterhalb des Schwellwerts liegen. Ist das der Fall, werden beide Werte entfernt, wodurch sich die Verteilungsvektoren um ein Feld verkürzen. Wenn die letzte Postition gelöscht wird, hat dies auf den sonstigen Ablauf keine weiteren Auswirkungen. Wenn die erste Position gelöscht wird, muss jedoch ein zusätzlicher Index eingeführt werden, der beim Testen auf Erreichen des Zielwertes auf die Länge der Arrays addiert werden muss, um korrekte Ergebnisse zu erhalten.
+Wie bereits erwähnt, sollen zu kleine Wahrscheinlichkeiten ignoriert werden. Daher wird nach jedem Schritt getestet, ob an der ersten oder letzten Position von $s$ und $m$ Werte unterhalb eines Schwellwerts liegen. Ist das der Fall, werden beide Werte entfernt, wodurch sich die Verteilungsvektoren um ein Feld verkürzen. Wenn die letzte Postition gelöscht wird, hat dies auf den sonstigen Ablauf keine weiteren Auswirkungen. Wenn die erste Position gelöscht wird, muss jedoch ein zusätzliche eingeführter Index erhöht werden, der beim Testen auf Erreichen des Zielwertes auf die Länge der Arrays addiert werden muss, um korrekte Ergebnisse zu erhalten.
 % 
 % , welcher Anteil Teilchen stationär bleibt 
 % und welcher Anteil bisher mobiler Teilchen in den stationären Zustand wechselt..
@@ -666,8 +665,8 @@ Die Startverteilungen sind offensichtlich $m_0 = [1]$, $a_0 = [0]$ und $l_0=[0]$
 
 Die Aktualisierung der Verteilungen wird ähnlich wie im Fall von nur zwei Zuständen behandelt, nur dass nun neun statt vier Hilfsvektoren nötig sind, um alle möglichen Zustandsübergänge zu berechnen. 
 
-Alternativ kann jedes Feld der drei Verteilungen einzeln berechnet werden. Ein neues Feld $z_t[o]$, welches die Wahrscheinlichkeit an Postition $o$ in Zustand $z$ beschreibt, berechnet sich dann aus den drei alten Verteilungen $m$, $a$ und $l$ nach folgender Formel:
-$z_t[o] = m_t[o-1] \cdot p_{\text{m}z} + a_t[o] \cdot p_{\text{a}z} + l_t[o] \cdot p_{\text{l}z} $
+Alternativ kann jedes Feld der drei Verteilungen einzeln berechnet werden. Ein neues Feld $z_{t+1}[o]$, welches die Wahrscheinlichkeit an Postition $o$ in Zustand $z$ an Zeitpunkt $t+1$ beschreibt, berechnet sich dann aus den drei alten Verteilungen $m$, $a$ und $l$ nach folgender Formel:
+$z_{t+1}[o] = m_t[o-1] \cdot p_{\text{m}z} + a_t[o] \cdot p_{\text{a}z} + l_t[o] \cdot p_{\text{l}z} $
 
 % In jedem Schritt werden die Zustandsvektoren dann aktualisiert und die neue Verteilung $z', z \in \{m, a, l\}$ berechnet sich wie folgt:
 % $z^{'}_t = m_{t-1} \cdot p_{\text{m}z} + a_{t} \cdot p_{\text{a}z} + l_{t} \cdot p_{\text{l}z} $

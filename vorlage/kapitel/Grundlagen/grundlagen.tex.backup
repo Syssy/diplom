@@ -5,10 +5,8 @@
 
 \section{Chromatographie}
 
-Die Chromatographie ist ein Verfahren zur Auftrennung von Stoffgemischen. 
-%Die Auftrennung erfolgt dabei zwischen zwei sogenannten Phasen, der stationären und der mobilen Phase, welche sich in unterschiedlichen Aggregatzuständen befinden und untereinander nicht mischen. 
-\todo{einleitung nicht doppeln}
-Die Analyte werden bewegen sich dabei durch die chromatographische Apparatur, indem sie von der mobilen Phase mitgenommen werden. Immer wieder geraten sie dabei in Kontakt zur stationären Phase und interagieren mit dieser. Abhängig von den Eigenschaften der verschiedenen Stoffe, werden sie dadurch kürzer oder länger aufgehalten, sodass sich verschiedene Stoffe von einander trennen.
+Die Chromatographie ist ein Verfahren zur Auftrennung und Analyse von Stoffgemischen. Die Auftrennung eines Gemisches geschieht dabei zwischen zwei sogenannten Phasen, der stationären und der mobilen Phase. Diese befinden sich in unterschiedlichen Aggregatzuständen. 
+Die Analyte werden bewegen sich durch die chromatographische Apparatur, indem sie von der mobilen Phase mitgenommen werden. Immer wieder geraten sie dabei in Kontakt zur stationären Phase und interagieren mit dieser, indem sie die Phase wechseln. Abhängig von den Eigenschaften der verschiedenen Stoffe, werden sie dadurch kürzer oder länger aufgehalten, sodass sich verschiedene Stoffe von einander trennen.
 
 Es existieren viele Varianten der Chromatographie. Eine mögliche Unterscheidung findet durch die dabei verwendeten Aggregatzustände der beiden Phasen statt. Zum einen gibt es die Flüssigchromatographie (LC, engl. Liquid Chromatography),
 %\todo{Muss englische Worterklärung kursiv oä?}

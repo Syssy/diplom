@@ -20,7 +20,7 @@ Ein Aufruf
 \begin{verbatim}
 python3 simulation.py 3a 0.5 0.0001 0.9993 0.99999 -a S
 \end{verbatim}
-startet beispielsweise eine schrittweise Simulation des 3-Zustände Modells 3a mit den Parametern $pmm = 0,5$, $pml = 0,0001$, $paa = 0,9993$ und $pll = 0,99999$. Als Ergebnis der Simulation wird anschließend eine Liste von Ankunftszeiten der simulierten Teilchen, sowie die daraus berechneten Peakdaten angezeigt. Eine weitere Ausgabeoptionen ist \texttt{-p}, womit zusätzlich eine graphische Darstellung der Ankunftszeiten in Form eines Histogramms angezeigt wird, -q unterdrückt die textuelle Ausgabe.
+startet beispielsweise eine schrittweise Simulation des 3-Zustände Modells 3a mit den Parametern $p_{\text{mm}} = 0,5$, $p_{\text{ml}} = 0,0001$, $p_{\text{aa}} = 0,9993$ und $p_{\text{ll}} = 0,99999$. Als Ergebnis der Simulation wird anschließend eine Liste von Ankunftszeiten der simulierten Teilchen, sowie die daraus berechneten Peakdaten angezeigt. Eine weitere Ausgabeoptionen ist \texttt{-p}, womit zusätzlich eine graphische Darstellung der Ankunftszeiten in Form eines Histogramms angezeigt wird, -q unterdrückt die textuelle Ausgabe.
 
 Als Standard für die Simulationen werden eine Säulenlänge von $1000$ Einheiten, ein Zeitraum von $240$s und $1000$ zu simulierende Teilchen angenommen. Diese Einstellungen können über die Parameter \texttt{-n} (Anzahl der Teilchen), \texttt{-l} (Länge der Säule) und \verb!-m! (Maximalzeit) verändert werden.
 Der Aufruf
@@ -35,7 +35,7 @@ startet daher eine ereignisbasierte Simulation im 2-Zustände Modell, bei der $1
 \paragraph{\texttt{2s\_simulate\_and\_plot.py}}
 Diese Anwendung erlaubt es für das Modell mit zwei Zuständen, viele Simulationen zu starten und deren Ergebnisse durch verschiedene Plots darzustellen. Die Ergebnisse der einzelnen Simulationen werden dafür abgespeichert und stehen damit auch späteren Auswertungen zur Verfügung. Bereits vorhandene Simulationen werden daher auch nicht neu simuliert.
 
-Mit dem Parameter \texttt{-p} wird eine Menge von Parameterkombinationen ausgewählt. Zur Verfügung stehen dabei \textit{small\_set}, \textit{medium\_set} und \textit{large\_set}, außerdem können mittels \textit{random} zufällige Kombinationen erstellt werden, die Anzahl dieser zufälligen Kombinationen wird über den Parameter \texttt{--cn} festgelegt. % Die Kombination \textit{skew} zur Verfügung, die tailing erzeugende Parameter enthält.
+Mit dem Parameter \texttt{-p} wird eine Menge von Parameterkombinationen ausgewählt. Zur Verfügung stehen dabei \texttt{small\_set}, \texttt{medium\_set} und \texttt{large\_set}, außerdem können mittels \texttt{random} zufällige Kombinationen erstellt werden, die Anzahl dieser zufälligen Kombinationen wird über den Parameter \texttt{--cn} festgelegt. % Die Kombination \textit{skew} zur Verfügung, die tailing erzeugende Parameter enthält.
 Darüber hinaus können die Parameter \texttt{-n}, \texttt{-l}, \texttt{-m} und \texttt{-a} mit der gleichen Funktion wie bei der Anwendung \texttt{simulation.py} benutzt werden, um Einstellungen an den Simulationen vorzunehmen. Dabei ist für den Ansatz \texttt{-a} die schrittweise Simulation als Standard gesetzt, da diese sich für das 2-Zustände Modell als weniger laufzeitintensiv erwiesen hat, siehe auch (Abschnitt \ref{chapter:imp_laufzeit_sim})
 
 Geplottet werden kann auch hier ein einzelner Peak zu gegebenen Parametern, der Aufruf dafür ist
@@ -88,7 +88,7 @@ Zusätzlich ist es möglich, eine bereits vorhandene Liste von Ankunftszeiten mi
 Mit \begin{verbatim}
 new_Sim = ([0.5 0.0001 0.9993 0.99999], "3a", "S", number = 10000)
 \end{verbatim} 
-wird beispielsweise eine Simulationsinstanz mit den Parametern $pmm = 0,5$, $pml = 0,0001$, $paa = 0,9993$ und $pll = 0,99999$ für das Modell 3a erzeugt. Diese soll für $10.000$ Teilchen mit der Step-by-Step Simulation simuliert werden.
+wird beispielsweise eine Simulationsinstanz mit den Parametern $p_{\text{mm}} = 0,5$, $p_{\text{ml}} = 0,0001$, $p_{\text{aa}} = 0,9993$ und $p_{\text{ll}} = 0,99999$ für das Modell 3a erzeugt. Diese soll für $10.000$ Teilchen mit der Step-by-Step Simulation simuliert werden.
 
 Anschließend wird mit \verb!newSim.simulate()! die Simulation gestartet. Anhand des gesetzten \verb!model! und \verb!approach! entscheidet sich, welche Funktionen zur Simulation aufgerufen werden. Die Peakdaten werden anschließend mittels \verb!newSim.calculate()! berechnet.
 
@@ -152,7 +152,7 @@ Grau hinterlegte Parameter zeigen auch hier an, dass kein vollständiger Peak in
 
 \begin{table}[h]
 \centering 
-\caption[Laufzeitvergleich für die 3-Zustände Simulation]{Laufzeitvergleich für die 3-Zustände Simulation mit den Parametern $pmm$, $pml$, $paa$ und $pll$ für $n$ Teilchen, Zeitangaben in Sekunden. Grau hinterlegte Kombinationen zeigen einen unvollständigen Peak innerhalb von $240$ Sekunden an, in der Spalte \% ist für diese der Prozentsatz angekommener Teilchen vermerkt.}
+\caption[Laufzeitvergleich für die 3-Zustände Simulation]{Laufzeitvergleich für die 3-Zustände Simulation mit den Parametern \pmm, \pml, \paa\ und \pll\ für $n$ Teilchen, Zeitangaben in Sekunden. Grau hinterlegte Kombinationen zeigen einen unvollständigen Peak innerhalb von $240$ Sekunden an, in der Spalte \% ist für diese der Prozentsatz angekommener Teilchen vermerkt.}
 \label{3s_laufzeit}
 \begin{tabular}{|l|l|l|l||l||l|l|l|l|l|l|l|}
 \hline
@@ -181,34 +181,51 @@ Jedoch müssen bei der Step-by-Step Implementierung sehr viele Einträge für di
 %Dies wird noch deutlicher, je größer $p_{\text{mm}}$ wird.
 
 \section{Simulation des PAA}
-TODO
 
 \subsection{Nutzung von MoSDi}
 Es existiert bereits eine Implementierung für PAA. Diese wurde innerhalb der Software \texttt{MoSDi} \footnote{https://bitbucket.org/tobiasmarschall/mosdi} realisiert, eine Beschreibung findet sich in \cite{Marschall2011}. Um eine Simulation eines PAA mit \texttt{MoSDi} zu starten, muss für die darin enthaltene abstrake Klasse \texttt{PAA} eine Unterklasse geschrieben werden, welche die Zustände, Werte, Operationen und Transitionswahrscheinlichkeiten für den konkreten PAA enthält. In der beigelegten CD finden sich für beide Modelle jeweils eine solche Unterklasse \texttt{myPAA\_2s} und \texttt{myPAA\_3s}. 
-Zum Starten müssen in der Kommandozeile nacheinander die Befehle
+Zum Starten des PAA für das 2-Zustände Modell müssen in der Kommandozeile nacheinander die Befehle
 \begin{verbatim}
 javac -classpath mosdi-1.3.jar myPAA_2s.java
 java -classpath .:mosdi-1.3.jar myPAA_2s 
 \end{verbatim}
-eingegeben werden. Dabei ist darauf zu achten, dass sich \texttt{mosdi.jar} im gleichen Verzeichnis wie \texttt{myPAA\_2s.java} befindet. 
+eingegeben werden. Dabei ist darauf zu achten, dass sich \texttt{mosdi.jar} im gleichen Verzeichnis wie \texttt{myPAA\_2s.java} befindet. Analog kann der PAA für das 3-Zustände Modell aufgerufen werden. Damit werden jeweils eine Menge von Parameterkombinationen simuliert, die dem \verb!small_set! der Teilchensimulation entsprechen. Weitere Kombinationen können in der Methode \verb!combineParams()! erzeugt werden. Anschließend werden die Wahrscheinlichkeitsverteilungen zur weiteren Verwendung abgespeichert.
 
 \subsection{PAA-Sim}
-Wie im Kapitel \ref{chapter:meth} erwähnt, werden für die Modelle der Multikapillarsäule jedoch nicht alle Funktionalitäten eines PAA benötigt, sodass zusätzlich noch eine eigene Implementierung erstellt wurde. Diese wurde in Julia \footnote{julialang.org} implementiert und ist in den Programmen \verb!2s_PAA.jl! und \verb!3s_PAA.jl! zu finden.
+Wie im Kapitel \ref{chapter:meth} erwähnt, werden für die Modelle der Multikapillarsäule jedoch nicht alle Funktionalitäten eines PAA benötigt, sodass zusätzlich noch eine eigene Implementierung erstellt wurde. Diese wurde in Julia \footnote{julialang.org} implementiert und ist in den Programmen \verb!2s_PAA.jl! und \verb!3s_PAA.jl! zu finden. Darin sind jeweils die beschriebenen Methoden für die beiden Modelle umgesetzt.
+Ein Aufruf von \\
+\verb!julia 2s_PAA.jl! bzw. \\ \verb!julia 3s_PAA.jl! \\startet jeweils die Simulationen, deren Ergebnisse ebenfalls abgespeichert werden. In der Methode \verb!combineParams(setsize)! sind wieder \texttt{small\_set}, \texttt{medium\_set} und \texttt{large\_set} als \texttt{setsize} verfügbar.
 
 
 \subsection{Verwertung der Verteilungen}
 Sowohl bei der Simulation des PAA mittels \texttt{MoSDi} als auch mittels \texttt{PAA-Sim} wird das Ergebnis, die Ankunftswahrscheinlichkeiten für jeden Zeitpunkt, als einfache Liste der Wahrscheinlichkeiten in einer \texttt{.csv}-Datei gespeichert. Zur Weiterverarbeitung und zum Auswerten der Ergebnisse gibt es die Module \verb!process_simulations.py! und \verb!plottings_PAA.py!, welche wiederum in Python 3.4 implementiert wurden.
 
 \paragraph{process\_simulations.py}
-
-
-Die Ergebnisse der PAA Simulationen werden zunächst komprimiert, da sich bei bei $240$ Sekunden und $10.000$ Simulationsschritten pro Sekunde immerhin Einzelwahrscheinlichkeiten für $2.400.000$ Zeitpunkte ergeben. Wie auch bei der Teilchensimulation ist diese Genauigkeit jedoch nicht nötig. 
+Durch den Aufruf von 
+\begin{verbatim}
+python3 process_simulations.py 2s  
+\end{verbatim}
+werden die von \texttt{MoSDi} oder \texttt{PAA-Sim} erzeugten Ergebnisse zur weiteren Verwendung aufbereitet. Dabei werden die Ergebnisse der PAA Simulationen zunächst komprimiert, da sich bei bei $240$ Sekunden und $10.000$ Simulationsschritten pro Sekunde immerhin Einzelwahrscheinlichkeiten für $2.400.000$ Zeitpunkte ergeben. Wie auch bei der Teilchensimulation ist diese Genauigkeit jedoch nicht nötig. 
 Außerdem werden die Peakdaten berechnet und zusammen mit den komprimierten Daten und den Simulationsparametern abgespeichert.
+Als weitere Option steht hier \verb!-s! zur Verfügung, mit der die Quelle der Simulationsdaten (\texttt{MoSDi} oder \texttt{PAA-Sim}) ausgewählt werden kann.
 %Um daher die resultierende Datenmenge zu reduzieren, werden die Einzelwahrscheinlichkeiten mit comp\_factor zusammengefasst.
 
-
 \paragraph{plottings\_PAA.py}
-Für das Plotten der Ergebnisse der PAA Simulationen existieren ähnliche Möglichkeiten, wie bei der Teilchensimulation.
+Für das Plotten der Ergebnisse der PAA Simulationen existieren ähnliche Möglichkeiten wie bei der Teilchensimulation.
+Im 2-Zustände Modell stehen neben den bekannten Optionen \verb!--pp!, \verb!--pr! und \verb!--ppt! auch die Option \verb!--pfp! zur Verfügung. Damit wird ein Plot erstellt, bei dem ein Parameter auf einen festen Wert gesetzt, der andere jedoch variiert wird. Durch den Aufruf
+\begin{verbatim}
+python3 plottings_PAA.py 2s --pfp ps 0.999
+\end{verbatim}
+wird der Parameter \ps\ auf den Wert $0,999$ gesetzt und für \pm\ werden eine Reihe vorgegebener Werte eingesetzt. Die daraus resultierenden Peakdaten lassen die Darstellung links in Abbildung \ref{einfluss_pm_1} entstehen.
+
+Im 3-Zustände Modell ist ein ähnlicher Plot mit jeweils drei festen Parametern vorgesehen. Dazu muss neben der Option \verb!--p3! die Werte für die festen Parameter mittels \verb!--pmm!, \verb!--pml!, \verb!--paa! bzw. \verb!--pll! eingegeben werden.
+
+Des Weiteren kann mit der Option \verb!--pd! ein Plot erstellt werden, der zu gegebenen Peakdaten mögliche Parameter anzeigt. Dazu müssen jeweils Intervalle für die Lage, Breite und Schiefe des gewünschten Plots angegeben werden.
+Ein Beispiel für einen solchen Aufruf ist:
+\begin{verbatim}
+python3 plottings_PAA.py 3a --pd -r 50 60 --iqr 1 5 --qk 0.2 0.4
+\end{verbatim}
+Damit werden in allen vorhandenen Simulationen Peak gesucht, die im Intervall $[50; 60]$ ihren Maximalzeitpunkt haben, sowie eine Breite von $[1;5]$ und Schiefe von $[0,2; 0,4]$ haben. Ein solcher Plot kann genutzt werden, um verschiedene mögliche Parameterkombinationen für einen gewünschten Peak anzuzeigen. Mit weiteren Simulationen können diese Parameter verändert werden, um die Zielpeakdaten weiter anzunähern.
 
 
 \subsection{Laufzeiten}
@@ -247,7 +264,7 @@ Auch im 3-Zustände Modell hängen die Laufzeiten von den verwendeten Parametern
 
 \begin{table}[h]
 \centering 
-\caption[Laufzeitvergleich für die Simulation des PAA mit drei Zuständen]{Laufzeitvergleich für die Simulation des PAA mit drei Zuständen, mit den Parametern $pmm$, $pml$, $paa$ und $pll$, Zeitangaben in Sekunden. Grau hinterlegte Parameter zeigen unvollständigen Peak innerhalb von $240$ Sekunden an. Verglichen werden MoSDi und zwei Varianten der eigenen Implementierung des PAA, in der ersten Spalte wurden Wahrscheinlichkeiten unter dem Schwellwert von $10^{-17}$ abgeschnitten, in der zweiten nicht. Mit $*$ gekennzeichnete Zeiten deuten auf vorzeitiges Abbrechen auf Grund eines vollständigen Peaks hin.}
+\caption[Laufzeitvergleich für die Simulation des PAA mit drei Zuständen]{Laufzeitvergleich für die Simulation des PAA mit drei Zuständen, mit den Parametern \pmm, \pml, \paa\ und \pll, Zeitangaben in Sekunden. Grau hinterlegte Parameter zeigen unvollständigen Peak innerhalb von $240$ Sekunden an. Verglichen werden MoSDi und zwei Varianten der eigenen Implementierung des PAA, in der ersten Spalte wurden Wahrscheinlichkeiten unter dem Schwellwert von $10^{-17}$ abgeschnitten, in der zweiten nicht. Mit $*$ gekennzeichnete Zeiten deuten auf vorzeitiges Abbrechen auf Grund eines vollständigen Peaks hin.}
 \label{3s_laufzeit_paa}
 \begin{tabular}{|l|l|l|l||l||l|l|l|l|l|l|l|}
 \hline

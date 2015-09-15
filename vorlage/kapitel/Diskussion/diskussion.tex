@@ -5,7 +5,7 @@
 \section{Ergebnisse}
 Es wurden zwei aufeinander aufbauende Modelle vorgestellt, mit denen der chromatographische Prozess simuliert werden kann. Bereits mit dem einfachen Modell können viele verschiedene Kombinationen aus zwei der drei Peakcharakteristika in den resultierenden Peaks gefunden werden. Es existiert auch ein deutlicher Zusammenhang zwischen den verwendeten Parametern und den Peakdaten. Daher kann ein gewünschter Peak, der bestimmte Werten für Retentionszeit und Breite aufweisen soll, schnell angennähert werden, indem die Parameter von Peaks mit ähnlichen Eigenschaften etwas variiert werden. Dabei müssen die Retentionszeit und Breite innerhalb eines gewissen Rahmens bleiben, welche die Grenzen des Modells darstellen.
 
-Um auch Peaks mit Schiefe simulieren zu können, wurde das einfache Modell erweitert und dadurch eine Unterscheidung zwischen Adsorption an und Lösung der Teilchen in der stationären Phase eingeführt. Auch mit diesem Modell wurde ein Zusammenhang zwischen den Simulationsparametern und Peakdaten gefunden. 
+Um auch Peaks mit Schiefe simulieren zu können, wurde das einfache Modell erweitert und dadurch eine Unterscheidung zwischen Adsorption an und Lösung der Teilchen in der stationären Phase eingeführt. Auch mit diesem Modell wurde ein Zusammenhang zwischen den Simulationsparametern und Peakdaten gefunden. Auch diese gefundenen Zusammenhänge erlauben eine Annäherung von gewünschten Peaks.
 
 %Da, wie in Kapitel 
 Es existiert zwar noch keine Formel, die eine exakte Entsprechung beschreibt, jedoch ist der Einfluss der Parameter auf die untersuchten Peakcharakteristika bekannt. 
@@ -30,7 +30,7 @@ Alternativ zur halbem Maximalhöhe können die Werte für $t_l$ und $t_r$ auch a
 Nach Einarbeitung dieser Maße und eventuell weiterer Peakcharakteristika, müsste erneut eine Evaluierung der vorhandenen Simulationen statt finden. 
 
 \paragraph{Peaks als Funktionen}
-Bisher wurden Peaks durch mehrere Maße charakterisiert. Jedoch ist insbesondere die Form eines Peaks schwer zu beschreiben. Ein Peak, der einen sehr langen, aber wenig intensiven Tail aufweist, wird damit möglicherweise mit den gleichen Werten beschrieben wie ein Peak mit einem kurzen Tail, der aber eine höhere Intensität aufweist. Mit der Halbwertsbreite und dem neuen Schiefe-Koeffizienten könnte dieses Problem auch nur teilweise behoben werden, da die relevaten Maße nur punktuell gemessen werden, nämlich auf 50\% oder 10\% der Peakhöhe. Statt eine Beschreibung der Form eines Peaks durch diese Maße, könnte statt dessen auch versucht werden, die Peaks als Funktionen aufzufassen und die Funktionswerte, die den Peak darstellen möglichst genau zu simulieren. 
+Bisher wurden Peaks durch mehrere Maße charakterisiert. Jedoch ist insbesondere die Form eines Peaks schwer zu beschreiben. Ein Peak, der einen sehr langen, aber wenig intensiven Tail aufweist, wird damit möglicherweise mit den gleichen Werten beschrieben wie ein Peak mit einem kurzen Tail, der aber eine höhere Intensität aufweist. Mit der Halbwertsbreite und dem neuen Schiefe-Koeffizienten könnte dieses Problem auch nur teilweise behoben werden, da die relevaten Maße nur punktuell gemessen werden, nämlich auf 50\% oder 10\% der Peakhöhe. Statt eine Beschreibung der Form eines Peaks durch diese Maße, könnte statt dessen auch versucht werden, die Peaks als Funktionen aufzufassen und die Funktionswerte, die den Peak darstellen, möglichst genau zu simulieren. 
 
 Dies bedeutet aber weitreichende neue Untersuchungen, wie sich die Parameter auf diese Funktionswerte auswerten, um daraus Schlüsse ziehen zu können, welche Parameter für einen gewünschten Peak vonnöten sind.
 
@@ -38,7 +38,7 @@ Dies bedeutet aber weitreichende neue Untersuchungen, wie sich die Parameter auf
 %TODO? dann noch einmal untersucht werden, ob alle realen Peaks automatisch angennähert werden können. (Ausgehend von Peaks in der Umgebung Parameter anpassen)
 
 \paragraph{Verifikation des Modells in größerem Rahmen}
-Da mit dem Simulationsmodell echte Daten simuliert werden sollen, wäre es sinnvoll, den Vergleich von simulierten und echten Daten in größerem Rahmen durchzuführen. Dazu wäre ein Vergleich der simulierten Peaks mit verschiedenen echten Messungen nützlich. Diese unterschiedlichen Messungen sollten dann Ergebnisse aus Säulen unterschiedlicher Hersteller berücksichtigen, die sich in Eigenschaften wie Länge, Durchmesser und Anzahl der Kapillaren, Art der Beschichtung, sowie Betriebsparameter wie Temperatur und Druck unterscheiden. 
+Da mit dem Simulationsmodell echte Daten simuliert werden sollen, wäre es sinnvoll, einen Vergleich von simulierten und echten Daten in größerem Rahmen durchzuführen. Dazu wäre ein Vergleich der simulierten Peaks mit verschiedenen echten Messungen nützlich. Diese unterschiedlichen Messungen sollten dann Ergebnisse aus Säulen unterschiedlicher Hersteller berücksichtigen, die sich in Eigenschaften wie Länge, Durchmesser und Anzahl der Kapillaren, Art der Beschichtung, sowie Betriebsparameter wie Temperatur und Druck unterscheiden. 
 
 Bei einem solchen Vergleich sollte sich dann heraustellen, ob die minimale Breite, die ein mit dem Modell erzeugter Peak hat, ein Problem darstellt, wenn nämlich tatsächlich schmalere Peaks zum gleichen Zeitpunkt existieren. 
 
@@ -50,7 +50,7 @@ Wenn sich bei einem solchen Vergleich mit vielen Messungen und angepasster Säul
 
 Wenn auch das nicht ausreicht, muss eine erneute Veränderung des Modells erfolgen.
 In Kapitel \ref{chapter:mod} wurden am Ende einige Ideen vorgestellt, wie das Modell verändert werden könnte.
-Sowohl die Berücksichtigung des Gleichgewichts der Phasen als auch eine maximale Kapazität für die Adsorption können für weiteres Tailing sorgen. Dieses neue Tailing könnte sich insbesondere in Bezug auf die im letzten Abschnitt angedachten anderen Beschreibungen der Peaks anders verhalten, als das bisher erzeugte Tailing. 
+Sowohl die Berücksichtigung des Gleichgewichts der Phasen als auch eine maximale Kapazität für die Adsorption könnten für weiteres Tailing sorgen. Dieses neue Tailing könnte sich insbesondere in Bezug auf die im letzten Abschnitt angedachten anderen Beschreibungen der Peaks anders verhalten, als das bisher erzeugte Tailing. 
 Außerdem ist es auch gut vorstellbar, dass so schmalere Peaks zum gleichen Zeitpunkt entstehen, da sich für einige Teilchen die Wahrscheinlichkeit, mobil zu bleiben erhöht und der Teilchenpulk enger beieinander bleibt.
 
 
@@ -67,11 +67,11 @@ Außerdem ist es auch gut vorstellbar, dass so schmalere Peaks zum gleichen Zeit
 %Falls Formel für entsprecung nicht gefunden: Das Sekantenverfahren erwähnen?
 Bisher ist der Einfluss der Parameter auf die Peakcharakteristika bekannt, es fehlt aber noch eine genaue Formel, mit der diese aus den Simulationsparametern berechnet werden können. 
 
-Vorteilhaft wäre es daher, ein Verfahren zu entwickeln, um einen Peak mit bestimmten, vorgegebenen Eigenschaften zu simulieren. Bisher funktioniert das händisch unter Anwendung der Erkenntnisse, wie sich die Parameter auf die Peaks auswirken. Wenn also ein Peak mit bestimmten Eigenschaften gewünscht ist, wird bisher die grobe Umgebung abgesucht. Die Parameter der dort gefundenen Peaks werden in die passende Richtung abgewandelt (zb. er ist etwas zu früh, dann wird pmm verringert oder zu schmal, dann wird pll erhöht). Anschließend wird überprüft, wo der neue Peak liegt, um eventuell in einer weiteren Iteration die Parameter anzupassen. 
-Um das zu ersparen, müsste entweder der komplette Parameterraum noch besser abgedeckt werden, was sehr viel Laufzeit und Speicherplatz kostet, oder die Vorgehensweise automatisiert werden.
+Vorteilhaft wäre es daher, ein Verfahren zu entwickeln, um einen Peak mit bestimmten, vorgegebenen Eigenschaften zu simulieren. Bisher funktioniert das händisch unter Anwendung der Erkenntnisse, wie sich die Parameter auf die Peaks auswirken. Wenn also ein Peak mit bestimmten Eigenschaften gewünscht ist, wird bisher die grobe Umgebung abgesucht. Die Parameter der dort gefundenen Peaks werden in die passende Richtung abgewandelt (zb. er ist etwas zu früh, dann wird \pmm\ verringert oder zu schmal, dann wird \pll\ erhöht). Anschließend wird überprüft, wo der neue Peak liegt, um eventuell in einer weiteren Iteration die Parameter anzupassen. 
+Um das zu ersparen, müsste entweder der komplette Parameterraum noch besser abgedeckt werden, was sehr viel Laufzeit und Speicherplatz kosten würde, oder die Vorgehensweise automatisiert werden.
 
 \paragraph{Laufzeit}
 
-Da sich die Umsetzung der schrittweisen Simulation für mehr als zwei Zustände als eher Laufzeitintensiv erwiesen hat, könnte eine neue Methode zur Simulation eines Einzelschrittes entwickelt werden. Bei der bisherigen Vorgehensweise werden sehr viele, danach nicht mehr benötigte Zwischeninformationen berechnet. Möglicherweise wäre daher ein Ansatz, der schleifenbasiert jedes Feld der neuen Zustandsvektoren berechnet, lohnenswert.
+Da sich die Umsetzung der schrittweisen Simulation für mehr als zwei Zustände als eher laufzeitintensiv erwiesen hat, könnte eine neue Methode zur Simulation eines Einzelschrittes entwickelt werden. Bei der bisherigen Vorgehensweise werden sehr viele, danach nicht mehr benötigte Zwischeninformationen berechnet. Möglicherweise wäre daher ein Ansatz, der schleifenbasiert jedes Feld der neuen Zustandsvektoren berechnet, lohnenswert.
 
 %Umsetzung von Modellen mit mehr Zuständen: Simulation als event nicht schwer (und von den Laufzeiten her wohl auch ganz gut) die by-step müsste aber angepasst werden (Schleifen) da sonst wohl zu aufwändig und zu langsam. gleiches gilt für paa, da wäre auch eine neue umsetzung nötig

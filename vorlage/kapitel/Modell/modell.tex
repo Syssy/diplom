@@ -14,7 +14,7 @@ Bei jeder Simulation müssen Einschränkungen gegenüber den realen Bedingungen 
 %\section{Festlegung der Einheiten}
 Für die Simulation wird eine Multikapillarsäule von $20$ cm Länge angenommen. Diese wird in $1000$ Einheiten von je $0,2$\, mm unterteilt. Damit nutzt die Simulation ein diskretes Raummodell. Außerdem wird nicht berücksichtigt, dass die Säule eine Röhre und damit dreidimensional ist, sondern wird als gerade Strecke angenommen. An jeder der $1000$ Positionen der Strecke können sich jedoch beliebig viele Teilchen aufhalten, ohne aufeinander Einfluss zu nehmen.
 
-Die Zeit wird ebenfalls als diskret und endlich angenommen. Es wird ein Trägergas, welches nach etwa $0,1$ Sekunden die Säule durchlaufen hat. Außerdem soll es sich pro Zeitschritt und damit pro Simulationsschritt je einen Raumschritt fortbewegen, was einer Geschwindigkeit von $2$ m/s entspricht. Damit entspricht eine Zeiteinheit $0,1/1000$ Sekunden also $0,1$\, ms. Um die Simulationsdauer zu beschränken und da auch reale Experimente nach einer bestimmten Zeit beendet sind, wird eine maximale Zeit von $240$ Sekunden, also $2400000$ Simulationsschritten gesetzt. Insbesondere diese Grenze lässt sich aber nach Belieben verändern.
+Die Zeit wird ebenfalls als diskret und endlich angenommen. Es wird von einem Trägergas ausgegangen, welches nach etwa $0,1$ Sekunden die Säule durchlaufen hat. Außerdem soll es sich pro Zeitschritt und damit pro Simulationsschritt je einen Raumschritt fortbewegen, was einer Geschwindigkeit von $2$ m/s entspricht. Damit entspricht eine Zeiteinheit $0,1/1000$ Sekunden also $0,1$\, ms. Um die Simulationsdauer zu beschränken und da auch reale Experimente nach einer bestimmten Zeit beendet sind, wird eine maximale Zeit von $240$ Sekunden, also $2.400.000$ Simulationsschritten gesetzt. Insbesondere diese Grenze lässt sich aber nach Belieben verändern.
 
 Die gemachten Vorgaben sind in Tabelle \ref{einheiten} zusammengefasst.
 
@@ -34,14 +34,14 @@ Geschwindigkeit Trägergas & $2$ m/s 				& 1 Raumschritt / Zeitschritt \\ \hline
 \end{table}
 %\todo{einheiten tabelle}
 
-Die Anzahl der Analytteilchen pro Stoff im Laborexperiment ist viel zu groß, als dass tatsächlich jedes einzelne simuliert werden könnte und dabei in akzeptabler Zeit Ergebnisse erzielt würden. Daher wurde die Anzahl der Teilchen auf $1000$ bzw. $10.000$ beschränkt. Wie sich in den simulierten Daten zeigt, ergeben sich bereits bei $1000$ Teilchen erkennbare Peaks, die jedoch noch von Simulationsdurchlauf zu Simulationsdurchlauf Unterschiede aufweisen können. Bei $10.000$ simulierten Teilchen ergeben sich demgegenüber geglättete Peaks, die sich zwischen den Simulationen nur minimal unterscheiden.
+Die Anzahl der Analytteilchen pro Stoff im Laborexperiment ist viel zu groß, als dass tatsächlich jedes einzelne simuliert werden könnte und dabei in akzeptabler Zeit Ergebnisse erzielt würden. Daher wurde die Anzahl der Teilchen auf $1000$ bzw. $10.000$ beschränkt. Wie sich in den simulierten Daten zeigt, ergeben sich bereits bei $1000$ Teilchen erkennbare Peaks, die jedoch noch von Simulationsdurchlauf zu Simulationsdurchlauf Unterschiede aufweisen können. Bei $10.000$ simulierten Teilchen ergeben sich demgegenüber geglättete Peaks, die sich zwischen den Simulationen nur noch minimal unterscheiden.
 %Die Intensität eines Peaks in echten Messungen ist unter anderem abhängig vom Messverfahren und der Stoffmenge im zu analysierenden Gemisch. In den Simulationen wird stets eine bestimmte Anzahl von Teilchen, zum Beispiel $1000$ oder $10000$ Teilchen simuliert.
 
 
 \section{2-Zustände Modell}
 \label{chapter:mod:2p}
 
-Als Grundlage für die Entwicklung eines Simulationsmodells dient die Beobachtung des chromatographischen Prozesses. Dieser ist wie in Kapitel \ref{chapter:gru} beschrieben gekennzeichnet durch viele Teilchen, welche häufig zwischen der stationären und mobilen Phase wechslen. Es liegt also nahe, dass im Modell ebenfalls Teilchen simuliert werden, die zwischen zwei Zuständen, welche die beiden Phasen repräsentieren, wechseln. Im Folgenden bezeichnet m die mobile und s die stationäre Phase. Der Phasenwechsel geschieht jeweils mit einer bestimmten Wahrscheinlichkeit. Dabei kann es möglich sein, dass die Wahrscheinlichkeiten für den Wechsel in die eine oder andere Richtung voneinander abhängig sind. Beispielsweise könnte eine hohe Wahrscheinlichkeit in den stationären Zustand zu wechsel eine ebenfalls hohe Wahrscheinlichkeit, wieder mobil zu werden bedingen. Da ein solcher Zusammenhang jedoch nicht gegeben sein muss, wird für das Modell zunächst der Fall von unabhängigen Wechselwahrscheinlichkeiten angenommen. Es sei also $p_{\text {m}}$ die Wahrscheinlichkeit, dass ein Teilchen, welches sich bereits in der mobilen Phase befindet, auch mobil bleibt und $1-p_{\text {m}}$ die Wahrscheinlichkeit, dass es in die stationäre Phase übergeht. Analog seien $p_{\text {s}}$ und $1-p_{\text {s}}$ die Wahrscheinlichkeiten, dass ein stationäres Teilchen in der stationären Phase bleibt bzw. zur mobilen Phase wechselt. 
+Als Grundlage für die Entwicklung eines Simulationsmodells dient die Beobachtung des chromatographischen Prozesses. Dieser ist, wie in Kapitel \ref{chapter:gru} beschrieben, gekennzeichnet durch viele Teilchen, welche häufig zwischen der stationären und mobilen Phase wechseln. Es liegt also nahe, dass im Modell ebenfalls Teilchen simuliert werden, die zwischen zwei Zuständen, welche die beiden Phasen repräsentieren, wechseln. Im Folgenden bezeichnet m die mobile und s die stationäre Phase. Der Phasenwechsel geschieht jeweils mit einer bestimmten Wahrscheinlichkeit. Dabei kann es möglich sein, dass die Wahrscheinlichkeiten für den Wechsel in die eine oder andere Richtung voneinander abhängig sind. Beispielsweise könnte eine hohe Wahrscheinlichkeit in den stationären Zustand zu wechseln, eine ebenfalls hohe Wahrscheinlichkeit, wieder mobil zu werden, bedingen. Da ein solcher Zusammenhang jedoch nicht gegeben sein muss, wird für das Modell zunächst der Fall von unabhängigen Wechselwahrscheinlichkeiten angenommen. Es sei also $p_{\text {m}}$ die Wahrscheinlichkeit, dass ein Teilchen, welches sich bereits in der mobilen Phase befindet, auch mobil bleibt und $1-p_{\text {m}}$ die Wahrscheinlichkeit, dass es in die stationäre Phase übergeht. Analog seien $p_{\text {s}}$ und $1-p_{\text {s}}$ die Wahrscheinlichkeiten, dass ein stationäres Teilchen in der stationären Phase bleibt bzw. zur mobilen Phase wechselt. 
 
 \subsection{Teilchensimulation}
 Durch die eben gemachten Annahmen ergibt sich als erstes Modell ein einfacher Automat mit zwei Zuständen $\mathcal{Q} = \{\text{m, s}\}$. m ist Startzustand, da die Teilchen stets nur in der mobilen Phase in die Säule eintreten können. Dazu kommen die oben beschriebenen Transitionen $T= 
@@ -82,14 +82,14 @@ Eine graphische Darstellung des Modells zeigt Abbildung \ref{tikz:2p_Mod} %\todo
 \end{figure}
 
 Für die Simulation müssen viele Teilchen, ausgehend vom mobilen Zustand, den Automaten durchlaufen. Dabei wird zusätzlich zum Zustand der Teilchen auch der Ort, an dem sie sich befinden, verwaltet. Wenn sich ein Teilchen im mobilen Zustand befindet, wird dieser Ortszähler erhöht. Die Simulation eines Teilchens ist beendet, wenn der Ortszähler den gewünschten Wert, der der Länge der Trennsäule entspricht, erreicht hat.
-Außerdem werden die dafür benötigten Schritte gezählt, wodurch sich dann die Ankunftszeit des Teilchens am Ende der Säule ableitet.
+Außerdem werden die dafür benötigten Schritte gezählt, woraus sich dann die Ankunftszeit des Teilchens am Ende der Säule ableitet.
 Diese Simulation muss für sehr viele Teilchen wiederholt werden, sodass alle Ankunftszeiten zusammen als ein Peak dargestellt werden können.
 
 %leiten sich dann die Ankunftszeiten der Teilchen bei Erreichen eines bestimmten Wertes des Ortszählers ab.
 
 % für abbruchbedingung und zeit für peak
 % Das ganze 1000 mal wiederholen da je nur eine kapillare simuliert wurde
-In Kapitel \ref{chapter:meth} werden verschiedene Arten der Simulation und der genaue Ablauf beschrieben.
+In Kapitel \ref{chapter:meth} werden verschiedene Arten der Simulation und jeweils der genaue Ablauf beschrieben.
 %Der genaue Ablauf der Simulation wird in Kapitel \ref{chapter:meth} beschrieben.
 
 % Grundlage: Phasenwechsel
@@ -168,11 +168,11 @@ Im Abbildung \ref{PAA_2P} ist der PAA für das 2-Zustände Modell graphisch darg
 \subsection{Grenzen des Modells}
 Eine genaue Analyse der Peaks, die mit dem 2-Zustände Modell erzeugt werden können, findet sich in Kapitel \ref{chapter:eva}. An dieser Stelle sei nur vorweg genommen, dass es zwei Hauptprobleme mit dem Modell zu geben scheint. 
 
-Das erste mögliche Problem ist, dass die Peaks eine Minimalbreite an einem gegebenen Zeitpunkt $t$ haben. Das heißt, dass mit dem Modell keine Peaks simuliert werden können, die ihrem Maximalzeitpunkt an $t$ haben, jedoch schmaler sind, als Breite $b$. Ob dieser Umstand ein Problem darstellt, muss anhand realer Messdaten herausgefunden werden.
+Das erste mögliche Problem ist, dass die Peaks eine Minimalbreite an einem gegebenen Zeitpunkt $t$ haben. Das heißt, dass mit dem Modell keine Peaks simuliert werden können, die ihrem Maximalzeitpunkt an $t$ haben, jedoch schmaler sind als Breite $b$. Ob dieser Umstand ein Problem darstellt, muss anhand realer Messdaten herausgefunden werden.
 
 Das andere Problem ist, dass fast keine der simulierten Peaks ein Tailing aufweisen. Lediglich ein sehr stark eingeschränkter Parameterbereich erzeugt ein Tailing. Leider sind die Maximalzeitpunkte der so erzeugten Peaks alle sehr klein, sodass nicht über die gesamte simulierte Zeit Peaks mit Tailing erzeugbar sind. Darüber hinaus ist Tailing in echten Messungen eher bei späten Peaks zu beobachten.
 
-Um dieses Problem zu lösen, wird im Folgenden ein erweitertes Modell mit 3 Zuständen eingeführt, welches es ermöglicht, tailende Peaks zu erzeugen.
+Um dieses Problem zu lösen, wird im Folgenden ein erweitertes Modell mit drei Zuständen eingeführt, welches es ermöglicht, tailende Peaks zu erzeugen.
 
 
 \section{3-Zustände Modell} 
@@ -182,7 +182,7 @@ Um dieses Problem zu lösen, wird im Folgenden ein erweitertes Modell mit 3 Zust
 
 Bisher fand keine Unterscheidung zwischen Adsorption und Lösung der Teilchen an bzw. in der stationären Phase statt, sodass zwei Zustände und Transitionen zwischen diesen beiden Zuständen als Modell ausreichten. In der Realität können beide Wechselwirkungen parallel zueinander statt finden: Wenn ein Teilchen in den stationären Zustand wechselt, wird jeweils entschieden, ob es adsorbiert wird oder sich löst.
 
-Außerdem ist es realistisch anzunehmen, dass sich die Wahrscheinlichkeiten, in einen der beiden Zustände überzugehen oder in die mobile Phase zurückzukehren, unterscheiden. Die Wahrscheinlichkeit, dass ein Teilchen adsorbiert wird, kann viel höher oder niedriger sein als die, dass es zur Lösung übergeht. Umgekehrt kann ein Teilchen viel leichter oder schwerer aus der Adsorption in die mobile Phase zurückkehren, als dies beim gelösten Zustand der Fall ist. Daher liegt es nahe, einen neuen Zustand einzuführen, sodass die Adsorption und die Lösung voneinander getrennt behandelt werden. Die Tatsache, dass Tailing, wie bereits anfangs erwähnt, unter anderem durch zusätzlich Adsorptionseffekte verursacht sein kann, lässt vermuten, dass durch diesen dritten Zustand ein Tailing in der Simulation verursacht werden kann. 
+Außerdem ist es realistisch anzunehmen, dass sich die Wahrscheinlichkeiten, in einen der beiden Zustände überzugehen oder in die mobile Phase zurückzukehren, unterscheiden. Die Wahrscheinlichkeit, dass ein Teilchen adsorbiert wird, kann viel höher oder niedriger sein als die, dass es zur Lösung übergeht. Umgekehrt kann ein Teilchen viel leichter oder schwerer aus der Adsorption in die mobile Phase zurückkehren, als dies beim gelösten Zustand der Fall ist. Daher liegt es nahe, einen neuen Zustand einzuführen, sodass die Adsorption und die Lösung voneinander getrennt behandelt werden. Die Tatsache, dass Tailing, wie bereits anfangs erwähnt, unter anderem durch zusätzliche Adsorptionseffekte verursacht sein kann, lässt vermuten, dass durch diesen dritten Zustand ein Tailing in der Simulation verursacht werden kann. 
  
 \begin{figure}[h]
 \begin{subfigure}[t]{\textwidth}
@@ -248,7 +248,7 @@ In Abbildung \ref{tikz:4p_Mod} sind zwei Möglichkeiten gezeigt, dem bisherigen 
 Neben dem mobilen Zustand (m) gibt es in beiden Fällen je zwei stationäre Zustände, einen für die Adsorption (a) und einen für die Lösung (l). Die Übergangswahrscheinlichkeiten zwischen dem alten Zustand $i$ und dem neuen Zustand $j$ sind jeweils $p_{ij}$. 
 
 In Abbildung \ref{tikz:4p_Mod_a} sind die beiden stationären Zustände getrennt voneinander, dazwischen finden keine direkten Übergänge statt. 
-Anschaulich kann man sich vorstellen, dass bei Übertritt in die stationäre Phase schon festgelegt wird, welcher Art der Übergang sein wird. Es scheint intuitiv sinnvoll zu sein, die Übergangswahrscheinlichkeiten zu den beiden Zuständen sowie die beiden Wahrscheinlichkeiten, wieder in die mobile Phase einzutreten, sehr unterschiedlich zu wählen. Damit wird bezweckt, dass sie sich nicht einfach wieder zu einer Gesamtwahrscheinlichkeit aufaddieren, die man auch mit dem 2-Zustände Modell hätte erreichen können. In einen der Zustände sollen die Teilchen also nur seltener kommen, dafür dort sehr lange verweilen,  in den anderen Zustand wechseln die Teilchen häufiger, bleiben aber auch nicht so lange. Außerdem spiegelt dies die in Kapitel \ref{chapter:gru} erwähnte Tatsache wieder, dass adsorpierte Teilchen sich leichter wieder in die mobie Phase begeben können, als dies bei gelösten Teilchen der Fall ist.
+Anschaulich kann man sich vorstellen, dass bei Übertritt in die stationäre Phase schon festgelegt wird, welcher Art der Übergang sein wird. Es scheint intuitiv sinnvoll zu sein, die Übergangswahrscheinlichkeiten zu den beiden Zuständen sowie die beiden Wahrscheinlichkeiten, wieder in die mobile Phase einzutreten, sehr unterschiedlich zu wählen. Damit wird bezweckt, dass sie sich nicht einfach wieder zu einer Gesamtwahrscheinlichkeit aufaddieren, die man auch mit dem 2-Zustände Modell hätte erreichen können. In einen der beiden Zustände sollen die Teilchen also nur seltener kommen, dafür aber dort sehr lange verweilen, in den anderen Zustand wechseln die Teilchen häufiger, bleiben aber auch nicht so lange. Außerdem spiegelt dies die in Kapitel \ref{chapter:gru} erwähnte Tatsache wieder, dass adsorbierte Teilchen sich leichter wieder in die mobile Phase begeben können, als dies bei gelösten Teilchen der Fall ist.
 
 In Abbildung \ref{tikz:4p_Mod_b} dient der erste stationäre Zustand als Übergangszustand zum zweiten stationären Zustand. Dabei ist der Übergangszustand die Adsorption als Hinweis darauf, dass die Teilchen, die sich in der stationären Phase lösen, zunächst mit deren Oberfläche in Kontakt treten und zumindest kurzzeitig adsorbiert sind, gleiches gilt für die andere Richtung. Nachdem ein Teilchen adsorbiert wurde, besteht die Möglichkeit, dass es sich noch in der stationären Phase löst oder auch adsorbiert bleibt. Auch hier liegt es nahe, die Wahrscheinlichkeiten für die verschiedenen Übergänge so zu gestalten, dass die Teilchen in einem der stationären Zustände seltener aber länger bleiben.
 
@@ -267,7 +267,7 @@ In Modell 3a sind die Wahrscheinlichkeiten für $p_{\text{al}}$ und $p_{\text{la
 
 In den späteren Abschnitten der Arbeit ist mit dem 3-Zustände Modell oft das Modell 3a gemeint, da sich in ersten Auswertungen der beiden Modelle ergeben hat, dass sich damit tailende Peaks erzeugen lassen, für das Modell 3b wurden bei diesen oberflächlichen Untersuchungen keine solche Peaks gefunden. Die später vorgestellten Methoden und deren Implementierungen können aber alle Varianten des 3-Zustände Modells simulieren.
 
-Die Parameter, die für das Modell 3a betrachtet werden, sind pmm, pml, paa und pll, die übrigen drei Parameter lassen sich aus diesen berechnen.
+Die Parameter, die für das Modell 3a betrachtet werden, sind \pmm, \pml, \paa\ und \pll, die übrigen drei Parameter lassen sich aus diesen berechnen.
 
 
 \subsection{PAA}
@@ -289,26 +289,26 @@ Analog zum PAA für nur zwei Zustände kann für drei Zustände ein PAA definier
 
   \path[every node/.style={font=\sffamily\large}]
 
-    (m) edge [loop left] node {$p_{mm}$} (m)
-			edge [bend left] node [above] {$p_{ma}$} (s1)
-            edge [bend left = 10] node [below]{$p_{ml}$} (s2)
+    (m) edge [loop left] node {$p_{\text{mm}}$} (m)
+			edge [bend left] node [above] {$p_{\text{ma}}$} (s1)
+            edge [bend left = 10] node [below]{$p_{\text{ml}}$} (s2)
         
-    (s1)  edge [bend left = 10] node[above]{$p_{am}$} (m) 
-             edge [loop above] node {$p_{aa}$} (s1)
- 			edge [bend left] node[right]{$p_{al}$} (s2)
+    (s1)  edge [bend left = 10] node[above]{$p_{\text{am}}$} (m) 
+             edge [loop above] node {$p_{\text{aa}}$} (s1)
+ 			edge [bend left] node[right]{$p_{\text{al}}$} (s2)
     
-    (s2)  edge [bend left] node[below]{$p_{lm}$} (m)
- 			 edge [bend left] node[right]{$p_{la}$} (s1)	
-             edge [loop below] node {$p_{ll}$} (s2)
+    (s2)  edge [bend left] node[below]{$p_{\text{lm}}$} (m)
+ 			 edge [bend left] node[right]{$p_{\text{la}}$} (s1)	
+             edge [loop below] node {$p_{\text{ll}}$} (s2)
         ;
 
    \fill[color=lightgray!40] (1.1, 2.5) --(2,0.9) -- (2.9,2.5) -- cycle ;
    \fill[color=lightgray!40] (8.9, 2) -- (10,1.5) -- (10,2.5) -- cycle ;
    \fill[color=lightgray!40] (8.9, -2) -- (10,-1.5) -- (10, -2.5) -- cycle ;
 % 
-   \node[emission node, align = center] (em) [right of= s1] {$e_a(0) = 1$\\$e_a(1)=0$};
-   \node[emission node, align = center] (em) [right of = s2] {$e_l(0) = 1$\\$e_l(1)=0$};
-   \node[emission node, align = center] (es) [above of = m] {$e_m(0) = 0$\\$e_m(1)=1$};
+   \node[emission node, align = center] (em) [right of= s1] {$e_{\text{a}}(0) = 1$\\$e_{\text{a}}(1)=0$};
+   \node[emission node, align = center] (em) [right of = s2] {$e_{\text{l}}(0) = 1$\\$e_{\text{l}}(1)=0$};
+   \node[emission node, align = center] (es) [above of = m] {$e_{\text{m}}(0) = 0$\\$e_{\text{m}}(1)=1$};
   
 \end{tikzpicture}
 
@@ -316,7 +316,8 @@ Analog zum PAA für nur zwei Zustände kann für drei Zustände ein PAA definier
 \label{3sPAA}
 \end{figure}
 
-Eine graphische Darstellung des PAA für drei Zustände ist in Abbildung \ref{3sPAA} gegeben. Der stationäre Zustand wurde in zwei Zustände aufgeteilt, sodass $\mathcal{Q} = \{\text{m, a, l}\}$. m bleibt Startzustand. Die Transitionen wurden entsprechend der Transitionsmatrix \ref{3s_Transit} angepasst. An den Werten ändert sich im Vergleich zum 2-Zustände PAA nichts, da weiterhin die gleiche Säulenlänge $\ell$ zu erreichen ist. Ebenso bleibt die Addition für alle Zustände $z$ als Operation $\theta_z$ bestehen. Bezüglich der Emissionen ändert sich am mobilen Zustand nichts und die beiden stationären Zustände übernehmen das gleiche Verhalten des bisherigen stationären Zustandes, da sich in beiden die Analyte nicht fortbewegen.
+Eine graphische Darstellung des PAA für drei Zustände ist in Abbildung \ref{3sPAA} gegeben. Der stationäre Zustand wurde in zwei Zustände aufgeteilt, sodass $\mathcal{Q} = \{\text{m, a, l}\}$. m bleibt Startzustand. Die Transitionen wurden entsprechend der Transitionsmatrix \ref{3s_Transit} angepasst. An den Werten ändert sich im Vergleich zum PAA für 2-Zustände nichts, da weiterhin die gleiche Säulenlänge $\ell$ zu erreichen ist. Ebenso bleibt die Addition für alle Zustände $z$ als Operation $\theta_z$ bestehen. Bezüglich der Emissionen ändert sich am mobilen Zustand nichts und die beiden stationären Zustände übernehmen das gleiche Verhalten des bisherigen stationären Zustandes, da sich in beiden die Analyte nicht fortbewegen.
+Der PAA für das 3-Zustände Modell ist also definiert als:
 
 \begin{itemize}
  \item $ \mathcal{Q} = \{\text{m, a, l}\}  $
@@ -337,7 +338,7 @@ Eine graphische Darstellung des PAA für drei Zustände ist in Abbildung \ref{3s
 
 \section{Weitere Modelle}
 
-Eine weitere Möglichkeit, das Modell zu verändern, besteht darin, das Gleichgewicht, welches sich zwischen den beiden Phasen aufbaut, zu berücksichtigen. Damit müssten die Wahrscheinlichkeiten, den Zustand zu wechseln, nicht mehr fest vorgegeben sein, sondern sich dynamisch während der Simulation aus der aktuellen Verteilung der Teilchen an einem bestimmten Ort auf die Zustände berechnen. Das würde dazu führen, dass Teilchen, die sich zu Beginn des Pulks befinden, mit einer höheren Wahrscheinlichkeit in die stationäre Phase oder eine der stationären Phasen übergehen, Teilchen in der Mitte haben eine demgegenüber eine deutlich geringere Wahrscheinlichkeit, stationär zu werden, da nun das Gleichgewicht gehalten werden muss. Die Veränderung der Übergangswahrscheinlichkeiten hinge demnach auch von der Quote der Teilchen ab, die dann schon wieder mobil geworden sind. Teilchen am Ende des Pulks sollten demnach nur sehr selten noch in eine stationäre Phase wechseln können. Genau diese Teilchen würden jedoch einen Tail verursachen, da sie sich nach dem Übergang in die mobile Phase, hinter dem Pulk befinden würden.
+Eine weitere Möglichkeit, das Modell zu verändern, besteht darin, das Gleichgewicht, welches sich zwischen den beiden Phasen aufbaut, zu berücksichtigen. Damit müssten die Wahrscheinlichkeiten, den Zustand zu wechseln, nicht mehr fest vorgegeben sein, sondern sich dynamisch während der Simulation aus der aktuellen Verteilung der Teilchen an einem bestimmten Ort auf die Zustände berechnen. Das würde dazu führen, dass Teilchen, die sich zu Beginn des Pulks befinden, mit einer höheren Wahrscheinlichkeit in die stationäre Phase oder eine der stationären Phasen übergehen, Teilchen in der Mitte haben demgegenüber eine deutlich geringere Wahrscheinlichkeit, stationär zu werden, da nun das Gleichgewicht gehalten werden muss. Die Veränderung der Übergangswahrscheinlichkeiten hinge demnach auch von der Quote der Teilchen ab, die dann schon wieder mobil geworden sind. Teilchen am Ende des Pulks sollten demnach nur sehr selten noch in eine stationäre Phase wechseln können. Genau diese Teilchen würden jedoch einen Tail verursachen, da sie sich, nach dem Übergang in die mobile Phase, hinter dem Pulk befinden würden.
 
 Eine sehr ähnliche Idee ist es, noch eine Sättigung der freien Plätze zur Adsorption einzubauen. Unabhängig vom Gleichgewicht zwischen den Phasen, kann es möglich sein, dass sehr viele Teilchen bereits mit der Oberfläche interagieren. Weitere Teilchen, die sich an den Rand der Säule begeben haben dann möglicherweise kaum noch Kontaktmöglichkeiten mit der stationären Phase, sodass sich ihre Wahrscheinlichkeit, mobil zu bleiben, erhöht.
 
