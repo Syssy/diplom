@@ -149,10 +149,10 @@ function combineParams(setsize)
     
     
     if setsize == "elly"
-       pmms = [0.5f0]
-       pmls = [0.007f0]
-       paas = [0.9985f0, 0.999f0, 0.9992f0, 0.9993f0, 0.9995f0, 0.9994f0]
-       plls = [0.99995f0]    
+       pmms = [0.99f0, 0.9f0, 0.95f0]
+       pmls = [0.003f0, 0.005f0]
+       paas = [0.997f0, 0.9975f0, 0.998f0]
+       plls = [0.999975f0, 0.99995f0, 0.999925f0]    
     end
     
     println (pmms)

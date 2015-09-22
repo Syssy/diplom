@@ -30,13 +30,11 @@ public class myPAA_2s extends PAA implements DeterministicEmitter{
                     System.out.println(csvfile);
                     PAA aPAA = new myPAA_2s();
                     // Zeiten nur aus Interesse
-                    for (int j = 0; j < 5; j++){
                     long starttime = System.currentTimeMillis();
                     // mosdi starten
                     arrivals = aPAA.waitingTimeForValue(MAXTIME, LENGTH);
                     long endtime = System.currentTimeMillis();
                     System.out.println("Time: " + (endtime - starttime)/1000 + " seconds");
-                    }
                     
                     // Zur Kontrolle, ob Peak vollständig: Summe berechnen
                     double sum = 0.0;
@@ -62,13 +60,12 @@ public class myPAA_2s extends PAA implements DeterministicEmitter{
 	
         public static double[][] combineParams(){
             // gewuenschte Parametereinstellungen
-            double[] ps_list = new double[] {0.997, 0.999, 0.9993, 0.9996};//, 0.9999};
+            double[] ps_list = new double[] {0.997, 0.999, 0.9993, 0.9996};
             double[] pm_list = new double[] {0.001, 0.3, 0.6, 0.95};
             double[][] param_list = new double[16][2];
             
             for (int i = 0; i<ps_list.length; i++){
                 for (int j = 0; j<pm_list.length; j++){
-             //       System.out.println(i + " " + j + " " + (i*4+ j));
                     param_list[i*4 + j] = new double[]{ps_list[i], pm_list[j]};
                 }
             }

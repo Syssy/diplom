@@ -97,7 +97,7 @@ def get_argument_parser():
                    help = "Laenge der Saeule")
     p.add_argument("--maxtime", "-m", type = int, default = "240",
                    help = "Maximale Retentionszeit in Sekunden")
-    p.add_argument("--source", "-s", default = "julia",
+    p.add_argument("--source", "-s", choices = ["julia", "PAA-Sim", "P", "paasim", "java", "MoSDi", "mosdi", "M"],  default = "julia",
                    help = "Quelle der PAA-Daten")
     p.add_argument("--output", "-o", action = "store_true",
                    help = "Wenn gewählt, wird zu jeder verarbeiteten Simulation die komprimierte Wahrscheinlichkeitsverteilung ausgegeben")
@@ -106,6 +106,11 @@ def get_argument_parser():
 def main():
     p = get_argument_parser()
     args = p.parse_args()
+    
+    if args.source in ["julia", "PAA-Sim", "P", "paasim"]:
+        args.source = "julia"
+    if args.source in ["java", "MoSDi", "mosdi", "M"]:
+        args.source = "java"
     
     # Verzeichnis, in dem PAA-Ergebnisse liegen
     source_directory = "savedata_"+ args.source+"/" + args.model +"/l"+str(args.length)+"/"

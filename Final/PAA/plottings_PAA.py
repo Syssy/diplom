@@ -44,52 +44,54 @@ def erzeuge_Tabelle(directory, csv_name, time_range=[0,240], iqr_range=[0,150], 
     print ("fertig mit Tabelle") 
     return peaks_found
 
-def plotte_Zeitpunkt(directory, time_range=[1,240], iqr_range=[0,100], iqk_range=[0,1]):
+def plotte_Zeitpunkt(directory, time_range=[1,240], iqr_range=[0,100], iqk_range=[0,1], show_params=False):
     '''Alle zu geg Zeit/IQR/IQK gefundenen Peaks plotten'''
     filenames = [name for name in os.listdir(directory) if name.startswith("Sim_")]
     tabellenname = "xy_" + str(time_range[0]) + "_" + str(time_range[1]) + "_" + str(iqr_range[0]) + "_" + str(iqr_range[1]) + "_"+  str(iqk_range[0]) + "_" + str(iqk_range[1]) + ".csv"
     peaks_found = []
-    if os.path.exists(tabellenname):
-        print (tabellenname)
-        with open (tabellenname, "r", newline='') as csvfile:
-            myreader = csv.reader(csvfile)
-            for line in myreader:
-               # print (line)
-                peaks_found.append([float(x) for x in line])
-    else:
-        peaks_found = erzeuge_Tabelle(directory, tabellenname, time_range, iqr_range, iqk_range)
+    #if os.path.exists(tabellenname):
+        #print (tabellenname)
+        #with open (tabellenname, "r", newline='') as csvfile:
+            #myreader = csv.reader(csvfile)
+            #for line in myreader:
+               ## print (line)
+                #peaks_found.append([float(x) for x in line])
+    #else:
+    peaks_found = erzeuge_Tabelle(directory, tabellenname, time_range, iqr_range, iqk_range)
     
     starttime = time.clock()
-    plt.suptitle("Retentionszeiten von: " + str(time_range[0]) + " bis: " + str(time_range[1]))
+    plt.suptitle("Erreichbare Breiten und Schiefen \nfür Retentionszeiten von " + str(time_range[0]) + " bis: " + str(time_range[1]))
     plt.xlabel("Breite (IQR)")
     plt.ylabel("Schiefe (QK)")
     for peak in peaks_found:
         plt.plot([peak[10]], [peak[11]], "go")
+    plt.ylim(0, 1)
     plt.show()    
-    fig = plt.figure()
-    plt.suptitle("Zeit: " + str(time_range) + " IQR: " + str(iqr_range) + " IQK: " + str(iqk_range))
-    # der Übersicht halber für alle vier relevanten Parameter ein Plot, jeden Plot anlegen
-    ax0 = fig.add_subplot(221)
-    ax0.set_title("pmm")
-    plt.ylabel("Schiefe (IQK)")
-    ax1 = fig.add_subplot(222)
-    ax1.set_title("pml")
-    ax2 = fig.add_subplot(223)
-    ax2.set_title("paa")
-    plt.xlabel("Breite (IQR)")
-    plt.ylabel("Schiefe (IQK)")
-    ax3 = fig.add_subplot(224)
-    ax3.set_title("pll")
-    plt.xlabel("Breite (IQR)")
-    ax = [ax0, ax1, ax2, ax3]
-    for peak in peaks_found:
-        print (peak)
-        #TODO: Die markersize sinnvoll nutzen
-        # TODO: Sinnvolle Kennzeichung über formen und farben der punkte
-        for i, j in enumerate([0, 2, 4, 8]):
-            ax[i].plot([peak[10]], [peak[11]], "go")#, markersize = 2*abs(np.median([time_range[1], time_range[0]])-peak[9]))
-            t = ax[i].text(peak[10], peak[11], str(peak[j]), size= "small")
-    plt.show()
+    if show_params:
+        fig = plt.figure()
+        plt.suptitle("Zeit: " + str(time_range) + " IQR: " + str(iqr_range) + " IQK: " + str(iqk_range))
+        # der Übersicht halber für alle vier relevanten Parameter ein Plot, jeden Plot anlegen
+        ax0 = fig.add_subplot(221)
+        ax0.set_title("pmm")
+        plt.ylabel("Schiefe (IQK)")
+        ax1 = fig.add_subplot(222)
+        ax1.set_title("pml")
+        ax2 = fig.add_subplot(223)
+        ax2.set_title("paa")
+        plt.xlabel("Breite (IQR)")
+        plt.ylabel("Schiefe (IQK)")
+        ax3 = fig.add_subplot(224)
+        ax3.set_title("pll")
+        plt.xlabel("Breite (IQR)")
+        ax = [ax0, ax1, ax2, ax3]
+        for peak in peaks_found:
+            print (peak)
+            #TODO: Die markersize sinnvoll nutzen
+            # TODO: Sinnvolle Kennzeichung über formen und farben der punkte
+            for i, j in enumerate([0, 2, 4, 8]):
+                ax[i].plot([peak[10]], [peak[11]], "go")#, markersize = 2*abs(np.median([time_range[1], time_range[0]])-peak[9]))
+                t = ax[i].text(peak[10], peak[11], str(peak[j]), size= "small")
+        plt.show()
 
 def plot_single_peak(filename, model, quartiles=False):
     '''Einzelnen Peak und seine Quartile plotten'''
@@ -276,37 +278,37 @@ def get_argument_parser():
                    help = "Laenge der Saeule")
     p.add_argument("--source", "-s", default = "julia",
                    help = "Quelle der PAA-Daten")
-    p.add_argument("--plot_peak", "-pp", nargs = '+', type = float,
+    p.add_argument("--plot_peak", "--pp", nargs = '+', type = float,
                    help = "Einzelne Parameterkombi eingeben, deren Peak dann geplottet wird" )
     p.add_argument("--quartiles", "-q", action = "store_true",
                    help = "wenn gewaehlt, werden beim plot_peak die Quartile mitgeplottet")
-    p.add_argument("--plot_params_at_time", "-ppt", action = "store_true",
-                  help = "Auswahl ob Parameter für Retentionszeit -rt und Abweichung -e geplottet werden soll")
-    p.add_argument("--retention", "-rt", default = [float(50), float(60)], nargs = '+', type = float,
+    p.add_argument("--plot_params_at_time", "--ppt", action = "store_true",
+                  help = "Auswahl ob Parameter für Retentionszeit -r und Abweichung -e geplottet werden soll")
+    p.add_argument("--retention", "-r", default = [float(50), float(60)], nargs = '+', type = float,
                   help = "zu plottende Retentionszeit fuer plot_params_at_time, Intervall fuer plot_pd")
     p.add_argument("--epsilon", "-e", default = "5", type = float,
-                  help = "erlaubte Abweichung von -rt fuer plot_params_at_time")
-    p.add_argument("--plot_reachable", "-pr", action = "store_true",
+                  help = "erlaubte Abweichung von -r fuer plot_params_at_time")
+    p.add_argument("--plot_reachable", "--pr", action = "store_true",
                    help = "Auswahl ob Plot erreichbarer Zeiten/Breiten erstellt werden soll")
-    p.add_argument("--show_params", "-sp", action = "store_true",
-                   help = "Wenn gewählt, werden im Plot Parameter angezeigt, Option verfuegbar fuer -ppt, -pr")
-    p.add_argument("--plot_festen_param", "-pfp", nargs = "+",
-                   help = "Plottet Peakdaten für einen festen und einen variablen Parameter, als Argumente erst den festen Parameter, dann dessen Wert angeben, z.B. -pfp ps 0.999")
-    p.add_argument("--plot_pd", "-pd", action = "store_true",
-                   help = "Plottet nach den vorgegebenen Peakdatenintervallen -rt, -iqr, -qk")
-    p.add_argument("--iqr", "-iqr", default = [float(1), float(20)], nargs = '+', type = float,
+    p.add_argument("--show_params", "--sp", action = "store_true",
+                   help = "Wenn gewählt, werden im Plot Parameter angezeigt, Option verfuegbar fuer --ppt, --pr")
+    p.add_argument("--plot_festen_param", "--pfp", nargs = "+",
+                   help = "Plottet Peakdaten für einen festen und einen variablen Parameter, als Argumente erst den festen Parameter, dann dessen Wert angeben, z.B. --pfp ps 0.999")
+    p.add_argument("--plot_pd", "--pd", action = "store_true",
+                   help = "Plottet nach den vorgegebenen Peakdatenintervallen -r, --iqr, --qk")
+    p.add_argument("--iqr", default = [float(1), float(20)], nargs = '+', type = float,
                   help = "IQR-Intervall fuer plot_pd")
-    p.add_argument("--qk", "-qk", default = [float(0), float(1)], nargs = '+', type = float,
+    p.add_argument("--qk", default = [float(0), float(1)], nargs = '+', type = float,
                   help = "QK-Intervall fuer plot_pd")
-    p.add_argument("-plot_3fest", "-p3", action = "store_true",
-                   help = "Plottet Peakdaten für drei feste und einen variablen Parameter, Wert der drei festen Parameter mit -pmm/-pml/-paa/-pll angeben")
-    p.add_argument("-pmm", "--pmm", type=float, nargs='+',default = [float(0.1), float(0.2), float(0.3), float(0.4), float(0.5), float(0.6), float(0.7), float(0.8), float(0.9)],
+    p.add_argument("--plot_3fest", "--p3", action = "store_true",
+                   help = "Plottet Peakdaten für drei feste und einen variablen Parameter, Wert der drei festen Parameter mit --pmm/--pml/--paa/--pll angeben")
+    p.add_argument("--pmm", type=float, nargs='+',default = [float(0.1), float(0.2), float(0.3), float(0.4), float(0.5), float(0.6), float(0.7), float(0.8), float(0.9)],
                    help = "Wert als festen Parameter im 3_fest-Plot")
-    p.add_argument("-pml", "--pml", type=float, nargs='+', default = [float(0.0001), float(0.0003), float(0.0005), float(0.0007), float(0.001), float(0.003), float(0.005)],
+    p.add_argument("--pml", type=float, nargs='+', default = [float(0.0001), float(0.0003), float(0.0005), float(0.0007), float(0.001), float(0.003), float(0.005)],
                    help = "Wert als festen Parameter im 3_fest-Plot")
-    p.add_argument("-paa", "--paa", type=float, nargs='+', default = [float(0.997), float(0.998), (0.9985), float(0.999), float(0.9992), 1 float(0.9994), float(0.9995), float(0.9996)],
+    p.add_argument("--paa", type=float, nargs='+', default = [float(0.997), float(0.998), (0.9985), float(0.999), float(0.9992), float(0.9994), float(0.9995), float(0.9996)],
                    help = "Wert als festen Parameter im 3_fest-Plot")
-    p.add_argument("-pll","--pll",type=float, nargs='+',default = [float(0.9999),float(0.99995),float(0.999975), float(0.99999), float(0.999995)],
+    p.add_argument("--pll",type=float, nargs='+',default = [float(0.9999),float(0.99995),float(0.999975), float(0.99999), float(0.999995)],
                    help = "Wert als festen Parameter im 3_fest-Plot")
     #p.add_argument("--plot_spectrum", "-ps", action = "store_true",
     #               help = "Auswahl ob Spektrum geplottet werden soll fuer Rauschen zusaetzlich -an")
@@ -350,7 +352,7 @@ def main():
     
     if args.model == "3a":
         if args.plot_pd:
-            plotte_Zeitpunkt(directory, args.retention, args.iqr, args.qk)
+            plotte_Zeitpunkt(directory, args.retention, args.iqr, args.qk, args.show_params)
         if args.plot_3fest:
             #TODO Das ist nicht schön, aber funktioniert bei korrekter Eingabes
             print (args.pmm, args.pml)

@@ -165,33 +165,29 @@ def get_argument_parser():
                    help = "Anzahl zu simulierender Teilchen")
     p.add_argument("--maxtime", "-m", type = int, default = "240",
                    help = "Maximale Simulationszeit")
-    p.add_argument("--choicenumber", "-cn", type = int, default = "5",
+    p.add_argument("--choicenumber", "--cn", type = int, default = "5",
                    help = "bei zufaelliger Parameterwahl: Wie viele Kombinationen sollen gewaehlt werden")
     p.add_argument("--pcombioption", "-p",  
                    help = "Wie sollen die ps/pm-Kombinationen gewaehlt werden: small_set, medium_set, large_set, skew, random")
-    p.add_argument("--reverse", "-r", action = "store_true",
-                   help = "Reihenfolge der p_combinations invertieren")
     p.add_argument("--approach", "-a", default = "S", 
                    help = "Art der Simulation; E = by-event, S = step_by_step")
     p.add_argument("--plot_peak", "--pp", nargs = '+', type = float,
                    help = "Einzelne Parameterkombi eingeben, deren Peak dann geplottet wird")
-    p.add_argument("--plot_spectrum", "-ps", action = "store_true",
-                   help = "Auswahl ob Spektrum für maximal 30 Peaks geplottet werden soll, fuer Rauschen zusaetzlich --addnoise")
-    p.add_argument("--addnoise", action= "store_true",
+    p.add_argument("--plot_chromatogram", "--pc", action = "store_true",
+                   help = "Auswahl ob Chromatogram für maximal 30 Peaks geplottet werden soll, fuer Rauschen zusaetzlich --addnoise")
+    p.add_argument("--addnoise", "--an", action= "store_true",
                    help = "Rauschen hinzufuegen")
-    p.add_argument("--plot_params_at_time", "-ppt", action = "store_true",
-                   help = "Auswahl ob Parameter für Retentionszeit -rt und Abweichung -e geplottet werden soll")
-    p.add_argument("--retention", "-rt", default = "50", type = float,
+    p.add_argument("--plot_params_at_time", "--ppt", action = "store_true",
+                   help = "Auswahl ob Parameter für Retentionszeit -r und Abweichung -e geplottet werden soll")
+    p.add_argument("--retention", "-r", default = "50", type = float,
                    help = "zu plottende Retentionszeit fuer plot_params_at_time")
     p.add_argument("--epsilon", "-e", default = "5", type = float,
                    help = "erlaubte Abweichung von -rt fuer plot_params_at_time")
-    p.add_argument("--plot_trait", "-pt", 
+    p.add_argument("--plot_trait", "--pt", choices = ["loc", "iqr", "qk"] ,
                    help = "Auswahl ob Heatmap ueber Eigenschaft (loc, iqr, qk) geplottet werden soll")
-    p.add_argument("--trait", "-t", 
-                   help = "Zu plottende Eigenschaft für plot_trait")
-    p.add_argument("--plot_reachable", "-pr", action = "store_true",
+    p.add_argument("--plot_reachable", "--pr", action = "store_true",
                    help = "Auswahl ob Plot erreichbarer Zeiten/Breiten erstellt werden soll")
-    p.add_argument("--show_params", "-sp", action = "store_true",
+    p.add_argument("--show_params", "--sp", action = "store_true",
                    help = "Wenn gewählt, werden im Plot Parameter angezeigt, Option verfuegbar fuer -ppt, -pr")
     return p
 
@@ -219,15 +215,15 @@ def main():
     if args.plot_peak:
         args.pcombioption = "single"
     #liste aller zu simulierenden kombis erstellen
-    if (args.pcombioption or args.plot_spectrum or args.plot_trait):
+    if (args.pcombioption or args.plot_chromatogram or args.plot_trait):
         p_combinations = combine_params(args.pcombioption, args.choicenumber, args.plot_peak)
-        if args.reverse:
-            p_combinations.reverse()
-        #Simulationen starten
+        #if args.reverse:
+            #p_combinations.reverse()
+        ##Simulationen starten
         simlist = start_simulations(args.length, args.number, args.approach, p_combinations)
         if args.plot_peak:
             plottings.plot_single_peak(simlist[0])
-        if args.plot_spectrum:
+        if args.plot_chromatogram:
             plottings.plot_spectrum(simlist, noise=args.addnoise)
         if args.plot_trait:
             plottings.plot_trait(simlist, args.plot_trait)

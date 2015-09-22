@@ -205,9 +205,10 @@ def get_argument_parser():
                    help = "Auswahl ob Chromatogramm geplottet werden soll fuer Rauschen zusaetzlich --an")
     p.add_argument("--addnoise", "--an", action= "store_true",
                    help = "Rauschen hinzufuegen")
-    p.add_argument("--show_params", "-s", action = "store_true",
-                   help = "Wenn gewählt, werden im Plot Parameter angezeigt, Option verfuegbar fuer -z")
-    return p
+ #   p.add_argument("--show_params", "-s", action = "store_true",
+ #                  help = "Wenn gewählt, werden im Plot Parameter angezeigt, Option verfuegbar fuer plotte_zeitpunkt")
+ 
+return p
 
 def main():
     '''Aufruf der Simulationen und Plottings, gesteuert durch Kommandozeilenparameter'''
