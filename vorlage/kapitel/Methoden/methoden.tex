@@ -169,16 +169,28 @@ Für die neuen Orte kann einfach der neue Zustandsvektor auf den alten Ortsvekto
 Durch die Hinzunahme eines weiteren Zustandes können nun nicht mehr boolesche Werte zur Zustandsbeschreibung herangezogen werden. Nun gilt Zustand $z \in \{0, 1, 2\}$  wobei $0$ für den mobilen Zustand steht, $1$ für die Adsorption und $2$ für die Lösung. Außerdem werden die Wahrscheinlichkeiten entsprechend auf eine Transitionsmatrix wie in Definition \ref{3s_Transit} angepasst.
 
 Damit weiterhin eine logische Formel für die Zustandsberechnung genutzt werden kann und so die neuen Zustände parallel berechnen können, sind einige Hilfsarrays nötig. %, die entsprechend viel überflüssige Information enthalten.
-Um aus den gezogenen Zufallszahlen die passenden Arrays zu erstellen, aus denen die neuen Zustände berechnet werden können, wird zunächst eine Hilfstabelle mit den kumulierten Wahrscheinlichkeiten erstellt. %erstelle kumulierte Wahrscheinlichkeiten (ein mal zu beginn)
+Um aus den gezogenen Zufallszahlen die passenden Arrays zu erstellen, aus denen die neuen Zustände berechnet werden können, wird zunächst eine Hilfstabelle $K$ mit den kumulierten Wahrscheinlichkeiten erstellt. %erstelle kumulierte Wahrscheinlichkeiten (ein mal zu beginn)
 
-Beispiel:
+\begin{equation}
+K= 
+\begin{pmatrix}
+p_{\text{mm}} & (p_{\text{ma}} + p_{\text{mm}}) & (p_{\text{ml}} + p_{\text{ma}} + p_{\text{mm}}) \\
+p_{\text{am}} & (p_{\text{aa}} + p_{\text{am}}) & (p_{\text{al}} + p_{\text{aa}} + p_{\text{am}})\\
+p_{\text{lm}} & (p_{\text{la}} + p_{\text{lm}}) & (p_{\text{ll}} + p_{\text{la}} + p_{\text{lm}}) 
+\end{pmatrix}
+\label{kummatrix}
+\end{equation}
+
+Beispielsweise wird aus den Transitionen
+
 $T= 
 \begin{pmatrix}
 0,5 & 0,3 & 0,2 \\
 0,2 & 0,2 & 0,6 \\
 0,15 & 0,15 & 0,7 
 \end{pmatrix}
-$  wird zu 
+$ 
+die folgende Hilfstabelle: 
 $K= 
 \begin{pmatrix}
 0,5 & 0,8 & 1 \\
@@ -285,7 +297,7 @@ Ein Event beinhaltet alle Teilchen eines Zeitpunktes. Für jedes wird zunächst 
 
 \subsubsection{2-Zustände Modell}
 
-Wann ein Teilchen das nächste Mal seinen Zustand wechselt, wird mit Hilfe einer geometrisch verteilten Zufallszahl mit Parameter $p=1-p_\text{s}$ \todo{beide Wechsel} bestimmt: Der nächste Zufallswechsel von Zustand $z$ nach $\neg z$ findet statt an Zeitpunkt $t= geom(1-p_{\text{s}})$ %\todo{ZZ ordentlich aufschreiben}.
+Wann ein Teilchen das nächste Mal seinen Zustand wechselt, wird mit Hilfe einer geometrisch verteilten Zufallszahl mit Parameter $p=1-p_\text{s}$ bzw. $p=1-p_\text{m}$ bestimmt: Der nächste Zufallswechsel von Zustand $z$ nach $\neg z$ findet statt an Zeitpunkt $t= geom(1-p_{\text{z}})$ %\todo{ZZ ordentlich aufschreiben}.
 Daher lohnt sich diese Art der Simulation insbesondere bei Parametern nahe 1. 
 Wenn ein Teilchen im aktuellen Schritt in den mobilen Zustand gewechselt hat, muss auch sein Ort angepasst werden. Da sich Teilchen eine Raumeinheit pro Zeitschritt bewegen, wird der Ort entsprechend der gezogenen Zufallszahl erhöht.
 
@@ -451,6 +463,7 @@ Dafür kann vorab eine Wechselmatrix berechnet werden, in der sich die Wahrschei
 p_{\text{am}}/(1- p_{\text{aa}}) & 0 & p_{\text{al}}/(1- p_{\text{aa}}) \\
 p_{\text{lm}}/(1-p_{\text{ll}}) &  p_{\text{la}}/(1-p_{ll}) & 0 
 \end{pmatrix}  
+\label{Wechselmatrix}
 \end{equation}
 
 Aus der Transitionsmatrix

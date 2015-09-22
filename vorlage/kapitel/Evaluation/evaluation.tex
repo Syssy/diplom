@@ -50,20 +50,10 @@ Wenn ein solcher Peak in einer tatsächlichen Messung vorkäme, könnte es gut s
 
 %Wo genau eine sinnvolle Obergrenze für die Breite der Peaks liegt, ist schwer abzugrenzen, dazu wäre eine ausführliche Auswertung  
 
-
 \section{2-Zustände Modell} 
 Zunächst wird der Einfluss der beiden Parameter auf die Peaks beschrieben. Da sich die Intensität dieses Einflusses je nach Wert des anderen Parameters verändert, wird anschließend der gemeinsame Einfluss der beiden Parameter betrachtet. Außerdem wird beschieben, was nicht mit dem Modell simuliert werden kann.
 
-\subsection{Einfluss der Parameter auf einzelne Peaks}
-
-% \begin{figure}[h]
-% \centering
-% \caption{Peak zum Zeitpunkt $t \approx 20$}
-% \label{2s_t20}
-% \end{figure}
-Es wird an zwei einzelnen Peaks gezeigt, wie sich die Veränderung von jeweils einem Parameter auf die Peakcharakteristika auswirkt. Beide dieser Peaks könnten so ein einem echten Chromatogramm beobachtet worden sein.
-
-\begin{figure}[H]
+\begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.49\textwidth]{bilder/2s_einzeleinfluss/2s_t20}
 \end{center}
@@ -77,6 +67,17 @@ Es wird an zwei einzelnen Peaks gezeigt, wie sich die Veränderung von jeweils e
 \caption[Einfluss von $p_{\text{m}}$ und $p_{\text{s}}$ auf einen Peak]{Einfluss von $p_{\text{m}}$ und $p_{\text{s}}$ auf einen Peak, oben der Ausgangspeak mit $p_{\text{m}} = 0,8$ und $p_{\text{s}} = 0,9991$, veränderte Parameter: in der Mitte links $p_{\text{m}} = 0,9$, rechts $p_{\text{m}} = 0,7$, unten links $p_{\text{s}} = 0,999$, rechts $p_{\text{s}} = 0,9992$ }
 \label{2s_t20_change}
 \end{figure}
+
+
+\subsection{Einfluss der Parameter auf einzelne Peaks}
+
+% \begin{figure}[h]
+% \centering
+% \caption{Peak zum Zeitpunkt $t \approx 20$}
+% \label{2s_t20}
+% \end{figure}
+Es wird an zwei einzelnen Peaks gezeigt, wie sich die Veränderung von jeweils einem Parameter auf die Peakcharakteristika auswirkt. Beide dieser Peaks könnten so ein einem echten Chromatogramm beobachtet worden sein.
+
 
 In Abbildung \ref{2s_t20_change} ist ein Peak zu sehen, der mit den Parametern $p_{\text{m}} = 0,8$ und $p_{\text{s}} = 0,9991$ simuliert wurde. Sein Maximalwert liegt bei etwa $t = 22$ s und er hat eine Breite von etwa $2,8$. Abbildung \ref{2s_t100_change} zeigt einen Peak, dessen Maximalwert bei $t=100$ s liegt und der eine Breite von $7,4$ hat. Er wurde mit den Parametern $p_{\text{m}} = 0,5$ und $p_{\text{s}} = 0,9995$ simuliert.
 \begin{figure}[h]
@@ -111,7 +112,7 @@ Offensichtlich kann eine bestimmte Retetionszeit durch verschiedene Kombinatione
 
 Auf diese Weise ist es möglich, Peaks mit gewünschter Retentionszeit und Breite schrittweise anzunähern. 
 
-\begin{figure}[h]
+\begin{figure}[]
 \centering
 \includegraphics[width=0.6\textwidth]{bilder/paramsfuert75}
 %\includegraphics[width=0.49\textwidth]{bilder/erreichbare_Breiten_2s}
@@ -234,14 +235,14 @@ Die für die beiden Peaks verwendeten Simulationsparameter wurden dann nur wenig
 \hline
 \pmm & $p_{\text{ml}}$    & $p_{\text{aa}}$    & $p_{\text{ll}}$      & Lage  & Breite & Schiefe \\ \hline \hline
 $$0,6$$ & $0,0006$ & $0,9992$ & $0,999993$ & $50,14$ & $12,34$  & $0,46$    \\ \hline \hline
-\cellcolor{yellow} $0,5$ & $0,0006$ & $0,9992$ & $0,999993$ & $62,69$ & $12,45$  & $0,43$    \\ \hline
-\cellcolor{yellow} $0,7$ & $0,0006$ & $0,9992$ & $0,999993$ & $37,59$ & $12,2$   & $0,5$     \\ \hline
-$0,6$ & \cellcolor{yellow} $0,0005$ & $0,9992$ & $0,999993$ & $50,09$ & $9,7$    & $0,38$    \\ \hline
-$0,6$ & \cellcolor{yellow} $0,0007$ & $0,9992$ & $0,999993$ & $50,19$ & $14,82$  & $0,5$     \\ \hline
-$0,6$ & $0,0006$ & \cellcolor{yellow} $0,9991$ & $0,999993$ & $44,55$ & $12,18$  & $0,5$     \\ \hline
-$0,6$ & $0,0006$ & \cellcolor{yellow} $0,9993$ & $0,999993$ & $57,33$ & $12,57$  & $0,41$    \\ \hline
-$0,6$ & $0,0006$ & $0,9992$ & \cellcolor{yellow} $0,99999$  & $50,25$ & $9,2$    & $0,33$    \\ \hline
-$0,6$ & $0,0006$ & $0,9992$ & \cellcolor{yellow} $0,999995$ & $50,05$ & $16,66$  & $0,58$    \\ \hline
+\cellcolor{yellow}$0,5$ & $0,0006$ & $0,9992$ & $0,999993$ & $62,69$ & $12,45$  & $0,43$    \\ \hline
+\cellcolor{yellow}$0,7$ & $0,0006$ & $0,9992$ & $0,999993$ & $37,59$ & $12,2$   & $0,5$     \\ \hline
+$0,6$ & \cellcolor{yellow}$0,0005$ & $0,9992$ & $0,999993$ & $50,09$ & $9,7$    & $0,38$    \\ \hline
+$0,6$ & \cellcolor{yellow}$0,0007$ & $0,9992$ & $0,999993$ & $50,19$ & $14,82$  & $0,5$     \\ \hline
+$0,6$ & $0,0006$ & \cellcolor{yellow}$0,9991$ & $0,999993$ & $44,55$ & $12,18$  & $0,5$     \\ \hline
+$0,6$ & $0,0006$ & \cellcolor{yellow}$0,9993$ & $0,999993$ & $57,33$ & $12,57$  & $0,41$    \\ \hline
+$0,6$ & $0,0006$ & $0,9992$ & \cellcolor{yellow}$0,99999$  & $50,25$ & $9,2$    & $0,33$    \\ \hline
+$0,6$ & $0,0006$ & $0,9992$ & \cellcolor{yellow}$0,999995$ & $50,05$ & $16,66$  & $0,58$    \\ \hline
 \end{tabular}
 \end{table}
 
@@ -253,14 +254,14 @@ $0,6$ & $0,0006$ & $0,9992$ & \cellcolor{yellow} $0,999995$ & $50,05$ & $16,66$ 
 \hline
 \pmm & $p_{\text{ml}}$    & $p_{\text{aa}}$    & $p_{\text{ll}}$      & Lage  & Breite & Schiefe \\ \hline \hline
  $0,1$ & $0,0005$  & $0.9991$  & $0.99999$  & $100,22$  & $8,1$  & $0,23$ \\ \hline
-\cellcolor{yellow} $0,05$ & $0,0005$  & $0.9991$  & $0.99999$  & $105,76$  & $8,11$  & $0,229$ \\ \hline
-\cellcolor{yellow} $0,2$ & $0,0003$  & $0.9991$  & $0.99999$  & $89,1$  & $8,05$  & $0,235$ \\ \hline
- $0,1$ & \cellcolor{yellow} $0,0007$  & $0.9991$  & $0.99999$  & $100,04$  & $6,22$  & $0,12$ \\ \hline
- $0,1$ & \cellcolor{yellow} $0,0005$  & $0.9991$  & $0.99999$  & $100,4$  & $10,89$  & $0,34$ \\ \hline
- $0,1$ & $0,0005$  & \cellcolor{yellow} $0.999$  & $0.99999$  & $90,17$  & $7,68$  & $0,26$ \\ \hline
- $0,1$ & $0,0005$  & \cellcolor{yellow} $0.9992$  & $0.99999$  & $112,77$  & $8,64$  & $0,2$ \\ \hline
- $0,1$ & $0,0005$  & $0.9991$  & \cellcolor{yellow} $0.999975$  & $100,41$  & $5,91$  & $0,08$ \\ \hline
- $0,1$ & $0,0005$  & $0.9991$  & \cellcolor{yellow} $0.999993$  & $100,12$  & $9,93$  & $0,34$ \\ \hline
+\cellcolor{yellow}$0,05$ & $0,0005$  & $0,9991$  & $0,99999$  & $105,76$  & $8,11$  & $0,229$ \\ \hline
+\cellcolor{yellow}$0,2$ & $0,0003$  & $0,9991$  & $0,99999$  & $89,1$  & $8,05$  & $0,235$ \\ \hline
+ $0,1$ & \cellcolor{yellow}$0,0007$  & $0,9991$  & $0,99999$  & $100,04$  & $6,22$  & $0,12$ \\ \hline
+ $0,1$ & \cellcolor{yellow}$0,0005$  & $0,9991$  & $0,99999$  & $100,4$  & $10,89$  & $0,34$ \\ \hline
+ $0,1$ & $0,0005$  & \cellcolor{yellow}$0,999$  & $0,99999$  & $90,17$  & $7,68$  & $0,26$ \\ \hline
+ $0,1$ & $0,0005$  & \cellcolor{yellow}$0,9992$  & $0,99999$  & $112,77$  & $8,64$  & $0,2$ \\ \hline
+ $0,1$ & $0,0005$  & $0.9991$  & \cellcolor{yellow}$0,999975$  & $100,41$  & $5,91$  & $0,08$ \\ \hline
+ $0,1$ & $0,0005$  & $0.9991$  & \cellcolor{yellow}$0,999993$  & $100,12$  & $9,93$  & $0,34$ \\ \hline
 \end{tabular}
 \end{table}
 
@@ -405,8 +406,11 @@ Der Einfluss auf die Breite ist mäßig und wird größer, wenn \pml\ und \pll\ 
 
 Der Einfluss von \pll\ auf den Zeitpunkt ist ähnlich wie bei \pml\ nur minimal.
 
-\begin{figure}[]
+Auf Breite und Schiefe hat \pll\ einen von \pml\ abhängigen Einfluss: Wenn \pml\ mittelgroß ist, ist die Wirkung von \pll\ am größten. Das ist in Abbildung \ref{einfluss_pll_pml} gezeigt.
 
+Wenn \pml\ nicht zu klein oder groß ist, hat \pll\ einen großen Einfluss auf Schiefe und Breite. Dieser Einfluss wächst, je größer \pmm\ und je kleiner \paa\ ist. Dies ist in \ref{einfluss_pll_pmm} für \pmm\ und in \ref{einfluss_pll_paa} für \paa\ zu sehen. 
+
+\begin{figure}[H]
 \includegraphics[width=0.49\textwidth]{bilder/pll/3fest_07_0001_0998_p}
 \includegraphics[width=0.49\textwidth]{bilder/pll/3fest_07_00007_0998_p}
 
@@ -418,10 +422,7 @@ Der Einfluss von \pll\ auf den Zeitpunkt ist ähnlich wie bei \pml\ nur minimal.
 \label{einfluss_pll_pml}
 \end{figure}
 
-Auf Breite und Schiefe hat \pll\ einen von \pml\ abhängigen Einfluss: Wenn \pml\ mittelgroß ist, ist die Wirkung von \pll\ am größten. Das ist in Abbildung \ref{einfluss_pll_pml} gezeigt.
-
 \begin{figure}[]
-
 \includegraphics[width=0.49\textwidth]{bilder/pll/3fest_01_00005_09992_p}
 \includegraphics[width=0.49\textwidth]{bilder/pll/3fest_09_00005_09992_p}
 
@@ -429,32 +430,26 @@ Auf Breite und Schiefe hat \pll\ einen von \pml\ abhängigen Einfluss: Wenn \pml
 \label{einfluss_pll_pmm}
 \end{figure}
 
-
 \begin{figure}[h]
-
 \includegraphics[width=0.49\textwidth]{bilder/pll/3fest_03_00003_0998_p}
 \includegraphics[width=0.49\textwidth]{bilder/pll/3fest_03_00003_09994_p}
-
 \caption[Der Einfluss von \pll\ auf die Peaks abhängig von \paa]{Der Einfluss von \pll\ auf die Peaks abhängig von \paa, welches links klein und rechts groß ist.}
 \label{einfluss_pll_paa}
 \end{figure}
 
-Wenn \pml\ nicht zu klein oder groß ist, hat \pll\ einen großen Einfluss auf Schiefe und Breite. Dieser Einfluss wächst, je größer \pmm\ und je kleiner \paa\ ist. Dies ist in \ref{einfluss_pll_pmm} für \pmm\ und in \ref{einfluss_pll_paa} für \paa\ zu sehen. 
 %(Hängt wieder mit der Durchschnittsgeschwindigkeit zusammen)
 
-
-
+\paragraph*{}
 Der Einfluss der Parameter kann wie folgt zusammengefasst werden:
 
 Da bei einem Wert von $0$ für \pml\ effektiv das 2-Zustände Modell zum Einsatz kommt, ist hier fast nie Schiefe zu beobachten, außerdem hat der Parameter \pll\ keinen Einfluss. 
 
 \paa\ hat einen stärkeren Einfluss auf den Zeitpunkt als \pll\ und \pml. Dieser wird noch stärker, wenn \pmm\ klein ist.
-
 \pmm\ hat einen großen Einfluss auf den Zeitpunkt und nur einen minimalen Einfluss auf die Breite.
 
-\pml\ und \pll\ haben zunächst beide einen proportionalen Einfluss auf die Schiefe. Erst, wenn beide sehr groß sind, sinkt die Schiefe wieder (und die Breite steigt extrem an) Das ist wohl dadurch zu erklären, dass sich nicht mehr genügend Teilchen im mobil-adsorbierten System befinden, wodurch ein normaler Peak entstehen kann. Statt dass die Lösung Schiefe an diesem einfachen Peak verursacht, sorgt sie nunmehr für Breite.
-
-Tailing und damit Schiefe entsteht immer da, wo nur wenige Teilchen langsamer sind, als die große Masse. Sind viele Teilchen lange stationär, werden die Peaks statt dessen breit. Der Maximalzeitpunkt ist zum großen Teil durch die Durchschnittsgeschwindigkeit der Teilchen bestimmt, sind sie hauptsächlich mobil, entstehen frühe Peaks, sind sie oft und lange stationär, wandern die Peaks nach hinten. 
+\pml\ und \pll\ haben zunächst beide einen deutlichen Einfluss auf die Schiefe. Erst, wenn beide sehr groß sind, sinkt die Schiefe wieder (und die Breite steigt extrem an) Das ist wohl dadurch zu erklären, dass sich nicht mehr genügend Teilchen im mobil-adsorbierten System befinden, wodurch ein normaler Peak entstehen kann. Die gelösten Teilchen verursachen nun keine weitere Schiefe mehr, sondern dominieren so sehr, dass statt dessen die Peaks breiter werden.
+%Statt dass die Lösung Schiefe an diesem einfachen Peak verursacht, sorgt sie nunmehr für Breite.
+Der Maximalzeitpunkt ist zum großen Teil durch die Durchschnittsgeschwindigkeit der Teilchen bestimmt, die sich aus dem mobilen und adsorbierten Zustand ergibt. Sind sie hauptsächlich mobil, entstehen frühe Peaks, sind sie oft und lange stationär, wandern die Peaks nach hinten. Tailing und damit Schiefe entsteht immer da, wo nur wenige Teilchen langsamer sind, als die große Masse, was der Fall ist, wenn sich Teilchen nur selten lösen, dafür aber lange gelöst bleiben. Sind viele Teilchen sehr lange stationär, werden die Peaks statt dessen breit. 
 
 
 \subsection{Parameter für ähnliche Peaks}
@@ -484,19 +479,25 @@ Mit dem 2-Zustände Modell war es nur eingeschränkt möglich, Tailing zu erzeug
 
 Daher wäre es interessant zu wissen, welche Kombinationen aus Schiefe und Breite zu einem gegebenen Zeitpunkt realisierbar sind. Dazu sind in Abbildung \ref{3a_erreichbar} für die Zeitpunkte $t \approx 20$ und $ t \approx 100$ jeweils eine Übersicht über die erreichbaren Breiten und Schiefen gegeben.
 
+Generell können sehr schmale Peaks nicht sehr schief sein, was mit der Definition der beiden Maße zusammen hängt. Außerdem ist hier noch einmal die Mindestbreite für spätere Peaks zu sehen. Für $t \approx 100$ werden keine Peaks mit einer Breite von unter $4$ beobachtet.
+
+Bei sehr frühen Peaks ist mit zunehmender Breite auch immer Schiefe zu beobachten. Das liegt daran, dass vor dem Erreichen des Maximalwertes nur eine eher kurze Zeit vergangen sein kann, bei einem breiten Peak muss also einen großen Teil seiner Teilchen erst nach diesem Zeitpunkt das Ende der Säule erreichen. Genau das verursacht aber die beobachtbare Schiefe.
+
+Dass bei eher späten Peaks nicht beliebig große Werte für die Schiefe erreicht werden, hängt mit dem Abbruch der Simulationen nach der maximalen Wartezeit zusammen. Es kann zum Zeitpunkt $t = 100$ durchaus Peaks mit einer Schiefe von $0,9$ geben, deren Tail wäre jedoch so lang, dass er über die $240$ Sekunden hinaus ragt und damit hier nicht berücksichtigt wird.
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.49\textwidth]{bilder/t20erreichbar_1}
 \includegraphics[width=0.49\textwidth]{bilder/t100erreichbar_1}
-\caption{Mit dem 3-Zustände Modell erreichbare Zeitpunkte und Breiten}
+\caption[Mit dem 3-Zustände Modell erreichbare Breiten und Schiefen]{Mit dem 3-Zustände Modell erreichbare Breiten und Schiefen zu den Zeitpunkten $t \approx 20$ und $ t \approx 100$ }
 \label{3a_erreichbar}
 \end{figure}
 
-Auch die Erzeugung von breiteren Peaks ganz zu Beginn des Spektrums ist jedoch durch tailenden Peaks möglich geworden. Dazu ist in Abbildung \ref{Grenzen_3a_ohnep} eine Übersicht über die erreichbaren Zeiten und Breiten mit dem 3-Zustände Modell gegeben.
+Die Erzeugung von breiteren Peaks ganz zu Beginn des Spektrums ist jedoch durch die tailenden Peaks möglich geworden. Dazu ist in Abbildung \ref{Grenzen_3a_ohnep} eine Übersicht über die erreichbaren Zeiten und Breiten mit dem 3-Zustände Modell gegeben.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.75\textwidth]{bilder/3a_zeitbreiten_ohnep}
+\includegraphics[width=0.65\textwidth]{bilder/3a_zeitbreiten_ohnep}
 \caption{Mit dem 3-Zustände Modell erreichbare Zeitpunkte und Breiten}
 \label{Grenzen_3a_ohnep}
 \end{figure}

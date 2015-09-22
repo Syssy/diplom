@@ -49,7 +49,7 @@ Durch die eben gemachten Annahmen ergibt sich als erstes Modell ein einfacher Au
 p_{\text {m}} & 1-p_{\text {m}} \\
 1-p_{\text {s}} & p_{\text {s}} 
 \end{pmatrix}
-$ 
+$ .
 Eine graphische Darstellung des Modells zeigt Abbildung \ref{tikz:2p_Mod} %\todo{Formale Beschreibung meines Modells}
 
 \begin{figure}[ht]
@@ -270,7 +270,7 @@ In den späteren Abschnitten der Arbeit ist mit dem 3-Zustände Modell oft das M
 Die Parameter, die für das Modell 3a betrachtet werden, sind \pmm, \pml, \paa\ und \pll, die übrigen drei Parameter lassen sich aus diesen berechnen.
 
 
-\subsection{PAA}
+\subsection{PAA für das 3-Zustände Modell}
 Analog zum PAA für nur zwei Zustände kann für drei Zustände ein PAA definiert werden. Aus Gründen der Übersicht wird hier nur das Gesamtmodell mit drei Zuständen und allen dazwischen möglichen Übergängen berücksichtigt. Für die Modelle 3a und 3b müssen auch für den PAA nur die entsprechenden Wahrscheinlichkeiten angepasst werden.
 
 \begin{figure}
@@ -338,7 +338,9 @@ Der PAA für das 3-Zustände Modell ist also definiert als:
 
 \section{Weitere Modelle}
 
-Eine weitere Möglichkeit, das Modell zu verändern, besteht darin, das Gleichgewicht, welches sich zwischen den beiden Phasen aufbaut, zu berücksichtigen. Damit müssten die Wahrscheinlichkeiten, den Zustand zu wechseln, nicht mehr fest vorgegeben sein, sondern sich dynamisch während der Simulation aus der aktuellen Verteilung der Teilchen an einem bestimmten Ort auf die Zustände berechnen. Das würde dazu führen, dass Teilchen, die sich zu Beginn des Pulks befinden, mit einer höheren Wahrscheinlichkeit in die stationäre Phase oder eine der stationären Phasen übergehen, Teilchen in der Mitte haben demgegenüber eine deutlich geringere Wahrscheinlichkeit, stationär zu werden, da nun das Gleichgewicht gehalten werden muss. Die Veränderung der Übergangswahrscheinlichkeiten hinge demnach auch von der Quote der Teilchen ab, die dann schon wieder mobil geworden sind. Teilchen am Ende des Pulks sollten demnach nur sehr selten noch in eine stationäre Phase wechseln können. Genau diese Teilchen würden jedoch einen Tail verursachen, da sie sich, nach dem Übergang in die mobile Phase, hinter dem Pulk befinden würden.
+Eine weitere Möglichkeit, das Modell zu verändern, besteht darin, das Gleichgewicht, welches sich zwischen den beiden Phasen aufbaut, zu berücksichtigen. Damit müssten die Wahrscheinlichkeiten, den Zustand zu wechseln, nicht mehr fest vorgegeben sein. 
+Statt dessen müssten sie sich für jeden Ort aus der aktuellen Verteilung der Teilchen auf die Zustände berechnen. Diese Berechnung müsste dynamisch während der Simulation für jeden Schritt erfolgen. 
+Das würde dazu führen, dass Teilchen, die sich zu Beginn des Pulks befinden, mit einer höheren Wahrscheinlichkeit in die stationäre Phase oder eine der stationären Phasen übergehen, Teilchen in der Mitte haben demgegenüber eine deutlich geringere Wahrscheinlichkeit, stationär zu werden, da nun das Gleichgewicht gehalten werden muss. Die Veränderung der Übergangswahrscheinlichkeiten hinge demnach auch von der Quote der Teilchen ab, die dann schon wieder mobil geworden sind. Teilchen am Ende des Pulks sollten demnach nur sehr selten noch in eine stationäre Phase wechseln können. Genau diese Teilchen würden jedoch einen Tail verursachen, da sie sich, nach dem Übergang in die mobile Phase, hinter dem Pulk befinden würden.
 
 Eine sehr ähnliche Idee ist es, noch eine Sättigung der freien Plätze zur Adsorption einzubauen. Unabhängig vom Gleichgewicht zwischen den Phasen, kann es möglich sein, dass sehr viele Teilchen bereits mit der Oberfläche interagieren. Weitere Teilchen, die sich an den Rand der Säule begeben haben dann möglicherweise kaum noch Kontaktmöglichkeiten mit der stationären Phase, sodass sich ihre Wahrscheinlichkeit, mobil zu bleiben, erhöht.
 
