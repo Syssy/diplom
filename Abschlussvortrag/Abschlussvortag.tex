@@ -1,0 +1,703 @@
+\documentclass{beamer}
+%[handout]
+\hypersetup{
+  pdfstartpage=1,
+  pdfpagelayout=SinglePage,
+  pdfview = fit,
+  pdfstartview = Fit
+}
+
+\usepackage[latin1]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm,latexsym}
+\usepackage{wasysym}
+
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{ziffer}
+
+\usetheme{Singapore}
+\useinnertheme{circles}
+\usecolortheme [cmyk={0.57,0,1,0}]{structure} 
+\usecolortheme{rose}
+\usefonttheme{professionalfonts}
+\setbeamertemplate{frametitle}[default][left]
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{itemize item}[ball]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[square]
+
+%für overfull boxes:
+%\usepackage{showframe}
+
+%\usepackage{dsfont}
+\usepackage{multicol}
+
+\renewcommand{\Tiny}{\fontsize{5pt}{6pt}}
+
+\usepackage{tikz}
+\tikzstyle{knoten}=[draw,-,thick,fill=none,inner sep=0pt, minimum width=15pt, circle]
+\tikzstyle{kante}=[draw,-,thick,black]
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,petri}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{%
+	calc,%
+	decorations.pathmorphing,%
+	fadings,%
+	shadings}
+	
+	
+\definecolor{tugreen}{cmyk}{0.57,0,1,0}
+
+\title{Simulation einer Multikapillarsäule}
+\subtitle{Abschlussvortrag Diplomarbeit}
+\author[E.Böhmer]{Elisabeth Böhmer}
+\date{\today}
+\institute [TuDO] {Technische Universität Dortmund\\Fakultät für Informatik\\Lehrstuhl 11}
+
+
+
+
+\begin{document}
+
+\frame[plain]{
+	\titlepage
+	\begin{center}
+	\textcolor{tugreen}{Betreuer:\\
+	Prof. Dr. Sven Rahmann\\
+	Prof. Dr. Jörg Rahnenführer}
+	\end{center}
+}
+
+% Für Overlays: 
+%\uncover<4->{
+%[<+->]
+
+\frame {
+	\frametitle{Gliederung}
+	\tableofcontents
+	%[pausesections]
+	}
+%\AtBeginSection[]{
+%\frame {
+%\frametitle{Überblick}
+%\tableofcontents[current, currentsection]
+%}
+%}
+
+ \section{Einleitung}
+ \subsection*{Motivation}
+% 
+\begin{frame}
+\frametitle {Worum geht es?}
+% 
+% ``Multikapillarsäule''\onslide<2->{, MCC (engl. Multi Capillary Column)}
+% \begin{itemize}
+%  \item <2-> {Trennsäule in der Gaschromatographie}
+% \end{itemize}
+% 
+% %(Kurz anreissen, später mehr)
+% \onslide<1->{``Simulation''}
+% \begin{itemize}
+%  \item <3-> Keine physikalische Simulation der Moleküle
+%  \item <4-> Keine Interpolation vorhandender Messungen
+%  \item <5-> sondern: Modell für chromatographischen Prozess
+% \end{itemize}
+% %(Was ich nicht tue, was es schon gibt?, einfaches Modell)
+\end {frame}
+
+% 
+ \section{Gaschromatographie}
+ \subsection*{Allgemeines}
+
+\begin{frame}
+\frametitle{Allgemeines zur Chromatographie} 
+
+\begin{itemize}
+ \item<1-> Verfahren zur Auftrennung von Stoffgemischen
+ \item<2-> Verteilung der Analyten zwischen mobiler und stationärer Phase
+ \item<3-> Varianten:
+  \begin{itemize}
+   \item Flüssigchromatographie
+   \item Gaschromatographie
+    \begin{itemize}
+     \item<4-> Gepackte Säulen
+     \item<4-> Kapillarsäulen
+    \end{itemize}
+
+  \end{itemize}
+
+\end{itemize}
+ 
+\end{frame}
+% 
+% 
+% \begin{frame}
+% \frametitle {Gaschromatographie in Kapillarsäulen}
+% 
+% Eine MCC besteht aus ca. $1000$ Kapillaren mit je
+% \begin{itemize}
+%  \item $20\,-\,80$\,\textmu m Durchmesser
+%  \item Stationäre Phase ist Flüssigkeitsfilm, ca. $0,1\,-\,0,8$\,\textmu m dick
+% \end{itemize}
+%  
+% $\rightarrow$ MCC etwa $2\,-6$\,mm dick und $20$\,cm lang
+% 
+% 
+% 
+% % \begin{figure}
+% %  \centering
+% %   \includegraphics[width = 0.4\textwidth]{MultiCapillaryColumn}
+% %   \caption{Multikapillarsäule\footnote{http://yas.yanaco.co.jp/products/import-gc-ims.html}}
+% % \end{figure}
+% \begin{center}
+%   \includegraphics[width = 0.4\textwidth]{MultiCapillaryColumn}\\
+%   Querschnitt einer MCC \footnote{http://yas.yanaco.co.jp/products/import-gc-ims.html}
+% \end{center}
+% 
+% 
+% \end {frame}
+% 
+% 
+\begin{frame}
+\frametitle {Prinzip der Gaschromatographie}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto, thick,
+  point/.style={circle},
+  analyte/.style={circle,fill=black,draw,minimum height=10pt},
+  mobile/.style={circle,fill=white,draw,minimum height=10pt },
+  stationary/.style={rectangle,fill = lightgray!50,minimum height=1.8cm}]
+
+  %Stationäre Phase
+   \fill[color = lightgray!50] (-0.5,-1.5) -- (8,-1.5) -- (8,0.5) -- (-0.5,0.5) -- cycle;
+   \node[stationary, text width = 15em,text centered] (stat) at (4, -0.5) {stationäre Phase};
+   \node[mobile](a0) at (0, 3){};
+   \node[text width =5cm] at (2.8, 3) {mobile Phase};
+   \node[analyte] at (3, 3){};
+   \node[text width =5cm] at (5.8, 3) {Analyt};
+   
+\onslide<1>{
+  % Start beider Teilchen
+   \node[analyte](a1) at (-1, 1){};
+   \draw[->](a1)--(0,1);
+   \node[mobile](m1) at (-1, 1.5){};
+   \draw[->](m1)--(0, 1.5);
+}\onslide<2>{
+   \node[analyte](a2a) at (0, 1){};
+   \draw[->](a2a)--(1, 1);
+   \node[mobile](m2a) at (0, 1.5){};
+   \draw[->](m2a)--(1, 1.5) ;
+}\onslide<3>{
+   %Analyt bleibt hängen (Lösung)
+   \node[analyte](a2) at (0.5, 0.5){};
+   \draw[->](a2)--(0.5, 0) ;
+   \node[mobile](m2) at (1, 1.5){};
+   \draw[->](m2)--(2, 1.5) ;
+}\onslide<4>{
+   %Lösung, Teil2
+   \node[analyte](a3) at (0.5, 0){};
+   \node[mobile](m3) at (2, 1.5){};  
+   \draw[->](m3)--(3, 1.5);
+   \node[text width = 2cm] at (1, -2) {Lösung}; 
+}\onslide<5>{
+   % Weiter
+   \node[analyte](a4) at (1.5, 1){};
+   \draw[->](a4)--(2.5,1);
+   \node[mobile](m4) at (3, 1.5){};
+   \draw[->](m4)--(4, 1.5); 
+}\onslide<6>{   
+% Weiter
+   \node[analyte](a4) at (2.5, 1){};
+   \draw[->](a4)--(3.5,1);
+   \node[mobile](m4) at (4, 1.5){};
+   \draw[->](m4)--(5, 1.5);
+}\onslide<7>{
+   % Analyt bleibt hängen (Adsorption)
+   \node[analyte](a4) at (3, 0.5){};
+   \node[mobile](m4) at (5, 1.5){};
+   \draw[->](m4)--(6, 1.5);
+   \node[text width = 2cm] at (3, -2) {Adsorption}; 
+}\onslide<8>{
+   % Weiter
+   \node[analyte](a4) at (4, 1){};
+   \draw[->](a4)--(5,1);
+   \node[mobile](m4) at (6, 1.5){};
+   \draw[->](m4)--(7, 1.5);
+}
+\end{tikzpicture}
+
+\end {frame}
+
+% 
+\begin{frame}
+\frametitle {Nach Durchlaufen der Säule}
+%Peaks, Spektrogramme, Peakformen, Lage etc
+\begin{itemize}
+ \item Detektion der austretenden Substanzen
+ \item Detektion der Menge, keine Unterscheidung der Substanzen
+ \item<2-> Spektrogramm aus mehreren Peaks% (Bild an Tafel malen)
+ \begin{figure}
+  \centering
+  \includegraphics[width=0.5\textwidth]{spektrum}
+ \end{figure} 
+ \item<3-> Alternativ: Weitere Analyse durch zum Beispiel
+ \begin{itemize}
+  \item Massenspektrometrie (MS)
+  \item Ionen-Mobilitäts-Spektrometrie (IMS)
+ \end{itemize}
+\end{itemize}
+\end {frame}
+% 
+% \subsection*{Peaks}
+% 
+% 
+\begin{frame}
+\frametitle {Charakteristika der Peaks}
+
+Peak charakterisiert durch:
+\begin{itemize}
+ \item<+-> Lage des Maximums
+ \item<+-> Form
+  \begin{itemize}
+    \item Idealfall: Gaußkurve 
+    \item Abweichung: Fronting, Tailing %(Bild an Tafel mit Tailing)
+    \item Quartilskoeffizient
+  \end{itemize}
+ \item<+-> Breite
+ \begin{itemize}
+%   \item Breite auf halber Maximalhöhe
+%   \item Bei Tailing/Fronting: getrennte Werte für rechts und links des Maximums
+  \item IQR
+ \end{itemize}
+\end{itemize}
+
+\end {frame}
+% 
+% 
+% % \begin{frame}
+% % \frametitle {Beobachtungen an den vorliegenden Daten}
+% % 
+% % %(Screenshot von Visual Now, Peakdatengewinnung)
+% % \begin{figure}
+% %  \centering
+% %  \includegraphics[width=0.83\textwidth]{BD15_1304101102_ims}
+% % \end{figure}
+% 
+% %\end {frame}
+% % \begin{frame}
+% %   \frametitle{Beobachtungen an den vorliegenden Daten(2)}
+% % \begin{itemize}
+% %  \item Oft Tailing
+% %  \item Peaks zu Beginn des Spektrums oft schmaler
+% % \end{itemize}
+% % 
+% % \end {frame}
+% % 
+% 
+% \begin{frame}
+% \frametitle {Peakdatengewinnung}
+% 
+% %(Screenshot von Visual Now, Peakdatengewinnung)
+% \begin{figure}
+%  \centering
+% % \includegraphics[width=0.9\textwidth]{BD15_1304101102_57}
+%   \includegraphics[width=0.8\textwidth]{screenshot4}
+% \end{figure}
+% 
+% \end {frame}
+% 
+% 
+\begin{frame}
+\frametitle {Ziel}
+
+Gesucht:
+\begin{itemize}
+ \item Entsprechung von Peakcharakteristika zu Simulationsparametern
+\end{itemize}
+
+$F: [0,1] ^ x \rightarrow \mathbb{R}^y$
+
+$y=3$
+
+$x$ je nach Modell
+
+TODO Unbekannte Funktion 
+% \pause
+% Vorgehensweise:
+% \begin{enumerate}
+%  \item <+-> Start mit einfachem Modell
+%  \item <+->  Simulation mit verschiedenen Parametern
+%  \item <+-> Überprüfung, ob Referenzpeaks angenähert werden können
+%  \item <+-> Verfeinerung/Erweiterung des Modells
+%  \item <+-> Wiederholung von 2-4 bis ausreichend angenähert
+% \end{enumerate}
+% 
+\end {frame}
+% 
+% 
+\section{2-Zustände Modell}
+\subsection*{Annahmen}
+
+\begin{frame}
+\frametitle {Modell für die Chromatographie}
+ 
+\onslide<1->{Prinzip:}
+\begin{itemize}
+ \item <2-> 2 Phasen: stationär und mobil
+ \item <3-> Wechsel dazwischen, bzw. Verweilen in der Phase
+\end{itemize}
+
+\onslide<1->{Modell:}
+\begin{itemize}
+ \item <2-> 2 Zustände: $s$ und $m$
+ \item <3-> Wechselwahrscheinlichkeiten
+ \begin{itemize}
+  \item $s \rightarrow s: p_s$
+  \item $s \rightarrow m: 1-p_s$
+  \item $m \rightarrow m: p_m$
+  \item $m \rightarrow s: 1-p_m$ 
+ \end{itemize}
+
+\end{itemize}
+
+ 
+\end{frame}
+% 
+% 
+\begin{frame}
+\frametitle {Graphische Darstellung des Modells}
+\begin{center}
+ 
+
+\usetikzlibrary{arrows,%
+                topaths}%
+\tikzstyle{knoten}=[draw,-,thick,fill=none,inner sep=0pt, minimum width=35pt, circle]
+\tikzstyle{kante}=[draw,-,thick,black]
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries,text width = 1cm}]
+
+  \node[main node] (s)  {\,\,\,\,\,$s$};
+  \node[main node] (m) [left of=s] {\,\,\,\,$m$};
+
+  \path[every node/.style={font=\sffamily\small}]
+
+    (s)   edge [bend left] node [below] {$1-p_s$} (m)
+            edge [loop right] node {$p_s$} (s)
+        
+    (m)  edge [bend left] node[above]{$1-p_m$} (s)
+             edge [loop left] node {$p_m$} (m)
+        ;
+\end{tikzpicture}
+\end{center}
+\end {frame}
+% 
+\begin{frame}
+\frametitle {Simulationseckdaten}
+
+\begin{table}[width=\textwidth]
+\centering
+\scriptsize
+\begin{tabular}[width=0.8\textwidth]{|l||l|l|}
+\hline
+			  & MCC                 			& Simulation              \\ \hline \hline
+Länge der Säule           & $20$ cm               		& $1000$ Raumschritte       \\ \hline
+			  & \multicolumn{2}{l|}{1 Raumschritt $\equiv 0,2$ mm} \\ \hline
+			  &  & \\ 
+Durchlaufzeit Trägergas   & $0,1$ s $\equiv$ $2$ m/s       	& $1000$ Zeitschritte       \\ \hline
+			  & \multicolumn{2}{l|}{1 Zeitschritt $\equiv 0,1$ ms} \\ \hline
+			  & & \\
+Geschwindigkeit Trägergas & $2$ m/s 				& 1 Raumschritt / Zeitschritt \\ \hline
+			  & & \\
+Dauer des Experiments	  & $240$ s	 			& $2.400.000$ Zeitschritte \\ \hline
+
+\end{tabular}
+\end{table}
+
+
+TODO Tabelle
+
+% 
+% \begin{itemize}
+%  \item Länge festgelegt auf $200.000$ Einheiten 
+%  \begin{itemize}
+%   \item 1 Einheit = $1$\,\textmu m
+%  \end{itemize}
+%  \item $1000 - 10000$ Teilchen
+%  \begin{itemize}
+%   \item Ergibt bei graphischer Ausgabe gut erkennbare Peaks
+%  \end{itemize}
+% 
+% \end{itemize}
+% 
+\end {frame}
+% 
+
+% \begin{frame}
+% \frametitle {Simulationsarten}
+% 
+% Simulation ``step-by-step''
+% \begin{itemize}
+%  \item Jeder Zeitschritt wird simuliert
+%  \item Jeweils Ort und Zustand jedes Teilchens festhalten
+% \end{itemize}
+% \pause
+% Simulation ``by-event''
+% \begin{itemize}
+%  \item Zu Beginn für jedes Teilchen Zeitpunkt des nächsten Phasenwechsels bestimmen
+%  \item Nur zu relevanten Zeitpunkten entsprechende Teilchen simulieren
+%  \pause
+%  \begin{itemize}
+%   \item Bei hohen Wahrscheinlichkeiten kürzere Laufzeit
+%  \end{itemize}
+% 
+% \end{itemize}
+% 
+% 
+% \end {frame}
+% 
+% 
+% 
+% \subsection*{PAA}
+% \begin{frame}
+% \frametitle {Probabilistischer Arithmetischer Automat}
+% 
+% \begin{itemize}
+%  \item<+-> Modell zur Beschreibung einer Folge zufälliger Operationen
+%   \begin{itemize}
+%    \item Zustände und Übergänge
+%    \item Emissionen
+%    \item Werte
+%   \end{itemize}
+% 
+%  \item<+-> Automat ist zu jedem Zeitpunkt mit bestimmter Wahrscheinlichkeit in jedem Zustand
+%  \item<+-> Jede mögliche Emission findet mit bestimmter Wahrscheinlichkeit statt
+%  \item<+-> Werte aus den Emissionen und einer Operation berechnet
+% \end{itemize}
+% \end {frame}
+% 
+% \begin{frame}
+% \frametitle {Definition PAA}
+% 
+% \begin{definition}[Probabilistischer Arithmetischer Automat]
+% Ein Probabilistischer Arithmetischer Automat (PAA) ist ein Tupel
+% $ \mathcal{P} = (\mathcal{Q}, q_0, T, \mathcal{E}, (e_q)_{q\in\mathcal{Q}},\mathcal{V}, v_0, (\theta_q)_{q\in\mathcal{Q}})$
+% mit:
+% % \begin{itemize}
+% %  \item $\mathcal{Q}$ endliche Menge von Zuständen; $q_0 \in \mathcal{Q}$ Startzustand
+% %  \item $T: \mathcal{Q} \times \mathcal{Q} \rightarrow [0,1]$ Übergangsfunktion mit $\sum_{q' \in \mathcal{Q}} T(q, q') = 1 $ d.h. $(T(q,q'))_{q,q' \in \mathcal{Q}}$ ist stochastische Matrix
+% %  \item $\mathcal{E}$ endliche Menge von Emissionen
+% %  \item $e_q: \mathcal{E} \rightarrow [0,1]$ Wahrscheinlichkeitsverteilung der Emissionen für jeden Zustand
+% %  \item $\mathcal{V}$ Menge von Werten; $v_0$ Startwert
+% %  \item $\theta_q: \mathcal{V} \times \mathcal{E} \rightarrow \mathcal{V}$ Operation für jeden Zustand
+% % \end{itemize}
+% % %TODO Merken, was Markoffkette und HMM ist!
+%  \end{definition}
+%  
+%  \end {frame}
+% 
+% 
+% \begin{frame}
+% \frametitle {PAA für das 2-Parameter Modell}
+% 
+% \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.5cm,
+%   state node/.style={circle,fill=white,draw,font=\sffamily, minimum height=25pt, text width = 1.4cm, align = center},
+%   operation node/.style= {regular polygon, regular polygon sides=3,  fill = white, draw, inner sep=  0pt},
+%   emission node/.style={rectangle, fill = lightgray!50, draw, text width = 1.8cm},
+%   other node/.style={rectangle, text width = 1.6cm}]
+% 
+%        % \draw[fill=green] (current page.north west) rectangle (current page.south east);
+% 
+%   \node[state node, thick] (m) at (2, 1)  {mobil};
+%   \node[state node] (s) [right = of m] {stationär};
+%   \onslide<6->{\node[operation node, align = center] (os)  at (1.5,0.2) {$+$};}
+%   \onslide<6->{\node[operation node, align = center] (om)  at (6.8,0.2) {$+$};}
+%   \onslide<3->{\node[other node] (e) [above left of = m] {$\mathcal{E} = \{0, 1\}$};}
+%   \onslide<5->{\node[other node] (v) at (8.5, 3) {$\mathcal{V} = \{0, \ldots, l\}$};}
+%   \onslide<5->{\node[other node] (v2) at (8.5, 2) {$v_0 = 0$};}
+% 
+%   \onslide<2->{
+%   \path[every node/.style={font=\sffamily\large}]
+%     (m)   edge [bend left] node [above] {$1-p_m$} (s)
+%             edge [loop left] node {$p_m$} (m)
+%         
+%     (s)  edge [bend left] node[below]{$1-p_s$} (m)
+%              edge [loop right] node {$p_s$} (s)
+%         ;}
+% 
+%   \onslide<4->{\fill[color=lightgray!40] (1.1, 3.5) --(2,1.5) -- (2.9,3.5) -- cycle ;
+%   \fill[color=lightgray!40] (5.4, 3.5) -- (6.3,1.5) -- (7.2,3.5) -- cycle ;
+% 
+%   \node[emission node, align = center] (em) [above of = s] {$e_s(0) = 1$\\$e_s(1)=0$};
+%   \node[emission node, align = center] (es) [above of = m] {$e_m(0) = 0$\\$e_m(1)=1$};}
+%   
+% \end{tikzpicture}
+% \begin{block}{$ \mathcal{P} = (\mathcal{Q}, q_0, T, \mathcal{E}, (e_q)_{q\in\mathcal{Q}},\mathcal{V}, v_0, (\theta_q)_{q\in\mathcal{Q}})$}
+%   \only<1> {$\mathcal{Q}$ endliche Menge von Zuständen; $q_0 \in \mathcal{Q}$ Startzustand}
+%   \only<2> {$T: \mathcal{Q} \times \mathcal{Q} \rightarrow [0,1]$ Übergangsfunktion mit $\sum_{q' \in \mathcal{Q}} T(q, q') = 1 $ d.h. $(T(q,q'))_{q,q' \in \mathcal{Q}}$ ist stochastische Matrix}
+%   \only<3> {$\mathcal{E}$ endliche Menge von Emissionen}
+%   \only<4> {$e_q: \mathcal{E} \rightarrow [0,1]$ Wahrscheinlichkeitsverteilung der Emissionen für jeden Zustand}
+%   \only<5> {$\mathcal{V}$ Menge von Werten; $v_0$ Startwert}
+%   \only<6> {$\theta_q: \mathcal{V} \times \mathcal{E} \rightarrow \mathcal{V}$ Operation für jeden Zustand}
+% \end{block}
+% 
+% \end {frame}
+% % 
+% % \begin{frame}
+% % \frametitle {Definition PAA}
+% % 
+% % \begin{definition}[Probabilistischer Arithmetischer Automat]
+% % Ein Probabilistischer Arithmetischer Automat (PAA) ist ein Tupel
+% % $ \mathcal{P} = (\mathcal{Q}, q_0, T, \mathcal{E}, (e_q)_{q\in\mathcal{Q}},\mathcal{V}, v_0, (\theta_q)_{q\in\mathcal{Q}})$
+% % mit:
+% % \begin{itemize}
+% %  \item $\mathcal{Q}$ endliche Menge von Zuständen; $q_0 \in \mathcal{Q}$ Startzustand
+% %  \item $T: \mathcal{Q} \times \mathcal{Q} \rightarrow [0,1]$ Übergangsfunktion mit $\sum_{q' \in \mathcal{Q}} T(q, q') = 1 $ d.h. $(T(q,q'))_{q,q' \in \mathcal{Q}}$ ist stochastische Matrix
+% %  \item $\mathcal{E}$ endliche Menge von Emissionen
+% %  \item $e_q: \mathcal{E} \rightarrow [0,1]$ Wahrscheinlichkeitsverteilung der Emissionen für jeden Zustand
+% %  \item $\mathcal{V}$ Menge von Werten; $v_0$ Startwert
+% %  \item $\theta_q: \mathcal{V} \times \mathcal{E} \rightarrow \mathcal{V}$ Operation für jeden Zustand
+% % \end{itemize}
+% % %TODO Merken, was Markoffkette und HMM ist!
+% % \end{definition}
+% % 
+% % \end {frame}
+% 
+% \section{Ergebnisse und Ausblick}
+% \subsection*{Ergebnisse}
+% 
+% \begin{frame}
+% \frametitle {Simulationsergebnisse}
+% \begin{figure}
+%  \centering
+%  \includegraphics[width=0.85\textwidth]{einfaches_Hist}
+% \end{figure}
+% \end {frame}
+% 
+% \begin{frame}
+% \frametitle {Parameterkombinationen für gegebene Retentionszeit}
+% \begin{figure}
+%  \centering
+%  \includegraphics[width=0.85\textwidth]{params_75}
+% \end{figure}
+% \end {frame}
+% 
+% \begin{frame}
+% \frametitle {Erreichbare Peakbreiten}
+% \begin{figure}
+%  \centering
+%  \includegraphics[width=1.0\textwidth]{Zeit_Breiten}
+% \end{figure}
+% \end {frame}
+% 
+% 
+% 
+\begin{frame}
+\frametitle {Grenzen des 2-Parameter Modells}
+\begin{itemize}
+ \item<+-> Zu späten Zeitpunkten wird Minimalbreite nicht unterschritten
+ \item<+-> Peaks nur als Gaußkurven, kein Tailing
+ \begin{itemize}
+  \item Eigentlich ``perfekt'', aber nicht realistisch
+ \end{itemize}
+\end{itemize}
+
+\end {frame}
+
+
+\section{3-Zustände Modell}
+% 
+\begin{frame}
+\frametitle {Weitere mögliche Modelle}
+
+\begin{itemize}
+ \item<1-> Bisher keine Unterscheidung zwischen Adsorption und Lösung
+ \item<2-> Weiterer stationärer Zustand
+ \begin{itemize}
+  \item Keine Übergänge zwischen den stationären Zuständen
+  \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=1.5cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\tiny\bfseries},
+  knoten/.style={thick,fill=none,inner sep=0pt, minimum width=25pt, circle}]
+
+  \node[knoten] (im){};
+  \node[main node] (m) [left of = im]{mob};
+  \node[main node] (s1) [above right of = im]{ads};
+  \node[main node] (s2) [below right of = im]{lsg};
+
+  \path[every node/.style={font=\sffamily\tiny}]
+        
+    (m)  edge [bend left] node[above left]{$p_a$} (s1) 
+            edge [bend right] node[below left]{$p_l$} (s2)
+             edge [loop left] node {$p_m$} (m)
+
+    (s2)   edge node [right] {$1-p_l^*$} (m)
+            edge [loop right] node {$p_l^*$} (s1)
+        
+    (s1)  edge node [right] {$1-p_a^*$} (m)
+	  edge [loop right] node {$p_a^*$} (s1)
+
+        ;
+\end{tikzpicture}
+
+  \item<3-> Neuer Zustand als Zwischenzustand
+  \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
+  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\tiny\bfseries}]
+
+   \node[main node] (m)  {mob};
+  \node[main node] (s1) [right of = m]{stat1};
+  \node[main node] (s2) [right of = s1]{stat2};
+
+  \path[every node/.style={font=\sffamily\tiny}]
+
+    (s2)   edge [bend left] node [below] {$1-p_s$} (s1)
+            edge [loop right] node {$p_s$} (s1)
+        
+    (s1)   edge [bend left] node [above] {$p_j$} (s2)
+            edge [bend left] node[below] {$p_k$} (m)
+			edge [loop above] node {$p_i$} (s1)
+        
+    (m)  edge [bend left] node[above]{$1-p_m$} (s1)
+             edge [loop left] node {$p_m$} (m)
+        ;
+\end{tikzpicture}
+
+ \end{itemize}
+\end{itemize}
+
+\end {frame}
+
+
+\section{Zusammenfassung und Ausblick}
+% 
+
+\begin{frame}
+\frametitle {Zusammenfassung}
+% \begin{itemize}
+%  \item<+-> Prinzip der Gaschromatographie
+%  \begin{itemize}
+%   \item Wechsel zwischen zwei Phasen
+%   \item Peakbeschreibungen
+%  \end{itemize}
+%  \item <+-> 2-Parameter Modell
+%  \begin{itemize}
+%   \item Simulation dieses Modells
+%  \end{itemize}
+%  \item <+-> PAA
+%  \item <+-> weiteres Modell nötig
+%  \begin{itemize}
+%   \item Mehrere Erweiterungen denkbar
+%  \end{itemize}
+%  \item<+-> Entsprechung Simulationsparameter zu Peakcharakteristika
+% 
+% \end{itemize}
+% 
+\end {frame}
+
+\begin{frame}
+ \frametitle{Ausblick}
+ 
+\end{frame}
+
+
+\end{document}
