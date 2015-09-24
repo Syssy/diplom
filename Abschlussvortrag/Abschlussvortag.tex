@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[handout]{beamer}
 %[handout]
 \hypersetup{
   pdfstartpage=1,
@@ -15,6 +15,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{textcomp}
 \usepackage{ziffer}
+\usepackage[table]{colortbl}
 
 \usetheme{Singapore}
 \useinnertheme{circles}
@@ -90,26 +91,15 @@
 % 
 \begin{frame}
 \frametitle {Worum geht es?}
-% 
-% ``Multikapillarsäule''\onslide<2->{, MCC (engl. Multi Capillary Column)}
-% \begin{itemize}
-%  \item <2-> {Trennsäule in der Gaschromatographie}
-% \end{itemize}
-% 
-% %(Kurz anreissen, später mehr)
-% \onslide<1->{``Simulation''}
-% \begin{itemize}
-%  \item <3-> Keine physikalische Simulation der Moleküle
-%  \item <4-> Keine Interpolation vorhandender Messungen
-%  \item <5-> sondern: Modell für chromatographischen Prozess
-% \end{itemize}
-% %(Was ich nicht tue, was es schon gibt?, einfaches Modell)
+
+Nettes Beispiel? 
+
+Anwendungen?
 \end {frame}
 
-% 
- \section{Gaschromatographie}
- \subsection*{Allgemeines}
-
+\section{Grundlagen} 
+\subsection*{Gaschromatographie}
+ 
 \begin{frame}
 \frametitle{Allgemeines zur Chromatographie} 
 
@@ -272,17 +262,7 @@ Peak charakterisiert durch:
 \end{itemize}
 
 \end {frame}
-% 
-% 
-% % \begin{frame}
-% % \frametitle {Beobachtungen an den vorliegenden Daten}
-% % 
-% % %(Screenshot von Visual Now, Peakdatengewinnung)
-% % \begin{figure}
-% %  \centering
-% %  \includegraphics[width=0.83\textwidth]{BD15_1304101102_ims}
-% % \end{figure}
-% 
+
 % %\end {frame}
 % % \begin{frame}
 % %   \frametitle{Beobachtungen an den vorliegenden Daten(2)}
@@ -294,19 +274,19 @@ Peak charakterisiert durch:
 % % \end {frame}
 % % 
 % 
-% \begin{frame}
-% \frametitle {Peakdatengewinnung}
-% 
-% %(Screenshot von Visual Now, Peakdatengewinnung)
-% \begin{figure}
-%  \centering
-% % \includegraphics[width=0.9\textwidth]{BD15_1304101102_57}
-%   \includegraphics[width=0.8\textwidth]{screenshot4}
-% \end{figure}
-% 
-% \end {frame}
 % 
 % 
+
+\subsection*{Weiteres}
+\begin{frame}
+ \frametitle{PAA}
+ TODO: Kurz anreissen
+ Wofür ist der gut, was kann der PAA?
+ 
+ Wie viel dazu? Gab es halt schon im Einführungsvortrag
+\end{frame}
+
+
 \begin{frame}
 \frametitle {Ziel}
 
@@ -322,16 +302,7 @@ $y=3$
 $x$ je nach Modell
 
 TODO Unbekannte Funktion 
-% \pause
-% Vorgehensweise:
-% \begin{enumerate}
-%  \item <+-> Start mit einfachem Modell
-%  \item <+->  Simulation mit verschiedenen Parametern
-%  \item <+-> Überprüfung, ob Referenzpeaks angenähert werden können
-%  \item <+-> Verfeinerung/Erweiterung des Modells
-%  \item <+-> Wiederholung von 2-4 bis ausreichend angenähert
-% \end{enumerate}
-% 
+
 \end {frame}
 % 
 % 
@@ -402,10 +373,11 @@ TODO Unbekannte Funktion
 \begin{tabular}[width=0.8\textwidth]{|l||l|l|}
 \hline
 			  & MCC                 			& Simulation              \\ \hline \hline
+			  &&\\
 Länge der Säule           & $20$ cm               		& $1000$ Raumschritte       \\ \hline
 			  & \multicolumn{2}{l|}{1 Raumschritt $\equiv 0,2$ mm} \\ \hline
 			  &  & \\ 
-Durchlaufzeit Trägergas   & $0,1$ s $\equiv$ $2$ m/s       	& $1000$ Zeitschritte       \\ \hline
+Durchlaufzeit Trägergas   & $0,1$ s       	& $1000$ Zeitschritte       \\ \hline
 			  & \multicolumn{2}{l|}{1 Zeitschritt $\equiv 0,1$ ms} \\ \hline
 			  & & \\
 Geschwindigkeit Trägergas & $2$ m/s 				& 1 Raumschritt / Zeitschritt \\ \hline
@@ -414,24 +386,20 @@ Dauer des Experiments	  & $240$ s	 			& $2.400.000$ Zeitschritte \\ \hline
 
 \end{tabular}
 \end{table}
-
-
-TODO Tabelle
-
-% 
-% \begin{itemize}
-%  \item Länge festgelegt auf $200.000$ Einheiten 
-%  \begin{itemize}
-%   \item 1 Einheit = $1$\,\textmu m
-%  \end{itemize}
-%  \item $1000 - 10000$ Teilchen
-%  \begin{itemize}
-%   \item Ergibt bei graphischer Ausgabe gut erkennbare Peaks
-%  \end{itemize}
-% 
-% \end{itemize}
-% 
 \end {frame}
+
+
+
+\begin{frame}
+ \frametitle{Simulationsarten}
+ TODO: Kurz anreissen: Step-by-Step und By-Event
+ 
+ Berechnungen der einzelschritte?
+ 
+ Evtl auch Laufzeiten?
+\end{frame}
+
+
 % 
 
 % \begin{frame}
@@ -566,37 +534,82 @@ TODO Tabelle
 % 
 % \section{Ergebnisse und Ausblick}
 % \subsection*{Ergebnisse}
-% 
-% \begin{frame}
-% \frametitle {Simulationsergebnisse}
-% \begin{figure}
-%  \centering
-%  \includegraphics[width=0.85\textwidth]{einfaches_Hist}
-% \end{figure}
-% \end {frame}
-% 
-% \begin{frame}
-% \frametitle {Parameterkombinationen für gegebene Retentionszeit}
-% \begin{figure}
-%  \centering
-%  \includegraphics[width=0.85\textwidth]{params_75}
-% \end{figure}
-% \end {frame}
-% 
-% \begin{frame}
-% \frametitle {Erreichbare Peakbreiten}
-% \begin{figure}
-%  \centering
-%  \includegraphics[width=1.0\textwidth]{Zeit_Breiten}
-% \end{figure}
-% \end {frame}
-% 
-% 
-% 
+\subsection*{Ergebnisse 2-Zustände Modell}
+
+\begin{frame}
+\frametitle {Simulationsergebnisse}
+\begin{figure}
+ \centering
+ \includegraphics[width=0.85\textwidth]{ein_peak}
+\end{figure}
+\end {frame}
+
+
+\begin{frame}
+\frametitle {Einfluss der Parameter auf einen Einzelpeak}
+TODO: Tabelle
+\end {frame}
+
+\begin{frame}
+\frametitle {Parameterkombinationen für gegebene Retentionszeit}
+\begin{figure}
+ \centering
+ \includegraphics[width=0.85\textwidth]{paramsfuert75}
+\end{figure}
+\end {frame}
+
+
+\begin{frame}
+\frametitle {Abhängiger Einfluss}
+\begin{figure}
+ \includegraphics[width=0.49\textwidth]{pmfest_ps0999}
+ \includegraphics[width=0.49\textwidth]{pmfest_ps09995}
+\end{figure}
+\end {frame}
+
+
+
+\begin{frame}
+\frametitle {Erreichbare Peakbreiten [1]}
+\begin{figure}
+ \centering
+ \includegraphics[height=0.7\textheight]{2s_zeitbreiten_ohnep}
+\end{figure}
+\end {frame}
+
+\begin{frame}
+\frametitle {Erreichbare Peakbreiten [2]}
+\begin{figure}
+ \centering
+ \includegraphics[width=1.0\textwidth]{2s_zeitbreiten_ausschnitt}
+\end{figure}
+TODO: Beschriftung ps/pm
+\end {frame}
+
+
+\begin{frame}
+\frametitle {Erreichbare Peakbreiten [3]}
+\begin{figure}
+ \centering
+ \includegraphics[width=1.0\textwidth]{2s_zeitbreiten_ausschnitt_o}
+\end{figure}
+\end {frame}
+
+
+\begin{frame}
+\frametitle {Schiefe}
+\begin{figure}
+ \centering
+ \includegraphics[width=0.98\textwidth]{2s_Schiefe}
+\end{figure}
+\end {frame}
+
+
 \begin{frame}
 \frametitle {Grenzen des 2-Parameter Modells}
 \begin{itemize}
  \item<+-> Zu späten Zeitpunkten wird Minimalbreite nicht unterschritten
+ \item<+-> Zu frühen Zeitpunkten wird Maximalbreite nicht überschritten
  \item<+-> Peaks nur als Gaußkurven, kein Tailing
  \begin{itemize}
   \item Eigentlich ``perfekt'', aber nicht realistisch
@@ -607,6 +620,8 @@ TODO Tabelle
 
 
 \section{3-Zustände Modell}
+\subsection*{Modell}
+
 % 
 \begin{frame}
 \frametitle {Weitere mögliche Modelle}
@@ -620,46 +635,45 @@ TODO Tabelle
   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\tiny\bfseries},
   knoten/.style={thick,fill=none,inner sep=0pt, minimum width=25pt, circle}]
 
-  \node[knoten] (im){};
-  \node[main node] (m) [left of = im]{mob};
-  \node[main node] (s1) [above right of = im]{ads};
-  \node[main node] (s2) [below right of = im]{lsg};
+  {
+  \node[main node] (m) at (0, 0) {m};
+  \node[main node] (s1) at (4, 0.6) {a}; 
+  \node[main node] (s2) at (4, -0.6) {l};
 
-  \path[every node/.style={font=\sffamily\tiny}]
+  \path[every node/.style={font=\sffamily}]
         
-    (m)  edge [bend left] node[above left]{$p_a$} (s1) 
-            edge [bend right] node[below left]{$p_l$} (s2)
-             edge [loop left] node {$p_m$} (m)
+    (m)  edge [bend left] node[below left]{$p_{\text{ma}}$} (s1) 
+            edge [bend right] node[above left]{$p_{\text{ml}}$} (s2)
+             edge [loop left] node {$p_{\text{mm}}$} (m)
 
-    (s2)   edge node [right] {$1-p_l^*$} (m)
-            edge [loop right] node {$p_l^*$} (s1)
+    (s2)   edge node [below right] {$p_{\text{lm}}$} (m)
+            edge [loop right] node {$p_{\text{ll}}$} (s1)
         
-    (s1)  edge node [right] {$1-p_a^*$} (m)
-	  edge [loop right] node {$p_a^*$} (s1)
+    (s1)  edge node [above right] {$p_{\text{am}}$} (m)
+	  edge [loop right] node {$p_{\text{aa}}$} (s1)
 
-        ;
+        ;}
 \end{tikzpicture}
 
   \item<3-> Neuer Zustand als Zwischenzustand
   \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\tiny\bfseries}]
 
-   \node[main node] (m)  {mob};
-  \node[main node] (s1) [right of = m]{stat1};
-  \node[main node] (s2) [right of = s1]{stat2};
+   \node[main node] (m)  {m};
+  \node[main node] (s1) [right of = m]{a};
+  \node[main node] (s2) [right of = s1]{l};
 
-  \path[every node/.style={font=\sffamily\tiny}]
-
-    (s2)   edge [bend left] node [below] {$1-p_s$} (s1)
-            edge [loop right] node {$p_s$} (s1)
+  \path[every node/.style={font=\sffamily}]
+    (s2)   edge [bend left] node [below] {$p_{\text{la}}$} (s1)
+            edge [loop right] node {$p_{\text{ll}}$} (s1)
         
-    (s1)   edge [bend left] node [above] {$p_j$} (s2)
-            edge [bend left] node[below] {$p_k$} (m)
-			edge [loop above] node {$p_i$} (s1)
+    (s1)   edge [bend left] node [above] {$p_{\text{al}}$} (s2)
+            edge [bend left] node[below] {$p_{\text{am}}$} (m)
+	edge [loop below] node {$p_{\text{aa}}$} (s1)
         
-    (m)  edge [bend left] node[above]{$1-p_m$} (s1)
-             edge [loop left] node {$p_m$} (m)
-        ;
+    (m)  edge [bend left] node[above]{$p_{\text{ma}}$} (s1)
+             edge [loop left] node {$p_{\text{mm}}$} (m)
+            ;
 \end{tikzpicture}
 
  \end{itemize}
@@ -668,35 +682,148 @@ TODO Tabelle
 \end {frame}
 
 
+\begin{frame}
+ \frametitle{Simulationsarten}
+ 
+ Auch hier Step, Event und PAA, jeweils Besonderheiten? Wie ausführlich?
+ 
+\end{frame}
+
+
+\begin{frame}
+ \frametitle {Zustandekommen von Tailing}
+ \begin{itemize}
+  \item ``2-Komponenten Modell'':
+  \begin{enumerate}
+   \item Symmetrischer Peak durch 2 Phasen
+   \item Tail durch selten erreichten, lange währenden Zustand
+  \end{enumerate}
+ \end{itemize} 
+\end{frame}
+
+
+
+\subsection*{Ergebnisse}
+
+\begin{frame}
+ \frametitle{Tailing}
+ \begin{figure}
+ \includegraphics[width=0.8\textwidth]{05_q}
+ \end{figure}
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Schiefe}
+ \begin{figure}
+ \includegraphics[width=0.49\textwidth]{001_q}
+ \includegraphics[width=0.49\textwidth]{025_q}
+ 
+ \includegraphics[width=0.49\textwidth]{05_q}
+ \includegraphics[width=0.49\textwidth]{08_q}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Einfluss der Parameter auf einen Einzelpeak}
+ 
+\begin{table}
+\centering
+\begin{tabular}{|l|l|l|l||l|l|l|}
+\hline
+$p_{\text{mm}}$ & $p_{\text{ml}}$    & $p_{\text{aa}}$    & $p_{\text{ll}}$      & Lage  & Breite & Schiefe \\ \hline \hline
+ $0,1$ & $0,0005$  & $0.9991$  & $0.99999$  & $100,22$  & $8,1$  & $0,23$ \\ \hline\hline 
+\cellcolor{yellow}$0,05$ & $0,0005$  & $0,9991$  & $0,99999$  & \cellcolor{yellow!30}$105,76$  & $8,11$  & $0,229$ \\ \hline
+\cellcolor{yellow}$0,2$ & $0,0003$  & $0,9991$  & $0,99999$  & \cellcolor{yellow!30}$89,1$  & $8,05$  & $0,235$ \\ \hline\hline
+ $0,1$ & \cellcolor{yellow}$0,0007$  & $0,9991$  & $0,99999$  & $100,04$  & \cellcolor{yellow!30}$6,22$  & \cellcolor{yellow!30}$0,12$ \\ \hline
+ $0,1$ & \cellcolor{yellow}$0,0005$  & $0,9991$  & $0,99999$  & $100,4$  & \cellcolor{yellow!30}$10,89$  & \cellcolor{yellow!30}$0,34$ \\ \hline\hline
+ $0,1$ & $0,0005$  & \cellcolor{yellow}$0,999$  & $0,99999$  & \cellcolor{yellow!30}$90,17$  & $7,68$  & $0,26$ \\ \hline
+ $0,1$ & $0,0005$  & \cellcolor{yellow}$0,9992$  & $0,99999$  & \cellcolor{yellow!30}$112,77$  & $8,64$  & $0,2$ \\ \hline\hline
+ $0,1$ & $0,0005$  & $0.9991$  & \cellcolor{yellow}$0,999975$  & $100,41$  & \cellcolor{yellow!30}$5,91$  & \cellcolor{yellow!30}$0,08$ \\ \hline
+ $0,1$ & $0,0005$  & $0.9991$  & \cellcolor{yellow}$0,999993$  & $100,12$  & \cellcolor{yellow!30}$9,93$  & \cellcolor{yellow!30}$0,34$ \\ \hline
+\end{tabular}
+\end{table}
+ Overlays!
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Einfluss: pll abhängig von pml}
+ 
+ \includegraphics[width=0.49\textwidth]{pll/3fest_07_0001_0998_p}
+ \includegraphics[width=0.49\textwidth]{pll/3fest_07_00007_0998_p}
+ 
+ \includegraphics[width=0.49\textwidth]{pll/3fest_07_00005_0998_p}
+ \includegraphics[width=0.49\textwidth]{pll/3fest_07_00003_0998_p}
+ 
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Einfluss: pll abhängig von pmm}
+ 
+ \includegraphics[width=0.49\textwidth]{pll/3fest_01_00005_09992_p}
+ \includegraphics[width=0.49\textwidth]{pll/3fest_09_00005_09992_p}
+ 
+\end{frame}
+
+
+\begin{frame}
+ \frametitle {Erreichbare Breiten und Schiefen für Zeitpunkt 100}
+ \begin{figure}
+ \includegraphics[width=0.9\textwidth]{t100erreichbar_1}
+ \end{figure}
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Mehrere Parameterkombinationen für einen Peak [1]}
+ \begin{figure}
+ \includegraphics[width=0.8\textwidth]{1peak1_kombi1}
+ \end{figure} 
+\end{frame}
+
+\begin{frame}
+ \frametitle{Mehrere Parameterkombinationen für einen Peak [2]}
+ \begin{figure}
+ \includegraphics[width=0.8\textwidth]{1peak1_kombi2}
+ \end{figure} 
+\end{frame}
+
+
+
 \section{Zusammenfassung und Ausblick}
-% 
+\subsection*{Zusammenfassung}
 
 \begin{frame}
 \frametitle {Zusammenfassung}
-% \begin{itemize}
-%  \item<+-> Prinzip der Gaschromatographie
-%  \begin{itemize}
-%   \item Wechsel zwischen zwei Phasen
-%   \item Peakbeschreibungen
-%  \end{itemize}
-%  \item <+-> 2-Parameter Modell
-%  \begin{itemize}
-%   \item Simulation dieses Modells
-%  \end{itemize}
-%  \item <+-> PAA
-%  \item <+-> weiteres Modell nötig
-%  \begin{itemize}
-%   \item Mehrere Erweiterungen denkbar
-%  \end{itemize}
-%  \item<+-> Entsprechung Simulationsparameter zu Peakcharakteristika
-% 
-% \end{itemize}
-% 
+
+\begin{itemize}
+ \item Entsprechung von Peakcharakteristika zu Simulationsparametern
+\end{itemize}
+
+$F: [0,1] ^ x \rightarrow \mathbb{R}^y$
+
+$y=3$
+
+$x = 4$ für 3-Zustände Modell
+
+Auswirkungen der Parameter auf die Peaks gefunden
+
 \end {frame}
+
+\subsection*{Ausblick}
 
 \begin{frame}
  \frametitle{Ausblick}
- 
+ \begin{itemize}
+  \item Andere Maße, insbesondere für Schiefe und Breite
+  \item Peaks als Funktionen
+  \item Verifikation des Modells in größerem Rahmen
+  \item Formel für Entsprechung
+  
+ \end{itemize}
 \end{frame}
 
 
