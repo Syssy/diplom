@@ -1,5 +1,5 @@
 \documentclass{beamer}
-%[handout]
+% \documentclass[handout]{beamer}
 \hypersetup{
   pdfstartpage=1,
   pdfpagelayout=SinglePage,
@@ -115,6 +115,7 @@
 \frametitle{Allgemeines zur Chromatographie} 
 
 \begin{itemize}
+ \item<+-> Multikapillarsäule: Trennsäule in der Gaschromatographie
  \item<+-> Verfahren zur Auftrennung von Stoffgemischen
  \item<+-> Verteilung der Analyten zwischen mobiler und stationärer Phase
 %  \item<3-> Varianten:
@@ -127,7 +128,7 @@
 %     \end{itemize}
 % 
 %   \end{itemize}
- \item<+-> Anwendung TODO
+%  \item<+-> Anwendung TODO
 
 \end{itemize}
  
@@ -237,7 +238,7 @@
 \begin{itemize}
  \item Detektion der austretenden Substanzen
  \item Detektion der Menge, keine Unterscheidung der Substanzen
- \item<2-> Spektrogramm aus mehreren Peaks% (Bild an Tafel malen)
+ \item<2-> Chromatogramm aus mehreren Peaks% (Bild an Tafel malen)
  \begin{figure}
   \centering
   \includegraphics[width=0.5\textwidth]{spektrum}
@@ -270,7 +271,7 @@ Peak charakterisiert durch:
     \item Abweichung: Fronting, Tailing %(Bild an Tafel mit Tailing)
     \item Quartilskoeffizient
     \begin{equation*}
-    \frac{Q_{\alpha} + Q_{1-\alpha} -2\cdot Q_{50} }{ Q_{1-\alpha} - Q_{\alpha}}
+    \frac{(Q_{75} - Q_{50}) - ( Q_{50} - Q_{25} )}{ Q_{75} - Q_{25}}
     \end{equation*}
     $ > 0$ : rechtsschief\\
     $ < 0$ : linksschief
@@ -333,8 +334,8 @@ Dauer des Experiments	  & $240$ s	 			& $2.400.000$ Zeitschritte \\ \hline
 
 Gesucht:
 \begin{itemize}
- \item Entsprechung von Peakcharakteristika zu Simulationsparametern
- \item Unbekannte Funktion $F: [0,1] ^ x \rightarrow \mathbb{R}^y$ mit $y=3$ und $x$ je nach Modell
+ \item<+-> Entsprechung von Peakcharakteristika zu Simulationsparametern
+ \item<+-> Unbekannte Funktion $F: [0,1] ^ x \rightarrow \mathbb{R}^y$ mit $y=3$ und $x$ je nach Modell
 \end{itemize}
 
 \end {frame}
@@ -354,13 +355,13 @@ Gesucht:
 
 \onslide<1->{Modell:}
 \begin{itemize}
- \item <2-> 2 Zustände: $s$ und $m$
+ \item <2-> 2 Zustände: s und m
  \item <3-> Wechselwahrscheinlichkeiten
  \begin{itemize}
-  \item $s \rightarrow s: p_s$
-  \item $s \rightarrow m: 1-p_s$
-  \item $m \rightarrow m: p_m$
-  \item $m \rightarrow s: 1-p_m$ 
+  \item s $ \rightarrow $ s: $ p_{\text{s}}$
+  \item s $ \rightarrow $ m: $ 1-p_{\text{s}}$
+  \item m $ \rightarrow $ m: $ p_{\text{m}}$
+  \item m $ \rightarrow $ s: $ 1-p_{\text{m}}$ 
  \end{itemize}
 
 \end{itemize}
@@ -383,21 +384,63 @@ Gesucht:
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\large\bfseries,text width = 1cm}]
 
-  \node[main node] (s)  {\,\,\,\,\,$s$};
-  \node[main node] (m) [left of=s] {\,\,\,\,$m$};
+  \node[main node] (s)  {\,\,\,\,\,s};
+  \node[main node] (m) [left of=s] {\,\,\,\,m};
 
   \path[every node/.style={font=\sffamily\small}]
 
-    (s)   edge [bend left] node [below] {$1-p_s$} (m)
-            edge [loop right] node {$p_s$} (s)
+    (s)   edge [bend left] node [below] {$1-p_{\text{s}}$} (m)
+            edge [loop right] node {$p_{\text{s}}$} (s)
         
-    (m)  edge [bend left] node[above]{$1-p_m$} (s)
-             edge [loop left] node {$p_m$} (m)
+    (m)  edge [bend left] node[above]{$1-p_{\text{m}}$} (s)
+             edge [loop left] node {$p_{\text{m}}$} (m)
         ;
 \end{tikzpicture}
 \end{center}
+\begin{itemize}
+  \item<2-> Teilchensimulation:
+  \begin{itemize}
+   \item Simuliere $n$ Teilchen,
+   \item für Säule der Länge $\ell$
+   \item für maximal $t_{\text{max}}$ Schritte
+   \item verwalte Orte und Zustände der Teilchen
+  \end{itemize}
+ \item<3-> Simulationsarten:
+  \begin{itemize}
+   \item Step-by-Step
+   \item By-Event
+  \end{itemize}
+ \end{itemize}
+\
+
 \end {frame}
 % 
+% 
+% \begin{frame}
+%  \frametitle{PAA}
+%  
+%  Jedes neue Feld:
+%  $z_{t+1}[o] = m_t[o-1] \cdot p_{\text{m}z} + a_t[o] \cdot p_{\text{a}z} + l_t[o] \cdot p_{\text{l}z} $
+%  
+% \end{frame}
+
+
+\begin{frame}
+\frametitle {Probabilistischer Arithmetischer Automat}
+
+\begin{itemize}
+ \item<+-> Modell zur Beschreibung einer Folge zufälliger Operationen
+  \begin{itemize}
+   \item Zustände und Übergänge
+   \item Emissionen
+   \item Werte
+  \end{itemize}
+
+ \item<+-> Automat ist zu jedem Zeitpunkt mit bestimmter Wahrscheinlichkeit in jedem Zustand
+% \item<+-> Jede mögliche Emission findet mit bestimmter Wahrscheinlichkeit statt
+ \item<+-> Werte aus den Emissionen und einer Operation berechnet
+\end{itemize}
+\end {frame}
 
 \begin{frame}
  \frametitle{PAA für das 2-Zustände Modell}
@@ -419,11 +462,11 @@ Gesucht:
   \node[other node] (v2) at (8.5, 2) {$v_0 = 0$};
 
   \path[every node/.style={font=\sffamily\large}]
-    (m)   edge [bend left] node [above] {$1-p_m$} (s)
-            edge [loop left] node {$p_m$} (m)
+    (m)   edge [bend left] node [above] {$1-p_{\text{m}}$} (s)
+            edge [loop left] node {$p_{\text{m}}$} (m)
         
-    (s)  edge [bend left] node[below]{$1-p_s$} (m)
-             edge [loop right] node {$p_s$} (s)
+    (s)  edge [bend left] node[below]{$1-p_{\text{s}}$} (m)
+             edge [loop right] node {$p_{\text{s}}$} (s)
         ;
 
   \fill[color=lightgray!40] (1.1, 3.5) --(2,1.5) -- (2.9,3.5) -- cycle ;
@@ -435,6 +478,33 @@ Gesucht:
 \end{tikzpicture}
 \end{frame}
 
+
+\subsection*{Ergebnisse 2-Zustände Modell}
+\begin{frame}
+ \frametitle{Teilchensimulation vs. PAA}
+%  \begin{itemize}
+%   \item PAA genauer als Teilchensimulation
+  
+  \begin{figure}
+  \includegraphics[width=0.4\textwidth]{sim_1000t}
+  \includegraphics[width=0.4\textwidth]{sim_10000t}
+  
+  
+  \includegraphics[width=0.4\textwidth]{sim_100000t}
+  \includegraphics[width=0.4\textwidth]{sim_paa}
+  \end{figure}
+  
+%   \item <3-> im 2-Zustände Modell:
+%   \begin{itemize}
+%    \item Step-by-Step schneller
+%   \end{itemize}
+%   \item <4-> im 3-Zustände Modell:
+%   \begin{itemize}
+%    \item By-Event schneller
+%   \end{itemize}
+%  \end{itemize}
+ 
+\end{frame}
 % 
 % \begin{frame}
 %  \frametitle{Simulationsarten}
@@ -473,22 +543,6 @@ Gesucht:
 % 
 % 
 % \subsection*{PAA}
-% \begin{frame}
-% \frametitle {Probabilistischer Arithmetischer Automat}
-% 
-% \begin{itemize}
-%  \item<+-> Modell zur Beschreibung einer Folge zufälliger Operationen
-%   \begin{itemize}
-%    \item Zustände und Übergänge
-%    \item Emissionen
-%    \item Werte
-%   \end{itemize}
-% 
-%  \item<+-> Automat ist zu jedem Zeitpunkt mit bestimmter Wahrscheinlichkeit in jedem Zustand
-%  \item<+-> Jede mögliche Emission findet mit bestimmter Wahrscheinlichkeit statt
-%  \item<+-> Werte aus den Emissionen und einer Operation berechnet
-% \end{itemize}
-% \end {frame}
 % 
 % \begin{frame}
 % \frametitle {Definition PAA}
@@ -532,11 +586,11 @@ Gesucht:
 % 
 %   \onslide<2->{
 %   \path[every node/.style={font=\sffamily\large}]
-%     (m)   edge [bend left] node [above] {$1-p_m$} (s)
-%             edge [loop left] node {$p_m$} (m)
+%     (m)   edge [bend left] node [above] {$1-p_{\text{m}}$} (s)
+%             edge [loop left] node {$p_{\text{m}}$} (m)
 %         
-%     (s)  edge [bend left] node[below]{$1-p_s$} (m)
-%              edge [loop right] node {$p_s$} (s)
+%     (s)  edge [bend left] node[below]{$1-p_{\text{s}}$} (m)
+%              edge [loop right] node {$p_{\text{s}}$} (s)
 %         ;}
 % 
 %   \onslide<4->{\fill[color=lightgray!40] (1.1, 3.5) --(2,1.5) -- (2.9,3.5) -- cycle ;
@@ -579,21 +633,34 @@ Gesucht:
 % 
 % \section{Ergebnisse und Ausblick}
 % \subsection*{Ergebnisse}
-\subsection*{Ergebnisse 2-Zustände Modell}
+% 
+% \begin{frame}
+% \frametitle {Simulationsergebnisse}
+% \begin{figure}
+%  \centering
+%  \includegraphics[width=0.85\textwidth]{ein_peak}
+%  todo: plot mit quartilen?
+% \end{figure}
+% \end {frame}
+
 
 \begin{frame}
-\frametitle {Simulationsergebnisse}
-\begin{figure}
- \centering
- \includegraphics[width=0.85\textwidth]{ein_peak}
-\end{figure}
+\frametitle {Einfluss der Parameter auf einen Einzelpeak}
+
+\begin{table}
+\centering
+\begin{tabular}{|l|l||l|l|l|}
+\hline
+$p_{\text{m}}$ & $p_{\text{s}}$      & Lage  & Breite & Schiefe \\ \hline \hline
+$0,2$ & $0,999$  & $79,9$  & $4,18$  & $0,01$ \onslide<2->\\ \hline\hline 
+\cellcolor{yellow}$0,1$ & $0,999$  & \cellcolor{yellow!30}$89,9$  & $4,24$  & $0,01$ \\ \hline
+\cellcolor{yellow}$0,3$ & $0,999$  & \cellcolor{yellow!30}$69,9$  & $4,06$  & $0,01$ \onslide<3->\\ \hline\hline
+$0,2$ & \cellcolor{yellow}$0,9985$ & \cellcolor{yellow!30}$53,3$  & \cellcolor{yellow!30}$2,78$  & $0,01$ \\ \hline
+$0,2$ & \cellcolor{yellow}$0,9995$  &\cellcolor{yellow!30}$159,7$  & \cellcolor{yellow!30}$8,35$  &$0,01$  \\ \hline
+\end{tabular}
+\end{table}
+
 \end {frame}
-
-
-% \begin{frame}
-% \frametitle {Einfluss der Parameter auf einen Einzelpeak}
-% TODO: Tabelle
-% \end {frame}
 % 
 % \begin{frame}
 % \frametitle {Parameterkombinationen für gegebene Retentionszeit}
@@ -656,9 +723,9 @@ Gesucht:
  \item<+-> Zu späten Zeitpunkten wird Minimalbreite nicht unterschritten
 %  \item<+-> Zu frühen Zeitpunkten wird Maximalbreite nicht überschritten
  \item<+-> Peaks nur als Gaußkurven, kein Tailing
- \begin{itemize}
-  \item Eigentlich ``perfekt'', aber nicht realistisch
- \end{itemize}
+%  \begin{itemize}
+%   \item Eigentlich ``perfekt'', aber nicht realistisch
+%  \end{itemize}
 \end{itemize}
 
 \end {frame}
@@ -667,64 +734,64 @@ Gesucht:
 \section{3-Zustände Modell}
 \subsection*{Modell}
 
+% % 
+% \begin{frame}
+% \frametitle {Erweiterung zum 3-Zustände Modell}
 % 
-\begin{frame}
-\frametitle {Erweiterung zum 3-Zustände Modell}
-
-\begin{itemize}
- \item<1-> Bisher keine Unterscheidung zwischen Adsorption und Lösung
- \item<2-> Weiterer stationärer Zustand
- \begin{itemize}
-  \item Keine Übergänge zwischen den stationären Zuständen (3a)
-  \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=1.5cm,
-  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\tiny\bfseries},
-  knoten/.style={thick,fill=none,inner sep=0pt, minimum width=25pt, circle}]
-
-  {
-  \node[main node] (m) at (0, 0) {m};
-  \node[main node] (s1) at (4, 0.6) {a}; 
-  \node[main node] (s2) at (4, -0.6) {l};
-
-  \path[every node/.style={font=\sffamily}]
-        
-    (m)  edge [bend left] node[below left]{$p_{\text{ma}}$} (s1) 
-            edge [bend right] node[above left]{$p_{\text{ml}}$} (s2)
-             edge [loop left] node {$p_{\text{mm}}$} (m)
-
-    (s2)   edge node [below right] {$p_{\text{lm}}$} (m)
-            edge [loop right] node {$p_{\text{ll}}$} (s1)
-        
-    (s1)  edge node [above right] {$p_{\text{am}}$} (m)
-	  edge [loop right] node {$p_{\text{aa}}$} (s1)
-
-        ;}
-\end{tikzpicture}
-
-  \item<3-> Neuer Zustand als Zwischenzustand (3b)
-  \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
-  thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\tiny\bfseries}]
-
-   \node[main node] (m)  {m};
-  \node[main node] (s1) [right of = m]{a};
-  \node[main node] (s2) [right of = s1]{l};
-
-  \path[every node/.style={font=\sffamily}]
-    (s2)   edge [bend left] node [below] {$p_{\text{la}}$} (s1)
-            edge [loop right] node {$p_{\text{ll}}$} (s1)
-        
-    (s1)   edge [bend left] node [above] {$p_{\text{al}}$} (s2)
-            edge [bend left] node[below] {$p_{\text{am}}$} (m)
-	edge [loop below] node {$p_{\text{aa}}$} (s1)
-        
-    (m)  edge [bend left] node[above]{$p_{\text{ma}}$} (s1)
-             edge [loop left] node {$p_{\text{mm}}$} (m)
-            ;
-  \end{tikzpicture}
-
-  \end{itemize}
-\end{itemize}
-
-\end {frame}
+% \begin{itemize}
+%  \item<1-> Bisher keine Unterscheidung zwischen Adsorption und Lösung
+%  \item<2-> Weiterer stationärer Zustand
+%  \begin{itemize}
+%   \item Keine Übergänge zwischen den stationären Zuständen (3a)
+%   \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=1.5cm,
+%   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\tiny\bfseries},
+%   knoten/.style={thick,fill=none,inner sep=0pt, minimum width=25pt, circle}]
+% 
+%   {
+%   \node[main node] (m) at (0, 0) {m};
+%   \node[main node] (s1) at (4, 0.6) {a}; 
+%   \node[main node] (s2) at (4, -0.6) {l};
+% 
+%   \path[every node/.style={font=\sffamily}]
+%         
+%     (m)  edge [bend left] node[below left]{$p_{\text{ma}}$} (s1) 
+%             edge [bend right] node[above left]{$p_{\text{ml}}$} (s2)
+%              edge [loop left] node {$p_{\text{mm}}$} (m)
+% 
+%     (s2)   edge node [below right] {$p_{\text{lm}}$} (m)
+%             edge [loop right] node {$p_{\text{ll}}$} (s1)
+%         
+%     (s1)  edge node [above right] {$p_{\text{am}}$} (m)
+% 	  edge [loop right] node {$p_{\text{aa}}$} (s1)
+% 
+%         ;}
+% \end{tikzpicture}
+% 
+%   \item<3-> Neuer Zustand als Zwischenzustand (3b)
+%   \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2cm,
+%   thick,main node/.style={circle,fill=white!20,draw,font=\sffamily\tiny\bfseries}]
+% 
+%    \node[main node] (m)  {m};
+%   \node[main node] (s1) [right of = m]{a};
+%   \node[main node] (s2) [right of = s1]{l};
+% 
+%   \path[every node/.style={font=\sffamily}]
+%     (s2)   edge [bend left] node [below] {$p_{\text{la}}$} (s1)
+%             edge [loop right] node {$p_{\text{ll}}$} (s1)
+%         
+%     (s1)   edge [bend left] node [above] {$p_{\text{al}}$} (s2)
+%             edge [bend left] node[below] {$p_{\text{am}}$} (m)
+% 	edge [loop below] node {$p_{\text{aa}}$} (s1)
+%         
+%     (m)  edge [bend left] node[above]{$p_{\text{ma}}$} (s1)
+%              edge [loop left] node {$p_{\text{mm}}$} (m)
+%             ;
+%   \end{tikzpicture}
+% 
+%   \end{itemize}
+% \end{itemize}
+% 
+% \end {frame}
 
 \begin{frame}
  \frametitle {Zustandekommen von Tailing}
@@ -756,7 +823,8 @@ Gesucht:
 \end{figure}
 
  \begin{itemize}
-  \item ``2-Komponenten Modell'':
+ \item<1-> Bisher keine Unterscheidung zwischen Adsorption und Lösung
+  \item<+-> ``2-Komponenten Modell'':
   \begin{enumerate}
    \item Symmetrischer Peak durch 2 Phasen, mobil und adsorbiert
    \item Tail durch selten erreichten, lange währenden Zustand
@@ -788,10 +856,10 @@ Gesucht:
         
     (s1)  edge [bend left = 10] node[above]{$p_{\text{am}}$} (m) 
              edge [loop above] node {$p_{\text{aa}}$} (s1)
- 			edge [bend left] node[right]{$p_{\text{al}}$} (s2)
+%  			edge [bend left] node[right]{$p_{\text{al}}$} (s2)
     
     (s2)  edge [bend left] node[below]{$p_{\text{lm}}$} (m)
- 			 edge [bend left] node[right]{$p_{\text{la}}$} (s1)	
+%  			 edge [bend left] node[right]{$p_{\text{la}}$} (s1)	
              edge [loop below] node {$p_{\text{ll}}$} (s2)
         ;
 
@@ -804,6 +872,29 @@ Gesucht:
    \node[emission node, align = center] (es) [above of = m] {$e_{\text{m}}(0) = 0$\\$e_{\text{m}}(1)=1$};
   
 \end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}
+ \frametitle{Simulationsarten}
+ \begin{itemize}
+  \item<+-> Step-by-Step
+  \begin{itemize}
+   \item Schneller im 2-Zustände Modell
+  \end{itemize}
+
+  \item<+-> By-Event
+    \begin{itemize}
+     \item Schneller im 3-Zustände Modell
+    \end{itemize}
+
+  \item<+-> PAA
+  \begin{itemize}
+   \item in beiden Modellen genauer
+  \end{itemize}  
+ \end{itemize}
+
 \end{frame}
 
 
@@ -840,16 +931,16 @@ Gesucht:
 $p_{\text{mm}}$ & $p_{\text{ml}}$    & $p_{\text{aa}}$    & $p_{\text{ll}}$      & Lage  & Breite & Schiefe \\ \hline \hline
 $0,1$ & $0,0005$  & $0,9991$  & $0,99999$  & $100,22$  & $8,1$  & $0,23$ \onslide<2->\\ \hline\hline 
 \cellcolor{yellow}$0,05$ & $0,0005$  & $0,9991$  & $0,99999$  & \cellcolor{yellow!30}$105,76$  & $8,11$  & $0,229$ \\ \hline
-\cellcolor{yellow}$0,2$ & $0,0003$  & $0,9991$  & $0,99999$  & \cellcolor{yellow!30}$89,1$  & $8,05$  & $0,235$ \onslide<3->\\ \hline\hline
-$0,1$ & \cellcolor{yellow}$0,0007$  & $0,9991$  & $0,99999$  & $100,04$  & \cellcolor{yellow!30}$6,22$  & \cellcolor{yellow!30}$0,12$ \\ \hline
-$0,1$ & \cellcolor{yellow}$0,0005$  & $0,9991$  & $0,99999$  & $100,4$  & \cellcolor{yellow!30}$10,89$  & \cellcolor{yellow!30}$0,34$  \onslide<4->\\ \hline\hline
-$0,1$ & $0,0005$  & \cellcolor{yellow}$0,999$  & $0,99999$  & \cellcolor{yellow!30}$90,17$  & $7,68$  & $0,26$ \\ \hline
-$0,1$ & $0,0005$  & \cellcolor{yellow}$0,9992$  & $0,99999$  & \cellcolor{yellow!30}$112,77$  & $8,64$  & $0,2$  \onslide<5->\\ \hline\hline
+\cellcolor{yellow}$0,2$ & $0,0005$  & $0,9991$  & $0,99999$  & \cellcolor{yellow!30}$89,1$  & $8,05$  & $0,235$ \onslide<3->\\ \hline\hline
+$0,1$ & \cellcolor{yellow}$0,0003$  & $0,9991$  & $0,99999$  & $100,04$  & \cellcolor{yellow!30}$6,22$  & \cellcolor{yellow!30}$0,12$ \\ \hline
+$0,1$ & \cellcolor{yellow}$0,0007$  & $0,9991$  & $0,99999$  & $100,4$  & \cellcolor{yellow!30}$10,89$  & \cellcolor{yellow!30}$0,34$  \onslide<4->\\ \hline\hline
+$0,1$ & $0,0005$  & \cellcolor{yellow}$0,999$  & $0,99999$  & \cellcolor{yellow!30}$90,17$  & \cellcolor{yellow!10}$7,68$  & $0,26$ \\ \hline
+$0,1$ & $0,0005$  & \cellcolor{yellow}$0,9992$  & $0,99999$  & \cellcolor{yellow!30}$112,77$  & \cellcolor{yellow!10}$8,64$  & $0,2$  \onslide<5->\\ \hline\hline
 $0,1$ & $0,0005$  & $0.9991$  & \cellcolor{yellow}$0,999975$  & $100,41$  & \cellcolor{yellow!30}$5,91$  & \cellcolor{yellow!30}$0,08$ \\ \hline
 $0,1$ & $0,0005$  & $0.9991$  & \cellcolor{yellow}$0,999993$  & $100,12$  & \cellcolor{yellow!30}$9,93$  & \cellcolor{yellow!30}$0,34$ \\ \hline
 \end{tabular}
 \end{table}
- %TODO Overlays!
+
 \end{frame}
 
 
@@ -865,13 +956,13 @@ $0,1$ & $0,0005$  & $0.9991$  & \cellcolor{yellow}$0,999993$  & $100,12$  & \cel
 \end{frame}
 
 
-\begin{frame}
- \frametitle{Einfluss: pll abhängig von pmm}
- 
- \includegraphics[width=0.49\textwidth]{pll/3fest_01_00005_09992_p}
- \includegraphics[width=0.49\textwidth]{pll/3fest_09_00005_09992_p}
- 
-\end{frame}
+% \begin{frame}
+%  \frametitle{Einfluss: pll abhängig von pmm}
+%  
+%  \includegraphics[width=0.49\textwidth]{pll/3fest_01_00005_09992_p}
+%  \includegraphics[width=0.49\textwidth]{pll/3fest_09_00005_09992_p}
+%  
+% \end{frame}
 
 
 \begin{frame}
@@ -896,362 +987,322 @@ $0,1$ & $0,0005$  & $0.9991$  & \cellcolor{yellow}$0,999993$  & $100,12$  & \cel
  \end{figure} 
 \end{frame}
 
-
-\section{Simulationsarten}
-\subsection*{Arten}
-
-\begin{frame}
- \frametitle{Simulationsarten}
- 
- \begin{itemize}
-  \item<+-> Teilchensimulation: \\
-  Simuliere $n$ Teilchen,\\ für Säule der Länge $\ell$,\\ für maximal $t_{\text{max}}$ Schritte,\\ verwalte Orte und Zustände der Teilchen
-  \begin{itemize}
-   \item Step-by-Step
-   \item By-Event
-  \end{itemize}
-  \item<+-> PAA: \\
-  Berechne Verteilung der Wartezeit für Wert $\ell$\\ maximale Wartezeit von $t_{\text{max}}$ 
- \end{itemize}
-\end{frame}
-
-
-\begin{frame}
- \frametitle{Step-by-Step}
- 
-% \begin{algorithm}[H]
-% \label{algo_by_Step}
-% \begin{algorithmic}
-% \REQUIRE $n$, $\ell$, Zeit $t=0$, $t_{\text{max}}$, Transitionen $T$,\\ Zustandsliste $z= [z_1 , \ldots, z_n]$, Ortsliste $o=[o_1, \ldots , o_n]$
-% \ENSURE Liste von Ankunftszeiten $r$
-% \STATE $r$ = list()
-% \WHILE{$t < t_{\text{max}}$ \AND $len(z) > 0$}
-% \FORALL {Teilchen $p$}
-% \STATE Akutalisiere $z_p$ und $o_p$ anhand von $T$
-% %\STATE Simuliere $p$ (anhand von T$(T)$)
-% \IF {$o_p >l$}
-% \STATE $r$.append($t$)
-% \STATE Lösche $z_p$ und $o_p$
-% \ENDIF
-% \ENDFOR
-% \STATE $t \leftarrow t+1$%t +=1$
-% \ENDWHILE
-% \RETURN $r$
-% \end{algorithmic}
-% \end{algorithm}
-\end{frame}
-
-
-\begin{frame}
- \frametitle{Step-by-Step}
- %TODO Overlays
- $p_{\text{s}}=0,8$, $p_{\text{m}}=0,5, \ell = 10, t = 11$
- \begin{figure}
-\centering
-\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=0.8cm,
-  main node/.style={circle,fill=white!20,draw,font=\sffamily\fseries}]
-\tikzstyle{feld}=[draw,minimum width=0.9cm,minimum height=0.4cm,font=\sffamily\footnotesize]
-
-\begin{scope}[start chain =1 going right, node distance =0.0mm]
-	\node [on chain =1, feld, draw=none,minimum width=2.5cm] {Phasen $z$};
-	\node [on chain=1, feld, fill=blue!30!white] (p1) {0};
-	\node [on chain=1, feld] (p3) {0};
-	\node [on chain=1, feld, fill=green!30!white] (p4) {1};
-	\node [on chain=1, feld] (p5) {1};
-	\node [on chain=1, feld,fill=magenta!70!blue!20!white] (p6) {1};
-	\node [on chain=1, feld] (p7) {1};
-	\node [on chain=1, feld, fill=orange!30!white] (p8) {0};
-\end{scope}
-
-\begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -0.7cm)}]
-	\node [on chain =1, feld, draw=none,minimum width=2.5cm] {Orte $o$};
-	\node [on chain=1, feld] (o1) {0};
-	\node [on chain=1, feld] (o3) {4};
-	\node [on chain=1, feld] (o4) {4};
-	\node [on chain=1, feld] (o5) {1};
-	\node [on chain=1, feld] (o6) {6};
-	\node [on chain=1, feld] (o7) {9};
-	\node [on chain=1, feld] (o8) {3};
-\end{scope}
-
-\begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -1.7cm)}]
-	\node [on chain =1, feld, draw=none,minimum width=2.5cm] {ZV};
-	\node [on chain=1, feld] (z1) {$0,9$};
-	\node [on chain=1, feld] (z3) {$0,6$};
-	\node [on chain=1, feld] (z4) {$0,2$};
-	\node [on chain=1, feld] (z5) {$0,9$};
-	\node [on chain=1, feld] (z6) {$0,7$};
-	\node [on chain=1, feld] (z7) {$0,2$};
-	\node [on chain=1, feld] (z8) {$0,7$};
-\end{scope}
-
-\begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -2.4cm)}]
-	\node [on chain =1, feld, draw=none,minimum width=2.5cm] {bleibe stat.: $s$};
-	\node [on chain=1, feld, fill=blue!30!white] (ps1) {0};
-	\node [on chain=1, feld] (ps3) {1};
-	\node [on chain=1, feld] (ps4) {1};
-	\node [on chain=1, feld] (ps5) {0};
-	\node [on chain=1, feld] (ps6) {1};
-	\node [on chain=1, feld] (ps7) {1};
-	\node [on chain=1, feld, fill=orange!30!white] (ps8) {1};
-\end{scope}
-
-\begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -3.1cm)}]
-	\node [on chain =1, feld, draw=none,minimum width=2.5cm] {bleibe mobil: $m$};
-	\node [on chain=1, feld] (pm1) {0};
-	\node [on chain=1, feld] (pm3) {0};
-	\node [on chain=1, feld, fill=green!30!white] (pm4) {1};
-	\node [on chain=1, feld] (pm5) {0};
-	\node [on chain=1, feld,fill=magenta!70!blue!20!white] (pm6) {0};
-	\node [on chain=1, feld] (pm7) {1};
-	\node [on chain=1, feld] (pm8) {0};
-\end{scope}
-
-\begin{scope}[start chain =1 going right, node distance =0.0mm, shift={(0cm, -4.1cm)}]
-	\node [on chain =1, feld, draw=none,minimum width=2.5cm] {Phasen $z'$};
-	\node [on chain=1, feld, fill=blue!30!white] (np1) {1};
-	\node [on chain=1, feld] (np3) {0};
-	\node [on chain=1, feld, fill=green!30!white] (np4) {1};
-	\node [on chain=1, feld] (np5) {0};
-	\node [on chain=1, feld,fill=magenta!70!blue!20!white] (np6) {0};
-	\node [on chain=1, feld] (np7) {1};
-	\node [on chain=1, feld, fill=orange!30!white] (np8) {0};
-\end{scope}
-
-\begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -4.8cm)}]
-	\node [on chain =1, feld, draw=none,minimum width=2.5cm] {Orte $o'$};
-	\node [on chain=1, feld] (no1) {1};
-	\node [on chain=1, feld] (no3) {4};
-	\node [on chain=1, feld] (no4) {5};
-	\node [on chain=1, feld] (no5) {1};
-	\node [on chain=1, feld] (no6) {6};
-	\node [on chain=1, feld, fill=yellow!70!white] (no7) {10};
-	\node [on chain=1, feld] (no8) {3};
-\end{scope}
-
-\end{tikzpicture}
-\end{figure}
-$(z'_p = z_p \land m_p) \lor (\lnot z_p \land \lnot s_p)$
- 
-$(z'= z \land m_p) \lor (\lnot z_p \land \lnot s_p)$
- 
- 
-\end{frame}
-
-
-\begin{frame}
- \frametitle{By-Event}
- 
-% \begin{algorithm}[H]
-% \label{algo_by_event}
-% \begin{algorithmic}
-% \REQUIRE $n$, $\ell$, Zeit $t=0$, $t_{\text{max}}$, Transitionen $T$, Eventliste $e= [e_0 = [(z_0, o_0), \ldots, (z_n, o_n)]]$ mit $z_p = 0, o_p = 0$ $\forall p$ 
-% \ENSURE Ankuftszeiten $r$
-% \STATE $r$ = list()
-% \WHILE{$t<t_{\text{max}}$ \AND Länge $(e)> 0$}
-% \FORALL {$(z_p, o_p)$ in $e[t]$}
-% \IF {$o_p > \ell$}
-% \STATE Berechne Ankunftszeit $t_a(p)$ 
-% \STATE $r$.append($t_a(p)$)
-% \STATE Lösche $(z_p, o_p)$
-% \ELSE
-% \STATE Simuliere $(z_p, o_p)$
-% \STATE Aktualisiere $e$
-% \ENDIF
-% \ENDFOR
-% \STATE $t \leftarrow t+1$
-% \ENDWHILE
-% \IF { Länge $(e) > 0$}
-% \FORALL {Event $e[t]$ in $e$}
-% \FORALL {$(z_p, o_p)$ in $ev$}
-% \IF {$o_p > \ell$}
-% \STATE Berechne Ankunftszeit $t_a(p)$ 
-% \STATE $r$.append($t_a(p)$)
-% %\STATE Teste ausstehende Events
-% %TODO: Anders machen, gleicher test wie oben
-% %\STATE Entferne angekommene Teilchen
-% \ENDIF
-% \ENDFOR
-% \ENDFOR
-% \ENDIF
-% \RETURN $r$
-% \end{algorithmic}
-% \end{algorithm}
-\end{frame}
-
-
-\begin{frame}
- \frametitle{By-Event}
- \begin{figure}
+% 
+% \section{Simulationsarten}
+% \subsection*{Arten}
+% 
+% \begin{frame}
+%  \frametitle{Simulationsarten}
+%  
+%  \begin{itemize}
+%   \item<+-> Teilchensimulation: \\
+%   Simuliere $n$ Teilchen,\\ für Säule der Länge $\ell$,\\ für maximal $t_{\text{max}}$ Schritte,\\ verwalte Orte und Zustände der Teilchen
+%   \begin{itemize}
+%    \item Step-by-Step
+%    \item By-Event
+%   \end{itemize}
+%   \item<+-> PAA: \\
+%   Berechne Verteilung der Wartezeit für Wert $\ell$\\ maximale Wartezeit von $t_{\text{max}}$ 
+%  \end{itemize}
+% \end{frame}
+% 
+% 
+% \begin{frame}
+%  \frametitle{Step-by-Step}
+%  
+% % \begin{algorithm}[H]
+% % \label{algo_by_Step}
+% % \begin{algorithmic}
+% % \REQUIRE $n$, $\ell$, Zeit $t=0$, $t_{\text{max}}$, Transitionen $T$,\\ Zustandsliste $z= [z_1 , \ldots, z_n]$, Ortsliste $o=[o_1, \ldots , o_n]$
+% % \ENSURE Liste von Ankunftszeiten $r$
+% % \STATE $r$ = list()
+% % \WHILE{$t < t_{\text{max}}$ \AND $len(z) > 0$}
+% % \FORALL {Teilchen $p$}
+% % \STATE Akutalisiere $z_p$ und $o_p$ anhand von $T$
+% % %\STATE Simuliere $p$ (anhand von T$(T)$)
+% % \IF {$o_p >l$}
+% % \STATE $r$.append($t$)
+% % \STATE Lösche $z_p$ und $o_p$
+% % \ENDIF
+% % \ENDFOR
+% % \STATE $t \leftarrow t+1$%t +=1$
+% % \ENDWHILE
+% % \RETURN $r$
+% % \end{algorithmic}
+% % \end{algorithm}
+% \end{frame}
+% 
+% 
+% \begin{frame}
+%  \frametitle{Step-by-Step}
+%  %TODO Overlays
+%  $p_{\text{s}}=0,8$, $p_{\text{m}}=0,5, \ell = 10, t = 11$
+%  \begin{figure}
 % \centering
-\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=0.6cm,
-  main node/.style={circle,fill=white!20,draw,font=\sffamily\small\bfseries}]
-\tikzstyle{feld}=[draw,minimum width=1cm,minimum height=0.3cm,font=\sffamily\tiny]
-
-\begin{scope}[start chain =1 going right, node distance =-0.1mm]
-	\node [on chain =1, feld, draw=none,minimum width=1.5cm] {Events $e$};
-	\node [on chain=1, feld,minimum width=1.5cm] (p2) {$e_3$};
-	\node [on chain=1, feld,minimum width=1.5cm] (p3) {$e_4$};
-	\node [on chain=1, feld,minimum width=1.5cm] (p5) {$e_5$};
-	\node [on chain=1, feld,minimum width=1.5cm] (p7) {$e_7$};
-	\node [on chain=1, feld,minimum width=1.5cm] (p12) {$e_{12}$};
-\end{scope}
-
-\begin{scope}[start chain = 1 going below,shift={(0cm, -1cm)}, node distance=0.3cm]
-	\node[on chain = 1, feld, draw = none] (2x1) {ZV:$2$};
-	\node[on chain = 1, feld, draw = none] (2x2) {ZV:$13$};
-	\node[on chain = 1, feld, draw = none] (2x2) {ZV:$6$};
-\end{scope}
-
-\begin{scope}[start chain = 1 going below,shift={(1.5cm, -1cm)}, node distance=0.3cm]
-	\node[on chain = 1, feld, fill=green!50!white] (1x1) {$p_1 =(0,2)$};
-	\node[on chain = 1, feld, fill=blue!40!white] (1x2) {$p_4 = (0,1)$};
-	\node[on chain = 1, feld, fill=orange!50!white] (1x3) {$p_7 = (1,3)$};
-\end{scope}
-
-\begin{scope}[start chain = 1 going below,shift={(3cm, -1cm)}, node distance=0.3cm]
-	\node[on chain = 1, feld] (2x1) {($z_0, o_0$)};
-	\node[on chain = 1, feld] (2x2) {($z_8, o_8$)};
-\end{scope}
-
-\begin{scope}[start chain = 1 going below,shift={(4.5cm, -1cm)}, node distance=0.3cm]
-	\node[on chain = 1, feld] (3x1) {($z_{10}, o_{10}$)};
-\end{scope}
-
-\begin{scope}[start chain = 1 going below,shift={(6cm, -1cm)}, node distance=0.3cm]
-	\node[on chain = 1, feld] (4x1) {($z_2, o_2$)};
-	\node[on chain = 1, feld] (4x2) {($z_3, o_3$)};
-	\node[on chain = 1, feld] (4x3) {($z_9, o_9$)};
-\end{scope}
-
-\begin{scope}[start chain = 1 going below,shift={(7.5cm, -1cm)}, node distance=0.3cm]
-	\node[on chain = 1, feld] (5x1) {($z_5, o_5$)};
-\end{scope}
-
-\path [line width=1.4pt, line cap=rect, draw](p2) edge (1x1) ;
-\path [line width=1.4pt, line cap=rect, draw](1x1) edge (1x2) ;
-\path [line width=1.4pt, line cap=rect, draw](1x2) edge (1x3) ;
-
-\path [line width=1.4pt, line cap=rect, draw](p3) edge (2x1) ;
-\path [line width=1.4pt, line cap=rect, draw](2x1) edge (2x2) ;
-
-\path [line width=1.4pt, line cap=rect, draw](p5) edge (3x1) ;
-
-\path [line width=1.4pt, line cap=rect, draw](p7) edge (4x1) ;
-\path [line width=1.4pt, line cap=rect, draw](4x1) edge (4x2) ;
-\path [line width=1.4pt, line cap=rect, draw](4x2) edge (4x3) ;
-
-\path [line width=1.4pt, line cap=rect, draw](p12) edge (5x1) ;
-
-\end{tikzpicture}
-
-\vspace*{15pt}
-
-\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=0.6cm,
-  thin,main node/.style={circle,fill=white!20,draw,font=\sffamily\tiny\bfseries}]
-\tikzstyle{feld}=[draw,minimum width=1cm,minimum height=0.4cm,font=\sffamily\tiny]
-
-\begin{scope}[start chain =1 going right, node distance =-0.1mm]
-	\node [on chain =1, feld, draw=none,minimum width=1.5cm] {Events $e$};
-	\node [on chain=1, feld,minimum width=1.5cm] (p2) {$e_4$};
-	\node [on chain=1, feld,minimum width=1.5cm] (p5) {$e_5$};
-	\node [on chain=1, feld,minimum width=1.5cm] (p7) {$e_7$};
-	\node [on chain=1, feld,minimum width=1.5cm] (p9) {$e_9$};
-	\node [on chain=1, feld,minimum width=1.5cm] (p12) {$e_{12}$};
-	\node [on chain=1, feld,minimum width=1.5cm] (p16) {$e_{16}$};
-\end{scope}
-
-\begin{scope}[start chain = 1 going below,shift={(1.5cm, -1cm)}, node distance=0.3cm]
-	\node[on chain = 1, feld] (2x1) {($z_0, o_0$)};
-	\node[on chain = 1, feld] (2x2) {($z_8, o_8$)};
-\end{scope}
-
-\begin{scope}[start chain = 1 going below,shift={(3cm, -1cm)}, node distance=0.3cm]
-	\node[on chain = 1, feld] (5x1) {($z_{10}, o_{10}$)};
-	\node[on chain = 1, feld, fill=green!50!white] (5x2) {$p_1 = (1,4)$};
-\end{scope}
-
-\begin{scope}[start chain = 1 going below,shift={(4.5cm, -1cm)}, node distance=0.3cm]
-	\node[on chain = 1, feld] (7x1) {($z_2, o_2$)};
-	\node[on chain = 1, feld] (7x2) {($z_3, o_3$)};
-	\node[on chain = 1, feld] (7x3) {($z_9, o_9$)};
-\end{scope}
-
-\begin{scope}[start chain = 1 going below,shift={(6cm, -1cm)}, node distance=0.3cm]
-	\node[on chain = 1, feld, fill=orange!50!white] (9x1) {$p_7 = (0, 3)$};
-\end{scope}
-
-\begin{scope}[start chain = 1 going below,shift={(7.5cm, -1cm)}, node distance=0.3cm]
-	\node[on chain = 1, feld] (12x1) {($z_5, o_5$)};
-\end{scope}
-
-\begin{scope}[start chain = 1 going below,shift={(9cm, -1cm)}, node distance=0.3cm]
-	\node[on chain = 1, feld, fill=blue!40!white] (16x1) {$p_4 =(1, 14)$};
-\end{scope}
-
-%\path [line width=1.4pt, line cap=rect, draw](1x2) edge (1x3) ;
-
-\path [line width=1.4pt, line cap=rect, draw](p2) edge (2x1) ;
-\path [line width=1.4pt, line cap=rect, draw](2x1) edge (2x2) ;
-
-\path [line width=1.4pt, line cap=rect, draw](p5) edge (5x1) ;
-\path [line width=1.4pt, line cap=rect, draw](5x1) edge (5x2) ;
-
-\path [line width=1.4pt, line cap=rect, draw](p7) edge (7x1) ;
-\path [line width=1.4pt, line cap=rect, draw](7x1) edge (7x2) ;
-\path [line width=1.4pt, line cap=rect, draw](7x2) edge (7x3) ;
-
-\path [line width=1.4pt, line cap=rect, draw](p9) edge (9x1) ;
-
-\path [line width=1.4pt, line cap=rect, draw](p12) edge (12x1) ;
-
-\path [line width=1.4pt, line cap=rect, draw](p16) edge (16x1) ;
-
-\end{tikzpicture}
-\end{figure}
-
-\end{frame}
-
-
-\begin{frame}
- \frametitle{PAA}
- 
-\end{frame}
-
-
-\begin{frame}
- \frametitle{PAA}
- 
- Jedes neue Feld:
- $z_{t+1}[o] = m_t[o-1] \cdot p_{\text{m}z} + a_t[o] \cdot p_{\text{a}z} + l_t[o] \cdot p_{\text{l}z} $
- 
-\end{frame}
-
-
-\begin{frame}
- \frametitle{Vergleich}
- \begin{itemize}
-  \item PAA genauer als Teilchensimulation (TODO Bild)
-  
-  \only<2>{\begin{figure}
-  \includegraphics[width=0.4\textwidth]{sim_1000t}
-  \includegraphics[width=0.4\textwidth]{sim_10000t}
-  \includegraphics[width=0.4\textwidth]{sim_100000t}
-  \includegraphics[width=0.4\textwidth]{sim_paa}
-  \end{figure}}
-  
-  \item <3-> im 2-Zustände Modell:
-  \begin{itemize}
-   \item Step-by-Step schneller
-  \end{itemize}
-  \item <4-> im 3-Zustände Modell:
-  \begin{itemize}
-   \item By-Event schneller
-  \end{itemize}
- \end{itemize}
- 
-\end{frame}
-
+% \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=0.8cm,
+%   main node/.style={circle,fill=white!20,draw,font=\sffamily\fseries}]
+% \tikzstyle{feld}=[draw,minimum width=0.9cm,minimum height=0.4cm,font=\sffamily\footnotesize]
+% 
+% \begin{scope}[start chain =1 going right, node distance =0.0mm]
+% 	\node [on chain =1, feld, draw=none,minimum width=2.5cm] {Phasen $z$};
+% 	\node [on chain=1, feld, fill=blue!30!white] (p1) {0};
+% 	\node [on chain=1, feld] (p3) {0};
+% 	\node [on chain=1, feld, fill=green!30!white] (p4) {1};
+% 	\node [on chain=1, feld] (p5) {1};
+% 	\node [on chain=1, feld,fill=magenta!70!blue!20!white] (p6) {1};
+% 	\node [on chain=1, feld] (p7) {1};
+% 	\node [on chain=1, feld, fill=orange!30!white] (p8) {0};
+% \end{scope}
+% 
+% \begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -0.7cm)}]
+% 	\node [on chain =1, feld, draw=none,minimum width=2.5cm] {Orte $o$};
+% 	\node [on chain=1, feld] (o1) {0};
+% 	\node [on chain=1, feld] (o3) {4};
+% 	\node [on chain=1, feld] (o4) {4};
+% 	\node [on chain=1, feld] (o5) {1};
+% 	\node [on chain=1, feld] (o6) {6};
+% 	\node [on chain=1, feld] (o7) {9};
+% 	\node [on chain=1, feld] (o8) {3};
+% \end{scope}
+% 
+% \begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -1.7cm)}]
+% 	\node [on chain =1, feld, draw=none,minimum width=2.5cm] {ZV};
+% 	\node [on chain=1, feld] (z1) {$0,9$};
+% 	\node [on chain=1, feld] (z3) {$0,6$};
+% 	\node [on chain=1, feld] (z4) {$0,2$};
+% 	\node [on chain=1, feld] (z5) {$0,9$};
+% 	\node [on chain=1, feld] (z6) {$0,7$};
+% 	\node [on chain=1, feld] (z7) {$0,2$};
+% 	\node [on chain=1, feld] (z8) {$0,7$};
+% \end{scope}
+% 
+% \begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -2.4cm)}]
+% 	\node [on chain =1, feld, draw=none,minimum width=2.5cm] {bleibe stat.: s};
+% 	\node [on chain=1, feld, fill=blue!30!white] (ps1) {0};
+% 	\node [on chain=1, feld] (ps3) {1};
+% 	\node [on chain=1, feld] (ps4) {1};
+% 	\node [on chain=1, feld] (ps5) {0};
+% 	\node [on chain=1, feld] (ps6) {1};
+% 	\node [on chain=1, feld] (ps7) {1};
+% 	\node [on chain=1, feld, fill=orange!30!white] (ps8) {1};
+% \end{scope}
+% 
+% \begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -3.1cm)}]
+% 	\node [on chain =1, feld, draw=none,minimum width=2.5cm] {bleibe mobil: m};
+% 	\node [on chain=1, feld] (pm1) {0};
+% 	\node [on chain=1, feld] (pm3) {0};
+% 	\node [on chain=1, feld, fill=green!30!white] (pm4) {1};
+% 	\node [on chain=1, feld] (pm5) {0};
+% 	\node [on chain=1, feld,fill=magenta!70!blue!20!white] (pm6) {0};
+% 	\node [on chain=1, feld] (pm7) {1};
+% 	\node [on chain=1, feld] (pm8) {0};
+% \end{scope}
+% 
+% \begin{scope}[start chain =1 going right, node distance =0.0mm, shift={(0cm, -4.1cm)}]
+% 	\node [on chain =1, feld, draw=none,minimum width=2.5cm] {Phasen $z'$};
+% 	\node [on chain=1, feld, fill=blue!30!white] (np1) {1};
+% 	\node [on chain=1, feld] (np3) {0};
+% 	\node [on chain=1, feld, fill=green!30!white] (np4) {1};
+% 	\node [on chain=1, feld] (np5) {0};
+% 	\node [on chain=1, feld,fill=magenta!70!blue!20!white] (np6) {0};
+% 	\node [on chain=1, feld] (np7) {1};
+% 	\node [on chain=1, feld, fill=orange!30!white] (np8) {0};
+% \end{scope}
+% 
+% \begin{scope}[start chain =1 going right, node distance =0.0mm,shift={(0cm, -4.8cm)}]
+% 	\node [on chain =1, feld, draw=none,minimum width=2.5cm] {Orte $o'$};
+% 	\node [on chain=1, feld] (no1) {1};
+% 	\node [on chain=1, feld] (no3) {4};
+% 	\node [on chain=1, feld] (no4) {5};
+% 	\node [on chain=1, feld] (no5) {1};
+% 	\node [on chain=1, feld] (no6) {6};
+% 	\node [on chain=1, feld, fill=yellow!70!white] (no7) {10};
+% 	\node [on chain=1, feld] (no8) {3};
+% \end{scope}
+% 
+% \end{tikzpicture}
+% \end{figure}
+% $(z'_p = z_p \land m_p) \lor (\lnot z_p \land \lnot s_p)$
+%  
+% $(z'= z \land m_p) \lor (\lnot z_p \land \lnot s_p)$
+%  
+%  
+% \end{frame}
+% 
+% 
+% \begin{frame}
+%  \frametitle{By-Event}
+%  
+% % \begin{algorithm}[H]
+% % \label{algo_by_event}
+% % \begin{algorithmic}
+% % \REQUIRE $n$, $\ell$, Zeit $t=0$, $t_{\text{max}}$, Transitionen $T$, Eventliste $e= [e_0 = [(z_0, o_0), \ldots, (z_n, o_n)]]$ mit $z_p = 0, o_p = 0$ $\forall p$ 
+% % \ENSURE Ankuftszeiten $r$
+% % \STATE $r$ = list()
+% % \WHILE{$t<t_{\text{max}}$ \AND Länge $(e)> 0$}
+% % \FORALL {$(z_p, o_p)$ in $e[t]$}
+% % \IF {$o_p > \ell$}
+% % \STATE Berechne Ankunftszeit $t_a(p)$ 
+% % \STATE $r$.append($t_a(p)$)
+% % \STATE Lösche $(z_p, o_p)$
+% % \ELSE
+% % \STATE Simuliere $(z_p, o_p)$
+% % \STATE Aktualisiere $e$
+% % \ENDIF
+% % \ENDFOR
+% % \STATE $t \leftarrow t+1$
+% % \ENDWHILE
+% % \IF { Länge $(e) > 0$}
+% % \FORALL {Event $e[t]$ in $e$}
+% % \FORALL {$(z_p, o_p)$ in $ev$}
+% % \IF {$o_p > \ell$}
+% % \STATE Berechne Ankunftszeit $t_a(p)$ 
+% % \STATE $r$.append($t_a(p)$)
+% % %\STATE Teste ausstehende Events
+% % %TODO: Anders machen, gleicher test wie oben
+% % %\STATE Entferne angekommene Teilchen
+% % \ENDIF
+% % \ENDFOR
+% % \ENDFOR
+% % \ENDIF
+% % \RETURN $r$
+% % \end{algorithmic}
+% % \end{algorithm}
+% \end{frame}
+% 
+% 
+% \begin{frame}
+%  \frametitle{By-Event}
+%  \begin{figure}
+% % \centering
+% \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=0.6cm,
+%   main node/.style={circle,fill=white!20,draw,font=\sffamily\small\bfseries}]
+% \tikzstyle{feld}=[draw,minimum width=1cm,minimum height=0.3cm,font=\sffamily\tiny]
+% 
+% \begin{scope}[start chain =1 going right, node distance =-0.1mm]
+% 	\node [on chain =1, feld, draw=none,minimum width=1.5cm] {Events $e$};
+% 	\node [on chain=1, feld,minimum width=1.5cm] (p2) {$e_3$};
+% 	\node [on chain=1, feld,minimum width=1.5cm] (p3) {$e_4$};
+% 	\node [on chain=1, feld,minimum width=1.5cm] (p5) {$e_5$};
+% 	\node [on chain=1, feld,minimum width=1.5cm] (p7) {$e_7$};
+% 	\node [on chain=1, feld,minimum width=1.5cm] (p12) {$e_{12}$};
+% \end{scope}
+% 
+% \begin{scope}[start chain = 1 going below,shift={(0cm, -1cm)}, node distance=0.3cm]
+% 	\node[on chain = 1, feld, draw = none] (2x1) {ZV:$2$};
+% 	\node[on chain = 1, feld, draw = none] (2x2) {ZV:$13$};
+% 	\node[on chain = 1, feld, draw = none] (2x2) {ZV:$6$};
+% \end{scope}
+% 
+% \begin{scope}[start chain = 1 going below,shift={(1.5cm, -1cm)}, node distance=0.3cm]
+% 	\node[on chain = 1, feld, fill=green!50!white] (1x1) {$p_1 =(0,2)$};
+% 	\node[on chain = 1, feld, fill=blue!40!white] (1x2) {$p_4 = (0,1)$};
+% 	\node[on chain = 1, feld, fill=orange!50!white] (1x3) {$p_7 = (1,3)$};
+% \end{scope}
+% 
+% \begin{scope}[start chain = 1 going below,shift={(3cm, -1cm)}, node distance=0.3cm]
+% 	\node[on chain = 1, feld] (2x1) {($z_0, o_0$)};
+% 	\node[on chain = 1, feld] (2x2) {($z_8, o_8$)};
+% \end{scope}
+% 
+% \begin{scope}[start chain = 1 going below,shift={(4.5cm, -1cm)}, node distance=0.3cm]
+% 	\node[on chain = 1, feld] (3x1) {($z_{10}, o_{10}$)};
+% \end{scope}
+% 
+% \begin{scope}[start chain = 1 going below,shift={(6cm, -1cm)}, node distance=0.3cm]
+% 	\node[on chain = 1, feld] (4x1) {($z_2, o_2$)};
+% 	\node[on chain = 1, feld] (4x2) {($z_3, o_3$)};
+% 	\node[on chain = 1, feld] (4x3) {($z_9, o_9$)};
+% \end{scope}
+% 
+% \begin{scope}[start chain = 1 going below,shift={(7.5cm, -1cm)}, node distance=0.3cm]
+% 	\node[on chain = 1, feld] (5x1) {($z_5, o_5$)};
+% \end{scope}
+% 
+% \path [line width=1.4pt, line cap=rect, draw](p2) edge (1x1) ;
+% \path [line width=1.4pt, line cap=rect, draw](1x1) edge (1x2) ;
+% \path [line width=1.4pt, line cap=rect, draw](1x2) edge (1x3) ;
+% 
+% \path [line width=1.4pt, line cap=rect, draw](p3) edge (2x1) ;
+% \path [line width=1.4pt, line cap=rect, draw](2x1) edge (2x2) ;
+% 
+% \path [line width=1.4pt, line cap=rect, draw](p5) edge (3x1) ;
+% 
+% \path [line width=1.4pt, line cap=rect, draw](p7) edge (4x1) ;
+% \path [line width=1.4pt, line cap=rect, draw](4x1) edge (4x2) ;
+% \path [line width=1.4pt, line cap=rect, draw](4x2) edge (4x3) ;
+% 
+% \path [line width=1.4pt, line cap=rect, draw](p12) edge (5x1) ;
+% 
+% \end{tikzpicture}
+% 
+% \vspace*{15pt}
+% 
+% \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=0.6cm,
+%   thin,main node/.style={circle,fill=white!20,draw,font=\sffamily\tiny\bfseries}]
+% \tikzstyle{feld}=[draw,minimum width=1cm,minimum height=0.4cm,font=\sffamily\tiny]
+% 
+% \begin{scope}[start chain =1 going right, node distance =-0.1mm]
+% 	\node [on chain =1, feld, draw=none,minimum width=1.5cm] {Events $e$};
+% 	\node [on chain=1, feld,minimum width=1.5cm] (p2) {$e_4$};
+% 	\node [on chain=1, feld,minimum width=1.5cm] (p5) {$e_5$};
+% 	\node [on chain=1, feld,minimum width=1.5cm] (p7) {$e_7$};
+% 	\node [on chain=1, feld,minimum width=1.5cm] (p9) {$e_9$};
+% 	\node [on chain=1, feld,minimum width=1.5cm] (p12) {$e_{12}$};
+% 	\node [on chain=1, feld,minimum width=1.5cm] (p16) {$e_{16}$};
+% \end{scope}
+% 
+% \begin{scope}[start chain = 1 going below,shift={(1.5cm, -1cm)}, node distance=0.3cm]
+% 	\node[on chain = 1, feld] (2x1) {($z_0, o_0$)};
+% 	\node[on chain = 1, feld] (2x2) {($z_8, o_8$)};
+% \end{scope}
+% 
+% \begin{scope}[start chain = 1 going below,shift={(3cm, -1cm)}, node distance=0.3cm]
+% 	\node[on chain = 1, feld] (5x1) {($z_{10}, o_{10}$)};
+% 	\node[on chain = 1, feld, fill=green!50!white] (5x2) {$p_1 = (1,4)$};
+% \end{scope}
+% 
+% \begin{scope}[start chain = 1 going below,shift={(4.5cm, -1cm)}, node distance=0.3cm]
+% 	\node[on chain = 1, feld] (7x1) {($z_2, o_2$)};
+% 	\node[on chain = 1, feld] (7x2) {($z_3, o_3$)};
+% 	\node[on chain = 1, feld] (7x3) {($z_9, o_9$)};
+% \end{scope}
+% 
+% \begin{scope}[start chain = 1 going below,shift={(6cm, -1cm)}, node distance=0.3cm]
+% 	\node[on chain = 1, feld, fill=orange!50!white] (9x1) {$p_7 = (0, 3)$};
+% \end{scope}
+% 
+% \begin{scope}[start chain = 1 going below,shift={(7.5cm, -1cm)}, node distance=0.3cm]
+% 	\node[on chain = 1, feld] (12x1) {($z_5, o_5$)};
+% \end{scope}
+% 
+% \begin{scope}[start chain = 1 going below,shift={(9cm, -1cm)}, node distance=0.3cm]
+% 	\node[on chain = 1, feld, fill=blue!40!white] (16x1) {$p_4 =(1, 14)$};
+% \end{scope}
+% 
+% %\path [line width=1.4pt, line cap=rect, draw](1x2) edge (1x3) ;
+% 
+% \path [line width=1.4pt, line cap=rect, draw](p2) edge (2x1) ;
+% \path [line width=1.4pt, line cap=rect, draw](2x1) edge (2x2) ;
+% 
+% \path [line width=1.4pt, line cap=rect, draw](p5) edge (5x1) ;
+% \path [line width=1.4pt, line cap=rect, draw](5x1) edge (5x2) ;
+% 
+% \path [line width=1.4pt, line cap=rect, draw](p7) edge (7x1) ;
+% \path [line width=1.4pt, line cap=rect, draw](7x1) edge (7x2) ;
+% \path [line width=1.4pt, line cap=rect, draw](7x2) edge (7x3) ;
+% 
+% \path [line width=1.4pt, line cap=rect, draw](p9) edge (9x1) ;
+% 
+% \path [line width=1.4pt, line cap=rect, draw](p12) edge (12x1) ;
+% 
+% \path [line width=1.4pt, line cap=rect, draw](p16) edge (16x1) ;
+% 
+% \end{tikzpicture}
+% \end{figure}
+% 
+% \end{frame}
+% 
 
 \section{Zusammenfassung und Ausblick}
 \subsection*{Zusammenfassung}
@@ -1276,8 +1327,8 @@ $(z'= z \land m_p) \lor (\lnot z_p \land \lnot s_p)$
   \item<+-> Andere Maße, insbesondere für Schiefe und Breite
   \item<+-> Peaks als Funktionen
   \item<+-> Verifikation des Modells in größerem Rahmen
-  \item<+-> Formel für Entsprechung
   \item<+-> Weitere Modelle falls erforderlich
+  \item<+-> Formel für Entsprechung
  \end{itemize}
 \end{frame}
 
